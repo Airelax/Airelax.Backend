@@ -17,7 +17,6 @@
     <ItemGroup>
       <Folder Include="DbContexts" />
       <Folder Include="RepositoryImplements" />
-      <Folder Include="RepositoryImplements\" />
     </ItemGroup>
 
 </Project>
