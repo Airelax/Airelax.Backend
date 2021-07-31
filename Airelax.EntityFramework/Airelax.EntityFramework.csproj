@@ -14,9 +14,4 @@
       <ProjectReference Include="..\Airelax.Domain\Airelax.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="DbContexts" />
-      <Folder Include="RepositoryImplements" />
-    </ItemGroup>
-
 </Project>

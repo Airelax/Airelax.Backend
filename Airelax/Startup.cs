@@ -26,8 +26,7 @@ namespace Airelax
             //     opt.UseSqlServer(Configuration.GetConnectionString(Define.Database.LOCAL_CONNECT_STRING),
             //         x => x.MigrationsAssembly(Define.Database.ENTITY_FRAMEWORK))
             // );
-            
-            
+
             services.AddByDependencyInjectionAttribute();
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Airelax", Version = "v1"}); });
