@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Xml.Schema;
 using Airelax.Domain.Comments;
+using Airelax.Domain.DomainObject;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Defines;
 using Airelax.Domain.Houses.Price;
@@ -16,15 +17,17 @@ namespace Airelax.EntityFramework.DbContexts
     public class AirelaxContext : DbContext
     {
         public DbSet<House> Houses { get; set; }
-
         public DbSet<HouseCategory> HouseCategories { get; set; }
-        // public DbSet<HouseDescription> HouseDescriptions { get; set; }
-        // public DbSet<HouseRule> HouseRules { get; set; }
-        // public DbSet<Photo> Photos { get; set; }
-        // public DbSet<Policy> Policies { get; set; }
-        // public DbSet<ReservationRule> ReservationRules { get; set; }
-        // public DbSet<Space> Spaces { get; set; }
-        // public DbSet<HousePrice> HousePrices { get; set; }
+        public DbSet<HouseLocation> HouseLocations { get; set; }
+        public DbSet<HouseDescription> HouseDescriptions { get; set; }
+        public DbSet<HouseRule> HouseRules { get; set; }
+        public DbSet<Photo> Photos { get; set; }
+        public DbSet<Policy> Policies { get; set; }
+        public DbSet<ReservationRule> ReservationRules { get; set; }
+        public DbSet<Space> Spaces { get; set; }
+        public DbSet<BedroomDetail> BedroomDetails { get; set; }
+        //todo
+        //public DbSet<HousePrice> HousePrices { get; set; }
         // public DbSet<Member> Members { get; set; }
         // public DbSet<MemberInfo> MemberInfos { get; set; }
         // public DbSet<MemberLoginInfo> MemberLoginInfos { get; set; }
@@ -35,6 +38,7 @@ namespace Airelax.EntityFramework.DbContexts
         // public DbSet<Payment> Payments { get; set; }
         // public DbSet<Comment> Comments { get; set; }
         // public DbSet<Star> Stars { get; set; }
+       
 
         public AirelaxContext(DbContextOptions<AirelaxContext> opt) : base(opt)
         {
@@ -45,8 +49,7 @@ namespace Airelax.EntityFramework.DbContexts
             modelBuilder.Entity<House>(
                 builder =>
                 {
-                    builder.HasKey(x => x.Id);
-                    builder.Property(x => x.Id).UseIdentityColumn();
+                    builder.SetEntityKey<House,int>();
                     builder.SetPropMaxLength(x => x.Title, 30).IsRequired();
                     builder.SetEnumDbMapping(x => x.Status).IsRequired();
                     builder.SetEnumDbMapping(x => x.CreateState).IsRequired();
@@ -54,8 +57,7 @@ namespace Airelax.EntityFramework.DbContexts
 
             modelBuilder.Entity<HouseCategory>(builder =>
             {
-                builder.HasKey(x => x.Id);
-                builder.Property(x => x.Id).ValueGeneratedNever();
+                builder.SetZeroEntityKey<HouseCategory,int>();
                 builder.SetEnumDbMapping(x => x.Category);
                 builder.SetEnumDbMapping(x => x.HouseType);
                 builder.SetEnumDbMapping(x => x.RoomCategory);
@@ -64,8 +66,7 @@ namespace Airelax.EntityFramework.DbContexts
 
             modelBuilder.Entity<HouseLocation>(builder =>
             {
-                builder.HasKey(x => x.Id);
-                builder.Property(x => x.Id).ValueGeneratedNever().IsRequired();
+                builder.SetZeroEntityKey<HouseLocation,int>();
                 builder.SetPropMaxLength(x => x.Country, 50);
                 builder.SetPropMaxLength(x => x.City, 50);
                 builder.SetPropMaxLength(x => x.Town, 50);
@@ -76,29 +77,61 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.HasOne<House>().WithOne(x => x.HouseLocation).HasForeignKey<HouseLocation>(x => x.Id);
             });
 
+            modelBuilder.Entity<HouseDescription>(builder =>
+            {
+                builder.SetZeroEntityKey<HouseDescription,int>();
+                builder.SetPropMaxLength(x => x.Description, 1000);
+                builder.SetPropMaxLength(x => x.SpaceDescription, 1000);
+                builder.SetPropMaxLength(x => x.GuestPermission, 1000);
+                builder.SetPropMaxLength(x => x.Others, 1000);
+                builder.SetEnumDbMapping(x => x.HouseHighlight);
+                builder.HasOne<House>().WithOne(x => x.HouseDescription).HasForeignKey<HouseDescription>(x => x.Id);
+            });
+
             modelBuilder.Entity<HouseRule>(builder =>
             {
-                builder.HasKey(x => x.Id);
-                builder.Property(x => x.Id).ValueGeneratedNever().IsRequired();
+                builder.SetZeroEntityKey<HouseRule,int>();
                 builder.SetPropMaxLength(x => x.Other, 500);
                 builder.HasOne<House>().WithOne(x => x.HouseRule).HasForeignKey<HouseRule>(x => x.Id);
             });
 
             modelBuilder.Entity<Policy>(builder =>
             {
-                builder.HasKey(x => x.Id);
-                builder.Property(x => x.Id).ValueGeneratedNever().IsRequired();
+                builder.SetZeroEntityKey<Policy,int>();
                 builder.SetEnumDbMapping(x => x.CancelPolicy);
-                builder.Property(x => x.CancelPolicy).HasColumnType(Define.SQL_MONEY_TYPE);
+                builder.Property(x => x.CancelPolicy).HasColumnType(Define.SqlServer.MONEY_TYPE);
                 builder.HasOne<House>().WithOne(x => x.Policy).HasForeignKey<Policy>(x => x.Id);
             });
 
-            // houseEntity.HasOne<HouseDescription>().WithOne().HasForeignKey<HouseDescription>(x=>x.Id);
-            // houseEntity.HasOne<HouseLocation>().WithOne().HasForeignKey<HouseLocation>(x=>x.Id);
-            // houseEntity.HasOne<HouseRule>().WithOne().HasForeignKey<HouseRule>(x=>x.Id);
-            // houseEntity.HasOne<Policy>().WithOne().HasForeignKey<Policy>(x=>x.Id);
-            // houseEntity.HasOne<ReservationRule>().WithOne().HasForeignKey<ReservationRule>(x=>x.Id);
-            // houseEntity.HasOne<HousePrice>().WithOne().HasForeignKey<HousePrice>(x=>x.Id);
+            modelBuilder.Entity<ReservationRule>(builder =>
+            {
+                builder.SetZeroEntityKey<ReservationRule,int>();
+                builder.SetEnumDbMapping(x => x.RejectDate);
+                builder.HasOne<House>().WithOne(x => x.ReservationRule).HasForeignKey<ReservationRule>(x => x.Id);
+            });
+
+            modelBuilder.Entity<Photo>(builder =>
+            {
+                builder.SetEntityKey<Photo,int>();
+                builder.Property(x => x.Image).HasColumnType(Define.SqlServer.IMAGE_TYPE).IsRequired();
+                builder.HasOne<House>().WithMany(x => x.Photos).HasForeignKey(x => x.HouseId).IsRequired();
+                builder.HasOne<Space>().WithMany(x => x.Photos).OnDelete(DeleteBehavior.ClientSetNull).HasForeignKey(x => x.SpaceId);
+            });
+
+            modelBuilder.Entity<Space>(builder =>
+            {
+                builder.SetEntityKey<Space,int>();
+                builder.SetEnumDbMapping(x => x.SpaceType).IsRequired();
+                builder.HasOne<House>().WithMany(x => x.Spaces).HasForeignKey(x => x.HouseId);
+               
+            });
+
+            modelBuilder.Entity<BedroomDetail>(builder =>
+            {
+                builder.SetEntityKey<BedroomDetail,int>();
+                builder.SetEnumDbMapping(x => x.BedType).IsRequired();
+                builder.HasOne<Space>().WithMany(x => x.BedroomDetail);
+            });
         }
     }
 }
