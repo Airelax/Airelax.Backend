@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Airelax.Domain.DomainObject;
+using Airelax.Domain.Houses;
 using Airelax.Domain.Members.Defines;
 
 namespace Airelax.Domain.Members
@@ -17,5 +20,7 @@ namespace Airelax.Domain.Members
         public string Phone { get; set; }
         public bool IsPhoneVerified { get; set; }
         public bool IsEmailVerified { get; set; }
+
+        public ICollection<House> Houses{ get; set; }
     }
 }

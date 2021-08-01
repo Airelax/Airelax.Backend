@@ -38,7 +38,6 @@ namespace Airelax.Domain.RepositoryInterface
         /// <summary>
         /// 更新Entity
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="item"></param>
         /// <returns></returns>
         Task UpdateAsync(TEntity item);

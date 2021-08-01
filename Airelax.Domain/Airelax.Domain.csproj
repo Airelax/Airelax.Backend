@@ -9,7 +9,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Enums\House" />
       <Folder Include="Shared" />
     </ItemGroup>
 

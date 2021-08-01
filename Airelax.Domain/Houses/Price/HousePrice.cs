@@ -2,7 +2,7 @@
 
 namespace Airelax.Domain.Houses.Price
 {
-    public class Price: Entity<int>
+    public class HousePrice: Entity<int>
     {
         public decimal PerNight { get; set; }
         public decimal PerWeekNight { get; set; }

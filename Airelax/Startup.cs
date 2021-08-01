@@ -1,6 +1,9 @@
+using Airelax.Defines;
+using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,11 +24,13 @@ namespace Airelax
         public void ConfigureServices(IServiceCollection services)
         {
             // command: add-migration $description -p Airelax.EntityFramework
+            // dotnet ef --startup-project Airelax migrations add $description -p Airelax.EntityFramework
+            // dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework
             // Todo add DbContext
-            // services.AddDbContext<>(opt =>
-            //     opt.UseSqlServer(Configuration.GetConnectionString(Define.Database.LOCAL_CONNECT_STRING),
-            //         x => x.MigrationsAssembly(Define.Database.ENTITY_FRAMEWORK))
-            // );
+            services.AddDbContext<AirelaxContext>(opt =>
+                opt.UseSqlServer(Configuration.GetConnectionString(Define.Database.LOCAL_CONNECT_STRING),
+                    x => x.MigrationsAssembly(Define.Database.ENTITY_FRAMEWORK))
+            );
 
             services.AddByDependencyInjectionAttribute();
             services.AddControllers();

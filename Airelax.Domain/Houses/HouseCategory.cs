@@ -8,5 +8,6 @@ namespace Airelax.Domain.Houses
         public Category Category{ get; set; }
         public HouseType HouseType { get; set; }
         public RoomCategory RoomCategory { get; set; }
+
     }
 }
