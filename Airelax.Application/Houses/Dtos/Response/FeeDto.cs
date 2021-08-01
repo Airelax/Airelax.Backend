@@ -1,6 +1,6 @@
-﻿namespace Airelax.Domain.Houses.Price
+﻿namespace Airelax.Application.Houses.Dtos.Response
 {
-    public class Fee
+    public class FeeDto
     {
         public decimal CleanFee { get; set; }
         public decimal ServiceFee { get; set; }
