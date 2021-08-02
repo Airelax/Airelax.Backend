@@ -356,7 +356,6 @@ namespace Airelax.EntityFramework.DbContexts
             });
         }
         #endregion
-
-      
+        
     }
 }
