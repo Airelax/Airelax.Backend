@@ -1,6 +1,7 @@
 ﻿using System.Buffers.Text;
 using System.Collections.Generic;
 using Airelax.Domain.DomainObject;
+using Airelax.Domain.Houses;
 
 namespace Airelax.Domain.Members
 {

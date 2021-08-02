@@ -2,6 +2,12 @@
 {
     public struct Define
     {
-        public const string SQL_MONEY_TYPE = "money";
+        public struct SqlServer
+        {
+            public const string MONEY_TYPE = "Money";
+            public const string IMAGE_TYPE = "image";
+        }
+        
+        
     }
 }
