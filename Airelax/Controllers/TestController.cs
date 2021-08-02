@@ -5,6 +5,7 @@ using Airelax.Domain.Houses.Defines;
 using Airelax.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Airelax.Controllers
 {
@@ -22,10 +23,8 @@ namespace Airelax.Controllers
         [HttpGet]
         public string Get()
         {
-            var house = _context.Houses.Include(x => x.HouseCategory).FirstOrDefault(x => x.Id == 2);
-            _context.Houses.Add(new House() {Title = "123", Status = HouseStatus.Off, CreateState = CreateState.Building, CreateTime = DateTime.Now, CustomerNumber = 4, LastModifyTime = DateTime.Now, OwnerId = 1,});
-            _context.SaveChanges();
-            return house.HouseCategory.HouseType.ToString();
+            var house = _context.Houses.Include(x=>x.HouseRule).FirstOrDefault(x => x.Id == 2);
+            return JsonConvert.SerializeObject(house);
         }
     }
 }
