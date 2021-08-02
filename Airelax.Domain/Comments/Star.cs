@@ -1,6 +1,8 @@
-﻿namespace Airelax.Domain.Comments
+﻿using Airelax.Domain.DomainObject;
+
+namespace Airelax.Domain.Comments
 {
-    public class Star
+    public class Star:Entity<int>
     {
         public int CleanScore { get; set; }
         public int CommunicationScore { get; set; }

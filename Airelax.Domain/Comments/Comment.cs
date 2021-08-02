@@ -20,5 +20,6 @@ namespace Airelax.Domain.Comments
         public Member Author { get; set; }
         public Member Receiver { get; set; }
         public Order Order { get; set; }
+        public Star Star { get; set; }
     }
 }

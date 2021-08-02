@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Airelax.Domain.Comments;
 using Airelax.Domain.DomainObject;
 using Airelax.Domain.Houses.Defines;
 using Airelax.Domain.Houses.Price;
+using Airelax.Domain.Orders;
 
 namespace Airelax.Domain.Houses
 {
@@ -15,6 +17,7 @@ namespace Airelax.Domain.Houses
         public int OwnerId { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime LastModifyTime { get; set; }
+        public bool IsDeleted { get; set; }
 
         public HouseCategory HouseCategory { get; set; }
         public HouseDescription HouseDescription { get; set; }
@@ -24,6 +27,8 @@ namespace Airelax.Domain.Houses
         public Policy Policy { get; set; }
         public ReservationRule ReservationRule { get; set; }
         public ICollection<Space> Spaces { get; set; }
+        public ICollection<Order> Orders { get; set; }
+        public ICollection<Comment> Comments { get; set; }
         //todo
         //public HousePrice HousePrice { get; set; }
     }

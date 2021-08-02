@@ -8,5 +8,6 @@ namespace Airelax.Domain.Orders
         public decimal PricePerNight { get; set; }
         public Discount Discount { get; set; }
         public Fee Fee { get; set; }
+        public decimal Total { get; set; }
     }
 }
