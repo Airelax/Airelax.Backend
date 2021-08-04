@@ -9,8 +9,5 @@ namespace Airelax.Domain.Houses
         public int HouseId { get; set; }
         public SpaceType SpaceType { get; set; }
         public bool IsShared { get; set; }
-        public ICollection<Photo> Photos { get; set; }
-
-        public ICollection<BedroomDetail> BedroomDetail { get; set; }
     }
 }

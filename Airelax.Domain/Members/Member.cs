@@ -23,17 +23,6 @@ namespace Airelax.Domain.Members
         public bool IsPhoneVerified { get; set; }
         public bool IsEmailVerified { get; set; }
         public bool IsDeleted { get; set; }
-
-        public ICollection<House> Houses{ get; set; }
-        public MemberInfo MemberInfo { get; set; }
-        public MemberLoginInfo MemberLoginInfo { get; set; }
-        //todo
-        //public WishList WishList { get; set; }
-        public EmergencyContact EmergencyContact { get; set; }
-
-        public ICollection<Order> Orders { get; set; }
-
-        public ICollection<Comment> Comments { get; set; }
-        public ICollection<Comment> ReceiveComments { get; set; }
+        public DateTime RegisterTime { get; set; }
     }
 }

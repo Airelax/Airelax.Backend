@@ -18,18 +18,5 @@ namespace Airelax.Domain.Houses
         public DateTime CreateTime { get; set; }
         public DateTime LastModifyTime { get; set; }
         public bool IsDeleted { get; set; }
-
-        public HouseCategory HouseCategory { get; set; }
-        public HouseDescription HouseDescription { get; set; }
-        public HouseLocation HouseLocation { get; set; }
-        public HouseRule HouseRule { get; set; }
-        public ICollection<Photo> Photos { get; set; }
-        public Policy Policy { get; set; }
-        public ReservationRule ReservationRule { get; set; }
-        public ICollection<Space> Spaces { get; set; }
-        public ICollection<Order> Orders { get; set; }
-        public ICollection<Comment> Comments { get; set; }
-        //todo
-        //public HousePrice HousePrice { get; set; }
     }
 }

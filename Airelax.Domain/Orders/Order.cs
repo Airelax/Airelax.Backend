@@ -13,11 +13,5 @@ namespace Airelax.Domain.Orders
         public DateTime OrderDate { get; set; }
         public DateTime LastModifyTime { get; set; }
         public OrderState State { get; set; }
-
-        public OrderDetail OrderDetail { get; set; }
-        //todo
-        //public OrderPriceDetail OrderPriceDetail { get; set; }
-        public Payment Payment { get; set; }
-        public Comment Comment { get; set; }
     }
 }

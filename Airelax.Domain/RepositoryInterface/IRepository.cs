@@ -45,9 +45,9 @@ namespace Airelax.Domain.RepositoryInterface
         /// <summary>
         /// 刪除Entity
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="item"></param>
         /// <returns></returns>
-        Task DeleteAsync(TId id);
+        Task DeleteAsync(TEntity item);
         
         /// <summary>
         /// 儲存變更

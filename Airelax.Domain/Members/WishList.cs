@@ -8,7 +8,8 @@ namespace Airelax.Domain.Members
     public class WishList: AggregateRoot<int>
     {
         public int MemberId { get; set; }
+        public string Name { get; set; }
         public byte[] Cover { get; set; }
-        public IList<int> Houses { get; set; }
+        public List<int> Houses { get; set; }
     }
 }
