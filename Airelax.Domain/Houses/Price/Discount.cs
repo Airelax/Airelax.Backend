@@ -7,6 +7,6 @@ namespace Airelax.Domain.Houses.Price
     {
         public int Week { get; set; }
         public int Month { get; set; }
-        public IList<DiscountDetail> OtherDiscount { get; set; }
+        public List<DiscountDetail> OtherDiscount { get; set; }
     }
 }

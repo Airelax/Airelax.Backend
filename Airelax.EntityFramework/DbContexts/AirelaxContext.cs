@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Immutable;
 using System.Linq.Expressions;
 using System.Xml.Schema;
 using Airelax.Domain.Comments;
@@ -25,20 +26,18 @@ namespace Airelax.EntityFramework.DbContexts
         public DbSet<Policy> Policies { get; set; }
         public DbSet<ReservationRule> ReservationRules { get; set; }
         public DbSet<Space> Spaces { get; set; }
-
         public DbSet<BedroomDetail> BedroomDetails { get; set; }
-
-        //todo
-        //public DbSet<HousePrice> HousePrices { get; set; }
+        public DbSet<HousePrice> HousePrices { get; set; }
+        
+        
         public DbSet<Member> Members { get; set; }
         public DbSet<MemberInfo> MemberInfos { get; set; }
         public DbSet<MemberLoginInfo> MemberLoginInfos { get; set; }
-        //todo
-        //public DbSet<WishList> WishLists { get; set; }
+       
+        public DbSet<WishList> WishLists { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
-        //todo
-        //public DbSet<OrderPriceDetail> OrderPriceDetails { get; set; }
+        public DbSet<OrderPriceDetail> OrderPriceDetails { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Star> Stars { get; set; }
@@ -51,41 +50,26 @@ namespace Airelax.EntityFramework.DbContexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             ConfigHouse(modelBuilder);
-
             ConfigHouseCategory(modelBuilder);
-
             ConfigHouseLocation(modelBuilder);
-
             ConfigHouseDescription(modelBuilder);
-
             ConfigHouseRule(modelBuilder);
-
             ConfigPolicy(modelBuilder);
-
             ConfigReservationRule(modelBuilder);
-
             ConfigPhoto(modelBuilder);
-
             ConfigSpace(modelBuilder);
-
             ConfigBedroomDetail(modelBuilder);
-
+            ConfigHousePrice(modelBuilder);
             ConfigMember(modelBuilder);
-
             ConfigMemberLogInfo(modelBuilder);
-
             ConfigMemberInfo(modelBuilder);
-
             ConfigEmergencyContact(modelBuilder);
-
+            ConfigWishList(modelBuilder);
             ConfigOrder(modelBuilder);
-            
             ConfigOrderDetail(modelBuilder);
-            
+            ConfigPriceDetail(modelBuilder);
             ConfigPayment(modelBuilder);
-
             ConfigConfigComment(modelBuilder);
-            
             ConfigStar(modelBuilder);
         }
 
@@ -101,8 +85,20 @@ namespace Airelax.EntityFramework.DbContexts
                     builder.SetEnumDbMapping(x => x.Status).IsRequired();
                     builder.SetEnumDbMapping(x => x.CreateState).IsRequired();
 
-                    builder.HasOne<Member>().WithMany(x => x.Houses).HasForeignKey(x => x.OwnerId);
+                    builder.HasOne<Member>().WithMany().HasForeignKey(x => x.OwnerId);
                 });
+        }
+
+        private static void ConfigHouseCategory(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<HouseCategory>(builder =>
+            {
+                builder.SetZeroEntityKey<HouseCategory, int>();
+                builder.SetEnumDbMapping(x => x.Category);
+                builder.SetEnumDbMapping(x => x.HouseType);
+                builder.SetEnumDbMapping(x => x.RoomCategory);
+                builder.HasOne<House>().WithOne().HasForeignKey<HouseCategory>(x => x.Id);
+            });
         }
 
         private static void ConfigBedroomDetail(ModelBuilder modelBuilder)
@@ -111,7 +107,7 @@ namespace Airelax.EntityFramework.DbContexts
             {
                 builder.SetEntityKey<BedroomDetail, int>();
                 builder.SetEnumDbMapping(x => x.BedType).IsRequired();
-                builder.HasOne<Space>().WithMany(x => x.BedroomDetail);
+                builder.HasOne<Space>().WithMany().HasForeignKey(x=>x.SpaceId);
             });
         }
 
@@ -121,7 +117,7 @@ namespace Airelax.EntityFramework.DbContexts
             {
                 builder.SetEntityKey<Space, int>();
                 builder.SetEnumDbMapping(x => x.SpaceType).IsRequired();
-                builder.HasOne<House>().WithMany(x => x.Spaces).HasForeignKey(x => x.HouseId);
+                builder.HasOne<House>().WithMany().HasForeignKey(x => x.HouseId);
             });
         }
 
@@ -131,8 +127,8 @@ namespace Airelax.EntityFramework.DbContexts
             {
                 builder.SetEntityKey<Photo, int>();
                 builder.Property(x => x.Image).HasColumnType(Define.SqlServer.IMAGE_TYPE).IsRequired();
-                builder.HasOne<House>().WithMany(x => x.Photos).HasForeignKey(x => x.HouseId).IsRequired();
-                builder.HasOne<Space>().WithMany(x => x.Photos).OnDelete(DeleteBehavior.ClientSetNull).HasForeignKey(x => x.SpaceId);
+                builder.HasOne<House>().WithMany().HasForeignKey(x => x.HouseId).IsRequired();
+                builder.HasOne<Space>().WithMany().OnDelete(DeleteBehavior.ClientSetNull).HasForeignKey(x => x.SpaceId);
             });
         }
 
@@ -142,7 +138,7 @@ namespace Airelax.EntityFramework.DbContexts
             {
                 builder.SetZeroEntityKey<ReservationRule, int>();
                 builder.SetEnumDbMapping(x => x.RejectDate);
-                builder.HasOne<House>().WithOne(x => x.ReservationRule).HasForeignKey<ReservationRule>(x => x.Id);
+                builder.HasOne<House>().WithOne().HasForeignKey<ReservationRule>(x => x.Id);
             });
         }
 
@@ -153,7 +149,7 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetZeroEntityKey<Policy, int>();
                 builder.SetEnumDbMapping(x => x.CancelPolicy);
                 builder.Property(x => x.CashPledge).HasColumnType(Define.SqlServer.MONEY_TYPE);
-                builder.HasOne<House>().WithOne(x => x.Policy).HasForeignKey<Policy>(x => x.Id);
+                builder.HasOne<House>().WithOne().HasForeignKey<Policy>(x => x.Id);
             });
         }
 
@@ -163,7 +159,7 @@ namespace Airelax.EntityFramework.DbContexts
             {
                 builder.SetZeroEntityKey<HouseRule, int>();
                 builder.SetPropMaxLength(x => x.Other, 500);
-                builder.HasOne<House>().WithOne(x => x.HouseRule).HasForeignKey<HouseRule>(x => x.Id);
+                builder.HasOne<House>().WithOne().HasForeignKey<HouseRule>(x => x.Id);
             });
         }
 
@@ -177,7 +173,7 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetPropMaxLength(x => x.GuestPermission, 1000);
                 builder.SetPropMaxLength(x => x.Others, 1000);
                 builder.SetEnumDbMapping(x => x.HouseHighlight);
-                builder.HasOne<House>().WithOne(x => x.HouseDescription).HasForeignKey<HouseDescription>(x => x.Id);
+                builder.HasOne<House>().WithOne().HasForeignKey<HouseDescription>(x => x.Id);
             });
         }
 
@@ -193,22 +189,24 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetPropMaxLength(x => x.AddressDetail, 100);
                 builder.SetPropMaxLength(x => x.LocationDescription, 500);
                 builder.SetPropMaxLength(x => x.TrafficDescription, 250);
-                builder.HasOne<House>().WithOne(x => x.HouseLocation).HasForeignKey<HouseLocation>(x => x.Id);
+                builder.HasOne<House>().WithOne().HasForeignKey<HouseLocation>(x => x.Id);
             });
         }
 
-        private static void ConfigHouseCategory(ModelBuilder modelBuilder)
+        private static void ConfigHousePrice(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<HouseCategory>(builder =>
+            modelBuilder.Entity<HousePrice>(builder =>
             {
-                builder.SetZeroEntityKey<HouseCategory, int>();
-                builder.SetEnumDbMapping(x => x.Category);
-                builder.SetEnumDbMapping(x => x.HouseType);
-                builder.SetEnumDbMapping(x => x.RoomCategory);
-                builder.HasOne<House>().WithOne(x => x.HouseCategory).HasForeignKey<HouseCategory>(x => x.Id);
+                builder.SetZeroEntityKey<HousePrice,int>();
+                builder.Property(x => x.PerNight).HasColumnType(Define.SqlServer.MONEY_TYPE).IsRequired();
+                builder.Property(x => x.PerWeekNight).HasColumnType(Define.SqlServer.MONEY_TYPE);
+                builder.Property(x => x.Fee).HasJsonConversion();
+                builder.Property(x => x.Discount).HasJsonConversion();
+
+                builder.HasOne<House>().WithOne().HasForeignKey<HousePrice>(x=>x.Id);
             });
         }
-
+        
         #endregion
 
         #region MemberConfig
@@ -225,6 +223,7 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetPropMaxLength(x => x.Town, 30);
                 builder.SetPropMaxLength(x => x.AddressDetail, 50);
                 builder.SetPropMaxLength(x => x.Phone, 30);
+                builder.Property(x => x.RegisterTime).IsRequired().HasDefaultValue(DateTime.Now);
             });
         }
 
@@ -240,8 +239,8 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetPropMaxLength(x => x.RefreshToken, 300);
                 builder.SetPropMaxLength(x => x.ThirdPartyToken, 300);
                 builder.SetPropMaxLength(x => x.ThirdPartyRefreshToken, 300);
-
-                builder.HasOne<Member>().WithOne(x => x.MemberLoginInfo).HasForeignKey<MemberLoginInfo>(x => x.Id);
+                    
+                builder.HasOne<Member>().WithOne().HasForeignKey<MemberLoginInfo>(x => x.Id);
             });
         }
 
@@ -253,7 +252,7 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetPropMaxLength(x => x.About, 1000);
                 builder.SetPropMaxLength(x => x.Location, 100);
 
-                builder.HasOne<Member>().WithOne(x => x.MemberInfo).HasForeignKey<MemberInfo>(x => x.Id);
+                builder.HasOne<Member>().WithOne().HasForeignKey<MemberInfo>(x => x.Id);
             });
         }
 
@@ -265,21 +264,24 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetPropMaxLength(x => x.Name, 50);
                 builder.SetPropMaxLength(x => x.Phone, 30);
 
-                builder.HasOne<Member>().WithOne(x => x.EmergencyContact).HasForeignKey<EmergencyContact>(x => x.Id);
+                builder.HasOne<Member>().WithOne().HasForeignKey<EmergencyContact>(x => x.Id);
+            });
+        }
+        
+        private static void ConfigWishList(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<WishList>(builder =>
+            {
+                builder.SetZeroEntityKey<WishList,int>();
+                builder.SetPropMaxLength(x => x.Name, 30);
+                builder.Property(x => x.Cover).HasColumnType(Define.SqlServer.IMAGE_TYPE);
+                builder.Property(x => x.Houses).HasJsonConversion();
+                builder.HasOne<Member>().WithMany().HasForeignKey(x => x.MemberId);
             });
         }
 
-        // todo
-        // private static void ConfigWishList(ModelBuilder modelBuilder)
-        // {
-        //     modelBuilder.Entity<WishList>(builder =>
-        //     {
-        //         builder.SetZeroEntityKey<WishList,int>();
-        //     });
-        // }
-        
         #endregion
-        
+
         #region OrdersConfig
 
         private static void ConfigOrder(ModelBuilder modelBuilder)
@@ -289,8 +291,8 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetEntityKey<Order, int>();
                 builder.SetEnumDbMapping(x => x.State);
 
-                builder.HasOne<Member>().WithMany(x => x.Orders).HasForeignKey(x => x.CustomerId).IsRequired();
-                builder.HasOne<House>().WithMany(x => x.Orders).OnDelete(DeleteBehavior.Restrict).HasForeignKey(x => x.HouseId).IsRequired();
+                builder.HasOne<Member>().WithMany().HasForeignKey(x => x.CustomerId).IsRequired();
+                builder.HasOne<House>().WithMany().OnDelete(DeleteBehavior.Restrict).HasForeignKey(x => x.HouseId).IsRequired();
             });
         }
         
@@ -305,7 +307,7 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.Property(x => x.Child).IsRequired();
                 builder.Property(x => x.Baby).IsRequired();
 
-                builder.HasOne<Order>().WithOne(x => x.OrderDetail).HasForeignKey<OrderDetail>(x => x.Id);
+                builder.HasOne<Order>().WithOne().HasForeignKey<OrderDetail>(x => x.Id);
             });
         }
         
@@ -318,7 +320,21 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetEnumDbMapping(x => x.PayType).IsRequired();
                 builder.Property(x => x.Refund).HasColumnType(Define.SqlServer.MONEY_TYPE);
 
-                builder.HasOne<Order>().WithOne(x => x.Payment).HasForeignKey<Payment>(x => x.Id);
+                builder.HasOne<Order>().WithOne().HasForeignKey<Payment>(x => x.Id);
+            });
+        }
+
+        private static void ConfigPriceDetail(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<OrderPriceDetail>(builder =>
+            {
+                builder.SetZeroEntityKey<OrderPriceDetail,int>();
+                builder.Property(x => x.PricePerNight).HasColumnType(Define.SqlServer.MONEY_TYPE).IsRequired();
+                builder.Property(x => x.Total).HasColumnType(Define.SqlServer.MONEY_TYPE).IsRequired();
+                builder.Property(x => x.Discount).HasJsonConversion();
+                builder.Property(x => x.Fee).HasJsonConversion();
+
+                builder.HasOne<Order>().WithOne().HasForeignKey<OrderPriceDetail>(x => x.Id);
             });
         }
 
@@ -334,10 +350,10 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetPropMaxLength(x => x.Content, 500);
                 builder.Property(x => x.CommentTime).IsRequired();
 
-                builder.HasOne<House>().WithMany(x => x.Comments).OnDelete(DeleteBehavior.ClientSetNull).HasForeignKey(x => x.HouseId);
-                builder.HasOne(x=>x.Author).WithMany(x => x.Comments).OnDelete(DeleteBehavior.ClientSetNull).HasForeignKey(x => x.AuthorId);
-                builder.HasOne(x=>x.Receiver).WithMany(x => x.ReceiveComments).OnDelete(DeleteBehavior.ClientSetNull).HasForeignKey(x => x.ReceiverId);
-                builder.HasOne<Order>().WithOne(x => x.Comment).OnDelete(DeleteBehavior.ClientSetNull).HasForeignKey<Comment>(x => x.OrderId);
+                builder.HasOne<House>().WithMany().OnDelete(DeleteBehavior.ClientSetNull).HasForeignKey(x => x.HouseId);
+                builder.HasOne<Member>().WithMany().OnDelete(DeleteBehavior.ClientSetNull).HasForeignKey(x => x.AuthorId);
+                builder.HasOne<Member>().WithMany().OnDelete(DeleteBehavior.ClientSetNull).HasForeignKey(x => x.ReceiverId);
+                builder.HasOne<Order>().WithOne().OnDelete(DeleteBehavior.ClientSetNull).HasForeignKey<Comment>(x => x.OrderId);
             });
         }
 
@@ -352,7 +368,7 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.Property(x => x.CommunicationScore).IsRequired();
                 builder.Property(x => x.ExperienceScore).IsRequired();
                 builder.Property(x => x.LocationScore).IsRequired();
-                builder.HasOne<Comment>().WithOne(x => x.Star).HasForeignKey<Star>(x => x.Id);
+                builder.HasOne<Comment>().WithOne().HasForeignKey<Star>(x => x.Id);
             });
         }
         #endregion

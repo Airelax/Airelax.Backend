@@ -41,16 +41,10 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<int>("HouseId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("HouseId1")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("LastModifyTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OrderId1")
                         .HasColumnType("int");
 
                     b.Property<int>("ReceiverId")
@@ -62,12 +56,8 @@ namespace Airelax.EntityFramework.Migrations
 
                     b.HasIndex("HouseId");
 
-                    b.HasIndex("HouseId1");
-
                     b.HasIndex("OrderId")
                         .IsUnique();
-
-                    b.HasIndex("OrderId1");
 
                     b.HasIndex("ReceiverId");
 
@@ -120,7 +110,7 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<bool>("HasIndependentBath")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("SpaceId")
+                    b.Property<int>("SpaceId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -333,7 +323,7 @@ namespace Airelax.EntityFramework.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("CashPledge")
-                        .HasColumnType("Money");
+                        .HasColumnType("money");
 
                     b.Property<DateTime>("CheckinTime")
                         .HasColumnType("datetime2");
@@ -344,6 +334,28 @@ namespace Airelax.EntityFramework.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Policies");
+                });
+
+            modelBuilder.Entity("Airelax.Domain.Houses.Price.HousePrice", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Discount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Fee")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PerNight")
+                        .HasColumnType("money");
+
+                    b.Property<decimal?>("PerWeekNight")
+                        .HasColumnType("money");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HousePrices");
                 });
 
             modelBuilder.Entity("Airelax.Domain.Houses.ReservationRule", b =>
@@ -465,6 +477,11 @@ namespace Airelax.EntityFramework.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<DateTime>("RegisterTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2021, 8, 5, 1, 59, 48, 735, DateTimeKind.Local).AddTicks(1350));
+
                     b.Property<string>("Town")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
@@ -530,6 +547,31 @@ namespace Airelax.EntityFramework.Migrations
                     b.ToTable("MemberLoginInfos");
                 });
 
+            modelBuilder.Entity("Airelax.Domain.Members.WishList", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("Cover")
+                        .HasColumnType("image");
+
+                    b.Property<string>("Houses")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("WishLists");
+                });
+
             modelBuilder.Entity("Airelax.Domain.Orders.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -588,6 +630,28 @@ namespace Airelax.EntityFramework.Migrations
                     b.ToTable("OrderDetails");
                 });
 
+            modelBuilder.Entity("Airelax.Domain.Orders.OrderPriceDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Discount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Fee")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PricePerNight")
+                        .HasColumnType("money");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("money");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderPriceDetails");
+                });
+
             modelBuilder.Entity("Airelax.Domain.Orders.Payment", b =>
                 {
                     b.Property<int>("Id")
@@ -600,7 +664,7 @@ namespace Airelax.EntityFramework.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal?>("Refund")
-                        .HasColumnType("Money");
+                        .HasColumnType("money");
 
                     b.HasKey("Id");
 
@@ -609,47 +673,31 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Comments.Comment", b =>
                 {
-                    b.HasOne("Airelax.Domain.Members.Member", "Author")
-                        .WithMany("Comments")
+                    b.HasOne("Airelax.Domain.Members.Member", null)
+                        .WithMany()
                         .HasForeignKey("AuthorId")
                         .IsRequired();
 
                     b.HasOne("Airelax.Domain.Houses.House", null)
-                        .WithMany("Comments")
+                        .WithMany()
                         .HasForeignKey("HouseId")
                         .IsRequired();
 
-                    b.HasOne("Airelax.Domain.Houses.House", "House")
-                        .WithMany()
-                        .HasForeignKey("HouseId1");
-
                     b.HasOne("Airelax.Domain.Orders.Order", null)
-                        .WithOne("Comment")
+                        .WithOne()
                         .HasForeignKey("Airelax.Domain.Comments.Comment", "OrderId")
                         .IsRequired();
 
-                    b.HasOne("Airelax.Domain.Orders.Order", "Order")
+                    b.HasOne("Airelax.Domain.Members.Member", null)
                         .WithMany()
-                        .HasForeignKey("OrderId1");
-
-                    b.HasOne("Airelax.Domain.Members.Member", "Receiver")
-                        .WithMany("ReceiveComments")
                         .HasForeignKey("ReceiverId")
                         .IsRequired();
-
-                    b.Navigation("Author");
-
-                    b.Navigation("House");
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Receiver");
                 });
 
             modelBuilder.Entity("Airelax.Domain.Comments.Star", b =>
                 {
                     b.HasOne("Airelax.Domain.Comments.Comment", null)
-                        .WithOne("Star")
+                        .WithOne()
                         .HasForeignKey("Airelax.Domain.Comments.Star", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -658,14 +706,16 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Houses.BedroomDetail", b =>
                 {
                     b.HasOne("Airelax.Domain.Houses.Space", null)
-                        .WithMany("BedroomDetail")
-                        .HasForeignKey("SpaceId");
+                        .WithMany()
+                        .HasForeignKey("SpaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Airelax.Domain.Houses.House", b =>
                 {
                     b.HasOne("Airelax.Domain.Members.Member", null)
-                        .WithMany("Houses")
+                        .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -674,7 +724,7 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Houses.HouseCategory", b =>
                 {
                     b.HasOne("Airelax.Domain.Houses.House", null)
-                        .WithOne("HouseCategory")
+                        .WithOne()
                         .HasForeignKey("Airelax.Domain.Houses.HouseCategory", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -683,7 +733,7 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Houses.HouseDescription", b =>
                 {
                     b.HasOne("Airelax.Domain.Houses.House", null)
-                        .WithOne("HouseDescription")
+                        .WithOne()
                         .HasForeignKey("Airelax.Domain.Houses.HouseDescription", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -692,7 +742,7 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Houses.HouseLocation", b =>
                 {
                     b.HasOne("Airelax.Domain.Houses.House", null)
-                        .WithOne("HouseLocation")
+                        .WithOne()
                         .HasForeignKey("Airelax.Domain.Houses.HouseLocation", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -701,7 +751,7 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Houses.HouseRule", b =>
                 {
                     b.HasOne("Airelax.Domain.Houses.House", null)
-                        .WithOne("HouseRule")
+                        .WithOne()
                         .HasForeignKey("Airelax.Domain.Houses.HouseRule", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -710,13 +760,13 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Houses.Photo", b =>
                 {
                     b.HasOne("Airelax.Domain.Houses.House", null)
-                        .WithMany("Photos")
+                        .WithMany()
                         .HasForeignKey("HouseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Airelax.Domain.Houses.Space", null)
-                        .WithMany("Photos")
+                        .WithMany()
                         .HasForeignKey("SpaceId")
                         .IsRequired();
                 });
@@ -724,8 +774,17 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Houses.Policy", b =>
                 {
                     b.HasOne("Airelax.Domain.Houses.House", null)
-                        .WithOne("Policy")
+                        .WithOne()
                         .HasForeignKey("Airelax.Domain.Houses.Policy", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Airelax.Domain.Houses.Price.HousePrice", b =>
+                {
+                    b.HasOne("Airelax.Domain.Houses.House", null)
+                        .WithOne()
+                        .HasForeignKey("Airelax.Domain.Houses.Price.HousePrice", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -733,7 +792,7 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Houses.ReservationRule", b =>
                 {
                     b.HasOne("Airelax.Domain.Houses.House", null)
-                        .WithOne("ReservationRule")
+                        .WithOne()
                         .HasForeignKey("Airelax.Domain.Houses.ReservationRule", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -742,7 +801,7 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Houses.Space", b =>
                 {
                     b.HasOne("Airelax.Domain.Houses.House", null)
-                        .WithMany("Spaces")
+                        .WithMany()
                         .HasForeignKey("HouseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -751,7 +810,7 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Members.EmergencyContact", b =>
                 {
                     b.HasOne("Airelax.Domain.Members.Member", null)
-                        .WithOne("EmergencyContact")
+                        .WithOne()
                         .HasForeignKey("Airelax.Domain.Members.EmergencyContact", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -760,7 +819,7 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Members.MemberInfo", b =>
                 {
                     b.HasOne("Airelax.Domain.Members.Member", null)
-                        .WithOne("MemberInfo")
+                        .WithOne()
                         .HasForeignKey("Airelax.Domain.Members.MemberInfo", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -769,8 +828,17 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Members.MemberLoginInfo", b =>
                 {
                     b.HasOne("Airelax.Domain.Members.Member", null)
-                        .WithOne("MemberLoginInfo")
+                        .WithOne()
                         .HasForeignKey("Airelax.Domain.Members.MemberLoginInfo", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Airelax.Domain.Members.WishList", b =>
+                {
+                    b.HasOne("Airelax.Domain.Members.Member", null)
+                        .WithMany()
+                        .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -778,13 +846,13 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Orders.Order", b =>
                 {
                     b.HasOne("Airelax.Domain.Members.Member", null)
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Airelax.Domain.Houses.House", null)
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("HouseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -793,8 +861,17 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Orders.OrderDetail", b =>
                 {
                     b.HasOne("Airelax.Domain.Orders.Order", null)
-                        .WithOne("OrderDetail")
+                        .WithOne()
                         .HasForeignKey("Airelax.Domain.Orders.OrderDetail", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Airelax.Domain.Orders.OrderPriceDetail", b =>
+                {
+                    b.HasOne("Airelax.Domain.Orders.Order", null)
+                        .WithOne()
+                        .HasForeignKey("Airelax.Domain.Orders.OrderPriceDetail", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -802,71 +879,10 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Orders.Payment", b =>
                 {
                     b.HasOne("Airelax.Domain.Orders.Order", null)
-                        .WithOne("Payment")
+                        .WithOne()
                         .HasForeignKey("Airelax.Domain.Orders.Payment", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Airelax.Domain.Comments.Comment", b =>
-                {
-                    b.Navigation("Star");
-                });
-
-            modelBuilder.Entity("Airelax.Domain.Houses.House", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("HouseCategory");
-
-                    b.Navigation("HouseDescription");
-
-                    b.Navigation("HouseLocation");
-
-                    b.Navigation("HouseRule");
-
-                    b.Navigation("Orders");
-
-                    b.Navigation("Photos");
-
-                    b.Navigation("Policy");
-
-                    b.Navigation("ReservationRule");
-
-                    b.Navigation("Spaces");
-                });
-
-            modelBuilder.Entity("Airelax.Domain.Houses.Space", b =>
-                {
-                    b.Navigation("BedroomDetail");
-
-                    b.Navigation("Photos");
-                });
-
-            modelBuilder.Entity("Airelax.Domain.Members.Member", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("EmergencyContact");
-
-                    b.Navigation("Houses");
-
-                    b.Navigation("MemberInfo");
-
-                    b.Navigation("MemberLoginInfo");
-
-                    b.Navigation("Orders");
-
-                    b.Navigation("ReceiveComments");
-                });
-
-            modelBuilder.Entity("Airelax.Domain.Orders.Order", b =>
-                {
-                    b.Navigation("Comment");
-
-                    b.Navigation("OrderDetail");
-
-                    b.Navigation("Payment");
                 });
 #pragma warning restore 612, 618
         }

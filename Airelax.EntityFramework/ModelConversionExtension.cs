@@ -1,35 +1,39 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Airelax.Domain.DomainObject;
+using Airelax.Domain.Houses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Newtonsoft.Json;
+using JsonSerializer = SpanJson.JsonSerializer;
 
 namespace Airelax.EntityFramework
 {
     public static class ModelConversionExtension
     {
-        public static PropertyBuilder<T> HasJsonConversion<T>(this PropertyBuilder<T> propertyBuilder)
+        public static PropertyBuilder<T> HasJsonConversion<T>(this PropertyBuilder<T> propertyBuilder)where T : class, new()
         {
+       
             var converter = new ValueConverter<T, string>
             (
-                value => JsonConvert.SerializeObject(value),
-                value => JsonConvert.DeserializeObject<T>(value)
+                value => JsonSerializer.Generic.Utf16.Serialize(value),
+                value => JsonSerializer.Generic.Utf16.Deserialize<T>(value)?? new T()
             );
 
             var comparer = new ValueComparer<T>
             (
-                (l, r) => JsonConvert.SerializeObject(l) == JsonConvert.SerializeObject(r),
-                v => v == null ? 0 : JsonConvert.SerializeObject(v).GetHashCode(),
-                v => JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(v))
+                (l, r) => JsonSerializer.Generic.Utf16.Serialize(l) == JsonSerializer.Generic.Utf16.Serialize(r),
+                v => v == null ? 0 : JsonSerializer.Generic.Utf16.Serialize(v).GetHashCode(),
+                v => JsonSerializer.Generic.Utf16.Deserialize<T>(JsonSerializer.Generic.Utf16.Serialize(v))
             );
 
             propertyBuilder.HasConversion(converter);
             propertyBuilder.Metadata.SetValueConverter(converter);
             propertyBuilder.Metadata.SetValueComparer(comparer);
-            propertyBuilder.HasColumnType("jsonb");
+            propertyBuilder.HasColumnType(Define.SqlServer.MAX_NVARCHAR);
 
             return propertyBuilder;
         }

@@ -1,3 +1,5 @@
+using System.Text.Json;
+using Airelax.Application;
 using Airelax.Defines;
 using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.Extensions;
@@ -26,7 +28,6 @@ namespace Airelax
             // command: add-migration $description -p Airelax.EntityFramework
             // dotnet ef --startup-project Airelax migrations add $description -p Airelax.EntityFramework
             // dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework
-            // Todo add DbContext
             services.AddDbContext<AirelaxContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString(Define.Database.LOCAL_CONNECT_STRING),
                     x => x.MigrationsAssembly(Define.Database.ENTITY_FRAMEWORK))
@@ -35,6 +36,7 @@ namespace Airelax
             services.AddByDependencyInjectionAttribute();
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Airelax", Version = "v1"}); });
+            services.AddAutoMapper(typeof(AutoMapperProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
