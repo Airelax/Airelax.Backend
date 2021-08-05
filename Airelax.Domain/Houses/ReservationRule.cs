@@ -1,6 +1,5 @@
 ﻿using System;
 using Airelax.Domain.DomainObject;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Airelax.Domain.Houses
 {

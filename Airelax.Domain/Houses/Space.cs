@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Airelax.Domain.DomainObject;
+﻿using Airelax.Domain.DomainObject;
 using Airelax.Domain.Houses.Defines.Spaces;
 
 namespace Airelax.Domain.Houses

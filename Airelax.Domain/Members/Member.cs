@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Airelax.Domain.Comments;
 using Airelax.Domain.DomainObject;
-using Airelax.Domain.Houses;
 using Airelax.Domain.Members.Defines;
-using Airelax.Domain.Orders;
 
 namespace Airelax.Domain.Members
 {
-    public class Member: AggregateRoot<int>
+    public class Member : AggregateRoot<int>
     {
         public string Name { get; set; }
         public Gender Gender { get; set; }

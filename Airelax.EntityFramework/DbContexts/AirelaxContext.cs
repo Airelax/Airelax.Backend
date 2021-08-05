@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Immutable;
-using System.Linq.Expressions;
-using System.Xml.Schema;
 using Airelax.Domain.Comments;
-using Airelax.Domain.DomainObject;
 using Airelax.Domain.Houses;
-using Airelax.Domain.Houses.Defines;
 using Airelax.Domain.Houses.Price;
 using Airelax.Domain.Members;
 using Airelax.Domain.Orders;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Airelax.EntityFramework.DbContexts
 {

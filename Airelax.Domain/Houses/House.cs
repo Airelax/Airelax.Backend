@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using Airelax.Domain.Comments;
 using Airelax.Domain.DomainObject;
 using Airelax.Domain.Houses.Defines;
-using Airelax.Domain.Houses.Price;
-using Airelax.Domain.Orders;
 
 namespace Airelax.Domain.Houses
 {

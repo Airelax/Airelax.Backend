@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Airelax.Domain.DomainObject;
 
 namespace Airelax.Domain.Houses.Price
 {

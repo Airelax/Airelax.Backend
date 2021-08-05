@@ -7,6 +7,6 @@
         Finish,
         Cancel,
         Processing,
-        BeforeAppropriation,
+        BeforeAppropriation
     }
 }
