@@ -14,5 +14,15 @@ namespace Airelax.Domain.Houses
         public DateTime CreateTime { get; set; }
         public DateTime LastModifyTime { get; set; }
         public bool IsDeleted { get; set; }
+
+
+        public House()
+        {
+            Status = HouseStatus.CancelPublish;
+            CreateState = CreateState.Building;
+            CustomerNumber = 1;
+            CreateTime = DateTime.Now;
+            IsDeleted = false;
+        }
     }
 }

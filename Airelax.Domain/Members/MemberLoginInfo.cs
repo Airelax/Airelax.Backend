@@ -12,5 +12,10 @@ namespace Airelax.Domain.Members
         public string RefreshToken { get; set; }
         public string ThirdPartyToken { get; set; }
         public string ThirdPartyRefreshToken { get; set; }
+
+        public MemberLoginInfo(int id)
+        {
+            Id = id;
+        }
     }
 }

@@ -9,5 +9,10 @@ namespace Airelax.Domain.Members
         public string Name { get; set; }
         public byte[] Cover { get; set; }
         public List<int> Houses { get; set; }
+
+        public WishList(int memberId)
+        {
+            MemberId = memberId;
+        }
     }
 }

@@ -25,7 +25,6 @@ namespace Airelax
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // command: add-migration $description -p Airelax.EntityFramework
             // dotnet ef --startup-project Airelax migrations add $description -p Airelax.EntityFramework
             // dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework
             services.AddDbContext<AirelaxContext>(opt =>

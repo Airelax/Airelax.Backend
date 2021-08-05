@@ -8,5 +8,12 @@ namespace Airelax.Domain.Houses
         public int HouseId { get; set; }
         public SpaceType SpaceType { get; set; }
         public bool IsShared { get; set; }
+
+        public Space(int houseId)
+        {
+            HouseId = houseId;
+            SpaceType = SpaceType.Bedroom;
+            IsShared = false;
+        }
     }
 }

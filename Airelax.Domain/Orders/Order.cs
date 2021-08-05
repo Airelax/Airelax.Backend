@@ -11,5 +11,13 @@ namespace Airelax.Domain.Orders
         public DateTime OrderDate { get; set; }
         public DateTime LastModifyTime { get; set; }
         public OrderState State { get; set; }
+
+        public Order(int customerId, int houseId)
+        {
+            CustomerId = customerId;
+            HouseId = houseId;
+            OrderDate = DateTime.Now;
+            State = OrderState.Established;
+        }
     }
 }

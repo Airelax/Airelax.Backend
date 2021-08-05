@@ -19,5 +19,24 @@ namespace Airelax.Domain.Members
         public bool IsEmailVerified { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime RegisterTime { get; set; }
+
+
+        public Member()
+        {
+            IsDeleted = false;
+            RegisterTime = DateTime.Now;
+            IsPhoneVerified = false;
+            IsEmailVerified = false;
+            Gender = Gender.Other;
+        }
+
+        // public void VerifyPhone()
+        // {
+        //     IsPhoneVerified = true;
+        // }
+        // public void VerifyEmail()
+        // {
+        //     IsEmailVerified = true;
+        // }
     }
 }

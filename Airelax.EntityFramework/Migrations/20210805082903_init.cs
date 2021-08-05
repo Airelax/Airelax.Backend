@@ -25,7 +25,7 @@ namespace Airelax.EntityFramework.Migrations
                     IsPhoneVerified = table.Column<bool>(type: "bit", nullable: false),
                     IsEmailVerified = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    RegisterTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 8, 5, 1, 59, 48, 735, DateTimeKind.Local).AddTicks(1350))
+                    RegisterTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 8, 5, 16, 29, 2, 965, DateTimeKind.Local).AddTicks(2152))
                 },
                 constraints: table =>
                 {
@@ -147,8 +147,8 @@ namespace Airelax.EntityFramework.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
                     Category = table.Column<int>(type: "int", nullable: false),
-                    HouseType = table.Column<int>(type: "int", nullable: false),
-                    RoomCategory = table.Column<int>(type: "int", nullable: false)
+                    HouseType = table.Column<int>(type: "int", nullable: true),
+                    RoomCategory = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -166,7 +166,7 @@ namespace Airelax.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    HouseHighlight = table.Column<int>(type: "int", nullable: false),
+                    HouseHighlight = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     SpaceDescription = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     GuestPermission = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
@@ -195,8 +195,8 @@ namespace Airelax.EntityFramework.Migrations
                     AddressDetail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     LocationDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     TrafficDescription = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false)
+                    Latitude = table.Column<double>(type: "float", nullable: true),
+                    Longitude = table.Column<double>(type: "float", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -235,11 +235,11 @@ namespace Airelax.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    AllowChild = table.Column<bool>(type: "bit", nullable: false),
-                    AllowBaby = table.Column<bool>(type: "bit", nullable: false),
-                    AllowPet = table.Column<bool>(type: "bit", nullable: false),
-                    AllowSmoke = table.Column<bool>(type: "bit", nullable: false),
-                    AllowParty = table.Column<bool>(type: "bit", nullable: false),
+                    AllowChild = table.Column<bool>(type: "bit", nullable: true),
+                    AllowBaby = table.Column<bool>(type: "bit", nullable: true),
+                    AllowPet = table.Column<bool>(type: "bit", nullable: true),
+                    AllowSmoke = table.Column<bool>(type: "bit", nullable: true),
+                    AllowParty = table.Column<bool>(type: "bit", nullable: true),
                     Other = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
@@ -291,7 +291,7 @@ namespace Airelax.EntityFramework.Migrations
                     CancelPolicy = table.Column<int>(type: "int", nullable: false),
                     CheckinTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CheckoutTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CashPledge = table.Column<decimal>(type: "money", nullable: false)
+                    CashPledge = table.Column<decimal>(type: "money", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -310,11 +310,11 @@ namespace Airelax.EntityFramework.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
                     MinNight = table.Column<int>(type: "int", nullable: false),
-                    MaxNight = table.Column<int>(type: "int", nullable: false),
+                    MaxNight = table.Column<int>(type: "int", nullable: true),
                     LastReservationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PrepareTime = table.Column<int>(type: "int", nullable: false),
-                    AvailableTime = table.Column<int>(type: "int", nullable: false),
-                    RejectDate = table.Column<int>(type: "int", nullable: false)
+                    PrepareTime = table.Column<int>(type: "int", nullable: true),
+                    AvailableTime = table.Column<int>(type: "int", nullable: true),
+                    RejectDate = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -482,7 +482,7 @@ namespace Airelax.EntityFramework.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SpaceId = table.Column<int>(type: "int", nullable: false),
+                    SpaceId = table.Column<int>(type: "int", nullable: true),
                     HouseId = table.Column<int>(type: "int", nullable: false),
                     Image = table.Column<byte[]>(type: "image", nullable: false)
                 },

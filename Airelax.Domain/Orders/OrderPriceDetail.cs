@@ -9,5 +9,10 @@ namespace Airelax.Domain.Orders
         public Discount Discount { get; set; }
         public Fee Fee { get; set; }
         public decimal Total { get; set; }
+
+        public OrderPriceDetail(int id)
+        {
+            Id = id;
+        }
     }
 }

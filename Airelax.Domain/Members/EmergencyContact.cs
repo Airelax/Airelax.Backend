@@ -6,5 +6,10 @@ namespace Airelax.Domain.Members
     {
         public string Name { get; set; }
         public string Phone { get; set; }
+
+        public EmergencyContact(int id)
+        {
+            Id = id;
+        }
     }
 }
