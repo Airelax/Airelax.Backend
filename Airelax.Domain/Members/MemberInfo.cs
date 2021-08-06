@@ -2,9 +2,14 @@
 
 namespace Airelax.Domain.Members
 {
-    public class MemberInfo: Entity<int>
+    public class MemberInfo : Entity<int>
     {
         public string About { get; set; }
         public string Location { get; set; }
+
+        public MemberInfo(int id)
+        {
+            Id = id;
+        }
     }
 }

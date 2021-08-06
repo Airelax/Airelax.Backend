@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Airelax.EntityFramework.Migrations
 {
     [DbContext(typeof(AirelaxContext))]
-    [Migration("20210804175948_init")]
+    [Migration("20210805082903_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -172,10 +172,10 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<int>("Category")
                         .HasColumnType("int");
 
-                    b.Property<int>("HouseType")
+                    b.Property<int?>("HouseType")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoomCategory")
+                    b.Property<int?>("RoomCategory")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -196,7 +196,7 @@ namespace Airelax.EntityFramework.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int>("HouseHighlight")
+                    b.Property<int?>("HouseHighlight")
                         .HasColumnType("int");
 
                     b.Property<string>("Others")
@@ -229,14 +229,14 @@ namespace Airelax.EntityFramework.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<double>("Latitude")
+                    b.Property<double?>("Latitude")
                         .HasColumnType("float");
 
                     b.Property<string>("LocationDescription")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<double>("Longitude")
+                    b.Property<double?>("Longitude")
                         .HasColumnType("float");
 
                     b.Property<string>("Town")
@@ -261,19 +261,19 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<bool>("AllowBaby")
+                    b.Property<bool?>("AllowBaby")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("AllowChild")
+                    b.Property<bool?>("AllowChild")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("AllowParty")
+                    b.Property<bool?>("AllowParty")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("AllowPet")
+                    b.Property<bool?>("AllowPet")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("AllowSmoke")
+                    b.Property<bool?>("AllowSmoke")
                         .HasColumnType("bit");
 
                     b.Property<string>("Other")
@@ -301,7 +301,7 @@ namespace Airelax.EntityFramework.Migrations
                         .IsRequired()
                         .HasColumnType("image");
 
-                    b.Property<int>("SpaceId")
+                    b.Property<int?>("SpaceId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -324,7 +324,7 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<int>("CancelPolicy")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("CashPledge")
+                    b.Property<decimal?>("CashPledge")
                         .HasColumnType("money");
 
                     b.Property<DateTime>("CheckinTime")
@@ -365,22 +365,22 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("AvailableTime")
+                    b.Property<int?>("AvailableTime")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("LastReservationTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MaxNight")
+                    b.Property<int?>("MaxNight")
                         .HasColumnType("int");
 
                     b.Property<int>("MinNight")
                         .HasColumnType("int");
 
-                    b.Property<int>("PrepareTime")
+                    b.Property<int?>("PrepareTime")
                         .HasColumnType("int");
 
-                    b.Property<int>("RejectDate")
+                    b.Property<int?>("RejectDate")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -482,7 +482,7 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<DateTime>("RegisterTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 8, 5, 1, 59, 48, 735, DateTimeKind.Local).AddTicks(1350));
+                        .HasDefaultValue(new DateTime(2021, 8, 5, 16, 29, 2, 965, DateTimeKind.Local).AddTicks(2152));
 
                     b.Property<string>("Town")
                         .HasMaxLength(30)
@@ -769,8 +769,7 @@ namespace Airelax.EntityFramework.Migrations
 
                     b.HasOne("Airelax.Domain.Houses.Space", null)
                         .WithMany()
-                        .HasForeignKey("SpaceId")
-                        .IsRequired();
+                        .HasForeignKey("SpaceId");
                 });
 
             modelBuilder.Entity("Airelax.Domain.Houses.Policy", b =>

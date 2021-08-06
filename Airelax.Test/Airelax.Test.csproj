@@ -8,6 +8,8 @@
 
     <ItemGroup>
         <PackageReference Include="Lazcat.Infrastructure" Version="1.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="5.0.8" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
         <PackageReference Include="NSubstitute" Version="4.2.2" />
         <PackageReference Include="Shouldly" Version="4.0.3" />
