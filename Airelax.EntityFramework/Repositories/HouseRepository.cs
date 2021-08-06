@@ -1,14 +1,12 @@
-﻿using Airelax.Domain.Houses;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Airelax.Domain.Houses;
 using Airelax.Domain.RepositoryInterface;
 using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Airelax.EntityFramework.Repositories 
 {
@@ -45,6 +43,11 @@ namespace Airelax.EntityFramework.Repositories
         {
             return await _context.Houses.FindAsync(id);
 
+        }
+
+        public async Task DeleteAsync(House item)
+        {
+            throw new NotImplementedException();
         }
 
         public Task SaveChangesAsync()
