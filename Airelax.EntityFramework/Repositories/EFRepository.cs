@@ -24,12 +24,7 @@ namespace Airelax.EntityFramework.Repositories
             return _context.Set<TEntity>();
         }
 
-        public async Task<TEntity> GetAsync(TId id)
-        {
-            return await _context.Set<TEntity>().FindAsync(id);
-        }
-
-        public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> exp)
+        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> exp)
         {
             return await _context.Set<TEntity>().FirstOrDefaultAsync(exp);
         }

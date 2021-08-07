@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Airelax.Application;
 using Airelax.Application.Houses.Dtos.Response;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Defines;
@@ -14,6 +15,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using JsonSerializer = SpanJson.JsonSerializer;
 
 namespace Airelax.Controllers
 {
@@ -23,13 +25,13 @@ namespace Airelax.Controllers
     {
         private readonly AirelaxContext _context;
         private readonly IMapper _mapper;
-        private readonly IRepository<string, House> _repository;
+        private IHouseRepository _houseRepository;
 
-        public TestController(AirelaxContext context, IMapper mapper, IRepository<string, House> repository)
+        public TestController(AirelaxContext context, IMapper mapper, IHouseRepository houseRepository)
         {
             _context = context;
             _mapper = mapper;
-            _repository = repository;
+            _houseRepository = houseRepository;
         }
 
         [HttpGet]
@@ -83,12 +85,18 @@ namespace Airelax.Controllers
             return default;
             //return JsonConvert.SerializeObject(_mapper.Map<House,HouseDto>(house));
         }
-        
-        [HttpGet]
-        [Route("id")]
-        public async Task<HouseDto> Get(string id)
-        {
-            _repository.GetAsync(id)
-        }
+
+        // [HttpGet]
+        // [Route("id")]
+        // public async Task<HouseDto> Get(string id)
+        // {
+        //     id = "H75a54f44ff";
+        //     var house = await _houseRepository.GetAsync(x => x.Id == id);
+        //     //Console.WriteLine(JsonConvert.SerializeObject(house.HouseDescription));
+        //     var houseDto = _mapper.Map<House, HouseDto>(house);
+        //     Console.WriteLine(JsonSerializer.Generic.Utf16.Serialize(houseDto));
+        //     houseDto.Description = _mapper.Map<HouseDescription, DescriptionDto>(house.HouseDescription);
+        //     return houseDto;
+        // }
     }
 }
