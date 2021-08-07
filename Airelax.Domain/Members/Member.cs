@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using Airelax.Domain.DomainObject;
+using Airelax.Domain.Houses;
 using Airelax.Domain.Members.Defines;
+using Airelax.Domain.Orders;
+using Lazcat.Infrastructure.Common;
 
 namespace Airelax.Domain.Members
 {
-    public class Member : AggregateRoot<int>
+    public class Member : AggregateRoot<string>
     {
         public string Name { get; set; }
         public Gender Gender { get; set; }
@@ -20,9 +24,16 @@ namespace Airelax.Domain.Members
         public bool IsDeleted { get; set; }
         public DateTime RegisterTime { get; set; }
 
+        public ICollection<House> Houses { get; set; }
+        public MemberLoginInfo MemberLoginInfo { get; set; }
+        public MemberInfo MemberInfo { get; set; }
+        public EmergencyContact EmergencyContact { get; set; }
+        public ICollection<WishList> WishLists { get; set; }
+        public ICollection<Order> Orders { get; set; }
 
         public Member()
         {
+            Id = GuidHelper.CreateId(prefix: "M");
             IsDeleted = false;
             RegisterTime = DateTime.Now;
             IsPhoneVerified = false;

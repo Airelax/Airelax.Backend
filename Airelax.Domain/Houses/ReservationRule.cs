@@ -3,7 +3,7 @@ using Airelax.Domain.DomainObject;
 
 namespace Airelax.Domain.Houses
 {
-    public class ReservationRule : Entity<int>
+    public class ReservationRule : Entity<string>
     {
         public int MinNight { get; set; }
         public int? MaxNight { get; set; }
@@ -12,7 +12,7 @@ namespace Airelax.Domain.Houses
         public int? AvailableTime { get; set; }
         public DayOfWeek? RejectDate { get; set; }
 
-        public ReservationRule(int id)
+        public ReservationRule(string id)
         {
             Id = id;
             MinNight = 1;

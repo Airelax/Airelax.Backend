@@ -5,12 +5,12 @@ namespace Airelax.Domain.Members
 {
     public class WishList : AggregateRoot<int>
     {
-        public int MemberId { get; set; }
+        public string MemberId { get; set; }
         public string Name { get; set; }
         public byte[] Cover { get; set; }
-        public List<int> Houses { get; set; }
+        public List<string> Houses { get; set; }
 
-        public WishList(int memberId)
+        public WishList(string memberId)
         {
             MemberId = memberId;
         }

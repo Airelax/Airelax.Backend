@@ -3,7 +3,7 @@ using Airelax.Domain.Houses.Defines;
 
 namespace Airelax.Domain.Houses
 {
-    public class HouseDescription: Entity<int>
+    public class HouseDescription: Entity<string>
     {
         public HouseHighlight? HouseHighlight { get; set; }
         public string Description { get; set; }
@@ -11,7 +11,7 @@ namespace Airelax.Domain.Houses
         public string GuestPermission { get; set; }
         public string Others { get; set; }
 
-        public HouseDescription(int id)
+        public HouseDescription(string id)
         {
             Id = id;
         }

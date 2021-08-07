@@ -55,16 +55,10 @@ namespace Airelax.EntityFramework
             return builder.Property(propSelector).HasMaxLength(maxLength);
         }
 
-        public static void SetZeroEntityKey<TEntity, TId>(this EntityTypeBuilder<TEntity> builder) where TEntity : Entity<TId>
-        {
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).ValueGeneratedNever().IsRequired();
-        }
-
         public static void SetEntityKey<TEntity, TId>(this EntityTypeBuilder<TEntity> builder) where TEntity : Entity<TId>
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).IsRequired().UseIdentityColumn();
+            builder.Property(x => x.Id).ValueGeneratedNever().IsRequired();
         }
 
         // public static ReferenceReferenceBuilder SetZeroToOneRelation<TZero, TOne, TRelationEntity>(this EntityTypeBuilder<TZero> entityTypeBuilder,

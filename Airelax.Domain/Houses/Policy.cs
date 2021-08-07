@@ -4,7 +4,7 @@ using Airelax.Domain.Houses.Defines;
 
 namespace Airelax.Domain.Houses
 {
-    public class Policy : Entity<int>
+    public class Policy : Entity<string>
     {
         public bool CanRealTime { get; set; }
         public CancelPolicy CancelPolicy { get; set; }
@@ -12,7 +12,7 @@ namespace Airelax.Domain.Houses
         public DateTime CheckoutTime { get; set; }
         public decimal? CashPledge { get; set; }
 
-        public Policy(int id)
+        public Policy(string id)
         {
             Id = id;
             CanRealTime = false;

@@ -11,8 +11,7 @@ namespace Airelax.EntityFramework.Migrations
                 name: "Members",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Gender = table.Column<int>(type: "int", nullable: false),
                     Birthday = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -25,7 +24,7 @@ namespace Airelax.EntityFramework.Migrations
                     IsPhoneVerified = table.Column<bool>(type: "bit", nullable: false),
                     IsEmailVerified = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    RegisterTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 8, 5, 16, 29, 2, 965, DateTimeKind.Local).AddTicks(2152))
+                    RegisterTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2021, 8, 7, 23, 31, 54, 250, DateTimeKind.Local).AddTicks(6946))
                 },
                 constraints: table =>
                 {
@@ -36,7 +35,7 @@ namespace Airelax.EntityFramework.Migrations
                 name: "EmergencyContact",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true)
                 },
@@ -55,13 +54,12 @@ namespace Airelax.EntityFramework.Migrations
                 name: "Houses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     CreateState = table.Column<int>(type: "int", nullable: false),
                     CustomerNumber = table.Column<int>(type: "int", nullable: false),
-                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifyTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -74,14 +72,14 @@ namespace Airelax.EntityFramework.Migrations
                         column: x => x.OwnerId,
                         principalTable: "Members",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "MemberInfos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     About = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Location = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
@@ -100,7 +98,7 @@ namespace Airelax.EntityFramework.Migrations
                 name: "MemberLoginInfos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Account = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
                     LoginType = table.Column<int>(type: "int", nullable: false),
@@ -125,7 +123,7 @@ namespace Airelax.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    MemberId = table.Column<int>(type: "int", nullable: false),
+                    MemberId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     Cover = table.Column<byte[]>(type: "image", nullable: true),
                     Houses = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -138,14 +136,14 @@ namespace Airelax.EntityFramework.Migrations
                         column: x => x.MemberId,
                         principalTable: "Members",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "HouseCategories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Category = table.Column<int>(type: "int", nullable: false),
                     HouseType = table.Column<int>(type: "int", nullable: true),
                     RoomCategory = table.Column<int>(type: "int", nullable: true)
@@ -165,12 +163,12 @@ namespace Airelax.EntityFramework.Migrations
                 name: "HouseDescriptions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     HouseHighlight = table.Column<int>(type: "int", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    SpaceDescription = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    GuestPermission = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    Others = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    SpaceDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    GuestPermission = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Others = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -187,7 +185,7 @@ namespace Airelax.EntityFramework.Migrations
                 name: "HouseLocations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Town = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -213,7 +211,7 @@ namespace Airelax.EntityFramework.Migrations
                 name: "HousePrices",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PerNight = table.Column<decimal>(type: "money", nullable: false),
                     PerWeekNight = table.Column<decimal>(type: "money", nullable: true),
                     Fee = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -234,7 +232,7 @@ namespace Airelax.EntityFramework.Migrations
                 name: "HouseRules",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AllowChild = table.Column<bool>(type: "bit", nullable: true),
                     AllowBaby = table.Column<bool>(type: "bit", nullable: true),
                     AllowPet = table.Column<bool>(type: "bit", nullable: true),
@@ -257,10 +255,9 @@ namespace Airelax.EntityFramework.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    HouseId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CustomerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HouseId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifyTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     State = table.Column<int>(type: "int", nullable: false)
@@ -286,7 +283,7 @@ namespace Airelax.EntityFramework.Migrations
                 name: "Policies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CanRealTime = table.Column<bool>(type: "bit", nullable: false),
                     CancelPolicy = table.Column<int>(type: "int", nullable: false),
                     CheckinTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -308,7 +305,7 @@ namespace Airelax.EntityFramework.Migrations
                 name: "ReservationRules",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MinNight = table.Column<int>(type: "int", nullable: false),
                     MaxNight = table.Column<int>(type: "int", nullable: true),
                     LastReservationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -331,9 +328,8 @@ namespace Airelax.EntityFramework.Migrations
                 name: "Spaces",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    HouseId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HouseId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     SpaceType = table.Column<int>(type: "int", nullable: false),
                     IsShared = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -345,19 +341,18 @@ namespace Airelax.EntityFramework.Migrations
                         column: x => x.HouseId,
                         principalTable: "Houses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AuthorId = table.Column<int>(type: "int", nullable: false),
-                    HouseId = table.Column<int>(type: "int", nullable: false),
-                    ReceiverId = table.Column<int>(type: "int", nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    HouseId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ReceiverId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    OrderId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Content = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CommentTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifyTime = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -395,7 +390,7 @@ namespace Airelax.EntityFramework.Migrations
                 name: "OrderDetails",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Adult = table.Column<int>(type: "int", nullable: false),
@@ -417,7 +412,7 @@ namespace Airelax.EntityFramework.Migrations
                 name: "OrderPriceDetails",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PricePerNight = table.Column<decimal>(type: "money", nullable: false),
                     Discount = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Fee = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -438,7 +433,7 @@ namespace Airelax.EntityFramework.Migrations
                 name: "Payments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PayState = table.Column<int>(type: "int", nullable: false),
                     PayType = table.Column<int>(type: "int", nullable: false),
                     Refund = table.Column<decimal>(type: "money", nullable: true)
@@ -458,9 +453,8 @@ namespace Airelax.EntityFramework.Migrations
                 name: "BedroomDetails",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SpaceId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    SpaceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     BedType = table.Column<int>(type: "int", nullable: false),
                     BedCount = table.Column<int>(type: "int", nullable: false),
                     HasIndependentBath = table.Column<bool>(type: "bit", nullable: false)
@@ -473,17 +467,16 @@ namespace Airelax.EntityFramework.Migrations
                         column: x => x.SpaceId,
                         principalTable: "Spaces",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Photos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SpaceId = table.Column<int>(type: "int", nullable: true),
-                    HouseId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    SpaceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    HouseId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Image = table.Column<byte[]>(type: "image", nullable: false)
                 },
                 constraints: table =>
@@ -507,7 +500,7 @@ namespace Airelax.EntityFramework.Migrations
                 name: "Stars",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CleanScore = table.Column<int>(type: "int", nullable: false),
                     CommunicationScore = table.Column<int>(type: "int", nullable: false),
                     ExperienceScore = table.Column<int>(type: "int", nullable: false),
@@ -545,7 +538,8 @@ namespace Airelax.EntityFramework.Migrations
                 name: "IX_Comments_OrderId",
                 table: "Comments",
                 column: "OrderId",
-                unique: true);
+                unique: true,
+                filter: "[OrderId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_ReceiverId",

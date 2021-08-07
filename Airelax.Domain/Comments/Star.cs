@@ -2,7 +2,7 @@
 
 namespace Airelax.Domain.Comments
 {
-    public class Star : Entity<int>
+    public class Star : Entity<string>
     {
         public int CleanScore { get; set; }
         public int CommunicationScore { get; set; }
@@ -11,7 +11,7 @@ namespace Airelax.Domain.Comments
         public int LocationScore { get; set; }
         public int AccuracyScore { get; set; }
 
-        public Star(int id, int cleanScore, int communicationScore, int experienceScore, int cheapScore, int locationScore, int accuracyScore)
+        public Star(string id, int cleanScore, int communicationScore, int experienceScore, int cheapScore, int locationScore, int accuracyScore)
         {
             Id = id;
             CleanScore = cleanScore;

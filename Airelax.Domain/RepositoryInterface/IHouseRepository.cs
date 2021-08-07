@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Airelax.Domain.RepositoryInterface
 {
-    public interface IHouseRepository: IRepository<int , House>
+    public interface IHouseRepository: IRepository<string , House>
     {
 
     }
