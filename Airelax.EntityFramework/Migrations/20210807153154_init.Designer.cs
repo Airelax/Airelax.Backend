@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Airelax.EntityFramework.Migrations
 {
     [DbContext(typeof(AirelaxContext))]
-    [Migration("20210802092818_add_tables_order_comment_member")]
-    partial class add_tables_order_comment_member
+    [Migration("20210807153154_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,15 +23,11 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Comments.Comment", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int");
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CommentTime")
                         .HasColumnType("datetime2");
@@ -40,23 +36,17 @@ namespace Airelax.EntityFramework.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("HouseId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("HouseId1")
-                        .HasColumnType("int");
+                    b.Property<string>("HouseId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("LastModifyTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("OrderId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReceiverId")
-                        .HasColumnType("int");
+                    b.Property<string>("ReceiverId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -64,12 +54,9 @@ namespace Airelax.EntityFramework.Migrations
 
                     b.HasIndex("HouseId");
 
-                    b.HasIndex("HouseId1");
-
                     b.HasIndex("OrderId")
-                        .IsUnique();
-
-                    b.HasIndex("OrderId1");
+                        .IsUnique()
+                        .HasFilter("[OrderId] IS NOT NULL");
 
                     b.HasIndex("ReceiverId");
 
@@ -78,8 +65,8 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Comments.Star", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccuracyScore")
                         .HasColumnType("int");
@@ -107,11 +94,7 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Houses.BedroomDetail", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("BedCount")
                         .HasColumnType("int");
@@ -122,8 +105,8 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<bool>("HasIndependentBath")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("SpaceId")
-                        .HasColumnType("int");
+                    b.Property<string>("SpaceId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -134,12 +117,8 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Houses.House", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CreateState")
                         .HasColumnType("int");
@@ -156,8 +135,8 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<DateTime>("LastModifyTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("OwnerId")
-                        .HasColumnType("int");
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -176,16 +155,16 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Houses.HouseCategory", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Category")
                         .HasColumnType("int");
 
-                    b.Property<int>("HouseType")
+                    b.Property<int?>("HouseType")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoomCategory")
+                    b.Property<int?>("RoomCategory")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -195,27 +174,27 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Houses.HouseDescription", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("GuestPermission")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("HouseHighlight")
+                    b.Property<int?>("HouseHighlight")
                         .HasColumnType("int");
 
                     b.Property<string>("Others")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("SpaceDescription")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 
@@ -224,8 +203,8 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Houses.HouseLocation", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AddressDetail")
                         .HasMaxLength(100)
@@ -239,14 +218,14 @@ namespace Airelax.EntityFramework.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<double>("Latitude")
+                    b.Property<double?>("Latitude")
                         .HasColumnType("float");
 
                     b.Property<string>("LocationDescription")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<double>("Longitude")
+                    b.Property<double?>("Longitude")
                         .HasColumnType("float");
 
                     b.Property<string>("Town")
@@ -268,22 +247,22 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Houses.HouseRule", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("AllowBaby")
+                    b.Property<bool?>("AllowBaby")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("AllowChild")
+                    b.Property<bool?>("AllowChild")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("AllowParty")
+                    b.Property<bool?>("AllowParty")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("AllowPet")
+                    b.Property<bool?>("AllowPet")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("AllowSmoke")
+                    b.Property<bool?>("AllowSmoke")
                         .HasColumnType("bit");
 
                     b.Property<string>("Other")
@@ -298,21 +277,18 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Houses.Photo", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("HouseId")
                         .HasColumnType("int");
+
+                    b.Property<string>("HouseId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<byte[]>("Image")
                         .IsRequired()
                         .HasColumnType("image");
 
-                    b.Property<int>("SpaceId")
-                        .HasColumnType("int");
+                    b.Property<string>("SpaceId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -325,8 +301,8 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Houses.Policy", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("CanRealTime")
                         .HasColumnType("bit");
@@ -334,8 +310,8 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<int>("CancelPolicy")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("CashPledge")
-                        .HasColumnType("Money");
+                    b.Property<decimal?>("CashPledge")
+                        .HasColumnType("money");
 
                     b.Property<DateTime>("CheckinTime")
                         .HasColumnType("datetime2");
@@ -348,27 +324,49 @@ namespace Airelax.EntityFramework.Migrations
                     b.ToTable("Policies");
                 });
 
+            modelBuilder.Entity("Airelax.Domain.Houses.Price.HousePrice", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Discount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Fee")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PerNight")
+                        .HasColumnType("money");
+
+                    b.Property<decimal?>("PerWeekNight")
+                        .HasColumnType("money");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HousePrices");
+                });
+
             modelBuilder.Entity("Airelax.Domain.Houses.ReservationRule", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("AvailableTime")
+                    b.Property<int?>("AvailableTime")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("LastReservationTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MaxNight")
+                    b.Property<int?>("MaxNight")
                         .HasColumnType("int");
 
                     b.Property<int>("MinNight")
                         .HasColumnType("int");
 
-                    b.Property<int>("PrepareTime")
+                    b.Property<int?>("PrepareTime")
                         .HasColumnType("int");
 
-                    b.Property<int>("RejectDate")
+                    b.Property<int?>("RejectDate")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -378,15 +376,11 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Houses.Space", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("HouseId")
-                        .HasColumnType("int");
+                    b.Property<string>("HouseId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsShared")
                         .HasColumnType("bit");
@@ -403,8 +397,8 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Members.EmergencyContact", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(50)
@@ -421,12 +415,8 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Members.Member", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AddressDetail")
                         .HasMaxLength(50)
@@ -467,6 +457,11 @@ namespace Airelax.EntityFramework.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<DateTime>("RegisterTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2021, 8, 7, 23, 31, 54, 250, DateTimeKind.Local).AddTicks(6946));
+
                     b.Property<string>("Town")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
@@ -478,8 +473,8 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Members.MemberInfo", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("About")
                         .HasMaxLength(1000)
@@ -496,8 +491,8 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Members.MemberLoginInfo", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Account")
                         .IsRequired()
@@ -532,20 +527,43 @@ namespace Airelax.EntityFramework.Migrations
                     b.ToTable("MemberLoginInfos");
                 });
 
-            modelBuilder.Entity("Airelax.Domain.Orders.Order", b =>
+            modelBuilder.Entity("Airelax.Domain.Members.WishList", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("HouseId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("Cover")
+                        .HasColumnType("image");
+
+                    b.Property<string>("Houses")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MemberId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("WishLists");
+                });
+
+            modelBuilder.Entity("Airelax.Domain.Orders.Order", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("HouseId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("LastModifyTime")
                         .HasColumnType("datetime2");
@@ -567,8 +585,8 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Orders.OrderDetail", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Adult")
                         .HasColumnType("int");
@@ -590,10 +608,32 @@ namespace Airelax.EntityFramework.Migrations
                     b.ToTable("OrderDetails");
                 });
 
+            modelBuilder.Entity("Airelax.Domain.Orders.OrderPriceDetail", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Discount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Fee")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PricePerNight")
+                        .HasColumnType("money");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("money");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderPriceDetails");
+                });
+
             modelBuilder.Entity("Airelax.Domain.Orders.Payment", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("PayState")
                         .HasColumnType("int");
@@ -602,7 +642,7 @@ namespace Airelax.EntityFramework.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal?>("Refund")
-                        .HasColumnType("Money");
+                        .HasColumnType("money");
 
                     b.HasKey("Id");
 
@@ -611,41 +651,21 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Comments.Comment", b =>
                 {
-                    b.HasOne("Airelax.Domain.Members.Member", "Author")
-                        .WithMany("Comments")
-                        .HasForeignKey("AuthorId")
-                        .IsRequired();
+                    b.HasOne("Airelax.Domain.Members.Member", null)
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
 
                     b.HasOne("Airelax.Domain.Houses.House", null)
                         .WithMany("Comments")
-                        .HasForeignKey("HouseId")
-                        .IsRequired();
-
-                    b.HasOne("Airelax.Domain.Houses.House", "House")
-                        .WithMany()
-                        .HasForeignKey("HouseId1");
+                        .HasForeignKey("HouseId");
 
                     b.HasOne("Airelax.Domain.Orders.Order", null)
-                        .WithOne("Comment")
-                        .HasForeignKey("Airelax.Domain.Comments.Comment", "OrderId")
-                        .IsRequired();
+                        .WithOne()
+                        .HasForeignKey("Airelax.Domain.Comments.Comment", "OrderId");
 
-                    b.HasOne("Airelax.Domain.Orders.Order", "Order")
+                    b.HasOne("Airelax.Domain.Members.Member", null)
                         .WithMany()
-                        .HasForeignKey("OrderId1");
-
-                    b.HasOne("Airelax.Domain.Members.Member", "Receiver")
-                        .WithMany("ReceiveComments")
-                        .HasForeignKey("ReceiverId")
-                        .IsRequired();
-
-                    b.Navigation("Author");
-
-                    b.Navigation("House");
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Receiver");
+                        .HasForeignKey("ReceiverId");
                 });
 
             modelBuilder.Entity("Airelax.Domain.Comments.Star", b =>
@@ -660,17 +680,17 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Houses.BedroomDetail", b =>
                 {
                     b.HasOne("Airelax.Domain.Houses.Space", null)
-                        .WithMany("BedroomDetail")
+                        .WithMany("BedroomDetails")
                         .HasForeignKey("SpaceId");
                 });
 
             modelBuilder.Entity("Airelax.Domain.Houses.House", b =>
                 {
-                    b.HasOne("Airelax.Domain.Members.Member", null)
+                    b.HasOne("Airelax.Domain.Members.Member", "Member")
                         .WithMany("Houses")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OwnerId");
+
+                    b.Navigation("Member");
                 });
 
             modelBuilder.Entity("Airelax.Domain.Houses.HouseCategory", b =>
@@ -718,9 +738,8 @@ namespace Airelax.EntityFramework.Migrations
                         .IsRequired();
 
                     b.HasOne("Airelax.Domain.Houses.Space", null)
-                        .WithMany("Photos")
-                        .HasForeignKey("SpaceId")
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("SpaceId");
                 });
 
             modelBuilder.Entity("Airelax.Domain.Houses.Policy", b =>
@@ -728,6 +747,15 @@ namespace Airelax.EntityFramework.Migrations
                     b.HasOne("Airelax.Domain.Houses.House", null)
                         .WithOne("Policy")
                         .HasForeignKey("Airelax.Domain.Houses.Policy", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Airelax.Domain.Houses.Price.HousePrice", b =>
+                {
+                    b.HasOne("Airelax.Domain.Houses.House", null)
+                        .WithOne("HousePrice")
+                        .HasForeignKey("Airelax.Domain.Houses.Price.HousePrice", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -745,9 +773,7 @@ namespace Airelax.EntityFramework.Migrations
                 {
                     b.HasOne("Airelax.Domain.Houses.House", null)
                         .WithMany("Spaces")
-                        .HasForeignKey("HouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HouseId");
                 });
 
             modelBuilder.Entity("Airelax.Domain.Members.EmergencyContact", b =>
@@ -777,19 +803,30 @@ namespace Airelax.EntityFramework.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Airelax.Domain.Orders.Order", b =>
+            modelBuilder.Entity("Airelax.Domain.Members.WishList", b =>
                 {
                     b.HasOne("Airelax.Domain.Members.Member", null)
+                        .WithMany("WishLists")
+                        .HasForeignKey("MemberId");
+                });
+
+            modelBuilder.Entity("Airelax.Domain.Orders.Order", b =>
+                {
+                    b.HasOne("Airelax.Domain.Members.Member", "Member")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Airelax.Domain.Houses.House", null)
-                        .WithMany("Orders")
+                    b.HasOne("Airelax.Domain.Houses.House", "House")
+                        .WithMany()
                         .HasForeignKey("HouseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("House");
+
+                    b.Navigation("Member");
                 });
 
             modelBuilder.Entity("Airelax.Domain.Orders.OrderDetail", b =>
@@ -797,6 +834,15 @@ namespace Airelax.EntityFramework.Migrations
                     b.HasOne("Airelax.Domain.Orders.Order", null)
                         .WithOne("OrderDetail")
                         .HasForeignKey("Airelax.Domain.Orders.OrderDetail", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Airelax.Domain.Orders.OrderPriceDetail", b =>
+                {
+                    b.HasOne("Airelax.Domain.Orders.Order", null)
+                        .WithOne("OrderPriceDetail")
+                        .HasForeignKey("Airelax.Domain.Orders.OrderPriceDetail", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -825,9 +871,9 @@ namespace Airelax.EntityFramework.Migrations
 
                     b.Navigation("HouseLocation");
 
-                    b.Navigation("HouseRule");
+                    b.Navigation("HousePrice");
 
-                    b.Navigation("Orders");
+                    b.Navigation("HouseRule");
 
                     b.Navigation("Photos");
 
@@ -840,15 +886,11 @@ namespace Airelax.EntityFramework.Migrations
 
             modelBuilder.Entity("Airelax.Domain.Houses.Space", b =>
                 {
-                    b.Navigation("BedroomDetail");
-
-                    b.Navigation("Photos");
+                    b.Navigation("BedroomDetails");
                 });
 
             modelBuilder.Entity("Airelax.Domain.Members.Member", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("EmergencyContact");
 
                     b.Navigation("Houses");
@@ -859,14 +901,14 @@ namespace Airelax.EntityFramework.Migrations
 
                     b.Navigation("Orders");
 
-                    b.Navigation("ReceiveComments");
+                    b.Navigation("WishLists");
                 });
 
             modelBuilder.Entity("Airelax.Domain.Orders.Order", b =>
                 {
-                    b.Navigation("Comment");
-
                     b.Navigation("OrderDetail");
+
+                    b.Navigation("OrderPriceDetail");
 
                     b.Navigation("Payment");
                 });

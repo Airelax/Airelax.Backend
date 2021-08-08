@@ -1,6 +1,8 @@
-﻿namespace Airelax.Domain.Houses.Price
+﻿using Airelax.Domain.DomainObject;
+
+namespace Airelax.Domain.Houses.Price
 {
-    public class Fee
+    public record Fee: ValueObject
     {
         public decimal CleanFee { get; set; }
         public decimal ServiceFee { get; set; }

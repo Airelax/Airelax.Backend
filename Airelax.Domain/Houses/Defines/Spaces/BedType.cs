@@ -9,12 +9,12 @@
         BigDouble,
         StandardSingle,
         SmallSofaBed,
-        BunkBed,//雙層床
-        Carpet,//地墊
-        AirMattress,//充氣床墊
+        BunkBed, //雙層床
+        Carpet, //地墊
+        AirMattress, //充氣床墊
         BabyBed,
         ChildBed,
-        Hammock,//吊床
-        WaterBed//水床
+        Hammock, //吊床
+        WaterBed //水床
     }
 }

@@ -2,7 +2,7 @@
 {
     public class SimpleHouseDto
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string[] Picture { get; set; }
         public WishListDto WishList { get; set; }
         public string Address { get; set; }
