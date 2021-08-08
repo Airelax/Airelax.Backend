@@ -2,12 +2,17 @@
 
 namespace Airelax.Domain.Houses.Price
 {
-    public class Price: Entity<int>
+    public class HousePrice : Entity<string>
     {
         public decimal PerNight { get; set; }
-        public decimal PerWeekNight { get; set; }
-        
+        public decimal? PerWeekNight { get; set; }
+
         public Fee Fee { get; set; }
         public Discount Discount { get; set; }
+
+        public HousePrice(string id)
+        {
+            Id = id;
+        }
     }
 }
