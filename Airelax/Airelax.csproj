@@ -25,4 +25,8 @@
       <ProjectReference Include="..\Airelax.EntityFramework\Airelax.EntityFramework.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Home\Index.cshtml" />
+    </ItemGroup>
+
 </Project>
