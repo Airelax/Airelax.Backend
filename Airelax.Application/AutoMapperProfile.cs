@@ -10,17 +10,18 @@ using AutoMapper;
 
 namespace Airelax.Application
 {
-    public class AutoMapperProfile:Profile
+    public class AutoMapperProfile : Profile
     {
         public AutoMapperProfile()
         {
-            CreateMap<House, HouseDto>();
+            CreateMap<House, HouseDto>()
+                .ForMember(x => x.Description, x => x.MapFrom(m => m.HouseDescription));
+
             CreateMap<Member, OwnerDto>().ForMember(x => x.IsVerified, opt => opt.MapFrom(x => x.IsEmailVerified));
             CreateMap<MemberInfo, OwnerDto>().ForMember(x => x.Id, x => x.Ignore());
             CreateMap<WishList, WishListDto>().ForMember(des => des.Cover, opt => opt.MapFrom(x => ConvertToBase64String(x.Cover)));
-            CreateMap<HouseDescription, DescriptionDto>();
+            CreateMap<HouseDescription, DescriptionDto>().ForMember(x => x.HouseDescription, x => x.MapFrom(y => y.Description));
             CreateMap<Comment, CommentDto>().ForMember(x => x.Date, opt => opt.MapFrom(x => x.CommentTime));
-            CreateMap<Member, CommentDto>();
             CreateMap<HouseLocation, LocationDto>();
             CreateMap<BedroomDetailDto, BedroomDetail>().ForMember(x => x.BedType, opt => opt.MapFrom(x => x.BedType.ToString()));
             CreateMap<Policy, HouseRuleDto>();

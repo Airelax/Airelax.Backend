@@ -2,7 +2,7 @@
 {
     public class HouseDto
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Title { get; set; }
         public string[] Pictures { get; set; }
         public int CancelPolicy { get; set; }

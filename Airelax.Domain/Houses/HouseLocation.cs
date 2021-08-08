@@ -2,7 +2,7 @@
 
 namespace Airelax.Domain.Houses
 {
-    public class HouseLocation : Entity<int>
+    public class HouseLocation : Entity<string>
     {
         public string Country { get; set; }
         public string City { get; set; }
@@ -14,7 +14,7 @@ namespace Airelax.Domain.Houses
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
 
-        public HouseLocation(int id)
+        public HouseLocation(string id)
         {
             Id = id;
             Country = "台灣";

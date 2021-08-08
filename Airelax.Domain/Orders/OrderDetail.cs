@@ -3,7 +3,7 @@ using Airelax.Domain.DomainObject;
 
 namespace Airelax.Domain.Orders
 {
-    public class OrderDetail : Entity<int>
+    public class OrderDetail : Entity<string>
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -11,7 +11,7 @@ namespace Airelax.Domain.Orders
         public int Baby { get; set; }
         public int Child { get; set; }
 
-        public OrderDetail(int id, DateTime startDate, DateTime endDate, int adult, int baby, int child)
+        public OrderDetail(string id, DateTime startDate, DateTime endDate, int adult, int baby, int child)
         {
             Id = id;
             StartDate = startDate;

@@ -3,7 +3,7 @@ using Airelax.Domain.Members.Defines;
 
 namespace Airelax.Domain.Members
 {
-    public class MemberLoginInfo : Entity<int>
+    public class MemberLoginInfo : Entity<string>
     {
         public string Account { get; set; }
         public string Password { get; set; }
@@ -13,7 +13,7 @@ namespace Airelax.Domain.Members
         public string ThirdPartyToken { get; set; }
         public string ThirdPartyRefreshToken { get; set; }
 
-        public MemberLoginInfo(int id)
+        public MemberLoginInfo(string id)
         {
             Id = id;
         }

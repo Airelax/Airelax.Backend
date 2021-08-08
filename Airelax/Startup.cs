@@ -29,7 +29,11 @@ namespace Airelax
             // dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework
             services.AddDbContext<AirelaxContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString(Define.Database.LOCAL_CONNECT_STRING),
-                    x => x.MigrationsAssembly(Define.Database.ENTITY_FRAMEWORK))
+                    x =>
+                    {
+                        x.MigrationsAssembly(Define.Database.ENTITY_FRAMEWORK);
+                        x.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
+                    })
             );
 
             services.AddByDependencyInjectionAttribute();

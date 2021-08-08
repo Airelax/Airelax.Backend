@@ -6,58 +6,69 @@ using Airelax.Domain.Houses;
 using Airelax.Domain.RepositoryInterface;
 using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
-namespace Airelax.EntityFramework.Repositories 
+namespace Airelax.EntityFramework.Repositories
 {
-    [DependencyInjection(typeof(IHouseRepository), Lifetime = ServiceLifetime.Scoped)]
-    
+    [DependencyInjection(typeof(IHouseRepository))]
     public class HouseRepository : IHouseRepository
     {
         private readonly AirelaxContext _context;
+
         public HouseRepository(AirelaxContext context)
         {
             _context = context;
         }
-        public Task CreateAsync(House item)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<House> FirstOrDefaultAsync(Expression<Func<House, bool>> exp)
-        {
-            throw new NotImplementedException();
-        }
 
         public IQueryable<House> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Houses.AsQueryable();
         }
 
-        public async Task<House>  GetAsync(int id)
+        public async Task<House> GetAsync(Expression<Func<House, bool>> exp)
         {
-            return await _context.Houses.FindAsync(id);
+            return await GetHouseIncludeAll()
+                .Where(x => x.IsDeleted == false)
+                .FirstOrDefaultAsync(exp);
+        }
 
+        public async Task CreateAsync(House item)
+        {
+            await _context.Houses.AddAsync(item);
+        }
+
+        public async Task UpdateAsync(House item)
+        {
+            await Task.Run(() => _context.Houses.Update(item));
         }
 
         public async Task DeleteAsync(House item)
         {
-            throw new NotImplementedException();
+            item.IsDeleted = true;
+            await UpdateAsync(item);
         }
 
-        public Task SaveChangesAsync()
+        public async Task SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            await _context.SaveChangesAsync();
         }
 
-        public Task UpdateAsync(House item)
+
+        private IIncludableQueryable<House, ReservationRule> GetHouseIncludeAll()
         {
-            throw new NotImplementedException();
+            return _context.Houses.Include(x => x.Comments)
+                .Include(x => x.Member)
+                .Include(x => x.Photos)
+                .Include(x => x.Policy)
+                .Include(x => x.Spaces)
+                .Include(x => x.HouseCategory)
+                .Include(x => x.HouseDescription)
+                .Include(x => x.HousePrice)
+                .Include(x => x.HouseLocation)
+                .Include(x => x.HouseRule)
+                .Include(x => x.ReservationRule);
         }
     }
 }
