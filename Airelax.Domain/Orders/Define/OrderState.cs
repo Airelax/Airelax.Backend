@@ -2,11 +2,11 @@
 {
     public enum OrderState
     {
-        Unfinished = 1,
+        Unfinished,
         Established,
         Finish,
         Cancel,
         Processing,
-        BeforeAppropriation
+        BeforeAppropriation,
     }
 }
