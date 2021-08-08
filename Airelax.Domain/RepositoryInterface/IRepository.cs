@@ -15,12 +15,19 @@ namespace Airelax.Domain.RepositoryInterface
         IQueryable<TEntity> GetAll();
         
         /// <summary>
-        /// 透過指定條件選取第一個符合的Entity
+        /// 透過Id取Entity
         /// </summary>
         /// <param name="id"></param>
+        /// <returns>Entity</returns>
+        Task<TEntity> GetAsync(TId id);
+        
+        /// <summary>
+        /// 透過指定條件選取第一個符合的Entity
+        /// </summary>
+        /// <param name="exp"></param>
         /// <returns>符合條件的第一個Entity，若無則回傳default</returns>
-        Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> exp);
-
+        Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> exp);
+        
         /// <summary>
         /// 建立一個Entity
         /// </summary>
@@ -31,6 +38,7 @@ namespace Airelax.Domain.RepositoryInterface
         /// <summary>
         /// 更新Entity
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="item"></param>
         /// <returns></returns>
         Task UpdateAsync(TEntity item);
@@ -38,9 +46,9 @@ namespace Airelax.Domain.RepositoryInterface
         /// <summary>
         /// 刪除Entity
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        Task DeleteAsync(TEntity item);
+        Task DeleteAsync(TId id);
         
         /// <summary>
         /// 儲存變更

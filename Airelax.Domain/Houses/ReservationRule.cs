@@ -1,22 +1,16 @@
 ﻿using System;
 using Airelax.Domain.DomainObject;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Airelax.Domain.Houses
 {
-    public class ReservationRule : Entity<string>
+    public class ReservationRule: Entity<int>
     {
         public int MinNight { get; set; }
-        public int? MaxNight { get; set; }
+        public int MaxNight { get; set; }
         public DateTime LastReservationTime { get; set; }
-        public int? PrepareTime { get; set; }
-        public int? AvailableTime { get; set; }
-        public DayOfWeek? RejectDate { get; set; }
-
-        public ReservationRule(string id)
-        {
-            Id = id;
-            MinNight = 1;
-            LastReservationTime = new DateTime(2000, 1, 1, 12, 0, 0, 0);
-        }
+        public int PrepareTime { get; set; }
+        public int AvailableTime { get; set; }
+        public DayOfWeek RejectDate { get; set; }
     }
 }

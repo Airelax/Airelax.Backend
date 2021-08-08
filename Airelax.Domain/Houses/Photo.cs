@@ -2,16 +2,9 @@
 
 namespace Airelax.Domain.Houses
 {
-    public class Photo : Entity<int>
+    public class Photo:Entity<int>
     {
-        public string SpaceId { get; set; }
-        public string HouseId { get; set; }
+        public int HouseId { get; set; }
         public byte[] Image { get; set; }
-
-
-        public Photo(string houseId)
-        {
-            HouseId = houseId;
-        }
     }
 }

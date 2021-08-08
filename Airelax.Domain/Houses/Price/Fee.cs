@@ -1,11 +1,12 @@
-﻿using Airelax.Domain.DomainObject;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Airelax.Domain.DomainObject;
 
 namespace Airelax.Domain.Houses.Price
 {
-    public record Fee: ValueObject
+    public class Fee
     {
         public decimal CleanFee { get; set; }
         public decimal ServiceFee { get; set; }
-        public decimal TaxFee { get; set; }
     }
 }

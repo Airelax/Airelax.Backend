@@ -4,6 +4,6 @@
     {
         Publish = 1,
         CancelPublish = 2,
-        Off = 3 //下架
+        Off = 3, //下架
     }
 }

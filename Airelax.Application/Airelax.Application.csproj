@@ -6,16 +6,11 @@
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="10.1.1" />
-      <PackageReference Include="Lazcat.Infrastructure" Version="1.0.5" />
-      <PackageReference Include="SpanJson" Version="3.1.0" />
+      <PackageReference Include="Lazcat.Infrastructure" Version="1.0.2" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Airelax.Domain\Airelax.Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Houses\Dtos\Request\" />
     </ItemGroup>
 
 </Project>

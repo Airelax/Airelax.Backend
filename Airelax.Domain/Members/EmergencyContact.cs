@@ -1,15 +1,8 @@
-﻿using Airelax.Domain.DomainObject;
-
-namespace Airelax.Domain.Members
+﻿namespace Airelax.Domain.Members
 {
-    public class EmergencyContact : Entity<string>
+    public class EmergencyContact
     {
         public string Name { get; set; }
         public string Phone { get; set; }
-
-        public EmergencyContact(string id)
-        {
-            Id = id;
-        }
     }
 }
