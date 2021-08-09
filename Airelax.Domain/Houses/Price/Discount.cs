@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Airelax.Domain.DomainObject;
 
 namespace Airelax.Domain.Houses.Price
 {
@@ -6,6 +7,6 @@ namespace Airelax.Domain.Houses.Price
     {
         public int Week { get; set; }
         public int Month { get; set; }
-        public List<DiscountDetail> OtherDiscount { get; set; }
+        public IList<DiscountDetail> OtherDiscount { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 {
     public enum PayState
     {
-        Unpaid = 1,
+        Unpaid,
         Paid,
         NotRefund,
         Refunded
