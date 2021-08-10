@@ -1,20 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <AssemblyVersion>1.0.0</AssemblyVersion>
         <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss:fffZ"))</SourceRevisionId>
-    </PropertyGroup>
+      <UserSecretsId>1fc5f8ca-45f4-494c-8a57-53e5cbbd9230</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-        <PackageReference Include="Lazcat.Infrastructure" Version="1.0.2" />
+        <PackageReference Include="Lazcat.Infrastructure" Version="1.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.8">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="SpanJson" Version="3.1.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     </ItemGroup>
 
@@ -22,6 +24,10 @@
       <ProjectReference Include="..\Airelax.Application\Airelax.Application.csproj" />
       <ProjectReference Include="..\Airelax.Domain\Airelax.Domain.csproj" />
       <ProjectReference Include="..\Airelax.EntityFramework\Airelax.EntityFramework.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Home\Index.cshtml" />
     </ItemGroup>
 
 </Project>
