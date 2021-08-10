@@ -4,14 +4,16 @@ using Airelax.EntityFramework.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Airelax.EntityFramework.Migrations
 {
     [DbContext(typeof(AirelaxContext))]
-    partial class AirelaxContextModelSnapshot : ModelSnapshot
+    [Migration("20210810040744_add-col-house-reservation")]
+    partial class addcolhousereservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,14 +135,8 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<DateTime>("LastModifyTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NotProvideFacilities")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProvideFacilities")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReservationDates")
                         .HasColumnType("nvarchar(max)");
@@ -467,7 +463,7 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<DateTime>("RegisterTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 8, 11, 0, 8, 22, 915, DateTimeKind.Local).AddTicks(296));
+                        .HasDefaultValue(new DateTime(2021, 8, 10, 12, 7, 44, 185, DateTimeKind.Local).AddTicks(262));
 
                     b.Property<string>("Town")
                         .HasMaxLength(30)

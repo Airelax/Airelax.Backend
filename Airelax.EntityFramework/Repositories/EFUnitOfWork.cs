@@ -8,7 +8,7 @@ using Lazcat.Infrastructure.Common.Abstractions;
 
 namespace Airelax.EntityFramework.Repositories
 {
-    public class EFUnitOfWork:IUnitOfWork,IDisposable
+    public class EFUnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly AirelaxContext _context;
         private ConcurrentDictionary<string, object> _repositories;
@@ -21,7 +21,7 @@ namespace Airelax.EntityFramework.Repositories
             _activator = activator;
             _repositories = new ConcurrentDictionary<string, object>();
         }
-        
+
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
@@ -32,12 +32,12 @@ namespace Airelax.EntityFramework.Repositories
             _repositories ??= new ConcurrentDictionary<string, object>();
             var type = typeof(TEntity).Name;
 
-            if (_repositories.ContainsKey(type)) return (IRepository<TId, TEntity>) _repositories[type];
-            
+            if (_repositories.ContainsKey(type)) return (EFRepository<TId, TEntity>) _repositories[type];
+
             var repository = _activator.CreateInstanceByContainer(typeof(EFRepository<,>).MakeGenericType(typeof(TId), typeof(TEntity)));
-            _repositories.TryAdd(type,repository );
-            
-            return (IRepository<TId, TEntity>) _repositories[type];
+            _repositories.TryAdd(type, repository);
+
+            return (EFRepository<TId, TEntity>) _repositories[type];
         }
 
         public void Dispose()
@@ -55,7 +55,7 @@ namespace Airelax.EntityFramework.Repositories
                     _context.Dispose();
                 }
             }
- 
+
             _disposed = true;
         }
     }

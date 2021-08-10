@@ -19,7 +19,12 @@ namespace Airelax.Domain.Houses
         public string OwnerId { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime LastModifyTime { get; set; }
+        public List<Facility> ProvideFacilities { get; set; }
+        public List<Facility> NotProvideFacilities { get; set; }
         public bool IsDeleted { get; set; }
+        public List<DateTime> ReservationDates { get; set; }
+
+        #region Navigation
 
         public Member Member { get; set; }
         public HouseCategory HouseCategory { get; set; }
@@ -33,6 +38,7 @@ namespace Airelax.Domain.Houses
         public HousePrice HousePrice { get; set; }
         public ICollection<Comment> Comments { get; set; }
 
+        #endregion
 
         public House()
         {

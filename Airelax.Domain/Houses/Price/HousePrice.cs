@@ -1,4 +1,5 @@
-﻿using Airelax.Domain.DomainObject;
+﻿using System;
+using Airelax.Domain.DomainObject;
 
 namespace Airelax.Domain.Houses.Price
 {
@@ -13,6 +14,11 @@ namespace Airelax.Domain.Houses.Price
         public HousePrice(string id)
         {
             Id = id;
+        }
+
+        public decimal CalculateTotalPrice(DateTime checkin)
+        {
+            return 0;
         }
     }
 }
