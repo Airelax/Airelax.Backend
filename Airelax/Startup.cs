@@ -15,26 +15,44 @@ namespace Airelax
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment)
         {
             Configuration = configuration;
+            HostEnvironment = hostEnvironment;
         }
 
         public IConfiguration Configuration { get; }
+        public IHostEnvironment HostEnvironment { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // dotnet ef --startup-project Airelax migrations add $description -p Airelax.EntityFramework
             // dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework
-            services.AddDbContext<AirelaxContext>(opt =>
-                opt.UseSqlServer(Configuration.GetConnectionString(Define.Database.LOCAL_CONNECT_STRING),
-                    x =>
-                    {
-                        x.MigrationsAssembly(Define.Database.ENTITY_FRAMEWORK);
-                        x.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
-                    })
-            );
+
+            // if use local DB
+            // if (HostEnvironment.IsDevelopment())
+            // {
+            //     services.AddDbContext<AirelaxContext>(opt =>
+            //         opt.UseSqlServer(Configuration.GetConnectionString(Define.Database.LOCAL_CONNECT_STRING),
+            //             x =>
+            //             {
+            //                 x.MigrationsAssembly(Define.Database.ENTITY_FRAMEWORK);
+            //                 x.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
+            //             })
+            //     );
+            // }
+            // else
+            {
+                services.AddDbContext<AirelaxContext>(opt =>
+                    opt.UseSqlServer(Configuration.GetConnectionString(Define.Database.DB_CONNECT_STRING),
+                        x =>
+                        {
+                            x.MigrationsAssembly(Define.Database.ENTITY_FRAMEWORK);
+                            x.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
+                        })
+                );
+            }
 
             services.AddByDependencyInjectionAttribute();
             services.AddControllers();

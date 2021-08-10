@@ -77,7 +77,10 @@ namespace Airelax.EntityFramework.DbContexts
                     builder.SetPropMaxLength(x => x.Title, 30).IsRequired();
                     builder.SetEnumDbMapping(x => x.Status).IsRequired();
                     builder.SetEnumDbMapping(x => x.CreateState).IsRequired();
-
+                    builder.Property(x => x.ReservationDates).HasJsonConversion();
+                    builder.Property(x => x.ProvideFacilities).HasJsonConversion();
+                    builder.Property(x => x.NotProvideFacilities).HasJsonConversion();
+                    
                     builder.HasOne<Member>(x => x.Member).WithMany(x => x.Houses).HasForeignKey(x => x.OwnerId);
                 });
         }

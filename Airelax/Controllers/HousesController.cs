@@ -25,5 +25,12 @@ namespace Airelax.Controllers
         {
             return await _houseAppService.GetHouse(id);
         }
+        
+        // [HttpGet]
+        // [Route("Search")]
+        // public async Task<ReturnType> MethodName()
+        // {
+        //     return default;
+        // }
     }
 }

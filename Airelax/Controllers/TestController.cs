@@ -37,26 +37,32 @@ namespace Airelax.Controllers
         [HttpGet]
         public string Get()
         {
-            var member = new Member()
-            {
-                City = "c", Birthday = DateTime.Now, Country = "con", Email = "adfjakd", Gender = Gender.Man, Name = "asdf", Town = "adfa", Phone = "adfa", RegisterTime = DateTime.Now,
-                AddressDetail = "as"
-            };
-            _context.Members.Add(member);
+            var house = _context.Houses.FirstOrDefault(x => x.Id == "H75a54f44ff");
+            
+            return System.Text.Json.JsonSerializer.Serialize(house.ProvideFacilities);
+
             _context.SaveChanges();
 
-            var house = new House()
-            {
-                OwnerId = member.Id,
-                CreateState = CreateState.Building,
-                CreateTime = DateTime.Now, CustomerNumber = 1,
-                Status = HouseStatus.Off,
-                LastModifyTime = DateTime.Now, Title = "123",
-            };
-
-            house.HouseCategory = new HouseCategory(house.Id);
-            _context.Houses.Add(house);
-            _context.SaveChanges();
+            // var member = new Member()
+            // {
+            //     City = "c", Birthday = DateTime.Now, Country = "con", Email = "adfjakd", Gender = Gender.Man, Name = "asdf", Town = "adfa", Phone = "adfa", RegisterTime = DateTime.Now,
+            //     AddressDetail = "as"
+            // };
+            // _context.Members.Add(member);
+            // _context.SaveChanges();
+            //
+            // var house = new House()
+            // {
+            //     OwnerId = member.Id,
+            //     CreateState = CreateState.Building,
+            //     CreateTime = DateTime.Now, CustomerNumber = 1,
+            //     Status = HouseStatus.Off,
+            //     LastModifyTime = DateTime.Now, Title = "123",
+            // };
+            //
+            // house.HouseCategory = new HouseCategory(house.Id);
+            // _context.Houses.Add(house);
+            // _context.SaveChanges();
 
             // var housePrice = new HousePrice()
             // {
