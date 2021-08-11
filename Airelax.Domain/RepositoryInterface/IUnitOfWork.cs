@@ -8,6 +8,6 @@ namespace Airelax.Domain.RepositoryInterface
     {
         Task SaveAsync();
 
-        IRepository<TId, TEntity> GetRepository<TId, TEntity>() where TEntity : Entity<TId>;
+        IGenericRepository<TId, TEntity> GetRepository<TId, TEntity>() where TEntity : Entity<TId>;
     }
 }

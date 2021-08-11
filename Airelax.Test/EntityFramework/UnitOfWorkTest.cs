@@ -26,11 +26,11 @@ namespace Airelax.Test.EntityFramework
         [Fact]
         public void GetRepository_Test()
         {
-            _activator.CreateInstanceByContainer(typeof(EFRepository<,>).MakeGenericType(typeof(int), typeof(TestEntity))).Returns(new EFRepository<int, TestEntity>(_context));
+            _activator.CreateInstanceByContainer(typeof(EFGenericRepository<,>).MakeGenericType(typeof(int), typeof(TestEntity))).Returns(new EFGenericRepository<int, TestEntity>(_context));
             var repository = _unitOfWork.GetRepository<int,TestEntity>();
             var repositoryType = repository.GetType();
             var types = repositoryType.GetGenericArguments();
-            Assert.True(repository is EFRepository<int,TestEntity>);
+            Assert.True(repository is EFGenericRepository<int,TestEntity>);
             types.ShouldContain(typeof(int));
             types.ShouldContain(typeof(TestEntity));
             repositoryType.IsGenericType.ShouldBe(true);
