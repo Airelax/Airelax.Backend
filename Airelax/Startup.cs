@@ -3,6 +3,8 @@ using Airelax.Application;
 using Airelax.Defines;
 using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.Extensions;
+using Lazcat.Infrastructure.Map;
+using Lazcat.Infrastructure.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -58,6 +60,8 @@ namespace Airelax
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Airelax", Version = "v1"}); });
             services.AddAutoMapper(typeof(AutoMapperProfile));
+            services.AddHttpClient<GoogleGeocodingService>();
+            services.Configure<GoogleMapApiSetting>(Configuration.GetSection(nameof(GoogleMapApiSetting)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -12,6 +12,7 @@ using Airelax.Domain.Members.Defines;
 using Airelax.Domain.RepositoryInterface;
 using Airelax.EntityFramework.DbContexts;
 using AutoMapper;
+using Lazcat.Infrastructure.Map.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -25,23 +26,25 @@ namespace Airelax.Controllers
     {
         private readonly AirelaxContext _context;
         private readonly IMapper _mapper;
-        private IHouseRepository _houseRepository;
+        private readonly IGeocodingService _geocodingService;
 
-        public TestController(AirelaxContext context, IMapper mapper, IHouseRepository houseRepository)
+
+        public TestController(AirelaxContext context, IMapper mapper, IGeocodingService geocodingService)
         {
             _context = context;
             _mapper = mapper;
-            _houseRepository = houseRepository;
+            _geocodingService = geocodingService;
         }
 
         [HttpGet]
-        public string Get()
+        public async Task<string> Get()
         {
-            var house = _context.Houses.FirstOrDefault(x => x.Id == "H75a54f44ff");
-            
-            return System.Text.Json.JsonSerializer.Serialize(house.ProvideFacilities);
+            return JsonConvert.SerializeObject(await _geocodingService.GetGeocodingInfo("嘉義縣六腳鄉工廠村129-4號"));
+            // var house = _context.Houses.FirstOrDefault(x => x.Id == "H75a54f44ff");
+            //
+            // return System.Text.Json.JsonSerializer.Serialize(house.ProvideFacilities);
 
-            _context.SaveChanges();
+            //_context.SaveChanges();
 
             // var member = new Member()
             // {

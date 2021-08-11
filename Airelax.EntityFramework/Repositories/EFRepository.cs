@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Airelax.Domain.DomainObject;
 using Airelax.Domain.RepositoryInterface;
 using Airelax.EntityFramework.DbContexts;
+using Lazcat.Infrastructure.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
 namespace Airelax.EntityFramework.Repositories
 {
+    [DependencyInjection(typeof(IRepository))]
     public class EFRepository : IRepository
     {
         private readonly AirelaxContext _context;
