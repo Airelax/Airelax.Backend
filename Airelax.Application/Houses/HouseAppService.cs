@@ -51,11 +51,11 @@ namespace Airelax.Application.Houses
         {
             Check.CheckNull(input);
             var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.Location);
-            
-            ISpecification<House> specification = new InRangeLocationSpecification(geocodingInfo.Bounds.SouthWest, geocodingInfo.Bounds.Northeast);
+
+            Specification<House> specification = new InRangeLocationSpecification(geocodingInfo.Bounds.SouthWest, geocodingInfo.Bounds.Northeast);
             var customerNumberSpecification = new MaxCustomerNumberSpecification(input.CustomerNumber);
             specification = specification.And(customerNumberSpecification);
-            
+
             if (input.Checkin.HasValue && input.Checkout.HasValue)
             {
                 var dateRange = GetDateRange(input.Checkin.Value, input.Checkout.Value);
@@ -63,7 +63,7 @@ namespace Airelax.Application.Houses
                 specification = specification.And(availableDateSpecification);
             }
 
-            var houses = await _houseRepository.GetAll()
+            var houses = _houseRepository.GetAll()
                 .Include(x => x.Member)
                 .ThenInclude(x => x.WishLists)
                 .Include(x => x.HouseLocation)
@@ -72,7 +72,6 @@ namespace Airelax.Application.Houses
                 .Include(x => x.HouseCategory)
                 .Include(x => x.Spaces)
                 .Include(x => x.Photos)
-                .Where(x => specification.IsSatisfy(x))
                 .Select(x => new
                 {
                     Id = x.Id,
@@ -90,7 +89,7 @@ namespace Airelax.Application.Houses
                         Number = x.Comments.Count,
                         Stars = Math.Round(x.Comments.Average(c => c.Star.Total), 1)
                     }
-                }).ToListAsync();
+                }).AsEnumerable();
             return null;
         }
 

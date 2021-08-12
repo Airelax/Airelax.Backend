@@ -5,7 +5,7 @@ using Lazcat.Infrastructure.Map.Responses;
 
 namespace Airelax.Domain.Houses.Specifications
 {
-    public class InRangeLocationSpecification : ExpressionSpecification<House>
+    public class InRangeLocationSpecification : Specification<House>
     {
         private readonly Coordinate _southwest;
         private readonly Coordinate _northeast;

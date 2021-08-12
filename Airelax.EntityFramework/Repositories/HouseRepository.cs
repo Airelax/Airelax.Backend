@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Airelax.Domain.DomainObject;
 using Airelax.Domain.Houses;
 using Airelax.Domain.RepositoryInterface;
 using Airelax.EntityFramework.DbContexts;
@@ -26,7 +27,7 @@ namespace Airelax.EntityFramework.Repositories
 
         public IQueryable<House> GetAll()
         {
-            return _repository.GetAll<string, House>().Where(x=>x.IsDeleted==false);
+            return _repository.GetAll<string, House>().Where(x => x.IsDeleted == false);
         }
 
         public async Task<House> GetAsync(Expression<Func<House, bool>> exp)
@@ -57,6 +58,10 @@ namespace Airelax.EntityFramework.Repositories
             await _repository.SaveChangesAsync();
         }
 
+        public IQueryable<House> GetSatisfyFromAsync(Specification<House> specification)
+        {
+            return _repository.GetAll<string, House>().Where(x => specification.IsSatisfy(x));
+        }
 
         private IIncludableQueryable<House, ReservationRule> GetHouseIncludeAll()
         {
