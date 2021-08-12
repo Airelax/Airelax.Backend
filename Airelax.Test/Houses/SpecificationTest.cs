@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Specifications;
+using Lazcat.Infrastructure.Map.Responses;
 using Shouldly;
 using Xunit;
 
@@ -98,22 +99,22 @@ namespace Airelax.Test.Houses
             {
                 new object[]
                 {
-                    new InRangeLocationSpecification((23.86102543, 120), (22.2145487, 121.45721243)),
+                    new InRangeLocationSpecification(new Coordinate(23.86102543, 120), new Coordinate(22.2145487, 121.45721243)),
                     false
                 },
                 new object[]
                 {
-                    new InRangeLocationSpecification((23.850421236, 120.90115442), (23.85222143, 121.045721243)),
+                    new InRangeLocationSpecification(new Coordinate(23.850421236, 120.90115442), new Coordinate(23.85222143, 121.045721243)),
                     false
                 },
                 new object[]
                 {
-                    new InRangeLocationSpecification((23.850421236, 120.90115442), (23.89222143, 121.045721243)),
+                    new InRangeLocationSpecification(new Coordinate(23.850421236, 120.90115442), new Coordinate(23.89222143, 121.045721243)),
                     true
                 },
                 new object[]
                 {
-                    new InRangeLocationSpecification((23, 120), (24, 122)),
+                    new InRangeLocationSpecification(new Coordinate(23, 120), new Coordinate(24, 122)),
                     true
                 },
             };

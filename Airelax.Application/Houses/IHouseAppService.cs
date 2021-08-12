@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Airelax.Application.Houses.Dtos.Request;
 
 namespace Airelax.Application.Houses
 {
@@ -11,5 +12,6 @@ namespace Airelax.Application.Houses
     {
         Task<HouseDto> GetHouse(int id);
 
+        Task<IEnumerable<SimpleHouseDto>> Search(SearchInput input);
     }
 }
