@@ -21,7 +21,7 @@ namespace Airelax.Controllers
 
         [HttpGet]
         [Route("{id}")]     
-        public async Task<HouseDto> Get(int id)
+        public async Task<HouseDto> Get(string id)
         {
             return await _houseAppService.GetHouse(id);
         }

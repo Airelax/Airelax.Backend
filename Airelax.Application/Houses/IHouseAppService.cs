@@ -9,7 +9,7 @@ namespace Airelax.Application.Houses
 {
     public interface IHouseAppService
     {
-        Task<HouseDto> GetHouse(int id);
+        Task<HouseDto> GetHouse(string id);
 
     }
 }

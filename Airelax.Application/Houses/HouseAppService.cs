@@ -14,7 +14,7 @@ namespace Airelax.Application.Houses
     [DependencyInjection(typeof(IHouseAppService), Lifetime = ServiceLifetime.Scoped)]
     public class HouseAppService : IHouseAppService
     {
-        public async Task<HouseDto> GetHouse(int id)
+        public async Task<HouseDto> GetHouse(string id)
         {
             //using (var context = new AirelaxContext()) 
             //{
