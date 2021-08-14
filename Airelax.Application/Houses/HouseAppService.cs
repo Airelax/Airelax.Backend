@@ -72,24 +72,26 @@ namespace Airelax.Application.Houses
                 .Include(x => x.HouseCategory)
                 .Include(x => x.Spaces)
                 .Include(x => x.Photos)
-                .Select(x => new
-                {
-                    Id = x.Id,
-                    Picture = x.Photos.Select(p => p.Image),
-                    WishList = x.Member.WishLists,
-                    Location = x.HouseLocation,
-                    Price = x.HousePrice,
-                    Title = x.Title,
-                    Category = x.HouseCategory,
-                    Facilities = x.ProvideFacilities.Intersect(Definition.SimpleFacilities),
-                    CustomerNumber = x.CustomerNumber,
-                    Space = x.Spaces.Where(s => s.SpaceType == SpaceType.Bath || s.SpaceType == SpaceType.Bedroom),
-                    Comment = new
-                    {
-                        Number = x.Comments.Count,
-                        Stars = Math.Round(x.Comments.Average(c => c.Star.Total), 1)
-                    }
-                }).AsEnumerable();
+                // .Select(x => new
+                // {
+                //     Id = x.Id,
+                //     Picture = x.Photos.Select(p => p.Image),
+                //     WishList = x.Member.WishLists,
+                //     Location = x.HouseLocation,
+                //     Price = x.HousePrice,
+                //     Title = x.Title,
+                //     Category = x.HouseCategory,
+                //     Facilities = x.ProvideFacilities.Intersect(Definition.SimpleFacilities),
+                //     CustomerNumber = x.CustomerNumber,
+                //     Space = x.Spaces.Where(s => s.SpaceType == SpaceType.Bath || s.SpaceType == SpaceType.Bedroom),
+                //     Comment = new
+                //     {
+                //         Number = x.Comments.Count,
+                //         Stars = Math.Round(x.Comments.Average(c => c.Star.Total), 1)
+                //     }
+                // })
+                .AsEnumerable();
+            houses = houses.Where(x => specification.IsSatisfy(x));
             return null;
         }
 
