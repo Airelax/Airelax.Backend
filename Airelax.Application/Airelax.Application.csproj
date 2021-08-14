@@ -14,8 +14,4 @@
       <ProjectReference Include="..\Airelax.Domain\Airelax.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Houses\Dtos\Request\" />
-    </ItemGroup>
-
 </Project>

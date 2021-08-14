@@ -1,4 +1,5 @@
 ﻿using Airelax.Application.Houses;
+using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Application.Houses.Dtos.Response;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -32,5 +33,28 @@ namespace Airelax.Controllers
         // {
         //     return default;
         // }
+
+        [HttpPost]
+        [Route("house")]
+        public async Task<string> CreateHouse(CreateHouseInput input)
+        {
+            return await _houseAppService.CreateAsync(input);
+        }
+
+        [HttpPut]
+        [Route("house/{id}/category")]
+
+        public async Task<bool> UpdateHouseCategory(string id, UpdateHouseCategoryInput input ) 
+        {
+            return await _houseAppService.UpdateHouseCategory(id,input);
+        }
+
+        [HttpPut]
+        [Route("house/{id}/catgory")]
+   
+        public async Task<bool> UpdateHouseCategoryRoomStyle(string id, UpdateHouseCategoryRoomStyleInput input)
+        {
+            return await _houseAppService.UpdateHouseCategoryRoomStyle(id, input);
+        }
     }
 }

@@ -39,20 +39,28 @@ namespace Airelax.Controllers
         [HttpGet]
         public async Task<string> Get()
         {
-            return JsonConvert.SerializeObject(await _geocodingService.GetGeocodingInfo("嘉義縣六腳鄉工廠村129-4號"));
+            //return JsonConvert.SerializeObject(await _geocodingService.GetGeocodingInfo("嘉義縣"));
             // var house = _context.Houses.FirstOrDefault(x => x.Id == "H75a54f44ff");
             //
             // return System.Text.Json.JsonSerializer.Serialize(house.ProvideFacilities);
 
             //_context.SaveChanges();
 
-            // var member = new Member()
-            // {
-            //     City = "c", Birthday = DateTime.Now, Country = "con", Email = "adfjakd", Gender = Gender.Man, Name = "asdf", Town = "adfa", Phone = "adfa", RegisterTime = DateTime.Now,
-            //     AddressDetail = "as"
-            // };
-            // _context.Members.Add(member);
-            // _context.SaveChanges();
+            var member = new Member()
+            {
+                City = "c",
+                Birthday = DateTime.Now,
+                Country = "con",
+                Email = "adfjakd",
+                Gender = Gender.Man,
+                Name = "asdf",
+                Town = "adfa",
+                Phone = "adfa",
+                RegisterTime = DateTime.Now,
+                AddressDetail = "as"
+            };
+            _context.Members.Add(member);
+            _context.SaveChanges();
             //
             // var house = new House()
             // {
