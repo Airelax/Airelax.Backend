@@ -17,6 +17,7 @@ using AutoMapper;
 using Lazcat.Infrastructure.Map.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using JsonSerializer = SpanJson.JsonSerializer;
 
@@ -27,15 +28,18 @@ namespace Airelax.Controllers
     public class TestController : Controller
     {
         private readonly IHouseAppService _houseAppService;
+        private readonly ILogger _logger;
 
-        public TestController(IHouseAppService houseAppService)
+        public TestController(IHouseAppService houseAppService, ILogger<TestController> logger)
         {
             _houseAppService = houseAppService;
+            _logger = logger;
         }
 
         [HttpGet]
         public async Task t([FromQuery] SearchInput searchInput)
         {
+            _logger.Log(LogLevel.Critical, "test");
             await _houseAppService.Search(searchInput);
         }
     }
