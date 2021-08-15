@@ -50,11 +50,23 @@ namespace Airelax.Controllers
         }
 
         [HttpPut]
-        [Route("house/{id}/catgory")]
+        [Route("house/{id}/category")]
    
         public async Task<bool> UpdateHouseCategoryRoomStyle(string id, UpdateHouseCategoryRoomStyleInput input)
         {
             return await _houseAppService.UpdateHouseCategoryRoomStyle(id, input);
         }
+
+        [HttpPut]
+        [Route("house/{id}/title")]
+        public async Task<bool> UpdateHouseTitle(string id, UpdateHouseTitle input)
+        {
+            return await _houseAppService.UpdateHouseTitle(id, input);
+        }
+        public async Task<bool>UpdateHouseDescription(string id ,UpdateHouseDescription input)
+        {
+            return await _houseAppService.UpdateHousrDescription(id, input);
+        }
+
     }
 }

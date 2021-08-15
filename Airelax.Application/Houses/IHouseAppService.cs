@@ -14,5 +14,8 @@ namespace Airelax.Application.Houses
         Task<string> CreateAsync(CreateHouseInput input);
         Task<bool> UpdateHouseCategory(string id, UpdateHouseCategoryInput input);
         Task<bool> UpdateHouseCategoryRoomStyle(string id, UpdateHouseCategoryRoomStyleInput input);
+        Task<bool> UpdateHouseTitle(string id, UpdateHouseTitle input);
+        Task<bool> UpdateHousrDescription(string id, UpdateHouseDescription input);
+        
     }
 }

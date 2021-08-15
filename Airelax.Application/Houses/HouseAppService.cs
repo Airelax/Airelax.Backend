@@ -55,6 +55,24 @@ namespace Airelax.Application.Houses
             return true;
 
         }
+        public async Task<bool> UpdateHouseTitle(string id, UpdateHouseTitle input)
+        {
+            var house = await _houseRepository.GetAsync(x => x.Id == id);
+            if(house == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"house id: {id} is not exist");
+            house.Title = input.Title;
+            await _houseRepository.UpdateAsync(house);
+            await _houseRepository.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> UpdateHouseDescription(string id, UpdateHouseDescription input)
+        {
+            var house = await _houseRepository.GetAsync(x => x.Id == id);
+            if (house == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"house id: {id} is not exist");
+            house.HouseDescription.Description = input.Description;
+            await _houseRepository.UpdateAsync(house);
+            await _houseRepository.SaveChangesAsync();
+            return true;
+        }
 
 
 
