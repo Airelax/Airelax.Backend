@@ -58,7 +58,7 @@ namespace Airelax
             }
 
             services.AddByDependencyInjectionAttribute();
-            services.AddControllers();
+            services.AddControllersWithViews();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Airelax", Version = "v1"}); });
             services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddHttpClient<GoogleGeocodingService>();
@@ -77,11 +77,20 @@ namespace Airelax
 
             app.UseHttpsRedirection();
             app.UseSerilogRequestLogging();
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }
