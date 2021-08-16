@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Airelax.Application.Houses.Dtos.Request
 {
-    class CreateHouseinput
+    class CreateHouseInput
     {
     }
 }

@@ -80,7 +80,7 @@ namespace Airelax.EntityFramework.DbContexts
                     builder.Property(x => x.ReservationDates).HasJsonConversion();
                     builder.Property(x => x.ProvideFacilities).HasJsonConversion();
                     builder.Property(x => x.NotProvideFacilities).HasJsonConversion();
-                    
+
                     builder.HasOne<Member>(x => x.Member).WithMany(x => x.Houses).HasForeignKey(x => x.OwnerId);
                 });
         }
@@ -365,6 +365,7 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.Property(x => x.CommunicationScore).IsRequired();
                 builder.Property(x => x.ExperienceScore).IsRequired();
                 builder.Property(x => x.LocationScore).IsRequired();
+                builder.Ignore(x => x.Total);
                 builder.HasOne<Comment>().WithOne(x => x.Star).HasForeignKey<Star>(x => x.Id);
             });
         }

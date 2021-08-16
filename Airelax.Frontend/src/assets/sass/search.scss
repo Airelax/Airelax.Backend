@@ -1,0 +1,158 @@
+* {
+  // outline: 1px solid red;
+  font-family: "Noto Sans TC", sans-serif;
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #000;
+  }
+  .eachRoom {
+    padding: 10px;
+    .col-12.col-md-5 {
+      .label {
+        top: 38px;
+        z-index: 10;
+        padding: 0 10px;
+        .perfect {
+          font-size: 12px;
+          letter-spacing: 1px;
+          color: #000;
+          background-color: #fff;
+          border: 1px solid transparent;
+          border-radius: 5px;
+          padding: 3px 8px;
+        }
+      }
+    }
+    .col-12.col-md-7 {
+      font-weight: 300;
+      .row {
+        text-align: start;
+      }
+      .row:nth-of-type(1) {
+        .col.col-md-10 {
+          .comment {
+            .star {
+              height: 14px;
+              width: 14px;
+              fill: #ff385c;
+              margin: auto 4px;
+            }
+            .starScore,
+            .commentCount {
+              font-size: 14px;
+            }
+            .starScore {
+              color: #000;
+            }
+            .commentCount {
+              color: #717374;
+              margin-left: 1px;
+            }
+          }
+          .typeAddress,
+          .mdTypeAddress {
+            color: #000;
+          }
+
+          .title {
+            color: #000;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+      }
+      .row:nth-of-type(2) {
+        font-size: 15px;
+        color: #717171;
+      }
+      .row:nth-of-type(3) {
+        color: #000;
+        .originAndSweet {
+          .sweetPrice,
+          .origin {
+            font-weight: 700;
+          }
+          .origin {
+            color: #717176;
+            text-decoration: line-through;
+          }
+        }
+        .total {
+          .totalLink,
+          .mdTotalLink {
+            font-size: 15px;
+            text-decoration: underline;
+            color: #717171;
+          }
+          .totalLink:hover,
+          .mdTotalLink:hover {
+            text-decoration: underline #000;
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and(min-width:768px) {
+  .eachRoom {
+    border-top: 1px solid #ededed;
+    margin-bottom: 20px;
+    padding-right: 10px;
+    .col-12.col-md-5 {
+      .label {
+        .heart {
+          svg {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            padding: 10px;
+            fill: transparent;
+            stroke: #000;
+            stroke-width: 2;
+            overflow: visible;
+          }
+          svg:hover {
+            background-color: #efefef80;
+          }
+        }
+      }
+    }
+    .col-12.col-md-7 {
+      padding-top: 30px;
+      .row:nth-of-type(1) {
+        .col.col-md-10 {
+          .mdTypeAddress {
+            font-size: 15px;
+            color: #717171;
+          }
+          .title {
+            font-size: 20px;
+          }
+        }
+        .col-md-2 {
+          padding: 0;
+        }
+      }
+      .row:nth-of-type(3) {
+        .total {
+          .mdComment {
+            font-size: 12px;
+            svg {
+              height: 12px;
+              width: 12px;
+              fill: #ff385c;
+              margin: auto 4px;
+            }
+            .commentCount {
+              color: #717171;
+            }
+          }
+        }
+      }
+    }
+  }
+}

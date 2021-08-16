@@ -1,0 +1,171 @@
+* {
+  font-family: "Noto Sans TC", sans-serif;
+}
+
+* a {
+  color: #000;
+  text-decoration: none;
+}
+
+* a:hover {
+  color: #000;
+}
+
+* .eachRoomCol {
+  margin: 0 auto 20px;
+}
+
+* .eachRoomCol .col-12.col-md-5 .label {
+  top: 38px;
+  z-index: 10;
+  padding: 0 10px;
+}
+
+* .eachRoomCol .col-12.col-md-5 .label .perfect {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #000;
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 3px 8px;
+}
+
+* .eachRoomCol .col-12.col-md-5 .label .heart svg {
+  height: 24px;
+  width: 24px;
+  fill: rgba(0, 0, 0, 0.5);
+  stroke: white;
+  stroke-width: 2;
+  overflow: visible;
+}
+
+* .eachRoomCol .col-12.col-md-7 {
+  font-weight: 300;
+}
+
+* .eachRoomCol .col-12.col-md-7 .row {
+  text-align: start;
+}
+
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(1) .col.col-md-10 .comment .star {
+  height: 14px;
+  width: 14px;
+  fill: #ff385c;
+  margin: auto 4px;
+}
+
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(1) .col.col-md-10 .comment .starScore,
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(1) .col.col-md-10 .comment .commentCount {
+  font-size: 14px;
+}
+
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(1) .col.col-md-10 .comment .starScore {
+  color: #000;
+}
+
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(1) .col.col-md-10 .comment .commentCount {
+  color: #717374;
+  margin-left: 1px;
+}
+
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(1) .col.col-md-10 .typeAddress,
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(1) .col.col-md-10 .mdTypeAddress {
+  color: #000;
+}
+
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(1) .col.col-md-10 .title {
+  color: #000;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(2) {
+  font-size: 15px;
+  color: #717171;
+}
+
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(3) {
+  color: #000;
+}
+
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(3) .originAndSweet .sweetPrice,
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(3) .originAndSweet .origin {
+  font-weight: 700;
+}
+
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(3) .originAndSweet .origin {
+  color: #717176;
+  text-decoration: line-through;
+}
+
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(3) .total .totalLink,
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(3) .total .mdTotalLink {
+  font-size: 15px;
+  text-decoration: underline;
+  color: #717171;
+}
+
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(3) .total .totalLink:hover,
+* .eachRoomCol .col-12.col-md-7 .row:nth-of-type(3) .total .mdTotalLink:hover {
+  -webkit-text-decoration: underline #000;
+          text-decoration: underline #000;
+}
+
+@media screen and (min-width: 768px) {
+  .eachRoomCol {
+    border-top: 1px solid #ededed;
+    margin-bottom: 20px;
+    padding-right: 10px;
+  }
+  .eachRoomCol .col-12.col-md-7 {
+    padding-top: 30px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: end;
+  }
+  .eachRoomCol .col-12.col-md-7 .row:nth-of-type(1) .col.col-md-10 .mdTypeAddress {
+    font-size: 15px;
+    color: #717171;
+  }
+  .eachRoomCol .col-12.col-md-7 .row:nth-of-type(1) .col.col-md-10 .title {
+    font-size: 20px;
+  }
+  .eachRoomCol .col-12.col-md-7 .row:nth-of-type(1) .col-md-2 {
+    padding: 0;
+  }
+  .eachRoomCol .col-12.col-md-7 .row:nth-of-type(1) .col-md-2 .mdHeart svg {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    padding: 10px;
+    fill: transparent;
+    stroke: #000;
+    stroke-width: 2;
+    overflow: visible;
+  }
+  .eachRoomCol .col-12.col-md-7 .row:nth-of-type(1) .col-md-2 .mdHeart svg:hover {
+    background-color: #efefef80;
+  }
+  .eachRoomCol .col-12.col-md-7 .row:nth-of-type(3) .total .mdComment {
+    font-size: 12px;
+  }
+  .eachRoomCol .col-12.col-md-7 .row:nth-of-type(3) .total .mdComment svg {
+    height: 12px;
+    width: 12px;
+    fill: #ff385c;
+    margin: auto 4px;
+  }
+  .eachRoomCol .col-12.col-md-7 .row:nth-of-type(3) .total .mdComment .commentCount {
+    color: #717171;
+  }
+}
+/*# sourceMappingURL=recordRoom.css.map */

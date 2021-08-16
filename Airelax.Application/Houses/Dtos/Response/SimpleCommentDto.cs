@@ -2,7 +2,7 @@
 {
     public class SimpleCommentDto
     {
-        public float Star { get; set; }
+        public double Star { get; set; }
         public int TotalComments { get; set; }
     }
 }
