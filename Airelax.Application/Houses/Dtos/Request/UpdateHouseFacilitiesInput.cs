@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Airelax.Application.Houses.Dtos.Request
 {
-    public class UpdateHouseCategoryRoomStyleInput
+     public class UpdateHouseFacilitiesInput
     {
-        public RoomCategory RoomCategory { get; set; }
+        public List<Facility> ProvideFacilities { get; set; }
     }
 }

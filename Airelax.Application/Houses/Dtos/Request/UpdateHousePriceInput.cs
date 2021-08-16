@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Airelax.Application.Houses.Dtos.Request
 {
-    public class UpdateHouseDescription
+    public class UpdateHousePriceInput
     {
-        public string Description { get; set; }
+        public decimal Price { get; set; }
     }
 }

@@ -11,6 +11,7 @@ using Lazcat.Infrastructure.ExceptionHandlers;
 using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Members;
+using Airelax.Domain.Houses.Price;
 
 namespace Airelax.Application.Houses
 {
@@ -19,6 +20,8 @@ namespace Airelax.Application.Houses
     {
         private readonly IHouseRepository _houseRepository;
         private readonly IRepository _repository;
+
+      
         public HouseAppService (IHouseRepository houseRepository, IRepository repository)
         {
             _houseRepository = houseRepository;
@@ -31,60 +34,85 @@ namespace Airelax.Application.Houses
             if (owner == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"member id: {input.MemberId} is not exist");
             var house = new House(input.MemberId);
             house.HouseCategory = new HouseCategory(house.Id) { Category=input.Category};
-            await _houseRepository.CreateAsync(house);
-            await _houseRepository.SaveChangesAsync();
+            await UpdateHouse(house);
             return house.Id;
         }
 
         public async Task<bool> UpdateHouseCategory(string id, UpdateHouseCategoryInput input)
         {
-           var house = await _houseRepository.GetAsync(x => x.Id == id); 
-           if (house == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"house id: {id} is not exist");
+            var house = await GetHouse(id);
             house.HouseCategory.HouseType = input.HouseType;
-            await _houseRepository.UpdateAsync(house);
-            await _houseRepository.SaveChangesAsync();
+            await UpdateHouse(house);
             return true;
         }
-        public async Task<bool> UpdateHouseCategoryRoomStyle(string id, UpdateHouseCategoryRoomStyleInput input)
+        public async Task<bool> UpdateRoomCategory(string id, UpdateRoomCategoryInput input)
         {
-            var house = await _houseRepository.GetAsync(x => x.Id == id);
-            if(house == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"house id: {id} is not exist");
+            var house = await GetHouse(id);
             house.HouseCategory.RoomCategory = input.RoomCategory;
-            await _houseRepository.UpdateAsync(house);
-            await _houseRepository.SaveChangesAsync();
+            await UpdateHouse(house);
             return true;
 
         }
-        public async Task<bool> UpdateHouseTitle(string id, UpdateHouseTitle input)
+        public async Task<bool> UpdateHouseTitle(string id, UpdateHouseTitleInput input)
         {
-            var house = await _houseRepository.GetAsync(x => x.Id == id);
-            if(house == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"house id: {id} is not exist");
+            var house = await GetHouse(id);
             house.Title = input.Title;
-            await _houseRepository.UpdateAsync(house);
-            await _houseRepository.SaveChangesAsync();
+            await UpdateHouse(house);
             return true;
         }
-        public async Task<bool> UpdateHouseDescription(string id, UpdateHouseDescription input)
+        public async Task<bool> UpdateHouseDescription(string id, UpdateHouseDescriptionInput input)
+        {
+            var house = await GetHouse(id);
+            house.HouseDescription = new HouseDescription(house.Id) { Description = input.Description };
+            await UpdateHouse(house);
+            return true;
+        }
+        public async Task<bool> UpdateHouseFacilities(string id, UpdateHouseFacilitiesInput input)
+        {
+            var house = await GetHouse(id);
+            house.ProvideFacilities = input.ProvideFacilities;
+            await UpdateHouse(house);
+            return true;
+
+        }
+        public async Task<bool> UpdateHouseCustomerInput(string id, UpdateCustomerInput input)
+        {
+            var house = await GetHouse(id);
+            house.CustomerNumber = input.CustomerNumber;
+            await UpdateHouse(house);
+            return true;
+        }
+        public async Task<bool> UpdateHousePriceInput(string id, UpdateHousePriceInput input)
+        {
+            var house = await GetHouse(id);
+            house.HousePrice = new HousePrice(house.Id) { PerNight = input.Price };
+            await UpdateHouse(house);
+            return true;
+        }
+
+        private async Task<House> GetHouse(string id)
         {
             var house = await _houseRepository.GetAsync(x => x.Id == id);
             if (house == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"house id: {id} is not exist");
-            house.HouseDescription.Description = input.Description;
+            return house;
+        }
+        private async Task UpdateHouse(House house)
+        {
             await _houseRepository.UpdateAsync(house);
             await _houseRepository.SaveChangesAsync();
-            return true;
         }
 
 
 
-        public async Task<HouseDto> GetHouse(string id)
-        {
-            //using (var context = new AirelaxContext()) 
-            //{
+        //public async Task<HouseDto> GetHouse(string id)
+        //{
+        //    //using (var context = new AirelaxContext()) 
+        //    //{
 
-            //   return context.Houses.FisrtORDefalut(x => x.id == id);
-            //}
+        //    //   return context.Houses.FisrtORDefalut(x => x.id == id);
+        //    //}
 
-            return default;
-        }
+        //    return default;
+        //}
     }
 }
