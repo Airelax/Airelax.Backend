@@ -33,19 +33,19 @@ namespace Airelax
             // dotnet ef --startup-project Airelax migrations add $description -p Airelax.EntityFramework
             // dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework
 
-            // if use local DB
-            // if (HostEnvironment.IsDevelopment())
-            // {
-            //     services.AddDbContext<AirelaxContext>(opt =>
-            //         opt.UseSqlServer(Configuration.GetConnectionString(Define.Database.LOCAL_CONNECT_STRING),
-            //             x =>
-            //             {
-            //                 x.MigrationsAssembly(Define.Database.ENTITY_FRAMEWORK);
-            //                 x.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
-            //             })
-            //     );
-            // }
-            // else
+            //if use local DB
+            if (HostEnvironment.IsDevelopment())
+            {
+                services.AddDbContext<AirelaxContext>(opt =>
+                    opt.UseSqlServer(Configuration.GetConnectionString(Define.Database.LOCAL_CONNECT_STRING),
+                        x =>
+                        {
+                            x.MigrationsAssembly(Define.Database.ENTITY_FRAMEWORK);
+                            x.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
+                        })
+                );
+            }
+            else
             {
                 services.AddDbContext<AirelaxContext>(opt =>
                     opt.UseSqlServer(Configuration.GetConnectionString(Define.Database.DB_CONNECT_STRING),
