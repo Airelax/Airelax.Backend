@@ -40,9 +40,11 @@ namespace Airelax.Domain.Houses
 
         #endregion
 
-        public House()
+        public House(string ownerId)
         {
+            OwnerId = ownerId;
             Id = GuidHelper.CreateId(prefix: "H");
+            Title = "未命名房源";
             Status = HouseStatus.CancelPublish;
             CreateState = CreateState.Building;
             CustomerNumber = 1;
