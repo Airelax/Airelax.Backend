@@ -64,7 +64,7 @@ namespace Airelax.Application.Houses
                 .Include(x => x.HouseCategory)
                 .Include(x => x.Spaces)
                 .Include(x => x.Photos)
-                .AsEnumerable();
+                .ToList();
 
             var results = houses.Where(x => specification.IsSatisfy(x)).Select(x => new SimpleHouse()
             {

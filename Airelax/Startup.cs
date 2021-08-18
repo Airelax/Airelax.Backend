@@ -33,6 +33,7 @@ namespace Airelax
             // dotnet ef --startup-project Airelax migrations add $description -p Airelax.EntityFramework
             // dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework
 
+
             //if use local DB
             if (HostEnvironment.IsDevelopment())
             {
