@@ -39,7 +39,6 @@ namespace Airelax.Controllers
         [HttpGet]
         public async Task<IEnumerable<SimpleHouseDto>> t([FromQuery] SearchInput searchInput)
         {
-            _logger.Log(LogLevel.Critical, "test");
             return await _houseAppService.Search(searchInput);
         }
     }
