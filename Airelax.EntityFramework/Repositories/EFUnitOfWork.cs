@@ -5,9 +5,11 @@ using Airelax.Domain.DomainObject;
 using Airelax.Domain.RepositoryInterface;
 using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.Common.Abstractions;
+using Lazcat.Infrastructure.DependencyInjection;
 
 namespace Airelax.EntityFramework.Repositories
 {
+    [DependencyInjection(typeof(IUnitOfWork))]
     public class EFUnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly AirelaxContext _context;
@@ -27,17 +29,17 @@ namespace Airelax.EntityFramework.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public IRepository<TId, TEntity> GetRepository<TId, TEntity>() where TEntity : Entity<TId>
+        public IGenericRepository<TId, TEntity> GetRepository<TId, TEntity>() where TEntity : Entity<TId>
         {
             _repositories ??= new ConcurrentDictionary<string, object>();
             var type = typeof(TEntity).Name;
 
-            if (_repositories.ContainsKey(type)) return (EFRepository<TId, TEntity>) _repositories[type];
+            if (_repositories.ContainsKey(type)) return (EFGenericRepository<TId, TEntity>) _repositories[type];
 
-            var repository = _activator.CreateInstanceByContainer(typeof(EFRepository<,>).MakeGenericType(typeof(TId), typeof(TEntity)));
+            var repository = _activator.CreateInstanceByContainer(typeof(EFGenericRepository<,>).MakeGenericType(typeof(TId), typeof(TEntity)));
             _repositories.TryAdd(type, repository);
 
-            return (EFRepository<TId, TEntity>) _repositories[type];
+            return (EFGenericRepository<TId, TEntity>) _repositories[type];
         }
 
         public void Dispose()

@@ -4,7 +4,7 @@ using Airelax.Domain.DomainObject;
 
 namespace Airelax.Domain.Houses.Specifications
 {
-    public class MaxCustomerNumberSpecification : ExpressionSpecification<House>
+    public class MaxCustomerNumberSpecification : Specification<House>
     {
         private readonly int _customerNumber;
 

@@ -24,7 +24,7 @@
         Iron = 208, //熨斗
         MosquitoNet = 209, //蚊帳
         Curtain = 210, // 窗簾
-        Washer = 211, //洗衣機
+        WashMachine = 211, //洗衣機
 
         // 3xx Entertainment
         Books = 301,

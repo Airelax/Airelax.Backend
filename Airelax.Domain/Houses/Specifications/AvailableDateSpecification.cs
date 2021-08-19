@@ -7,7 +7,7 @@ using Airelax.Domain.DomainObject;
 
 namespace Airelax.Domain.Houses.Specifications
 {
-    public class AvailableDateSpecification : ExpressionSpecification<House>
+    public class AvailableDateSpecification : Specification<House>
     {
         private readonly IEnumerable<DateTime> _requireDates;
 

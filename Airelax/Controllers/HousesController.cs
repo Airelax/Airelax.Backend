@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Airelax.Controllers
 {
@@ -21,7 +22,7 @@ namespace Airelax.Controllers
 
         [HttpGet]
         [Route("{id}")]     
-        public async Task<HouseDto> Get(int id)
+        public async Task<HouseDto> Get(string id)
         {
             return await _houseAppService.GetHouse(id);
         }

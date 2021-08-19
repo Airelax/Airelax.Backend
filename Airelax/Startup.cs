@@ -3,6 +3,8 @@ using Airelax.Application;
 using Airelax.Defines;
 using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.Extensions;
+using Lazcat.Infrastructure.Map;
+using Lazcat.Infrastructure.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace Airelax
 {
@@ -55,9 +58,11 @@ namespace Airelax
             }
 
             services.AddByDependencyInjectionAttribute();
-            services.AddControllers();
+            services.AddControllersWithViews();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Airelax", Version = "v1"}); });
             services.AddAutoMapper(typeof(AutoMapperProfile));
+            services.AddHttpClient<GoogleGeocodingService>();
+            services.Configure<GoogleMapApiSetting>(Configuration.GetSection(nameof(GoogleMapApiSetting)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,12 +76,21 @@ namespace Airelax
             }
 
             app.UseHttpsRedirection();
+            app.UseSerilogRequestLogging();
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }

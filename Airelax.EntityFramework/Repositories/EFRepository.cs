@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Airelax.EntityFramework.Repositories
 {
-    [DependencyInjection(typeof(IRepository<,>))]
-    public class EFRepository<TId, TEntity>: IRepository<TId, TEntity> where TEntity : Entity<TId>
+    [DependencyInjection(typeof(IRepository))]
+    public class EFRepository : IRepository
     {
         private readonly AirelaxContext _context;
 
@@ -19,27 +19,27 @@ namespace Airelax.EntityFramework.Repositories
         {
             _context = context;
         }
-        public IQueryable<TEntity> GetAll()
+        public IQueryable<TEntity> GetAll<TId, TEntity>()where TEntity : Entity<TId>
         {
             return _context.Set<TEntity>();
         }
 
-        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> exp)
+        public async Task<TEntity> GetAsync<TId, TEntity>(Expression<Func<TEntity, bool>> exp)where TEntity : Entity<TId>
         {
             return await _context.Set<TEntity>().FirstOrDefaultAsync(exp);
         }
 
-        public async Task CreateAsync(TEntity item)
+        public async Task CreateAsync<TId, TEntity>(TEntity item)where TEntity : Entity<TId>
         {
             await _context.Set<TEntity>().AddAsync(item);
         }
 
-        public async Task UpdateAsync(TEntity item)
+        public async Task UpdateAsync<TId, TEntity>(TEntity item)where TEntity : Entity<TId>
         {
             _context.Set<TEntity>().Update(item);
         }
 
-        public async Task DeleteAsync(TEntity item)
+        public async Task DeleteAsync<TId, TEntity>(TEntity item)where TEntity : Entity<TId>
         {
             _context.Set<TEntity>().Remove(item);
         }
