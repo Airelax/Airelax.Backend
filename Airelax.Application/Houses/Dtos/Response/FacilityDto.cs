@@ -1,4 +1,6 @@
-﻿namespace Airelax.Application.Houses.Dtos.Response
+﻿using System;
+
+namespace Airelax.Application.Houses.Dtos.Response
 {
     public class FacilityDto
     {
