@@ -1,0 +1,117 @@
+﻿@{
+    @model IEnumerable<CommentViewModel>
+}
+@section topCSS{
+    <link href="~/css/Comments.css" rel="stylesheet" />
+}
+@foreach (var data in @Model)
+{
+}
+<div class="my-content">
+    @*@if (Model != null && Model.Any())
+        {*@
+    <div class="header">
+        <h2>成效</h2>
+        <div class="my-navbar"></div>
+    </div>
+    <div class="main">
+        <div class="column">
+            <div class="fraction-column">
+                <div class="fraction-container">
+                    <div class="scores">‒</div>
+                    <img src="../SHOP-69/image/coment-star.svg" />
+                </div>
+                <p>整體評分</p>
+            </div>
+
+            <div class="quantity-column">
+                @if (Model != null && Model.Any())
+                {
+                    <div class="scores">@string.Join("", Model.FirstOrDefault(com => com.HouseId == "001").Comments.Length)</div>
+                    <p>評價總數</p>
+                }
+                else
+                {
+                    <div class="scores"></div>
+                    <p>評價總數</p>
+                }
+            </div>
+        </div>
+        <div class="shop">
+            <div class="subMenu">
+                <select class="form-select" aria-label="Default select example">
+                    @*<option selected>所有房源</option>*@
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var house in Model)
+                        {
+                            <option selected>@($"{house.HouseName}({house.HouseState})")</option>
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                </select>
+                <div class="icon"></div>
+                <div class="iconMask"></div>
+            </div>
+            <div class="btn-group"
+                 role="group"
+                 aria-label="Basic radio toggle button group">
+                <label class="btn btn-outline-secondary">全部</label>
+            </div>
+        </div>
+
+        <div class="msg-title">
+            @if (Model != null && Model.Any())
+            {
+                <span class="tab-span">全部</span><h3>評價</h3>
+                <span>關於房源的最新評價</span>
+            }
+            else
+            {
+                <span class="tab-span">尚未有</span><h3>評價</h3>
+                <span>你的首筆評價會顯示在這裡。</span>
+            }
+        </div>
+        <div class="message">
+            @foreach (var msg in Model.FirstOrDefault(com => com.HouseId == "001")?.Comments)
+            {
+                <div class="msg-column">
+                    <div class="user">
+                        <div class="user-wrapper">
+                            <img src="https://picsum.photos/56/56/?random=1" />
+                            <div class="item">
+                                @*<span>@(msg.Comments)</span>*@
+                                <span>@string.Join("", (msg.AuthorName))</span>
+                                <span>@string.Join("", (msg.CommentTime.ToString("yyyy-MM-dd")))</span>
+                            </div>
+                        </div>
+                        <div class="fractionContainer">
+                            <div class="fraction">@string.Join("", (msg.Stars))</div>
+                            <img src="" />
+                        </div>
+                    </div>
+                    <div class="msg-content">
+                        <p>@string.Join("", (msg.Content))</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    const message = document.querySelector(".message");
+    const btnGroup = document.querySelector(".btn-group");
+    const labelData = ["5★", "4★", "3★", "2★", "1★"];
+    labelData.forEach((element, index) => {
+        const label = document.createElement("label");
+        label.classList = "btn btn-outline-secondary";
+        label.innerText = element;
+        btnGroup.append(label);
+    });
+</script>
+@{
+}

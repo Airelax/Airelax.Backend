@@ -8,6 +8,7 @@ using Airelax.Domain.Houses.Price;
 using Airelax.Domain.Members;
 using Lazcat.Infrastructure.Common;
 
+
 namespace Airelax.Domain.Houses
 {
     public class House : AggregateRoot<string>
