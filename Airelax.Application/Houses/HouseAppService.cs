@@ -35,6 +35,64 @@ namespace Airelax.Application.Houses
             _geocodingService = geocodingService;
         }
 
+        public async Task<IEnumerable<SimpleHouseDto>> Search(SearchInput input)
+        {
+            Check.CheckNull(input);
+            var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.Location);
+
+            Specification<House> specification = new InRangeLocationSpecification(geocodingInfo.Bounds.SouthWest, geocodingInfo.Bounds.Northeast);
+            var customerNumberSpecification = new MaxCustomerNumberSpecification(input.CustomerNumber);
+            specification = specification.And(customerNumberSpecification);
+
+            if (input.Checkin.HasValue && input.Checkout.HasValue)
+            {
+                var dateRange = GetDateRange(input.Checkin.Value, input.Checkout.Value);
+                var availableDateSpecification = new AvailableDateSpecification(dateRange);
+                specification = specification.And(availableDateSpecification);
+            }
+
+            var houses = _houseRepository.GetAll()
+                .Include(x => x.Member)
+                .ThenInclude(x => x.WishLists)
+                .Include(x => x.HouseLocation)
+                .Include(x => x.Comments)
+                .Include(x => x.HousePrice)
+                .Include(x => x.HouseCategory)
+                .Include(x => x.Spaces)
+                .Include(x => x.Photos)
+                .ToList();
+
+            var specificationResult = houses.Where(x => specification.IsSatisfy(x)).Skip((input.Page - 1) * 30).Take(30);
+
+            var results = specificationResult.Select(x =>
+            {
+                var simpleComment = new SimpleComment {Number = x.Comments?.Count ?? 0};
+                if (!x.Comments.IsNullOrEmpty())
+                {
+                    simpleComment.Stars = Math.Round(x.Comments?.Average(c => c.Star?.Total ?? 0) ?? 0, 1);
+                }
+
+                var simpleHouse = new SimpleHouse
+                {
+                    Id = x.Id,
+                    Picture = x.Photos?.Select(p => p.Image),
+                    WishList = x.Member?.WishLists,
+                    Location = x.HouseLocation,
+                    Price = x.HousePrice,
+                    Title = x.Title,
+                    Category = x.HouseCategory,
+                    Facilities = x.ProvideFacilities?.Intersect(Definition.SimpleFacilities),
+                    CustomerNumber = x.CustomerNumber,
+                    Space = x.Spaces?.Where(s => s.SpaceType == SpaceType.Bath || s.SpaceType == SpaceType.Bedroom),
+                    Comment = simpleComment
+                };
+                return simpleHouse;
+            });
+
+            var simpleHouseDtos = ConvertToSimpleHouseDtos(results);
+            return simpleHouseDtos;
+        }
+
         public async Task<string> CreateAsync(CreateHouseInput input)
         {
             var owner = await _repository.GetAsync<string, Member>(x => x.Id == input.MemberId);
@@ -43,6 +101,22 @@ namespace Airelax.Application.Houses
             house.HouseCategory = new HouseCategory(house.Id) {Category = input.Category};
             await UpdateHouse(house);
             return house.Id;
+        }
+
+        public async Task<bool> UpdateHouseCustomerInput(string id, UpdateCustomerInput input)
+        {
+            var house = await GetHouse(id);
+            house.CustomerNumber = input.CustomerNumber;
+            await UpdateHouse(house);
+            return true;
+        }
+
+        public async Task<bool> UpdateHousePriceInput(string id, UpdateHousePriceInput input)
+        {
+            var house = await GetHouse(id);
+            house.HousePrice = new HousePrice(house.Id) {PerNight = input.Price};
+            await UpdateHouse(house);
+            return true;
         }
 
         public async Task<bool> UpdateHouseCategory(string id, UpdateHouseCategoryInput input)
@@ -85,62 +159,6 @@ namespace Airelax.Application.Houses
             return true;
         }
 
-        public async Task<IEnumerable<SimpleHouseDto>> Search(SearchInput input)
-        {
-            Check.CheckNull(input);
-            var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.Location);
-
-            Specification<House> specification = new InRangeLocationSpecification(geocodingInfo.Bounds.SouthWest, geocodingInfo.Bounds.Northeast);
-            var customerNumberSpecification = new MaxCustomerNumberSpecification(input.CustomerNumber);
-            specification = specification.And(customerNumberSpecification);
-
-            if (input.Checkin.HasValue && input.Checkout.HasValue)
-            {
-                var dateRange = GetDateRange(input.Checkin.Value, input.Checkout.Value);
-                var availableDateSpecification = new AvailableDateSpecification(dateRange);
-                specification = specification.And(availableDateSpecification);
-            }
-
-            var houses = _houseRepository.GetAll()
-                .Include(x => x.Member)
-                .ThenInclude(x => x.WishLists)
-                .Include(x => x.HouseLocation)
-                .Include(x => x.Comments)
-                .Include(x => x.HousePrice)
-                .Include(x => x.HouseCategory)
-                .Include(x => x.Spaces)
-                .Include(x => x.Photos)
-                .ToList();
-
-            var specificationResult = houses.Where(x => specification.IsSatisfy(x)).Skip((input.Page - 1) * 30).Take(30);
-            var results = specificationResult.Select(x =>
-            {
-                var simpleComment = new SimpleComment {Number = x.Comments?.Count ?? 0};
-                if (!x.Comments.IsNullOrEmpty())
-                {
-                    simpleComment.Stars = Math.Round(x.Comments?.Average(c => c.Star?.Total ?? 0) ?? 0, 1);
-                }
-
-                var simpleHouse = new SimpleHouse
-                {
-                    Id = x.Id,
-                    Picture = x.Photos?.Select(p => p.Image),
-                    WishList = x.Member?.WishLists,
-                    Location = x.HouseLocation,
-                    Price = x.HousePrice,
-                    Title = x.Title,
-                    Category = x.HouseCategory,
-                    Facilities = x.ProvideFacilities?.Intersect(Definition.SimpleFacilities),
-                    CustomerNumber = x.CustomerNumber,
-                    Space = x.Spaces?.Where(s => s.SpaceType == SpaceType.Bath || s.SpaceType == SpaceType.Bedroom),
-                    Comment = simpleComment
-                };
-                return simpleHouse;
-            });
-
-            var simpleHouseDtos = ConvertToSimpleHouseDtos(results);
-            return simpleHouseDtos;
-        }
 
         private static IEnumerable<SimpleHouseDto> ConvertToSimpleHouseDtos(IEnumerable<SimpleHouse> results)
         {
@@ -214,22 +232,6 @@ namespace Airelax.Application.Houses
             }
 
             return dateRange;
-        }
-
-        public async Task<bool> UpdateHouseCustomerInput(string id, UpdateCustomerInput input)
-        {
-            var house = await GetHouse(id);
-            house.CustomerNumber = input.CustomerNumber;
-            await UpdateHouse(house);
-            return true;
-        }
-
-        public async Task<bool> UpdateHousePriceInput(string id, UpdateHousePriceInput input)
-        {
-            var house = await GetHouse(id);
-            house.HousePrice = new HousePrice(house.Id) {PerNight = input.Price};
-            await UpdateHouse(house);
-            return true;
         }
 
         private async Task<House> GetHouse(string id)
