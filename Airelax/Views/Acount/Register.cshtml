@@ -1,0 +1,207 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Airelax.Application.Acount.Dtos.Request.RegisterInput
+@{
+    ViewBag.Title = "註冊";
+    Layout = "_LayoutAcount";
+    //https://localhost:44314/Acount/Register
+}
+
+
+@using (Html.BeginForm("Register", "Acount", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <main class="form-signin">
+        <form>
+            <h5>完成註冊</h5>
+
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", id = "floatingFirstName", placeholder = "名字" })
+                @Html.LabelFor(m => m.FirstName, new { @for = "floatingFirstName" })
+            </div>
+
+
+            @*<div class="form-floating">
+                    <input type="text" class="form-control" id="floatingFirstName" placeholder="名字">
+                    <label for="floatingFirstName">名字</label>
+
+                </div>*@
+
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", id = "floatingLastName", placeholder = "姓氏" })
+                @Html.LabelFor(m => m.LastName, new { @for = "floatingLastName" })
+            </div>
+
+
+            <div class="order my-1">
+                <span style="white-space:pre"> </span><span class="txt">請確保與政府核發的身分證件上的姓名一致。</span>
+            </div>
+
+            <div class="form-floating">
+                @*@Html.TextBoxFor(m => m.Birthday, new { @class = "form-control", id = "floatingBirth", placeholder = "出生日期" })*@
+                @Html.EditorFor(m => m.Birthday, new { @class = "form-control col-12", id = "floatingBirth", placeholder = "出生日期" })
+                @Html.LabelFor(m => m.Birthday, new { @for = "floatingLastName" })
+            </div>
+
+            @*<div class="form-floating">
+                    <input type="date" class="form-control" id="floatingBirth" placeholder="出生日期">
+                    <label for="floatingBirth">出生日期</label>
+                </div>*@
+
+            <div class="order my-1">
+                <span style="white-space:pre"> </span><span class="txt">您必須年滿18歲，才能註冊帳號。 我們不會將您的生日透露給其他Airbnb用戶。</span>
+            </div>
+
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", id = "floatingEmail", placeholder = "電子郵件" })
+                @Html.LabelFor(m => m.Email, new { @for = "floatingEmail" })
+            </div>
+
+            @*<div class="form-floating">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="電子郵件">
+                    <label for="floatingInput">電子郵件</label>
+                </div>*@
+
+            <div class="order my-1">
+                <span style="white-space:pre"> </span><span class="txt">我們會透過電子郵件傳送預訂確認和收據給您。</span>
+            </div>
+
+            <div class="form-floating">
+                @Html.TextBoxFor(m => m.Password, new { @class = "form-control", id = "floatingPassword", placeholder = "密碼" })
+                @Html.LabelFor(m => m.Password, new { @for = "floatingPassword" })
+            </div>
+
+            @*<div class="form-floating">
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="密碼">
+                    <label for="floatingPassword">密碼</label>
+                </div>*@
+
+            <button class="w-100 btn signIn my-3" type="submit">同意並繼續</button>
+
+
+
+        </form>
+    </main>
+
+
+}
+
+
+@section Scripts{
+    <script>
+        //Today
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('floatingBirth').setAttribute('max', today);
+    </script>
+
+
+}
+
+@section CSS{
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+        }
+        textarea:focus, input:focus{
+
+            outline: none;
+
+        }
+        .form-signin {
+            width: 100%;
+
+            padding: 15px;
+            margin: auto;
+        }
+
+        .form-floating{
+            margin-top: 16px;
+        }
+        h5 {
+            font-size: 16px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        #floatingBirth{
+            width:100%;
+        }
+        .form-signin label {
+            color: #717171;
+        }
+
+        .signIn {
+            color: #ffffff;
+            background-color: rgb(227, 28, 95);
+        }
+        .signIn:hover{
+            color: #ffffff;
+            background-image: radial-gradient(circle at center center, rgb(255, 56, 92) 0%, rgb(230, 30, 77) 27.5%, rgb(227, 28, 95) 40%, rgb(215, 4, 102) 57.5%, rgb(189, 30, 89) 75%, rgb(189, 30, 89) 100%)
+        }
+        .signIn:active{
+            background-color: #ff385c;
+            transform: scale(.98);
+
+        }
+
+        .order {
+            height: 16px;
+            width: 100%;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            text-align: center;
+        }
+
+        .order .line {
+            display: inline-block;
+            width: 40%;
+            border-top: 1px solid #dddddd;
+        }
+
+        .order .txt {
+            color: #555;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        .social {
+            border: 2px solid #dddddd;
+        }
+
+        .social:hover {
+            border: 2px solid #222222;
+        }
+
+        @@media screen and (min-width:768px) {
+            .form-signin {
+                max-width: 488px;
+            }
+        }
+    </style>
+
+}
