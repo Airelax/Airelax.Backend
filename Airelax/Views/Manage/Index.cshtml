@@ -1,0 +1,723 @@
+﻿<div class="main">
+    <div class="title-div">
+        <h1>Test</h1>
+        <div class="mix">
+            <div class="sleep">
+                <a href="#basic" id="showStatus"><img src="~/icon/sleep.svg">已休眠</a>
+                <a href="#policy" id="showInstance"><img src="~/icon/instance-open.svg">已開啟即時預定功能</a>
+            </div>
+            <div class="view"><a href="#">預覽房源</a></div>
+        </div>
+    </div>
+    <div class="row border-bottom-0">
+        <div class="col-md-4 position-relative">
+            <div class="bar-div d-md-none">
+                <button class="barBtn" id="detailBtn">房源詳情</button>
+                <button class="barBtn" id="priceBtn">價格和可訂狀態</button>
+                <button class="barBtn" id="policyBtn">政策和規則</button>
+            </div>
+            <div class="d-none d-md-block sidebar">
+                <ul class="ps-0">
+                    <li class="mb-1">
+                        <button class="btn barBtn sideBtn active my-2" data-bs-toggle="collapse" data-bs-target="#room-collapse" id="detailBtn">
+                            房源詳情
+                        </button>
+                        <div class="collapse show collapsed" id="room-collapse">
+                            <ul>
+                                <li class="active"><a href="#photo" class="link-dark">相片</a></li>
+                                <li><a href="#basic" class="link-dark">房源基本資訊</a></li>
+                                <li><a href="#facility" class="link-dark">設備與服務</a>
+                                <li>
+                                <li><a href="#position" class="link-dark">位置</a></li>
+                                <li><a href="#hosuetype" class="link-dark">房源與房型</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mb-1">
+                        <button class="btn barBtn sideBtn my-2" data-bs-toggle="collapse" data-bs-target="#price-collapse" id="priceBtn">
+                            價格和可訂狀態
+                        </button>
+                        <div class="collapse collapsed" id="price-collapse">
+                            <ul>
+                                <li class="active"><a href="#price" class="link-dark">訂價</a></li>
+                                <li><a href="#discount" class="link-dark">折扣</a></li>
+                                <li><a href="#fee" class="link-dark">費用</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mb-1">
+                        <button class="btn barBtn sideBtn my-2" data-bs-toggle="collapse" data-bs-target="#policy-collapse" id="policyBtn">
+                            政策和規則
+                        </button>
+                        <div class="collapse collapsed" id="policy-collapse">
+                            <ul>
+                                <li class="active"><a href="#policy" class="link-dark">政策</a></li>
+                                <li><a href="#rule" class="link-dark">《房屋守則》</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <!-- 房源詳情 -->
+            <div class="detail-section">
+                <!-- 相片 -->
+                <div class="photo scroll" id="photo">
+                    <div class="up">
+                        <h2>相片</h2>
+                        <a href="#" class="editBtn photoBtn"
+                           data-bs-toggle="modal" data-bs-target="#photoModal"><span>(1張照片)</span>編輯<img src="~/icon/next.svg"></a>
+                    </div>
+                    <div class="pic">
+                        <div class="showPic"></div>
+                    </div>
+                </div>
+                <!-- 房源基本資料 -->
+                <div class="basic scroll" id="basic">
+                    <h2>房源基本資訊</h2>
+                    <div class="row title">
+                        <div class="col-10">
+                            <div class="subtitle">房源標題</div>
+                            <div class="content">未設定</div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" num="50">編輯</button>
+                            <span class="d-none">房源標題應該要能展現房源的獨特之處。</span>
+                        </div>
+                    </div>
+                    <div class="row description">
+                        <div class="col-10">
+                            <div class="subtitle">房源描述</div>
+                            <div class="content">未設定</div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" textarea="true" description="true">編輯</button>
+                            <span class="d-none">讓房客感受入住你房源會有的感覺，包括對方會喜歡入住此空間的原因。</span>
+                        </div>
+                    </div>
+                    <div class="row person">
+                        <div class="col-8">
+                            <div class="subtitle">房客人數</div>
+                        </div>
+                        <div class="col-4 control">
+                            <button class="minus">-</button><span>0</span><button class="plus">+</button>
+                        </div>
+                    </div>
+                    <div class="row status">
+                        <div class="col-10">
+                            <div class="subtitle">房源狀態</div>
+                            <div class="content">未設定</div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" radio="true" data='status'>編輯</button>
+                            <span class="d-none">選擇房源目前狀態。</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 設備與服務 -->
+                <div class="row facility mb-md-5 scroll" id="facility">
+                    <div class="col-10">
+                        <h2>設備與服務</h2>
+                        <div class="content">未設定</div>
+                    </div>
+                    <div class="col-2">
+                        <a href="#" class="editBtn facilityBtn" data-bs-toggle="modal" data-bs-target="#facilityeModal">編輯<img src="~/icon/next.svg"></a>
+                    </div>
+                </div>
+                <!-- 位置 -->
+                <div class="position scroll" id="position">
+                    <h2>位置</h2>
+                    <div class="row address">
+                        <div class="col-10">
+                            <div class="subtitle">地址</div>
+                            <div class="content">未設定</div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" address="true">編輯</button>
+                            <span class="d-none">提供正確地址以方便租客查詢。</span>
+                        </div>
+                    </div>
+                    <div class="row block-description">
+                        <div class="col-10">
+                            <div class="subtitle">街區描述</div>
+                            <div class="content">未設定</div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" textarea="true">編輯</button>
+                            <span class="d-none">分享街區的特點。</span>
+                        </div>
+                    </div>
+                    <div class="row traffic">
+                        <div class="col-10">
+                            <div class="subtitle">周邊交通</div>
+                            <div class="content">未設定</div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" textarea="true">編輯</button>
+                            <span class="d-none">讓房客知道在附近街區行動的方法，以及停車情況。</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 房源與房型 -->
+                <div class="type scroll" id="hosuetype">
+                    <h2>房源與房型</h2>
+                    <div class="row category">
+                        <div class="col-10">
+                            <div class="subtitle">房源類型</div>
+                            <div class="content">未設定</div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" select="true">編輯</button>
+                            <span class="d-none">選擇與你的房源最相似的住宿類型，讓房客的期望符合實際情況，並讓房源出現在正確的搜尋結果中。</span>
+                        </div>
+                    </div>
+                    <div class="row space">
+                        <div class="col-10">
+                            <div class="subtitle">房間與空間</div>
+                            <div class="content">未設定</div>
+                        </div>
+                        <div class="col-2">
+                            <a href="#" class="editBtn spaceBtn" data-bs-toggle="modal" data-bs-target="#spaceModal">編輯<img src="~/icon/next.svg"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 價格和可訂狀態 -->
+            <div class="price-section d-none">
+                <!-- 訂價 -->
+                <div class="price scroll" id="price">
+                    <h2>訂價</h2>
+                    <div class="row eachNight">
+                        <div class="col-10">
+                            <div class="subtitle">每晚價格</div>
+                            <div class="d-flex price-mix">
+                                <span>基礎價格：$&ensp;</span>
+                                <div class="content">0</div>
+                                <span>&ensp;TWD</span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" price="true">編輯</button>
+                            <span class="d-none">你須要為房源設定價格。</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 折扣 -->
+                <div class="discount scroll" id="discount">
+                    <h2>折扣</h2>
+                    <div class="row weekly">
+                        <div class="col-10">
+                            <div class="subtitle">週租折扣</div>
+                            <div class="d-flex price-mix">
+                                <div class="content">0</div>
+                                <span>%</span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" price="true" percent="true">編輯</button>
+                            <span class="d-none">7 晚以上的住宿將套用週租折扣。若你提供多種長租折扣，則會套用最長晚數的折扣。</span>
+                        </div>
+                    </div>
+                    <div class="row monthly">
+                        <div class="col-10">
+                            <div class="subtitle">月租折扣</div>
+                            <div class="d-flex price-mix">
+                                <div class="content">0</div>
+                                <span>%</span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" price="true" percent="true">編輯</button>
+                            <span class="d-none">7 28 晚以上的住宿將套用月租折扣。若你提供多種長租折扣，則會套用最長晚數的折扣。</span>
+                        </div>
+                    </div>
+                    <div class="row sweet">
+                        <div class="col-10">
+                            <div class="subtitle">甜甜價</div>
+                            <div class="d-flex price-mix">
+                                <span>基礎價格：$&ensp;</span>
+                                <div class="content">0</div>
+                                <span>&ensp;TWD</span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" price="true">編輯</button>
+                            <span class="d-none">此每晚價格會取代每週五和週六的基礎價格。若開啟智慧訂價功能，則不會套用此價格。</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 費用 -->
+                <div class="fee scroll" id="fee">
+                    <h2>費用</h2>
+                    <div class="row clean">
+                        <div class="col-10">
+                            <div class="subtitle">清潔費</div>
+                            <div class="d-flex price-mix">
+                                <span>$&ensp;</span>
+                                <div class="content">0</div>
+                                <span>&ensp;TWD</span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" price="true">編輯</button>
+                            <span class="d-none">此費用將適用於所有預訂。</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 政策和規則 -->
+            <div class="policy-rule-section d-none">
+                <!-- 政策 -->
+                <div class="policy scroll" id="policy">
+                    <h2>政策</h2>
+                    <div class="row unbooking">
+                        <div class="col-10">
+                            <div class="subtitle">退訂政策</div>
+                            <div class="content">未設定</div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" radio="true" data='unBooking'>編輯</button>
+                            <span class="d-none">選擇房客預訂房源的方式。</span>
+                        </div>
+                    </div>
+                    <div class="row instance">
+                        <div class="col-10">
+                            <div class="subtitle">即時預訂</div>
+                            <div class="content">未設定</div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" radio="true" data="instanceBooking">編輯</button>
+                            <span class="d-none">對於不到 28 晚的住宿，你可以選擇要提供房客哪些退訂選項。 至於 28 晚以上的住宿，房客預訂的房源一律適用長期住宿退訂政策。 </span>
+                        </div>
+                    </div>
+                    <div class="row check-in">
+                        <div class="col-10">
+                            <div class="subtitle">入住時段</div>
+                            <div class="content">選擇時間</div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" time="true">編輯</button>
+                            <span class="d-none">請自行決定租客的入住時間。</span>
+                        </div>
+                    </div>
+                    <div class="row check-out">
+                        <div class="col-10">
+                            <div class="subtitle">退房時間</div>
+                            <div class="content">選擇時間</div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" time="true">編輯</button>
+                            <span class="d-none">請自行決定租客的退房時間。</span>
+                        </div>
+                    </div>
+                    <div class="row deposit">
+                        <div class="col-10">
+                            <div class="subtitle">押金</div>
+                            <div class="d-flex price-mix">
+                                <span>$&ensp;</span>
+                                <div class="content">0</div>
+                                <span>&ensp;TWD</span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" price="true">編輯</button>
+                            <span class="d-none">如果你在房客退房後 14 天內提出損壞賠償申請，房客將承擔損壞賠償責任，上限為此金額。</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 房屋守則 -->
+                <div class="rule scroll" id="rule">
+                    <h2>《房屋守則》</h2>
+                    <div class="explain">房客在預訂之前必須同意你的《房屋守則》。</div>
+                    <div class="row children">
+                        <div class="col-8">
+                            <div class="subtitle">適合兒童（2-12 歲）</div>
+                            <div class="explain">如果房源內的物品設施可能會對兒童造成傷害，你可以讓房客知道此房源不適合兒童入住。房客仍然可以聯絡你來了解詳情。</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="btn-group btn-group-justified" data-toggle="buttons">
+                                <input type="radio" class="btn-check" name="children" id="noChildren" autocomplete="off">
+                                <label class="btn btn-outline-dark editBtn" for="noChildren">✕</label>
+                                <input type="radio" class="btn-check" name="children" id="yesChildren" autocomplete="off">
+                                <label class="btn btn-outline-dark editBtn ms-2" for="yesChildren">✓</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row infant">
+                        <div class="col-8">
+                            <div class="subtitle">適合嬰幼兒（2 歲以下）</div>
+                            <div class="explain">如果房源內的物品設施可能會對嬰幼兒造成傷害，你可以讓房客知道此房源不適合嬰幼兒入住。房客仍然可以聯絡你來了解詳情。</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="btn-group btn-group-justified" data-toggle="buttons">
+                                <input type="radio" class="btn-check" name="infant" id="noInfant" autocomplete="off">
+                                <label class="btn btn-outline-dark editBtn" for="noInfant">✕</label>
+                                <input type="radio" class="btn-check" name="infant" id="yesInfant" autocomplete="off">
+                                <label class="btn btn-outline-dark editBtn ms-2" for="yesInfant">✓</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pet">
+                        <div class="col-8">
+                            <div class="subtitle">可攜帶寵物</div>
+                            <div class="subtitle-explain">你可以限制房客攜帶寵物，但在合理情況下，仍須接受可能攜帶輔助性動物的房客。</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="btn-group btn-group-justified" data-toggle="buttons">
+                                <input type="radio" class="btn-check" name="pet" id="noPet" autocomplete="off">
+                                <label class="btn btn-outline-dark editBtn" for="noPet">✕</label>
+                                <input type="radio" class="btn-check" name="pet" id="yesPet" autocomplete="off">
+                                <label class="btn btn-outline-dark editBtn ms-2" for="yesPet">✓</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row smoke">
+                        <div class="col-8">
+                            <div class="subtitle">允許吸煙</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="btn-group btn-group-justified" data-toggle="buttons">
+                                <input type="radio" class="btn-check" name="smoke" id="noSmoke" autocomplete="off">
+                                <label class="btn btn-outline-dark editBtn" for="noSmoke">✕</label>
+                                <input type="radio" class="btn-check" name="smoke" id="yesSmoke" autocomplete="off">
+                                <label class="btn btn-outline-dark editBtn ms-2" for="yesSmoke">✓</label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row event">
+                        <div class="col-8">
+                            <div class="subtitle">允許舉辦活動</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="btn-group btn-group-justified" data-toggle="buttons">
+                                <input type="radio" class="btn-check" name="event" id="noEvent" autocomplete="off">
+                                <label class="btn btn-outline-dark editBtn" for="noEvent">✕</label>
+                                <input type="radio" class="btn-check" name="event" id="yesEvent" autocomplete="off">
+                                <label class="btn btn-outline-dark editBtn ms-2" for="yesEvent">✓</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row others">
+                        <div class="col-10">
+                            <div class="subtitle">其他守則</div>
+                            <div class="content">未設定</div>
+                        </div>
+                        <div class="col-2">
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" textarea="true">編輯</button>
+                            <span class="d-none">你可以加入安全相關要求、共用空間守則、社區規定等內容。</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 共用組件 -->
+<template id="common-component">
+    <style>
+        .btn {
+            background-color: #fff;
+            border: none;
+        }
+
+        .container {
+            margin-top: 1rem;
+            border: 1px solid #717171;
+            border-radius: 18px;
+        }
+
+        .up {
+            padding: 1.5rem;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .top h4 {
+                margin: 0;
+                font-size: 1.2rem;
+            }
+
+            .top button {
+                font-size: 1.1rem;
+            }
+
+        span {
+            font-size: 0.8rem;
+            color: #717171;
+        }
+
+        .com-description {
+            display: block;
+            width: 95%;
+        }
+
+        .com-input {
+            margin-top: 1.5rem;
+        }
+
+            .select select,
+            .address input,
+            .description textarea,
+            .com-input .time,
+            .com-input textarea,
+            .com-input input {
+                font-size: 1.2rem;
+                padding: 0.7rem 0.2rem;
+                width: 95%;
+                border-radius: 8px;
+                border: 1px solid #717171;
+                outline: none;
+            }
+
+                .com-input input.limit {
+                    border: 3px solid red;
+                }
+
+            .com-input p {
+                margin: 0;
+                margin-top: 0.2rem;
+                color: #717171;
+            }
+
+        .save {
+            width: 100%;
+            height: 3.5rem;
+            border-top: 1px solid #717171;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cancel {
+            cursor: pointer;
+        }
+
+        .save .cancel {
+            text-decoration: underline;
+            font-size: 1rem;
+            margin-left: 1.5rem;
+        }
+
+        .save .saveBtn {
+            color: #fff;
+            background-color: #000;
+            padding: .5rem .8rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            margin-right: 2rem;
+            cursor: pointer;
+        }
+
+            .save .saveBtn.disabled {
+                background-color: rgba(0, 0, 0, 0.459);
+                color: #fff;
+            }
+
+        .com-price {
+            display: flex;
+            align-items: center;
+        }
+
+            .com-price span,
+            .com-price p {
+                font-size: 1.5rem;
+                margin-right: 0.5rem;
+                display: none;
+            }
+
+            .com-price span {
+                margin-left: 0.5rem;
+            }
+
+        .list {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+            .list input {
+                margin: 0;
+                margin-top: 0.3rem;
+                width: 10%;
+                cursor: pointer;
+            }
+
+            .list label {
+                width: 100%;
+                cursor: pointer;
+            }
+
+                .list label img {
+                    width: .7rem;
+                    margin-right: 0.2rem;
+                }
+
+            .list span {
+                font-size: 1rem;
+                color: #000;
+                font-weight: 700;
+                cursor: pointer;
+            }
+
+            .list p {
+                font-size: .9rem;
+                cursor: pointer;
+            }
+
+        .com-input .radio,
+        .com-input .time,
+        .com-input textarea {
+            display: none;
+        }
+
+        .description {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .description textarea {
+                height: 150px;
+            }
+
+            .description h4 {
+                margin-bottom: 0.3rem;
+                padding-top: 1rem;
+                font-size: 1.2rem;
+                font-weight: 700;
+                border-top: 1px solid #717171;
+            }
+
+            .description span {
+                margin-bottom: 1rem;
+            }
+
+        .select,
+        .address {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.2rem;
+        }
+
+            .select span,
+            .address span {
+                font-size: 1rem;
+                margin-bottom: 0.3rem;
+                font-weight: 700;
+            }
+    </style>
+
+    <form action="#">
+        <div class="container">
+            <div class="up">
+                <div class="top">
+                    <h4 class="com-title"></h4>
+                    <button class="btn cancel">✕</button>
+                </div>
+                <span class="com-description"></span>
+                <div class="com-input">
+                    <div class="com-price"><p>$</p><input type="text"><span>%</span></div>
+                    <p class="com-length"><span class="start">0</span>/<span class="end"></span></p>
+                    <textarea style="height: 150px"></textarea>
+                    <input type="time" class="time">
+                    <div class="radio"></div>
+                </div>
+            </div>
+            <div class="save">
+                <button class="btn cancel">取消</button>
+                <button class="btn saveBtn" type="submit">儲存</button>
+            </div>
+        </div>
+    </form>
+</template>
+
+<!-- 設備與服務的modal -->
+<div class="modal fade" id="facilityeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="facilityLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-fullscreen-md-down modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bolder" id="facilityLabel">設備與服務</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="facilityBody"></div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-dark" id="facility-save" data-bs-dismiss="modal">儲存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 房間與空間的modal -->
+<div class="modal fade" id="spaceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="spaceLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-fullscreen-md-down modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bolder" id="spaceLabel">房間和空間</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="spaceBody"></div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-dark" id="space-save" data-bs-dismiss="modal">儲存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 相片的modal -->
+<div class="modal fade" id="photoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="photoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-fullscreen-md-down modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bolder" id="photoLabel">相片</h5>
+            </div>
+            <div class="modal-body" id="photoBody">
+                <div class="cover">
+                    <h2>封面相片</h2>
+                    <span>您的封面相片是房客對房源的第一印象。</span>
+                    <button class="btn border-dark fw-bolder" data-bs-toggle="modal" data-bs-target="#coverModal">更換相片</button>
+                    <div id="coverPicture"></div>
+                </div>
+                <div class="upload">
+                    <h2>所有相片</h2>
+                    <span>拖放相片即可更改順序。</span>
+                    <label class="btn border-dark fw-bolder">
+                        <input id="upload_img" style="display:none;" type="file">上傳相片
+                    </label>
+                    <div id="showPhoto" class="drag-sort-enable"></div>
+                    <label id="uploadDiv" for="upload_img">
+                        <img src="~/icon/upload.svg">
+                        <p>新增更多</p>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-dark" id="photo-save" data-bs-dismiss="modal">儲存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cover的Modal -->
+<div class="modal fade" id="coverModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="coverLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-fullscreen-md-down modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bolder" id="coverLabel">選擇封面相片</h5>
+            </div>
+            <div class="modal-body" id="coverBody"></div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-dark" id="cover-save" data-bs-dismiss="modal">儲存</button>
+            </div>
+        </div>
+    </div>
+</div>
