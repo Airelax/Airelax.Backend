@@ -1,24 +1,41 @@
 <template>
   <div class="row top">
-    <div class="col-md-6 col-12 position-relative ">
-      <div class="back" v-if="$store.state.fullWidth<768">
-        <a href="#"><img src="@/assets/image/Room/icon/back.svg"></a>
-        <div class="date"> {{ StartDate }}9月1號 - {{ EndDate }}9月2號 · {{ TravelerCount }}2位房客
+    <div class="col-md-6 col-12 position-relative">
+      <div class="back" v-if="$store.state.fullWidth < 768">
+        <a href="#"><img src="@/assets/image/Room/icon/back.svg" /></a>
+        <div class="date">
+          {{ StartDate }}9月1號 - {{ EndDate }}9月2號 ·
+          {{ TravelerCount }}2位房客
           <span class="between">|</span>
-          <a href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom"><img src="@/assets/image/Room/icon/setting.svg"></a></div>
+          <a
+            href="#"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasBottom"
+            aria-controls="offcanvasBottom"
+            ><img src="@/assets/image/Room/icon/setting.svg"
+          /></a>
+        </div>
       </div>
       <div class="px-4 pt-md-3">
-        <div class="text-start m-md-4 pt-3 ">
+        <div class="text-start m-md-4 pt-3">
           <p>
-            {{ RoomCount }}300多間住宿 · {{ StartDate }}9月1號 - {{ EndDate }}9月2號 ·
-            {{ TravelerCount }}2位房客
+            {{ RoomCount }}300多間住宿 · {{ StartDate }}9月1號 -
+            {{ EndDate }}9月2號 · {{ TravelerCount }}2位房客
           </p>
           <h4>{{ City }}台北,{{ Distinct }}中和區</h4>
           <div class="d-none d-md-block">
             <div class="d-inline-block">
               <button
                 type="button"
-                class=" filters border border-1 bg-white p-2 text-dark btn-white rounded-pill "
+                class="
+                  filters
+                  border border-1
+                  bg-white
+                  p-2
+                  text-dark
+                  btn-white
+                  rounded-pill
+                "
                 data-bs-toggle="dropdown"
                 data-bs-auto-close="outside"
               >
@@ -59,7 +76,15 @@
             <div class="d-inline-block">
               <button
                 type="button"
-                class=" filters border border-1 bg-white p-2 text-dark btn-white rounded-pill "
+                class="
+                  filters
+                  border border-1
+                  bg-white
+                  p-2
+                  text-dark
+                  btn-white
+                  rounded-pill
+                "
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
                 data-bs-auto-close="outside"
@@ -209,7 +234,9 @@
               >
                 更多篩選條件
               </button>
-              <div class="more border rounded position-absolute text-start more">
+              <div
+                class="more border rounded position-absolute text-start more"
+              >
                 <div
                   class="modal fade"
                   id="exampleModal"
@@ -269,7 +296,9 @@
                             <a href="#" class="text-dark">了解更多</a>
                             <h5>無障礙設施</h5>
                             <p>尋找符合您行動需求的住處</p>
-                            <a href="#" class="text-dark">選擇住處的無障礙設施</a>
+                            <a href="#" class="text-dark"
+                              >選擇住處的無障礙設施</a
+                            >
                           </div>
                           <div class="col-6">
                             <div class="form-check form-switch">
@@ -288,29 +317,53 @@
                           </div>
                         </div>
                         <hr />
-                          <div class="row px-0 pb-3 m-4">
-                            <h4 class="fw-bolder mb-4">設備與服務</h4>
-                            <div class="row">
-                              <div class="col-6" v-for="(item, index) in optionlist[0]" :key="index">
-                                <input type="checkbox" :id="item.id" v-model="tick" />
-                                <label :for="item.id" class="ms-3">{{ item.title }}
-                                </label>
-                              </div>
-                              <div class="collapse" id="collapseExample">
-                                <div class="empty row">
-                                  <div class="col-6" v-for="(item, index) in optionlist[1]" :key="index">
-                                    <input type="checkbox" :id="item.id" v-model="tick" />
-                                    <label :for="item.id" class="ms-3">{{ item.title }}
-                                    </label>
-                                  </div>
+                        <div class="row px-0 pb-3 m-4">
+                          <h4 class="fw-bolder mb-4">設備與服務</h4>
+                          <div class="row">
+                            <div
+                              class="col-6"
+                              v-for="(item, index) in optionlist[0]"
+                              :key="index"
+                            >
+                              <input
+                                type="checkbox"
+                                :id="item.id"
+                                v-model="tick"
+                              />
+                              <label :for="item.id" class="ms-3"
+                                >{{ item.title }}
+                              </label>
+                            </div>
+                            <div class="collapse" id="collapseExample">
+                              <div class="empty row">
+                                <div
+                                  class="col-6"
+                                  v-for="(item, index) in optionlist[1]"
+                                  :key="index"
+                                >
+                                  <input
+                                    type="checkbox"
+                                    :id="item.id"
+                                    v-model="tick"
+                                  />
+                                  <label :for="item.id" class="ms-3"
+                                    >{{ item.title }}
+                                  </label>
                                 </div>
                               </div>
-                              <a class="mt-3 text-dark fs-6" data-bs-toggle="collapse" href="#collapseExample" role="button"
-                                aria-expanded="false" aria-controls="collapseExample">
-                                點擊展開
-                              </a>
                             </div>
+                            <a
+                              class="mt-3 text-dark fs-6"
+                              data-bs-toggle="collapse"
+                              href="#collapseExample"
+                              role="button"
+                              aria-expanded="false"
+                              aria-controls="collapseExample"
+                            >
+                              點擊展開
+                            </a>
                           </div>
+                        </div>
                         <hr />
                         <div class="row px-0 pb-3 m-4">
                           <h4 class="fw-bolder">設備</h4>
@@ -514,13 +567,17 @@
           </div>
           <div class="onlybtn">
             <button
-              class="filters
-                  border border-2
-                  bg-white
-                  py-2 px-3 mb-3
-                  text-dark
-                  btn-white
-                  rounded-pill"
+              class="
+                filters
+                border border-2
+                bg-white
+                py-2
+                px-3
+                mb-3
+                text-dark
+                btn-white
+                rounded-pill
+              "
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasBottom"
@@ -528,43 +585,47 @@
             >
               篩選條件
             </button>
-                <div
-                  class="offcanvas offcanvas-bottom h-100"
-                  tabindex="-1"
-                  id="offcanvasBottom"
-                  aria-labelledby="offcanvasBottomLabel"
+            <div
+              class="offcanvas offcanvas-bottom h-100"
+              tabindex="-1"
+              id="offcanvasBottom"
+              aria-labelledby="offcanvasBottomLabel"
+            >
+              <div class="offcanvas-header">
+                <button
+                  type="button"
+                  class="btn-close text-reset"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+                <h5 class="offcanvas-title ps-3" id="offcanvasBottomLabel">
+                  篩選條件
+                </h5>
+                <button
+                  type="button"
+                  class="btn btn btn-link text-dark"
+                  @click="reset"
                 >
-                  <div class="offcanvas-header">
-                    <button
-                      type="button"
-                      class="btn-close text-reset"
-                      data-bs-dismiss="offcanvas"
-                      aria-label="Close"
-                    ></button>
-                    <h5 class="offcanvas-title ps-3" id="offcanvasBottomLabel">
-                      篩選條件
-                    </h5>
-                    <button type="button" class="btn btn btn-link text-dark" @click="reset">
-                      清除
-                    </button>
-                  </div>
-                  <div class="offcanvas-body small">
-                    <div class="d-inline-block">
-                      <h6 class="fw-bold">房源類型</h6>
-                      <div class="mt-3">
-                        <div
-                          v-for="(item, index) in TypeOfPlace"
-                          :key="index"
-                          class="type_place"
-                        >
-                        <div class="row">
-                          <div class="col-10">
+                  清除
+                </button>
+              </div>
+              <div class="offcanvas-body small">
+                <div class="d-inline-block">
+                  <h6 class="fw-bold">房源類型</h6>
+                  <div class="mt-3">
+                    <div
+                      v-for="(item, index) in TypeOfPlace"
+                      :key="index"
+                      class="type_place"
+                    >
+                      <div class="row">
+                        <div class="col-10">
                           <label for="item.id">
                             <h6>{{ item.title }}</h6>
                             <p>{{ item.text }}</p>
                           </label>
-                          </div>
-                          <div class="col-1">
+                        </div>
+                        <div class="col-1">
                           <input
                             type="checkbox"
                             id="item.id"
@@ -572,292 +633,385 @@
                             class=""
                             v-model="tick"
                           />
-                          </div>
-                          </div>
                         </div>
                       </div>
-                    </div>
-                    <hr />
-                    <div class="d-inline-block w-100">
-                      <h6 class="fw-bold">即時預訂</h6>
-                      <div>
-                        <p class="d-inline-block">
-                          無需等待房東批准即可預訂的房源
-                        </p>
-                        <div class="d-inline-block form-check form-switch">
-                          <input
-                            class="form-check-input checkbtn"
-                            type="checkbox"
-                            id="flexSwitchCheckDefault"
-                            v-model="tax"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <hr />
-                    <div class="d-inline-block w-100">
-                      <h6 class="fw-bold">價格範圍</h6>
-                      <div class="mt-3">
-                        <h6>平均每晚價格為{{Price_Day}}TWD</h6>
-                        <div>
-                          <!-- 還沒寫價格分布圖表 -->
-                        </div>
-                        <div
-                          class="
-                            minPrice
-                            d-inline-block
-                            border border-secondary
-                            rounded
-                            px-5
-                            py-3
-                          "
-                        >
-                          <p>最低價格</p>
-                          <div id="minPrice">{{ MinPrice }}</div>
-                        </div>
-                        <span>-</span>
-                        <div
-                          class="
-                            maxPrice
-                            d-inline-block
-                            border border-secondary
-                            rounded
-                            px-5
-                            py-3
-                          "
-                        >
-                          <p>最高價格</p>
-                          <div id="maxPrice ">{{ MaxPrice }}</div>
-                        </div>
-                      </div>
-                    </div>
-                    <hr />
-                    <div class="d-inline-block w-100">
-                      <h6 class="fw-bold">臥室和床鋪</h6>
-                      <div class="mt-3 row">
-                        <div
-                          class="d-flex justify-content-between bed"
-                          v-for="(item, index) in array"
-                          :key="index"
-                        >
-                          <p>{{ item.title }}</p>
-                          <div class="col.2 ">
-                            <button
-                              class="flex-1 rounded-circle border btn_"
-                              @click="item.count--"
-                              v-if="item.count > 0"
-                            >
-                              -
-                            </button>
-                            <span mb-2>{{ item.count }}</span>
-                            <button
-                              class="flex-1 rounded-circle btnAdd border"
-                              @click="item.count++"
-                            >
-                              +
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <hr />
-                    <div class="d-inline-block w-100">
-                      <h6 class="fw-bold">退訂彈性</h6>
-                      <div class="mt-3">
-                        <p class="d-inline-block">僅顯示提供免費退訂的住宿</p>
-                        <div class="d-inline-block form-check form-switch">
-                          <input
-                            class="form-check-input checkbtn ms-5"
-                            type="checkbox"
-                            id="flexSwitchCheckDefault"
-                            v-model="tax"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <hr />
-                    <div class="d-inline-block w-100">
-                      <h6 class="fw-bold">更多選項</h6>
-                      <div class="mt-3">
-                        <h6>超讚房東</h6>
-                        <p class="d-inline-block">向獲得認可的房東租住房源</p>
-                        <div class="d-inline-block form-check form-switch">
-                          <input
-                            class="form-check-input checkbtn ms-5"
-                            type="checkbox"
-                            id="flexSwitchCheckDefault"
-                            v-model="tax"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <hr />
-                    <div class="d-inline-block">
-                      <h6 class="fw-bold">設備與服務</h6>
-                      <div class="mt-3">
-                          <div class="collapse" id="collapseExample">
-                                <div class="empty row">
-                                  <div  v-for="(item, index) in optionlist[0]" :key="index">
-                                    <input type="checkbox" :id="item.id" v-model="tick" />
-                                    <label :for="item.id" class="ms-3">{{ item.title }}
-                                    </label>
-                                  </div>
-                                </div>
-                              </div>
-                          <div class="collapse" id="collapseExample">
-                                <div class="empty row">
-                                  <div v-for="(item, index) in optionlist[1]" :key="index">
-                                    <input type="checkbox" :id="item.id" v-model="tick" />
-                                    <label :for="item.id" class="ms-3">{{ item.title }}
-                                    </label>
-                                  </div>
-                                </div>
-                              </div>
-                          <a class="mt-3 text-dark fs-6" data-bs-toggle="collapse" href="#collapseExample" role="button"
-                            aria-expanded="false" aria-controls="collapseExample">
-                            點擊展開
-                          </a>
-                      </div>
-                    </div>
-                    <hr/>
-                    <div class="d-inline-block">
-                      <h6 class="fw-bold">設備</h6>
-                      <div class="mt-3">
-                          <div class="collapse" id="collapseExample">
-                                <div class="empty row">
-                                  <div  v-for="(item, index) in AmenitiesList" :key="index">
-                                    <input type="checkbox" :id="item.id" v-model="tick" />
-                                    <label :for="item.id" class="ms-3">{{ item.title }}
-                                    </label>
-                                  </div>
-                                </div>
-                              </div>
-                          <a class="mt-3 text-dark fs-6" data-bs-toggle="collapse" href="#collapseExample" role="button"
-                            aria-expanded="false" aria-controls="collapseExample">
-                            點擊展開
-                          </a>
-                      </div>
-                    </div>
-                    <hr/>
-                    <div class="d-inline-block">
-                      <h6 class="fw-bold">住宿類型</h6>
-                      <div class="mt-3">
-                          <div class="collapse" id="collapseExample">
-                                <div class="empty row">
-                                  <div  v-for="(item, index) in PropertyTypeList[0]" :key="index">
-                                    <input type="checkbox" :id="item.id" v-model="tick" />
-                                    <label :for="item.id" class="ms-3">{{ item.title }}
-                                    </label>
-                                  </div>
-                                </div>
-                              </div>
-                          <a class="mt-3 text-dark fs-6" data-bs-toggle="collapse" href="#collapseExample" role="button"
-                            aria-expanded="false" aria-controls="collapseExample">
-                            點擊展開
-                          </a>
-                      </div>
-                    </div>
-                    <hr/>
-                    <div class="d-inline-block">
-                      <h6 class="fw-bold">特色住宿</h6>
-                      <div class="mt-3">
-                          <div class="collapse" id="collapseExample">
-                                <div class="empty row">
-                                  <div  v-for="(item, index) in UniqueStaysList[0]" :key="index">
-                                    <input type="checkbox" :id="item.id" v-model="tick" />
-                                    <label :for="item.id" class="ms-3">{{ item.title }}
-                                    </label>
-                                  </div>
-                                </div>
-                              </div>
-                          <a class="mt-3 text-dark fs-6" data-bs-toggle="collapse" href="#collapseExample" role="button"
-                            aria-expanded="false" aria-controls="collapseExample">
-                            點擊展開
-                          </a>
-                      </div>
-                    </div>
-                    <hr/>
-                    <div class="d-inline-block">
-                      <h6 class="fw-bold">房屋守則</h6>
-                      <div class="mt-3">
-                          <div
-                              v-for="(item, index) in HouseRulesList"
-                              :key="index"
-                            >
-                              <input
-                                type="checkbox"
-                                :id="item.id"
-                                v-model="tick"
-                              />
-                              <label :for="item.id">{{ item.title }} </label>
-                            </div>
-                      </div>
-                    </div>
-                    <hr/>
-                    <div class="d-inline-block">
-                      <h6 class="fw-bold">房東語言</h6>
-                      <div class="mt-3">
-                          <div class="collapse" id="collapseExample">
-                                <div class="empty row">
-                                  <div  v-for="(item, index) in HostLanguageList[0]" :key="index">
-                                    <input type="checkbox" :id="item.id" v-model="tick" />
-                                    <label :for="item.id" class="ms-3">{{ item.title }}
-                                    </label>
-                                  </div>
-                                </div>
-                              </div>
-                          <a class="mt-3 text-dark fs-6" data-bs-toggle="collapse" href="#collapseExample" role="button"
-                            aria-expanded="false" aria-controls="collapseExample">
-                            點擊展開
-                          </a>
-                      </div>
-                    </div>
-                    <div class="sticky-top">
-                      <hr>
-                      <button type="button" class="btn btn-dark w-100">顯示結果</button>
                     </div>
                   </div>
                 </div>
+                <hr />
+                <div class="d-inline-block w-100">
+                  <h6 class="fw-bold">即時預訂</h6>
+                  <div>
+                    <p class="d-inline-block">無需等待房東批准即可預訂的房源</p>
+                    <div class="d-inline-block form-check form-switch">
+                      <input
+                        class="form-check-input checkbtn"
+                        type="checkbox"
+                        id="flexSwitchCheckDefault"
+                        v-model="tax"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="d-inline-block w-100">
+                  <h6 class="fw-bold">價格範圍</h6>
+                  <div class="mt-3">
+                    <h6>平均每晚價格為{{ Price_Day }}TWD</h6>
+                    <div>
+                      <!-- 還沒寫價格分布圖表 -->
+                    </div>
+                    <div
+                      class="
+                        minPrice
+                        d-inline-block
+                        border border-secondary
+                        rounded
+                        px-5
+                        py-3
+                      "
+                    >
+                      <p>最低價格</p>
+                      <div id="minPrice">{{ MinPrice }}</div>
+                    </div>
+                    <span>-</span>
+                    <div
+                      class="
+                        maxPrice
+                        d-inline-block
+                        border border-secondary
+                        rounded
+                        px-5
+                        py-3
+                      "
+                    >
+                      <p>最高價格</p>
+                      <div id="maxPrice ">{{ MaxPrice }}</div>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="d-inline-block w-100">
+                  <h6 class="fw-bold">臥室和床鋪</h6>
+                  <div class="mt-3 row">
+                    <div
+                      class="d-flex justify-content-between bed"
+                      v-for="(item, index) in array"
+                      :key="index"
+                    >
+                      <p>{{ item.title }}</p>
+                      <div class="col.2">
+                        <button
+                          class="flex-1 rounded-circle border btn_"
+                          @click="item.count--"
+                          v-if="item.count > 0"
+                        >
+                          -
+                        </button>
+                        <span mb-2>{{ item.count }}</span>
+                        <button
+                          class="flex-1 rounded-circle btnAdd border"
+                          @click="item.count++"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="d-inline-block w-100">
+                  <h6 class="fw-bold">退訂彈性</h6>
+                  <div class="mt-3">
+                    <p class="d-inline-block">僅顯示提供免費退訂的住宿</p>
+                    <div class="d-inline-block form-check form-switch">
+                      <input
+                        class="form-check-input checkbtn ms-5"
+                        type="checkbox"
+                        id="flexSwitchCheckDefault"
+                        v-model="tax"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="d-inline-block w-100">
+                  <h6 class="fw-bold">更多選項</h6>
+                  <div class="mt-3">
+                    <h6>超讚房東</h6>
+                    <p class="d-inline-block">向獲得認可的房東租住房源</p>
+                    <div class="d-inline-block form-check form-switch">
+                      <input
+                        class="form-check-input checkbtn ms-5"
+                        type="checkbox"
+                        id="flexSwitchCheckDefault"
+                        v-model="tax"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="d-inline-block">
+                  <h6 class="fw-bold">設備與服務</h6>
+                  <div class="mt-3">
+                    <div class="collapse" id="collapseExample">
+                      <div class="empty row">
+                        <div
+                          v-for="(item, index) in optionlist[0]"
+                          :key="index"
+                        >
+                          <input type="checkbox" :id="item.id" v-model="tick" />
+                          <label :for="item.id" class="ms-3"
+                            >{{ item.title }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="collapse" id="collapseExample">
+                      <div class="empty row">
+                        <div
+                          v-for="(item, index) in optionlist[1]"
+                          :key="index"
+                        >
+                          <input type="checkbox" :id="item.id" v-model="tick" />
+                          <label :for="item.id" class="ms-3"
+                            >{{ item.title }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <a
+                      class="mt-3 text-dark fs-6"
+                      data-bs-toggle="collapse"
+                      href="#collapseExample"
+                      role="button"
+                      aria-expanded="false"
+                      aria-controls="collapseExample"
+                    >
+                      點擊展開
+                    </a>
+                  </div>
+                </div>
+                <hr />
+                <div class="d-inline-block">
+                  <h6 class="fw-bold">設備</h6>
+                  <div class="mt-3">
+                    <div class="collapse" id="collapseExample">
+                      <div class="empty row">
+                        <div
+                          v-for="(item, index) in AmenitiesList"
+                          :key="index"
+                        >
+                          <input type="checkbox" :id="item.id" v-model="tick" />
+                          <label :for="item.id" class="ms-3"
+                            >{{ item.title }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <a
+                      class="mt-3 text-dark fs-6"
+                      data-bs-toggle="collapse"
+                      href="#collapseExample"
+                      role="button"
+                      aria-expanded="false"
+                      aria-controls="collapseExample"
+                    >
+                      點擊展開
+                    </a>
+                  </div>
+                </div>
+                <hr />
+                <div class="d-inline-block">
+                  <h6 class="fw-bold">住宿類型</h6>
+                  <div class="mt-3">
+                    <div class="collapse" id="collapseExample">
+                      <div class="empty row">
+                        <div
+                          v-for="(item, index) in PropertyTypeList[0]"
+                          :key="index"
+                        >
+                          <input type="checkbox" :id="item.id" v-model="tick" />
+                          <label :for="item.id" class="ms-3"
+                            >{{ item.title }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <a
+                      class="mt-3 text-dark fs-6"
+                      data-bs-toggle="collapse"
+                      href="#collapseExample"
+                      role="button"
+                      aria-expanded="false"
+                      aria-controls="collapseExample"
+                    >
+                      點擊展開
+                    </a>
+                  </div>
+                </div>
+                <hr />
+                <div class="d-inline-block">
+                  <h6 class="fw-bold">特色住宿</h6>
+                  <div class="mt-3">
+                    <div class="collapse" id="collapseExample">
+                      <div class="empty row">
+                        <div
+                          v-for="(item, index) in UniqueStaysList[0]"
+                          :key="index"
+                        >
+                          <input type="checkbox" :id="item.id" v-model="tick" />
+                          <label :for="item.id" class="ms-3"
+                            >{{ item.title }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <a
+                      class="mt-3 text-dark fs-6"
+                      data-bs-toggle="collapse"
+                      href="#collapseExample"
+                      role="button"
+                      aria-expanded="false"
+                      aria-controls="collapseExample"
+                    >
+                      點擊展開
+                    </a>
+                  </div>
+                </div>
+                <hr />
+                <div class="d-inline-block">
+                  <h6 class="fw-bold">房屋守則</h6>
+                  <div class="mt-3">
+                    <div v-for="(item, index) in HouseRulesList" :key="index">
+                      <input type="checkbox" :id="item.id" v-model="tick" />
+                      <label :for="item.id">{{ item.title }} </label>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="d-inline-block">
+                  <h6 class="fw-bold">房東語言</h6>
+                  <div class="mt-3">
+                    <div class="collapse" id="collapseExample">
+                      <div class="empty row">
+                        <div
+                          v-for="(item, index) in HostLanguageList[0]"
+                          :key="index"
+                        >
+                          <input type="checkbox" :id="item.id" v-model="tick" />
+                          <label :for="item.id" class="ms-3"
+                            >{{ item.title }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <a
+                      class="mt-3 text-dark fs-6"
+                      data-bs-toggle="collapse"
+                      href="#collapseExample"
+                      role="button"
+                      aria-expanded="false"
+                      aria-controls="collapseExample"
+                    >
+                      點擊展開
+                    </a>
+                  </div>
+                </div>
+                <div class="sticky-top">
+                  <hr />
+                  <button type="button" class="btn btn-dark w-100">
+                    顯示結果
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="my-2 fs-6">顯示「{{}}」的搜尋結果</div>
         </div>
         <div class="RoomType">
-              <div class="col-12" v-if="get">
-                  <ResultRoom :rooms="rooms" :nightCount="nightCount"></ResultRoom>
-              </div>
+          <div class="col-12" v-if="get">
+            <ResultRoom :rooms="rooms" :nightCount="nightCount"></ResultRoom>
+          </div>
         </div>
-        <div class="page d-flex justify-content-center ">
-            <nav aria-label="Page navigation example d-block">
-              <ul class="pagination rounded-circle ">
-                <li class="page-item"><a class="page-link text-dark border border-white" href="#"><i class="fas fa-angle-left"></i></a></li>
-                <li class="page-item"><a class="page-link text-dark rounded-circle border border-white" href="#">1</a></li>
-                <li class="page-item"><a class="page-link text-dark rounded-circle border border-white" href="#">2</a></li>
-                <li class="page-item"><a class="page-link text-dark rounded-circle border border-white" href="#">3</a></li>
-                <li class="page-item"><a class="page-link text-dark rounded-circle border border-white" href="#">4</a></li>
-                <li class="page-item"><a class="page-link text-dark rounded-circle border border-white" href="#">5</a></li>
-                <li class="page-item"><a class="page-link text-dark border border-white" href="#"><i class="fas fa-angle-right"></i></a></li>
-              </ul>
-            </nav>
+        <div class="page d-flex justify-content-center">
+          <nav aria-label="Page navigation example d-block">
+            <ul class="pagination rounded-circle">
+              <li class="page-item">
+                <a class="page-link text-dark border border-white" href="#"
+                  ><i class="fas fa-angle-left"></i
+                ></a>
+              </li>
+              <li class="page-item">
+                <a
+                  class="page-link text-dark rounded-circle border border-white"
+                  href="#"
+                  >1</a
+                >
+              </li>
+              <li class="page-item">
+                <a
+                  class="page-link text-dark rounded-circle border border-white"
+                  href="#"
+                  >2</a
+                >
+              </li>
+              <li class="page-item">
+                <a
+                  class="page-link text-dark rounded-circle border border-white"
+                  href="#"
+                  >3</a
+                >
+              </li>
+              <li class="page-item">
+                <a
+                  class="page-link text-dark rounded-circle border border-white"
+                  href="#"
+                  >4</a
+                >
+              </li>
+              <li class="page-item">
+                <a
+                  class="page-link text-dark rounded-circle border border-white"
+                  href="#"
+                  >5</a
+                >
+              </li>
+              <li class="page-item">
+                <a class="page-link text-dark border border-white" href="#"
+                  ><i class="fas fa-angle-right"></i
+                ></a>
+              </li>
+            </ul>
+          </nav>
         </div>
-        <div>1-{{PageNum}}共{{RoomNums}}間住宿</div>
-        <div class="my-4 text-secondary ">需要支付額外費用。可能會加收稅費。</div>
+        <div>1-{{ PageNum }}共{{ RoomNums }}間住宿</div>
+        <div class="my-4 text-secondary">
+          需要支付額外費用。可能會加收稅費。
+        </div>
       </div>
       <div class="Result">
         <div class="col-12" v-if="get">
-            <BrowsingRecord :rooms="rooms" :nightCount="nightCount"></BrowsingRecord>
+          <BrowsingRecord
+            :rooms="rooms"
+            :nightCount="nightCount"
+          ></BrowsingRecord>
         </div>
       </div>
     </div>
-    <div class="col-6" v-if="$store.state.fullWidth>768">
-      <img src="https://images.pexels.com/photos/981153/pexels-photo-981153.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260" class="w-100 fake">
+    <div class="col-6" v-if="$store.state.fullWidth > 768">
+      <img
+        src="https://images.pexels.com/photos/981153/pexels-photo-981153.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+        class="w-100 fake"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import ResultRoom from '../components/Search/ResultRoom';
-import BrowsingRecord from '../components/Search/BrowsingRecord';
+import ResultRoom from "../components/Search/ResultRoom";
+import BrowsingRecord from "../components/Search/BrowsingRecord";
 export default {
   created() {
     axios
@@ -868,21 +1022,27 @@ export default {
         this.rooms = res.data;
         this.get = true;
       });
+    //todo
+    // axios
+    //   .get(`/api/houses/search?location=${this.$route.query.location}`)
+    //   .then((res) => {
+    //     this.rooms = res.data;
+    //     this.get = true;
+    //   });
   },
-  mounted(){
-      const vm = this;
-      window.addEventListener("scroll", function() {
-          let top = document.documentElement.scrollTop;
-          let back = this.document.querySelector('.back');
-          if (back !== null){
-            if(top>1 && vm.$store.state.fullWidth<768)
-              back.classList.add('fixed');
-            else
-              back.classList.remove('fixed');
-          }
-      });
+  mounted() {
+    const vm = this;
+    window.addEventListener("scroll", function () {
+      let top = document.documentElement.scrollTop;
+      let back = this.document.querySelector(".back");
+      if (back !== null) {
+        if (top > 1 && vm.$store.state.fullWidth < 768)
+          back.classList.add("fixed");
+        else back.classList.remove("fixed");
+      }
+    });
   },
-  components:{ResultRoom, BrowsingRecord},
+  components: { ResultRoom, BrowsingRecord },
   data() {
     return {
       rooms: Array,
@@ -1008,7 +1168,6 @@ export default {
 
       tax: "",
       tick: [],
-      
     };
   },
   methods: {
@@ -1028,7 +1187,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.back{
+.back {
   width: 100%;
   top: 0;
   left: 0;
@@ -1039,50 +1198,50 @@ export default {
   background-color: #fff;
   border-bottom: 1px solid rgb(197, 197, 197);
   z-index: 100;
-  &.fixed{
+  &.fixed {
     position: fixed;
   }
-  a{
+  a {
     display: flex;
   }
-  img{
+  img {
     width: 1.2rem;
     cursor: pointer;
     margin: auto;
   }
-  .date{
+  .date {
     display: flex;
   }
-  .between{
+  .between {
     margin: 0 0.5rem;
   }
 }
-.btn-dark{
-    border-radius: 8px;
-  }
-.position-relative{
+.btn-dark {
+  border-radius: 8px;
+}
+.position-relative {
   padding: 0;
 }
-.record{
-      background-color: #f7f7f7;
-  }
-.text-start{
-  p{
+.record {
+  background-color: #f7f7f7;
+}
+.text-start {
+  p {
     font-size: 0.9rem;
   }
-  h4{
+  h4 {
     font-size: 1.5em;
     font-weight: 700;
     margin: 1rem 0;
   }
 }
-.type_place{
-  p{
+.type_place {
+  p {
     color: rgb(150, 150, 150);
   }
 }
-.onlybtn{
-  .checkbtn{
+.onlybtn {
+  .checkbtn {
     font-size: 30px;
     margin: 20px 20px -10px 5px;
     line-height: 10;
@@ -1093,65 +1252,63 @@ export default {
       background-color: #717171;
       border-color: #717171;
       box-shadow: 3px 3px 5px #cccccc;
-      
     }
   }
-  .bed{
+  .bed {
     .btn_ {
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: 1px solid #717171;
-    font-size: 25px;
-    font-weight: bolder;
-    color: #717171;
-    margin-right: 20px;
-  }
-  .btnAdd {
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: 1px solid #717171;
-    font-size: 15px;
-    font-weight: bolder;
-    color: #717171;
-    margin-left: 20px;
-    
-  }
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: 1px solid #717171;
+      font-size: 25px;
+      font-weight: bolder;
+      color: #717171;
+      margin-right: 20px;
+    }
+    .btnAdd {
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: 1px solid #717171;
+      font-size: 15px;
+      font-weight: bolder;
+      color: #717171;
+      margin-left: 20px;
+    }
   }
 }
 @media screen and (min-width: 768px) {
-  .fake{
+  .fake {
     height: 40rem;
     object-fit: cover;
   }
-  .top{
+  .top {
     margin-right: 0 !important;
     margin-top: 5rem;
   }
-  .Result{
-    .col-12{
+  .Result {
+    .col-12 {
       background-color: #f7f7f7;
     }
   }
-  .record{
+  .record {
     padding-left: 2rem;
   }
-  .position-relative{
-    padding: 0 ;
+  .position-relative {
+    padding: 0;
     overflow: auto;
     height: 40rem;
     &::-webkit-scrollbar {
       display: none;
     }
   }
-  .text-start{
+  .text-start {
     margin: 0 !important;
   }
   .onlybtn {
     display: none;
   }
-  
+
   .filters {
     font-size: 14px;
     line-height: 18px;
