@@ -14,7 +14,7 @@ namespace Airelax.Test.Houses
 
         public SpecificationTest()
         {
-            _house = new House
+            _house = new House("123")
             {
                 CustomerNumber = 6,
                 ReservationDates = new List<DateTime>()

@@ -1,17 +1,17 @@
-﻿using Airelax.Application.Houses.Dtos.Response;
-using System;
+﻿using Airelax.Application.Houses.Dtos.Request;
+using Airelax.Application.Houses.Dtos.Response;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Airelax.Application.Houses.Dtos.Request;
 
 namespace Airelax.Application.Houses
 {
     public interface IHouseAppService
     {
-        Task<HouseDto> GetHouse(string id);
+
 
         Task<IEnumerable<SimpleHouseDto>> Search(SearchInput input);
+        Task<HouseDto> GetHouse(string id);
+
+        
     }
 }

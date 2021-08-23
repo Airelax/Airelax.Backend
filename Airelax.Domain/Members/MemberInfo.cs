@@ -6,6 +6,7 @@ namespace Airelax.Domain.Members
     {
         public string About { get; set; }
         public string Location { get; set; }
+        public string WorkTime { get; set; }
 
         public MemberInfo(string id)
         {
