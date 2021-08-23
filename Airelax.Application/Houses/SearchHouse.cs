@@ -6,7 +6,7 @@ using Airelax.Domain.Members;
 
 namespace Airelax.Application.Houses
 {
-    public class SimpleHouse
+    public class SearchHouse
     {
         public string Id { get; set; }
         public IEnumerable<byte[]> Picture { get; set; }
@@ -18,6 +18,6 @@ namespace Airelax.Application.Houses
         public IEnumerable<Facility> Facilities { get; set; }
         public int CustomerNumber { get; set; }
         public IEnumerable<Space> Space { get; set; }
-        public SimpleComment Comment { get; set; }
+        public SearchHouseComment Comment { get; set; }
     }
 }

@@ -66,11 +66,10 @@ namespace Airelax.EntityFramework.Repositories
         private IIncludableQueryable<House, ReservationRule> GetHouseIncludeAll()
         {
             return _context.Houses.Include(x => x.Comments)
-                .Include(x => x.Member)
-                .ThenInclude(x => x.WishLists)
                 .Include(x => x.Photos)
                 .Include(x => x.Policy)
                 .Include(x => x.Spaces)
+                .ThenInclude(x => x.BedroomDetails)
                 .Include(x => x.HouseCategory)
                 .Include(x => x.HouseDescription)
                 .Include(x => x.HousePrice)

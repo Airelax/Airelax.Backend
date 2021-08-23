@@ -22,19 +22,17 @@ namespace Airelax.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]     
+        [Route("{id}")]
         public async Task<HouseDto> Get(string id)
         {
             return await _houseAppService.GetHouse(id);
         }
 
-        // [HttpGet]
-        // [Route("Search")]
-        // public async Task<ReturnType> MethodName()
-        // {
-        //     return default;
-        // }
-
-       
+        [HttpGet]
+        [Route("Search")]
+        public async Task<IEnumerable<SimpleHouseDto>> Search([FromQuery] SearchInput input)
+        {
+            return await _houseAppService.Search(input);
+        }
     }
 }

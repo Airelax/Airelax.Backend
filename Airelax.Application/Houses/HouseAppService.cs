@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Application.Houses.Dtos.Response;
+using Airelax.Domain.Comments;
 using Airelax.Domain.DomainObject;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Defines;
@@ -24,14 +26,14 @@ namespace Airelax.Application.Houses
     public class HouseAppService : IHouseAppService
     {
         private readonly IHouseRepository _houseRepository;
+        private readonly IMemberRepository _memberRepository;
         private readonly IGeocodingService _geocodingService;
-        private readonly IRepository _repository;
 
 
-        public HouseAppService(IHouseRepository houseRepository, IRepository repository, IGeocodingService geocodingService)
+        public HouseAppService(IHouseRepository houseRepository, IMemberRepository memberRepository, IGeocodingService geocodingService)
         {
             _houseRepository = houseRepository;
-            _repository = repository;
+            _memberRepository = memberRepository;
             _geocodingService = geocodingService;
         }
 
@@ -66,13 +68,13 @@ namespace Airelax.Application.Houses
 
             var results = specificationResult.Select(x =>
             {
-                var simpleComment = new SimpleComment {Number = x.Comments?.Count ?? 0};
+                var simpleComment = new SearchHouseComment {Number = x.Comments?.Count ?? 0};
                 if (!x.Comments.IsNullOrEmpty())
                 {
                     simpleComment.Stars = Math.Round(x.Comments?.Average(c => c.Star?.Total ?? 0) ?? 0, 1);
                 }
 
-                var simpleHouse = new SimpleHouse
+                var simpleHouse = new SearchHouse
                 {
                     Id = x.Id,
                     Picture = x.Photos?.Select(p => p.Image),
@@ -95,18 +97,145 @@ namespace Airelax.Application.Houses
 
         public async Task<HouseDto> GetHouse(string id)
         {
-            throw new NotImplementedException();
+            var house = await _houseRepository.GetAsync(x => x.Id == id);
+            if (house == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"House Id : {id} does not match any house");
+
+            var member = await _memberRepository.GetAsync(x => x.Id == house.OwnerId);
+            if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"House exist but member has been deleted");
+            var houseDto = new HouseDto()
+            {
+                Id = house.Id,
+                Title = house.Title,
+                CancelPolicy = (int) house.Policy.CancelPolicy,
+                // todo photo to url
+                Pictures = house.Photos.Select(x => x.Image.ToString()),
+                Space = ConvertToSpaceDto(house),
+                BedroomDetail = ConvertToBedroomDetailDtos(house),
+                Description = ConvertToDescriptionDto(house.HouseDescription),
+                Facility = ConvertToFacilityDto(house),
+                Honor = new List<HonorDto>()
+                {
+                    //todo
+                },
+                Comments = new List<CommentDto>
+                {
+                    //todo
+                },
+                HouseRule = ConvertToHouseRuleDto(house.HouseRule, house.Policy),
+                LocationDto = ConvertToLocationDto(house.HouseLocation),
+                Owner = new OwnerDto()
+                {
+                    Name = member.Name,
+                    Id = member.Id,
+                    RegisterTime = member.RegisterTime,
+                    About = member.MemberInfo.About,
+                    IsVerified = member.IsEmailVerified
+                },
+                Rank = new RankDto()
+                {
+                    //todo
+                },
+                WishList = new WishListDto()
+                {
+                    //todo
+                },
+                Price = ConvertToPriceDto(house.HousePrice)
+            };
+            return houseDto;
         }
 
+        private static PriceDto ConvertToPriceDto(HousePrice housePrice)
+        {
+            var price = new PriceDto()
+            {
+                Discount = new DiscountDto(),
+                Fee = new FeeDto(),
+            };
+            if (housePrice == null) return price;
 
-        private static IEnumerable<SimpleHouseDto> ConvertToSimpleHouseDtos(IEnumerable<SimpleHouse> results)
+            price.Origin = housePrice.PerNight;
+            price.SweetPrice = housePrice.PerWeekNight;
+            price.Discount.Month = housePrice.Discount?.Month ?? 0;
+            price.Discount.Week = housePrice.Discount?.Week ?? 0;
+            price.Fee.CleanFee = housePrice.Fee?.CleanFee ?? 0;
+            price.Fee.ServiceFee = housePrice.Fee?.ServiceFee ?? 0;
+            price.Fee.TaxFee = housePrice.Fee?.TaxFee ?? 0;
+            return price;
+        }
+
+        private static LocationDto ConvertToLocationDto(HouseLocation houseHouseLocation)
+        {
+            return houseHouseLocation == null
+                ? new LocationDto()
+                : new LocationDto
+                {
+                    City = houseHouseLocation.City,
+                    Country = houseHouseLocation.Country,
+                    Town = houseHouseLocation.Town,
+                    Latitude = houseHouseLocation.Latitude,
+                    Longitude = houseHouseLocation.Longitude
+                };
+        }
+
+        private static HouseRuleDto ConvertToHouseRuleDto(HouseRule houseHouseRule, Policy policy)
+        {
+            var houseRuleDto = new HouseRuleDto();
+            if (houseHouseRule != null)
+            {
+                houseRuleDto.AllowChild = houseHouseRule.AllowChild;
+                houseRuleDto.AllowSmoke = houseHouseRule.AllowSmoke;
+                houseRuleDto.AllowBaby = houseHouseRule.AllowBaby;
+                houseRuleDto.AllowParty = houseHouseRule.AllowParty;
+                houseRuleDto.AllowPet = houseHouseRule.AllowParty;
+            }
+
+            if (policy == null) return houseRuleDto;
+            houseRuleDto.CashPledge = policy.CashPledge ?? 0;
+            houseRuleDto.CheckinTime = policy.CheckinTime.ToString("hh:mm");
+            houseRuleDto.CheckoutTime = policy.CheckoutTime.ToString("hh:mm");
+
+            return houseRuleDto;
+        }
+
+        private static DescriptionDto ConvertToDescriptionDto(HouseDescription houseHouseDescription)
+        {
+            return houseHouseDescription == null
+                ? new DescriptionDto()
+                : new DescriptionDto()
+                {
+                    HouseDescription = houseHouseDescription.Description,
+                    GuestPermission = houseHouseDescription.GuestPermission,
+                    Others = houseHouseDescription.Others,
+                    SpaceDescription = houseHouseDescription.SpaceDescription
+                };
+        }
+
+        private static IEnumerable<BedroomDetailDto> ConvertToBedroomDetailDtos(House house)
+        {
+            return house.Spaces?.SelectMany(x => x.BedroomDetails).Select(x => new BedroomDetailDto()
+            {
+                BedCount = x.BedCount,
+                BedType = x.BedType.ToString()
+            }) ?? new List<BedroomDetailDto>();
+        }
+
+        private static FacilityDto ConvertToFacilityDto(House house)
+        {
+            return new FacilityDto()
+            {
+                Provide = house.ProvideFacilities?.Select(x => (int) x),
+                NotProvide = house.NotProvideFacilities?.Select(x => (int) x)
+            };
+        }
+
+        private static IEnumerable<SimpleHouseDto> ConvertToSimpleHouseDtos(IEnumerable<SearchHouse> results)
         {
             return results.Select(x =>
             {
                 var simpleHouseDto = new SimpleHouseDto
                 {
                     Id = x.Id,
-                    Address = x.Location.Country + x.Location.City ?? string.Empty + x.Location.Town ?? string.Empty,
+                    Address = $"{x.Location.Town ?? string.Empty}",
                     Comment = new SimpleCommentDto()
                     {
                         Star = x.Comment?.Stars,
@@ -120,7 +249,7 @@ namespace Airelax.Application.Houses
                         Wifi = x.Facilities.Any(f => f == Facility.Wifi),
                     },
                     HouseType = x.Category.Category.ToString() + x.Category.HouseType.ToString() + x.Category.RoomCategory.ToString(),
-                    Picture = x.Picture.Select(x => x.ConvertToBase64String()),
+                    Picture = x.Picture.Select(p => p.ConvertToBase64String()),
                     Price = new PriceDto()
                     {
                         Discount = new DiscountDto()
@@ -173,17 +302,16 @@ namespace Airelax.Application.Houses
             return dateRange;
         }
 
-   
+        private static SpaceDto ConvertToSpaceDto(House house)
+        {
+            var spaceDto = new SpaceDto() {CustomerNumber = house.CustomerNumber};
+            var houseSpaces = house.Spaces;
+            if (houseSpaces == null) return spaceDto;
 
-        //public async Task<HouseDto> GetHouse(string id)
-        //{
-        //    //using (var context = new AirelaxContext()) 
-        //    //{
-
-        //    //   return context.Houses.FisrtORDefalut(x => x.id == id);
-        //    //}
-
-        //    return default;
-        //}
+            spaceDto.Bathroom = houseSpaces.Count(x => x.SpaceType == SpaceType.Bath);
+            spaceDto.Bedroom = houseSpaces.Count(x => x.SpaceType == SpaceType.Bedroom);
+            spaceDto.Bed = houseSpaces.Where(s => s.SpaceType == SpaceType.Bedroom).SelectMany(s => s.BedroomDetails).Sum(b => b.BedCount);
+            return spaceDto;
+        }
     }
 }
