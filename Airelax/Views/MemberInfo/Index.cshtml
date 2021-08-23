@@ -1,0 +1,105 @@
+﻿@model MemberInfoViewModel
+@{
+    Layout = "~/Views/Shared/_Layout _memberInfo_bs5.cshtml";
+}
+<nav>眼睛業障重nav</nav>
+<div class="container-xl">
+    <div class="row">
+        <div class="col-12 col-md-3">
+            <div class="row headInfo">
+                <div class="col-9 d-md-none">
+                    <h2>嗨!我是 @Model.MemberName </h2>
+                    <p>加入時間:@Model.RegisterTime</p>
+                    <div class="aboutBtn" type="button" data-bs-toggle="collapse" data-bs-target="#aboutCollapse"
+                         aria-expanded="false" aria-controls="aboutCollapse">
+                        編輯個人資料
+                    </div>
+                </div>
+                <div class="col-2 col-md-12">
+                    <div>
+                        <img class="portrait" src="~/dist/img/memberInfo/portrait.png">
+                    </div>
+                    <a href="#">更新照騙</a>
+                    <div>
+                        <img class="honor" src="~/dist/img/memberInfo/honor.svg" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="row bestAndComment">
+                <div class="best">
+                    <img src="~/dist/img/memberInfo/bestLandLord.svg" alt="best">
+                    <span>超讚的阿</span>
+                </div>
+                <div class="comment">
+                    <img src="~/dist/img/memberInfo/star.svg" alt="comment">
+                    <span>千萬則評價</span>
+                </div>
+            </div>
+            <partial name="~/Views/Shared/_AboutMePartial.cshtml" />
+            <div class="row writingAboutMe collapse" id="aboutCollapse">
+                <partial name="~/Views/Shared/_AboutCollapsePartial.cshtml" />
+            </div>
+            <div class="row checked">
+                <h3>
+                    <span>@Model.MemberName</span>
+                    已確認
+                </h3>
+                <div class="col col-md-12">
+                    <img src="~/dist/img/memberInfo/hook.svg" />
+                    <span>電子郵件</span>
+                </div>
+                <div class="col col-md-12">
+                    <img src="~/dist/img/memberInfo/hook.svg" />
+                    <span>電話號碼</span>
+                </div>
+            </div>
+            <div class="row houseSource d-md-none">
+                <h3>
+                    <span>@Model.MemberName</span>
+                    的房源
+                </h3>
+                <partial name="~/Views/Shared/_HousesSourseSwiperPartial.cshtml" />
+            </div>
+        </div>
+        <div class="d-none d-md-block col-md-6">
+            <div class="row mdHeadInfo">
+                <h2>嗨！我是 @Model.MemberName</h2>
+                <p>加入時間：@Model.RegisterTime</p>
+                <div class="mdAboutBtn" type="button" data-bs-toggle="collapse" data-bs-target="#mdAboutCollapse"
+                     aria-expanded="true" aria-controls="mdAboutCollapse">
+                    編輯個人資料
+                </div>
+            </div>
+            <partial name="~/Views/Shared/_AboutMePartial.cshtml" />
+            <div class="row mdWritingAboutMe collapse" id="mdAboutCollapse">
+                <partial name="~/Views/Shared/_AboutCollapsePartial.cshtml"/>
+            </div>
+            <div class="row houseSource">
+                <h3>
+                    <span>@Model.MemberName</span>
+                    的房源
+                </h3>
+                <partial name="~/Views/Shared/_HousesSourseSwiperPartial.cshtml" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section topCSS{
+    <!-- SWIPER CSS -->
+    <link rel="stylesheet" href="~/dist/css/memberInfo/swiper-bundle.css">
+    <link rel="stylesheet" href="~/dist/scss/swiper.min.css">
+    <!-- SHOP-68 CSS -->
+    <link rel="stylesheet" href="~/dist/scss/SHOP-68.css">
+}
+@section endJS{
+    <!-- SHOP-68 JS -->
+    <script src="~/dist/js/memberInfo/SHOP-68.js"></script>
+    <!-- SWIPER -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <!-- swiper initialize -->
+    <script src="~/dist/js/memberInfo/swiper.js"></script>
+}
