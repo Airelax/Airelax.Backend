@@ -10,7 +10,7 @@
               </label>
             </div>
             <div class="lg-search">
-                <v-date-picker :transition="'none'" :columns="$screens({ default: 2})" color="pink" is-range v-model="$store.state.date">
+                <v-date-picker :transition="'none'" :columns="$screens({ default: 2})" color="pink" :model-config="modelConfig" is-range v-model="$store.state.date">
                 <template v-slot="{ inputValue, inputEvents }">
                   <div class="picker">
                     <div  id="in-date-time" class="search-div in-date">

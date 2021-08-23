@@ -1,0 +1,135 @@
+a {
+  text-decoration: none;
+  color: #000;
+}
+a:hover {
+  color: #000;
+}
+.container-xl {
+  text-align: start;
+  padding: 0;
+  font-family: "Noto Sans TC", sans-serif;
+  .rwd {
+    .col-12.col-md-6:nth-of-type(1) {
+      .sticky {
+        padding: 30px;
+      }
+    }
+    .col-12.col-md-6:nth-of-type(2) {
+      .yourTrip,
+      .SubPriceDetail,
+      .payWay,
+      .requiredInfo,
+      .unsubscribe,
+      .checkAndSub {
+        padding: 30px;
+        background-color: #fff;
+        h3 {
+          margin: 10px 0 20px 0;
+          font-size: 18px;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+.offcanvas {
+  height: auto;
+  border-top-right-radius: 14px;
+  border-top-left-radius: 14px;
+  .offcanvas-header {
+    border-bottom: 1px solid #ededed;
+    .btn-close {
+      padding-left: 15px;
+      opacity: 1;
+      font-size: 12px;
+    }
+    .offcanvas-title {
+      margin: auto;
+      font-weight: 500;
+    }
+  }
+  .offcanvas-body {
+    padding: 20px 25px;
+    font-weight: 200;
+  }
+  .offcanvas-footer {
+    padding: 20px 10px;
+    border-top: 1px solid #ededed;
+  }
+}
+.modal {
+  .modal-content {
+    border-radius: 24px;
+    .modal-header {
+      .btn-close {
+        font-size: 12px;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+@media screen and(max-width: 768px) {
+  .container-xl {
+    .rwd {
+      .col-12.col-md-6:nth-of-type(2) {
+        .yourTrip,
+        .SubPriceDetail,
+        .payWay,
+        .requiredInfo,
+        .unsubscribe,
+        .checkAndSub {
+          border-top: 8px solid #ededed;
+        }
+      }
+    }
+  }
+}
+@media screen and(min-width:768px) {
+  .container-xl {
+    .rwd {
+      padding: 0 50px;
+      .col-12.col-md-6:nth-of-type(1) {
+        position: relative;
+        .sticky {
+          border: 1px solid #ededed;
+          border-radius: 10px;
+          margin: 0 50px;
+          box-sizing: border-box;
+          padding: 30px;
+          position: sticky;
+          top: 28vh;
+        }
+      }
+      .col-12.col-md-6:nth-of-type(2) {
+        .yourTrip {
+          border: none;
+        }
+        .SubPriceDetail,
+        .payWay,
+        .requiredInfo,
+        .unsubscribe,
+        .checkAndSub {
+          border-top: 1px solid #ededed;
+        }
+        .yourTrip,
+        .SubPriceDetail,
+        .payWay,
+        .requiredInfo,
+        .unsubscribe,
+        .checkAndSub {
+          h3 {
+            font-size: 22px;
+          }
+        }
+        .checkAndSub {
+          .btn {
+            width: 150px;
+          }
+        }
+      }
+    }
+  }
+}
