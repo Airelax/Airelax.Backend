@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Airelax
 {
-    public class CommentViewModel
+    public class HouseCommentViewModel
     {
         public string HouseId { get; set; }
         public string HouseName { get; set; }
         public int HouseState { get; set; }
-        public Comment[] Comments { get; set; }
+        public CommentViewModel[] Comments { get; set; }
     }
-    public class Comment
+    public class CommentViewModel
     {
         public string CommentId { get; set; }
         public DateTime CommentTime { get; set; }

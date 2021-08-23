@@ -27,40 +27,40 @@ namespace Airelax.Controllers
                           group new { Comment = c, HouseId = h.Id, HouseName = h.Title, HouseStatus = h.Status, Members = m.Name, Stars = s } by h.Id into com
                           select com;
 
-            if (comments == null || !comments.Any()) return View(new List<CommentViewModel>()
+            if (comments == null || !comments.Any()) return View(new List<HouseCommentViewModel>()
             {
-                new CommentViewModel()
+                new HouseCommentViewModel()
                 {
                     HouseId = "001",
-                    HouseName = "傑哥宅邸",
+                    HouseName = "米奇不妙屋",
                     HouseState = 1,
-                    Comments = new List<Comment>(){
-                        new Comment(){CommentId="100",Content="沒錢我們就只能回家ㄚ~",AuthorName="彬彬",Stars=2.5,CommentTime=DateTime.Now},
-                        new Comment(){CommentId="101",Content="還滿大的,而且看到的都可以隨便拿",AuthorName="阿偉",Stars=5.0, CommentTime = new DateTime(1998,12,31)},
-                        new Comment(){CommentId="102",Content="還滿大的,而且看到的都可以隨便拿",AuthorName="阿偉",Stars=5.0},
-                        new Comment(){CommentId="103",Content="還滿大的,而且看到的都可以隨便拿",AuthorName="阿偉",Stars=5.0}
+                    Comments = new List<CommentViewModel>(){
+                        new CommentViewModel(){CommentId="100",Content="嬌娃這是今天的裝備",AuthorName="土豆",Stars=5.0, CommentTime = new DateTime(2020,12,31)},
+                        new CommentViewModel(){CommentId="101",Content="吱吱喳喳",AuthorName="勞贖",Stars=4.5, CommentTime = new DateTime(2020,12,31)},
+                        new CommentViewModel(){CommentId="102",Content="法式雜菜煲聽起來不好吃",AuthorName="小林",Stars=3.5, CommentTime = new DateTime(2021,1,1)},
+                        new CommentViewModel(){CommentId="103",Content="吃起來像垃圾",AuthorName="大米",Stars=2.5, CommentTime = new DateTime(2021,1,1)}
                     }.ToArray()
                 },
-                new CommentViewModel()
+                new HouseCommentViewModel()
                 {
                     HouseId = "002",
                     HouseName = "傑哥宅邸",
                     HouseState = 2,
-                    Comments = new List<Comment>(){
-                        new Comment(){CommentId="200",Content="沒錢我們就只能回家ㄚ~",AuthorName="彬彬",Stars=2.5},
-                        new Comment(){CommentId="201",Content="還滿大的,而且看到的都可以隨便拿",AuthorName="阿偉",Stars=5.0},
-                        new Comment(){CommentId="202",Content="還滿大的,而且看到的都可以隨便拿",AuthorName="阿偉",Stars=5.0},
-                        new Comment(){CommentId="203",Content="還滿大的,而且看到的都可以隨便拿",AuthorName="阿偉",Stars=5.0},
-                        new Comment(){CommentId="204",Content="沒錢我們就只能回家ㄚ~",AuthorName="彬彬",Stars=2.5}
+                    Comments = new List<CommentViewModel>(){
+                        new CommentViewModel(){CommentId="200",Content="沒錢我們就只能回家",AuthorName="彬彬",Stars=2.5, CommentTime = new DateTime(2020,12,31)},
+                        new CommentViewModel(){CommentId="201",Content="還滿大的,",AuthorName="阿偉",Stars=3.5, CommentTime = new DateTime(2020,12,31)},
+                        new CommentViewModel(){CommentId="202",Content="還滿大的,而且看到的",AuthorName="阿偉",Stars=4.5, CommentTime = new DateTime(2021,1,1)},
+                        new CommentViewModel(){CommentId="203",Content="還滿大的,而且看到的都可以隨便拿",AuthorName="阿偉",Stars=5.0, CommentTime = new DateTime(2021,1,1)},
+                        new CommentViewModel(){CommentId="204",Content="回家ㄚ~",AuthorName="彬彬",Stars=2.5, CommentTime = new DateTime(2021,1,1)}
                     }.ToArray()
                 }
             });
-            var commentViewModels = comments.Select(com => new CommentViewModel()
+            var commentViewModels = comments.Select(com => new HouseCommentViewModel()
             {
                 HouseId = com.Key,
                 HouseName = com.First().HouseName,
                 HouseState = (int)com.First().HouseStatus,
-                Comments = com.Select(c => new Comment()
+                Comments = com.Select(c => new CommentViewModel()
                 {
                     CommentId = c.Comment.Id,
                     CommentTime = c.Comment.CommentTime,
