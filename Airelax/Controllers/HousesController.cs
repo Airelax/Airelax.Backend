@@ -21,72 +21,18 @@ namespace Airelax.Controllers
             _houseAppService = houseAppService;
         }
 
-        //[HttpGet]
-        //[Route("{id}")]     
-        //public async Task<HouseDto> Get(string id)
-        //{
-        //    return await _houseAppService.GetHouse(id);
-        //}
-
-        // [HttpGet]
-        // [Route("Search")]
-        // public async Task<ReturnType> MethodName()
-        // {
-        //     return default;
-        // }
-
-        [HttpPost]
-        [Route("house")]
-        public async Task<string> CreateHouse(CreateHouseInput input)
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<HouseDto> Get(string id)
         {
-            return await _houseAppService.CreateAsync(input);
+            return await _houseAppService.GetHouse(id);
         }
 
-        [HttpPut]
-        [Route("house/{id}/category")]
-
-        public async Task<bool> UpdateHouseCategory(string id, UpdateHouseCategoryInput input)
+        [HttpGet]
+        [Route("Search")]
+        public async Task<IEnumerable<SimpleHouseDto>> Search([FromQuery] SearchInput input)
         {
-            return await _houseAppService.UpdateHouseCategory(id, input);
-        }
-
-        [HttpPut]
-        [Route("house/{id}/RoomCategory")]
-
-        public async Task<bool> UpdateRoomCategory(string id, UpdateRoomCategoryInput input)
-        {
-            return await _houseAppService.UpdateRoomCategory(id, input);
-        }
-
-        [HttpPut]
-        [Route("house/{id}/title")]
-        public async Task<bool> UpdateHouseTitle(string id, UpdateHouseTitleInput input)
-        {
-            return await _houseAppService.UpdateHouseTitle(id, input);
-        }
-        [HttpPut]
-        [Route("house/{id}/Description")]
-        public async Task<bool> UpdateHouseDescription(string id, UpdateHouseDescriptionInput input)
-        {
-            return await _houseAppService.UpdateHouseDescription(id, input);
-        }
-        [HttpPut]
-        [Route("house/{id}/facilities")]
-        public async Task<bool> UpdateHouseFacilities (string id,UpdateHouseFacilitiesInput input)
-        {
-            return await _houseAppService.UpdateHouseFacilities(id, input);
-        }
-        [HttpPut]
-        [Route("house/{id}/customer")]
-        public async Task<bool> UpdateCustomerInput(string id, UpdateCustomerInput input)
-        {
-            return await _houseAppService.UpdateHouseCustomerInput(id, input);
-        }
-        [HttpPut]
-        [Route("house/{id}/price")]
-        public async Task<bool> UpdateHousePrice (string id,UpdateHousePriceInput input)
-        {
-            return await _houseAppService.UpdateHousePriceInput(id, input);
+            return await _houseAppService.Search(input);
         }
     }
 }

@@ -2,8 +2,8 @@
 {
     public class FeeDto
     {
-        public decimal CleanFee { get; set; }
-        public decimal ServiceFee { get; set; }
-        public decimal TaxFee { get; set; }
+        public decimal? CleanFee { get; set; }
+        public decimal? ServiceFee { get; set; }
+        public decimal? TaxFee { get; set; }
     }
 }
