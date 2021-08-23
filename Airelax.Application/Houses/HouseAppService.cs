@@ -19,6 +19,7 @@ using Lazcat.Infrastructure.ExceptionHandlers;
 using Airelax.Domain.Members;
 using Airelax.Domain.Houses.Price;
 using Lazcat.Infrastructure.Extensions;
+using Lazcat.Infrastructure.Map.Responses;
 
 namespace Airelax.Application.Houses
 {
@@ -40,11 +41,25 @@ namespace Airelax.Application.Houses
         public async Task<IEnumerable<SimpleHouseDto>> Search(SearchInput input)
         {
             Check.CheckNull(input);
-            var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.Location);
-
+            //var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.Location);
+            var geocodingInfo = new GeocodingInfo()
+            {
+                Bounds = new CoordinateRange()
+                {
+                    Northeast = new Coordinate(25.2103038, 121.6659421),
+                    SouthWest = new Coordinate(24.9605084, 121.4570603)
+                },
+                Location = new Coordinate(25.0329636, 121.5654268),
+                Viewport = new CoordinateRange()
+                {
+                    Northeast = new Coordinate(25.2103038, 121.6659421),
+                    SouthWest = new Coordinate(24.9605084, 121.4570603)
+                }
+            };
             Specification<House> specification = new InRangeLocationSpecification(geocodingInfo.Bounds.SouthWest, geocodingInfo.Bounds.Northeast);
             var customerNumberSpecification = new MaxCustomerNumberSpecification(input.CustomerNumber);
             specification = specification.And(customerNumberSpecification);
+
 
             if (input.Checkin.HasValue && input.Checkout.HasValue)
             {
@@ -52,6 +67,7 @@ namespace Airelax.Application.Houses
                 var availableDateSpecification = new AvailableDateSpecification(dateRange);
                 specification = specification.And(availableDateSpecification);
             }
+
 
             var houses = _houseRepository.GetAll()
                 .Include(x => x.Member)
@@ -62,11 +78,12 @@ namespace Airelax.Application.Houses
                 .Include(x => x.HouseCategory)
                 .Include(x => x.Spaces)
                 .Include(x => x.Photos)
+                .Where(specification.ToExpression())
+                .OrderByDescending(x => x.CreateTime)
+                .Skip((input.Page - 1) * 30).Take(30)
                 .ToList();
 
-            var specificationResult = houses.Where(x => specification.IsSatisfy(x)).Skip((input.Page - 1) * 30).Take(30);
-
-            var results = specificationResult.Select(x =>
+            var results = houses.Select(x =>
             {
                 var simpleComment = new SearchHouseComment {Number = x.Comments?.Count ?? 0};
                 if (!x.Comments.IsNullOrEmpty())
