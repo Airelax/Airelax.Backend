@@ -1,0 +1,21 @@
+﻿.Send {
+  width: 80px;
+  background-color: #008489;
+  padding: 10px 22px;
+  color: #ffffff; }
+
+.newPhoneNum {
+  width: fit-content;
+  background-color: #ffffff;
+  padding: 10px 22px;
+  color: #008489;
+  border: 2px solid #008489;
+  border-radius: 5px; }
+
+@media screen and (max-width: 767px) {
+  .details, .p_info {
+    display: none; } }
+
+@media screen and (min-width: 768px) {
+  .c_info {
+    font-size: 32px; } }
