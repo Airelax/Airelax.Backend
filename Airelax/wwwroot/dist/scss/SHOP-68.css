@@ -73,8 +73,8 @@
       width: 16px;
       height: 16px;
       margin-right: 6px; }
-    .container-xl .row .col-12.col-md-3 .writtenAboutMe .writtenLocation,
-    .container-xl .row .col-12.col-md-3 .writtenAboutMe .writtenWork {
+    .container-xl .row .col-12.col-md-3 .writtenAboutMe .writtenLocationArea,
+    .container-xl .row .col-12.col-md-3 .writtenAboutMe .writtenWorkArea {
       margin: 4px 0;
       display: flex;
       align-items: center; }
@@ -142,19 +142,8 @@
       width: 16px;
       height: 16px;
       margin-right: 6px; }
-    .container-xl .row .d-md-block.col-md-6 .writtenAboutMe .writtenLocation,
-    .container-xl .row .d-md-block.col-md-6 .writtenAboutMe .writtenWork {
+    .container-xl .row .d-md-block.col-md-6 .writtenAboutMe .writtenLocationArea,
+    .container-xl .row .d-md-block.col-md-6 .writtenAboutMe .writtenWorkArea {
       margin: 4px 0;
       display: flex;
-      align-items: center; }
-    .container-xl .row .d-md-block.col-md-6 .mdWritingAboutMe .cancelOrSave {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px; }
-      .container-xl .row .d-md-block.col-md-6 .mdWritingAboutMe .cancelOrSave .cancelBtn {
-        text-align: center;
-        text-decoration: underline;
-        font-weight: bold; }
-      .container-xl .row .d-md-block.col-md-6 .mdWritingAboutMe .cancelOrSave .saveBtn {
-        padding: 10px 20px;
-        border-radius: 10px; } }
+      align-items: center; } }

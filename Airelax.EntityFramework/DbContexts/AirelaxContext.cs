@@ -74,7 +74,7 @@ namespace Airelax.EntityFramework.DbContexts
                 builder =>
                 {
                     builder.SetEntityKey<House, string>();
-                    builder.SetPropMaxLength(x => x.Title, 30).IsRequired();
+                    builder.SetPropMaxLength(x => x.Title, 50).IsRequired();
                     builder.SetEnumDbMapping(x => x.Status).IsRequired();
                     builder.SetEnumDbMapping(x => x.CreateState).IsRequired();
                     builder.Property(x => x.ReservationDates).HasJsonConversion();
@@ -154,7 +154,7 @@ namespace Airelax.EntityFramework.DbContexts
             modelBuilder.Entity<HouseRule>(builder =>
             {
                 builder.SetEntityKey<HouseRule, string>();
-                builder.SetPropMaxLength(x => x.Other, 500);
+                builder.SetPropMaxLength(x => x.Other, 1000);
                 builder.HasOne<House>().WithOne(x => x.HouseRule).HasForeignKey<HouseRule>(x => x.Id);
             });
         }
@@ -164,10 +164,10 @@ namespace Airelax.EntityFramework.DbContexts
             modelBuilder.Entity<HouseDescription>(builder =>
             {
                 builder.SetEntityKey<HouseDescription, string>();
-                builder.SetPropMaxLength(x => x.Description, 500);
-                builder.SetPropMaxLength(x => x.SpaceDescription, 500);
-                builder.SetPropMaxLength(x => x.GuestPermission, 500);
-                builder.SetPropMaxLength(x => x.Others, 500);
+                builder.SetPropMaxLength(x => x.Description, 1000);
+                builder.SetPropMaxLength(x => x.SpaceDescription, 1000);
+                builder.SetPropMaxLength(x => x.GuestPermission, 1000);
+                builder.SetPropMaxLength(x => x.Others, 1000);
                 builder.SetEnumDbMapping(x => x.HouseHighlight);
                 builder.HasOne<House>().WithOne(x => x.HouseDescription).HasForeignKey<HouseDescription>(x => x.Id);
             });
@@ -183,7 +183,7 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetPropMaxLength(x => x.Town, 50);
                 builder.SetPropMaxLength(x => x.ZipCode, 10);
                 builder.SetPropMaxLength(x => x.AddressDetail, 100);
-                builder.SetPropMaxLength(x => x.LocationDescription, 500);
+                builder.SetPropMaxLength(x => x.LocationDescription, 1000);
                 builder.SetPropMaxLength(x => x.TrafficDescription, 250);
                 builder.HasOne<House>().WithOne(x => x.HouseLocation).HasForeignKey<HouseLocation>(x => x.Id);
             });
@@ -214,12 +214,12 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetEntityKey<Member, string>();
                 builder.SetPropMaxLength(x => x.Name, 50);
                 builder.SetEnumDbMapping(x => x.Gender);
-                builder.SetPropMaxLength(x => x.Email, 30);
-                builder.SetPropMaxLength(x => x.Country, 30);
-                builder.SetPropMaxLength(x => x.City, 30);
-                builder.SetPropMaxLength(x => x.Town, 30);
+                builder.SetPropMaxLength(x => x.Email, 50);
+                builder.SetPropMaxLength(x => x.Country, 50);
+                builder.SetPropMaxLength(x => x.City, 50);
+                builder.SetPropMaxLength(x => x.Town, 50);
                 builder.SetPropMaxLength(x => x.AddressDetail, 50);
-                builder.SetPropMaxLength(x => x.Phone, 30);
+                builder.SetPropMaxLength(x => x.Phone, 50);
                 builder.Property(x => x.RegisterTime).IsRequired().HasDefaultValue(DateTime.Now);
             });
         }
@@ -259,7 +259,7 @@ namespace Airelax.EntityFramework.DbContexts
             {
                 builder.SetEntityKey<EmergencyContact, string>();
                 builder.SetPropMaxLength(x => x.Name, 50);
-                builder.SetPropMaxLength(x => x.Phone, 30);
+                builder.SetPropMaxLength(x => x.Phone, 50);
 
                 builder.HasOne<Member>().WithOne(x => x.EmergencyContact).HasForeignKey<EmergencyContact>(x => x.Id);
             });
@@ -270,7 +270,7 @@ namespace Airelax.EntityFramework.DbContexts
             modelBuilder.Entity<WishList>(builder =>
             {
                 builder.SetEntityKey<WishList, int>();
-                builder.SetPropMaxLength(x => x.Name, 30);
+                builder.SetPropMaxLength(x => x.Name, 50);
                 builder.Property(x => x.Cover).HasColumnType(Define.SqlServer.IMAGE_TYPE);
                 builder.Property(x => x.Houses).HasJsonConversion();
                 builder.HasOne<Member>().WithMany(x => x.WishLists).HasForeignKey(x => x.MemberId);
@@ -344,7 +344,7 @@ namespace Airelax.EntityFramework.DbContexts
             modelBuilder.Entity<Comment>(builder =>
             {
                 builder.SetEntityKey<Comment, string>();
-                builder.SetPropMaxLength(x => x.Content, 500);
+                builder.SetPropMaxLength(x => x.Content, 1000);
                 builder.Property(x => x.CommentTime).IsRequired();
 
                 builder.HasOne<House>().WithMany(x => x.Comments).OnDelete(DeleteBehavior.ClientSetNull).HasForeignKey(x => x.HouseId);

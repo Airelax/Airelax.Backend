@@ -4,14 +4,16 @@ using Airelax.EntityFramework.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Airelax.EntityFramework.Migrations
 {
     [DbContext(typeof(AirelaxContext))]
-    partial class AirelaxContextModelSnapshot : ModelSnapshot
+    [Migration("20210818075223_expand-max-length")]
+    partial class expandmaxlength
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -440,9 +442,6 @@ namespace Airelax.EntityFramework.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<byte[]>("Cover")
-                        .HasColumnType("varbinary(max)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -470,7 +469,7 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<DateTime>("RegisterTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 8, 21, 20, 53, 26, 751, DateTimeKind.Local).AddTicks(510));
+                        .HasDefaultValue(new DateTime(2021, 8, 18, 15, 52, 23, 270, DateTimeKind.Local).AddTicks(3956));
 
                     b.Property<string>("Town")
                         .HasMaxLength(50)
@@ -493,9 +492,6 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<string>("Location")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("WorkTime")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

@@ -92,8 +92,8 @@ nav {
           height: 16px;
           margin-right: 6px;
         }
-        .writtenLocation,
-        .writtenWork {
+        .writtenLocationArea,
+        .writtenWorkArea {
           margin: 4px 0;
           display: flex;
           align-items: center;
@@ -160,12 +160,15 @@ nav {
                         }
                     }
                 }
-                .writingAboutMe{
-                    display:none;
+
+                .writingAboutMe {
+                    display: none;
                 }
-                .writtenAboutMe{
-                    display:none;
-                } 
+
+                .writtenAboutMe {
+                    display: none;
+                }
+
                 .checked {
                     border-bottom: none;
                 }
@@ -208,30 +211,11 @@ nav {
                         margin-right: 6px;
                     }
 
-                    .writtenLocation,
-                    .writtenWork {
+                    .writtenLocationArea,
+                    .writtenWorkArea {
                         margin: 4px 0;
                         display: flex;
                         align-items: center;
-                    }
-                }
-
-                .mdWritingAboutMe {
-                    .cancelOrSave {
-                        display: flex;
-                        justify-content: space-between;
-                        margin-top: 20px;
-
-                        .cancelBtn {
-                            text-align: center;
-                            text-decoration: underline;
-                            font-weight: bold;
-                        }
-
-                        .saveBtn {
-                            padding: 10px 20px;
-                            border-radius: 10px;
-                        }
                     }
                 }
             }

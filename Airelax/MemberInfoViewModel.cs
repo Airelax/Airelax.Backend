@@ -7,6 +7,7 @@ namespace Airelax
 {
     public class MemberInfoViewModel
     {
+        public string MemberId { get; set; }
         public string About { get; set; }
         public string Location { get; set; }
         public string WorkTime { get; set; }

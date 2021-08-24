@@ -61,7 +61,7 @@ namespace Airelax.Test.EntityFramework
                     context.SaveChanges();
 
                     var eric = context.Members.First(x => x.Name == "Eric");
-                    var house = new House()
+                    var house = new House(eric.Id)
                     {
                         Title = "台灣的農舍", Status = HouseStatus.Publish, CustomerNumber = 4, OwnerId = eric.Id, LastModifyTime = DateTime.Now
                     };

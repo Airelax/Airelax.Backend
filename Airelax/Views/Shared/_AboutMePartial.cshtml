@@ -1,16 +1,16 @@
 ﻿<div class="row writtenAboutMe">
     <div class="writtenAbout">
         <h3>關於我</h3>
-        <p>
+        <p id="writtenAboutMe">
             @Model.About
         </p>
     </div>
-    <div class="writtenLocation">
+    <div class="writtenLocationArea">
         <img src="~/dist/img/memberInfo/home.svg" alt="writtenLocation">
-        <span>@Model.Location</span>
+        <span id="writtenLocation">@Model.Location</span>
     </div>
-    <div class="writtenWork">
+    <div class="writtenWorkArea">
         <img src="~/dist/img/memberInfo/bag.svg" alt="writtenWork">
-        <span>@@model.worktime//todo</span>
+        <span id="writtenWork">@Model.WorkTime</span>
     </div>
 </div>

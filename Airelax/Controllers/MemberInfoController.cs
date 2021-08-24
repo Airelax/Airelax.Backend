@@ -24,7 +24,7 @@ namespace Airelax.Controllers
         [Route("{memberId}")]
         public IActionResult Index(string memberId)
         {
-            //todo 會員照片 跟 工作時間
+            //todo 會員照片
             var info =
                 (from member in _context.Members
                 from contextMemberInfo in _context.MemberInfos.Where(x => x.Id == member.Id).DefaultIfEmpty()
@@ -37,6 +37,7 @@ namespace Airelax.Controllers
                 {
                     About = contextMemberInfo.About,
                     Location = contextMemberInfo.Location,
+                    WorkTime = contextMemberInfo.WorkTime,
                     MemberName = member.Name,
                     RegisterTime = member.RegisterTime,
                     Email = member.Email,
@@ -52,8 +53,10 @@ namespace Airelax.Controllers
             var groupInfo = info.GroupBy(x => x.HouseId);
             var memberInfoViewModel = new MemberInfoViewModel()
             {
+                MemberId = memberId,
                 About = info.First().About,
                 Location = info.First().Location,
+                WorkTime = info.First().WorkTime,
                 MemberName = info.First().MemberName,
                 RegisterTime = info.First().RegisterTime.ToString("yyyy"),
                 Email = info.First().Email,
@@ -72,36 +75,48 @@ namespace Airelax.Controllers
             if (info.IsNullOrEmpty())
             {
                 //todo 錯誤畫面
-                return View();
+                return Content("錯誤畫面");
             }
             return View(memberInfoViewModel);
         }
         
 
         [HttpPut]
-        [Route("{memberId}/updateinfo")]
-        public async Task< bool> UpdateMemberInfo(string memberId, MemberInfoInput input)
+        [Route("{memberId}")]
+        public async Task<bool> UpdateMemberInfo(string memberId,[FromBody] MemberInfoInput input)
         {
           
             var member = (from m in _context.Members
                           from mi in _context.MemberInfos.Where(x=>x.Id == m.Id).DefaultIfEmpty()
                           where m.Id == memberId
-                          select new { Member = m, MemberInfos = mi }).FirstOrDefault();
+                          select new{ Member = m, MemberInfos = mi }).FirstOrDefault();
 
             if (member == null) 
-                throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest,$"Member Id:{memberId} does not match any member");//404
-
-            //member.Member.MemberInfo = new MemberInfo(member.Member.Id)
-            //{
-            //    About = input.About,
-            //    Location = input.Location
-            //};
-            member.MemberInfos.About = input.About;
-            member.MemberInfos.Location = input.Location;
-            //todo worktime
-            _context.Update(member.MemberInfos);
+                throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest
+                    ,$"Member Id:{memberId} does not match any member");//404
+            
+            if (member?.MemberInfos == null)
+            {
+                var memberInfo = new MemberInfo(memberId)
+                {
+                    About = input.About,
+                    Location = input.Location,
+                    WorkTime = input.WorkTime
+                };
+                _context.MemberInfos.Add(memberInfo);
+            }
+            else
+            {
+                member.MemberInfos.About = input.About;
+                member.MemberInfos.Location = input.Location;
+                member.MemberInfos.WorkTime = input.WorkTime;
+                _context.Update(member.MemberInfos); 
+            }
             _context.SaveChanges();
+
             return true;
         }
+
+
     }
 }
