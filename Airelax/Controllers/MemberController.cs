@@ -32,6 +32,7 @@ namespace Airelax.Controllers
 
             var memberViewModel = new MemberViewModel()
             {
+                MemberId = memberId,
                 Name = member.Name,
                 Gender = member.Gender,
                 Birthday = member.Birthday.ToString("yyyy-MM-dd"),

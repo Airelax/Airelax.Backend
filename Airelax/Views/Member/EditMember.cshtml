@@ -33,7 +33,7 @@
                         </button>
                     </div>
                     <div>
-                        <div id="nameID"></div>
+                        <div id="nameID">@Model.Name</div>
                         <div class="collapse" id="nameBtn">
                             <div class="card card-body" style="border: none;">
                                 <div>這是你旅行證件（駕照或護照）上所記載的姓名。</div>
@@ -42,10 +42,10 @@
                                         <div class="mb-2">
                                             姓名
                                         </div>
-                                        <input type="text" class="form-control" aria-label="Text input with checkbox">
+                                        <input id="nameInput" type="text" class="form-control" aria-label="Text input with checkbox">
                                     </div>
                                 </div>
-                                <button type="submit" class="btn mt-4 Send">儲存</button>
+                                <button id="sendNameBtn" type="submit" class="btn mt-4 Send">儲存</button>
                             </div>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                         </button>
                     </div>
                     <div>
-                        <div id="gender"></div>
+                        <div id="gender">@Model.Gender</div>
                         <div class="collapse" id="genderBtn">
                             <div class="card card-body" style="border: none;">
                                 <select class="form-select w-50" aria-label="Default select example">
@@ -69,7 +69,7 @@
                                     <option value="2">女性</option>
                                     <option value="3">其他</option>
                                 </select>
-                                <button type="submit" class="btn mt-4 Send">儲存</button>
+                                <button id="sendGenderBtn" type="submit" class="btn mt-4 Send">儲存</button>
                             </div>
                         </div>
                     </div>
@@ -91,8 +91,8 @@
                         </button>
                     </div>
                     <div>
-                        @*@(string.IsNullOrEmpty(Model.Email)? "未提供":Model.Email)*@
-                        <div id="email"></div>
+
+                        <div id="email">@(string.IsNullOrEmpty(Model.Email)? "未提供":Model.Email)</div>
                         <div class="collapse" id="mailBtn">
                             <div class="card card-body" style="border: none;">
                                 <div>使用你隨時可存取的電子郵件地址。</div>
@@ -116,7 +116,7 @@
                         </button>
                     </div>
                     <div>
-                        <div id="phoneNum">未提供</div>
+                        <div id="phoneNum">@Model.Phone</div>
                         <div class="collapse" id="phoneBtn">
                             <div class="card card-body" style="border: none;">
                                 <div>用於通知、提醒和協助你登入</div>
@@ -125,10 +125,10 @@
                                         <div id="phoneNum"></div>
                                     </div>
                                 </div>
-                                <button class="fw-bold newPhoneNum" type="button" data-bs-toggle="collapse"
+                                <button id="sendPhoneBtn" class="fw-bold newPhoneNum" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#newPhoneNumBtn" aria-expanded="false" style="color:#008489;"
                                         aria-controls="collapseExample">
-                                    新增其他電話號碼
+                                    儲存
                                 </button>
                             </div>
                         </div>
@@ -173,7 +173,7 @@
                         </button>
                     </div>
                     <div>
-                        <div id="email">未提供</div>
+                        <div id="address">@(Model.ZipCode+Model.Country+Model.AddressDetail)</div>
                         <div class="collapse" id="addressBtn">
                             <div class="card card-body" style="border: none;">
                                 <div>使用永久地址接收郵件。</div>
@@ -194,8 +194,8 @@
                                     <input type="text" class="form-control" aria-label="Text input with checkbox"
                                            placeholder="縣市 / 街道+號碼">
                                 </div>
-                                <button type="submit" class="btn mt-4 Send">儲存</button>
-                            </div>
+                                <button id ="sendAddressBtn" type="submit" class="btn mt-4 Send">儲存</button>
+                            </div> 
                         </div>
                     </div>
                 </div>
@@ -225,3 +225,32 @@
 
 @section topCSS{
     <link href="~/scss/Personal info.min.css" rel="stylesheet" /> }
+@section endJS{
+    <script>
+    const sendNameBtn = document.getElementById("sendNameBtn");
+    const nameInput = document.getElementById("nameInput");
+    let memberInput = { Name: "", Gender: "", Birthdat: "", Country: "", Zipcode: "", AddressDetail: "", Phone: "" };
+        sendNameBtn.addEventListener("click", () => {
+            memberInput.Name = nameInput.value;
+            putToBack();
+        })
+
+    function putToBack () {
+        axios({
+        method: 'Put',
+        url: `/Member/@Html.Raw(Model.MemberId)/detail`,
+        headers: {
+        'Content-Type': 'application/json'
+        },
+            data: JSON.stringify(memberInput),
+        })
+        .then(function (res) {
+        console.log(res.data)
+        })
+        .catch(function (error) {
+        console.log(error)
+        });
+     }
+    </script>
+
+}
