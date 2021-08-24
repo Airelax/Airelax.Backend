@@ -95,41 +95,39 @@
 }
 @section endJS{
     <script>
+        //#region 各種宣告
+        //負責傳去後端資料的物件
+        let MemberInfoInput = { About: "", Location: "", WorkTime: "" };
+        //要呈現的地方
         const writtenAboutMe = document.getElementById("writtenAboutMe");
         const writtenLocation = document.getElementById("writtenLocation");
         const writtenWork = document.getElementById("writtenWork");
-        let MemberInfoInput = { About: "", Location: "", WorkTime: "" };
-        //collapse
+        //手機collapse
         const meTextArea = document.getElementById("meTextArea");
         const locationInput = document.getElementById("locationInput");
         const workInput = document.getElementById("workInput");
         const cancelBtn = document.getElementById("cancelBtn");
         const saveBtn = document.getElementById("saveBtn");
-        //MdCollapse
+        //桌機MdCollapse
         const MdMeTextArea = document.getElementById("MdMeTextArea");
         const MdLocationInput = document.getElementById("MdLocationInput");
         const MdWorkInput = document.getElementById("MdWorkInput");
         const MdCancelBtn = document.getElementById("MdCancelBtn");
         const MdSaveBtn = document.getElementById("MdSaveBtn");
+        //#endregion
 
         MdSaveBtn.addEventListener("click", () => {
             MemberInfoInput.About = MdMeTextArea.value;
             MemberInfoInput.Location = MdLocationInput.value;
             MemberInfoInput.WorkTime = MdWorkInput.value;
-
             putToBack();
-            window.location.reload();
         });
 
         saveBtn.addEventListener("click", () => {
             MemberInfoInput.About = meTextArea.value;
             MemberInfoInput.Location = locationInput.value;
             MemberInfoInput.WorkTime = workInput.value;
-            @*writtenAboutMe.innerHTML = @Html.Raw(Model.About);
-            writtenLocation.innerHTML = @Html.Raw(Model.Location);
-            writtenWork.innerHTML = @Html.Raw(Model.WorkTime);*@
             putToBack();
-            window.location.replace();
         });
 
         function putToBack () {
@@ -137,12 +135,15 @@
                 method: 'Put',
                 url: `/MemberInfo/@Html.Raw(Model.MemberId)`,
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type':'application/json'
                 },
                 data: JSON.stringify(MemberInfoInput),
             })
             .then(function (res) {
-                console.log(res.data)
+                if (res.data == true && res.status==200)
+                    writtenAboutMe.innerHTML = "1234";
+                    writtenLocation.innerHTML = MemberInfoInput.Location;
+                    writtenWork.innerHTML = MemberInfoInput.WorkTime;
             })
             .catch(function (error) {
                 console.log(error)

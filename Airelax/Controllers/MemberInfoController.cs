@@ -83,7 +83,7 @@ namespace Airelax.Controllers
 
         [HttpPut]
         [Route("{memberId}")]
-        public async Task<bool> UpdateMemberInfo(string memberId,[FromBody] MemberInfoInput input)
+        public async Task<MemberInfoInput> UpdateMemberInfo(string memberId,[FromBody] MemberInfoInput input)
         {
           
             var member = (from m in _context.Members
@@ -113,8 +113,7 @@ namespace Airelax.Controllers
                 _context.Update(member.MemberInfos); 
             }
             _context.SaveChanges();
-
-            return true;
+            return input;
         }
 
 
