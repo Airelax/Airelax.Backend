@@ -52,11 +52,7 @@ namespace Airelax.Controllers
         public async Task<bool> test(string id)
         {
             var house = _context.Members.FirstOrDefault(x => x.Id == id);
-
-         
             return true;
         }
-        
-        
     }
 }
