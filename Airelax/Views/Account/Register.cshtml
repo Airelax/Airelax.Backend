@@ -1,20 +1,21 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model Airelax.Application.Acount.Dtos.Request.RegisterInput
+@model Airelax.Application.Account.Dtos.Request.RegisterInput
 @{
     ViewBag.Title = "註冊";
-    Layout = "_LayoutAcount";
-    //https://localhost:44314/Acount/Register
-}
+    Layout = "_LayoutAccount";
+    //https://localhost:44314/Account/Register
+}r
 
 
-@using (Html.BeginForm("Register", "Acount", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
+
     <main class="form-signin">
         <form>
             <h5>完成註冊</h5>
-
+            @Html.AntiForgeryToken()
             <div class="form-floating">
                 @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", id = "floatingFirstName", placeholder = "名字" })
                 @Html.LabelFor(m => m.FirstName, new { @for = "floatingFirstName" })
@@ -39,8 +40,8 @@
 
             <div class="form-floating">
                 @*@Html.TextBoxFor(m => m.Birthday, new { @class = "form-control", id = "floatingBirth", placeholder = "出生日期" })*@
-                @Html.EditorFor(m => m.Birthday, new { @class = "form-control col-12", id = "floatingBirth", placeholder = "出生日期" })
-                @Html.LabelFor(m => m.Birthday, new { @for = "floatingLastName" })
+                @Html.EditorFor(m => m.Birthday, new { @class = "form-control", id = "floatingBirth", placeholder = "出生日期" })
+
             </div>
 
             @*<div class="form-floating">
@@ -67,7 +68,7 @@
             </div>
 
             <div class="form-floating">
-                @Html.TextBoxFor(m => m.Password, new { @class = "form-control", id = "floatingPassword", placeholder = "密碼" })
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", id = "floatingPassword", placeholder = "密碼" })
                 @Html.LabelFor(m => m.Password, new { @for = "floatingPassword" })
             </div>
 
@@ -88,6 +89,8 @@
 
 
 @section Scripts{
+
+
     <script>
         //Today
         var today = new Date();
@@ -122,21 +125,21 @@
             padding-bottom: 40px;
             background-color: #f5f5f5;
         }
-        textarea:focus, input:focus{
 
+        textarea:focus, input:focus {
             outline: none;
-
         }
+
         .form-signin {
             width: 100%;
-
             padding: 15px;
             margin: auto;
         }
 
-        .form-floating{
+        .form-floating {
             margin-top: 16px;
         }
+
         h5 {
             font-size: 16px;
             width: 100%;
@@ -147,9 +150,10 @@
             z-index: 2;
         }
 
-        #floatingBirth{
-            width:100%;
+        #floatingBirth {
+            width: 100%;
         }
+
         .form-signin label {
             color: #717171;
         }
@@ -158,15 +162,16 @@
             color: #ffffff;
             background-color: rgb(227, 28, 95);
         }
-        .signIn:hover{
-            color: #ffffff;
-            background-image: radial-gradient(circle at center center, rgb(255, 56, 92) 0%, rgb(230, 30, 77) 27.5%, rgb(227, 28, 95) 40%, rgb(215, 4, 102) 57.5%, rgb(189, 30, 89) 75%, rgb(189, 30, 89) 100%)
-        }
-        .signIn:active{
-            background-color: #ff385c;
-            transform: scale(.98);
 
-        }
+            .signIn:hover {
+                color: #ffffff;
+                background-image: radial-gradient(circle at center center, rgb(255, 56, 92) 0%, rgb(230, 30, 77) 27.5%, rgb(227, 28, 95) 40%, rgb(215, 4, 102) 57.5%, rgb(189, 30, 89) 75%, rgb(189, 30, 89) 100%)
+            }
+
+            .signIn:active {
+                background-color: #ff385c;
+                transform: scale(.98);
+            }
 
         .order {
             height: 16px;
@@ -177,25 +182,25 @@
             text-align: center;
         }
 
-        .order .line {
-            display: inline-block;
-            width: 40%;
-            border-top: 1px solid #dddddd;
-        }
+            .order .line {
+                display: inline-block;
+                width: 40%;
+                border-top: 1px solid #dddddd;
+            }
 
-        .order .txt {
-            color: #555;
-            font-size: 12px;
-            vertical-align: middle;
-        }
+            .order .txt {
+                color: #555;
+                font-size: 12px;
+                vertical-align: middle;
+            }
 
         .social {
             border: 2px solid #dddddd;
         }
 
-        .social:hover {
-            border: 2px solid #222222;
-        }
+            .social:hover {
+                border: 2px solid #222222;
+            }
 
         @@media screen and (min-width:768px) {
             .form-signin {
@@ -205,3 +210,5 @@
     </style>
 
 }
+
+

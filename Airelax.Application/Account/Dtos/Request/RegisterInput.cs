@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Airelax.Application.Acount.Dtos.Request
+namespace Airelax.Application.Account.Dtos.Request
 {
     public class RegisterInput
     {
@@ -18,21 +18,29 @@ namespace Airelax.Application.Acount.Dtos.Request
         [Display(Name = "名字")]
         public string FirstName { get; set; }
 
-        [Required]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        [DataType(DataType.Date)]
-        [Display(Name = "出生日期")]
-        public DateTime Birthday { get; set; }
+        public LoginType LoginType { get; set; }
 
         [Required]
         [EmailAddress]
         [Display(Name = "電子郵件")]
         public string Email { get; set; }
 
+
+        [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [DataType(DataType.Date)]
+        [Display(Name = "出生日期")]
+        public DateTime Birthday { get; set; }
+
+        
+
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "密碼")]
+        //[StringLength(12,MinimumLength =8)]
         public string Password { get; set; }
-        public LoginType LoginType { get; set; }
+
+        
+
     }
 }
