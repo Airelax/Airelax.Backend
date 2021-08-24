@@ -298,21 +298,20 @@ border-radius: 50% !important;
 }
 
 #spaceBody > div {
-margin: 2.5rem 0;
+margin: 1rem 0;
 }
 
 #spaceBody > div .list {
-display: -webkit-box;
-display: -ms-flexbox;
-display: flex;
--webkit-box-pack: justify;
--ms-flex-pack: justify;
-justify-content: space-between;
--webkit-box-align: center;
--ms-flex-align: center;
-align-items: center;
-padding: 1.5rem 0;
-border-bottom: 1px solid #b9b8b8;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-bottom: 1px solid #b9b8b8;
 }
 
 #spaceBody > div .list span {
@@ -328,18 +327,18 @@ border-bottom: 1px solid #b9b8b8;
     align-items: center;
 }
 
-    #spaceBody > div .list .btn button {
-        font-size: 1.2rem;
-        width: 2rem;
-        text-decoration: none;
-        border-radius: 50%;
-        border: 1px solid #717171;
-        background-color: #fff;
-    }
+#spaceBody > div .list .btn button {
+    font-size: 1.2rem;
+    width: 2rem;
+    text-decoration: none;
+    border-radius: 50%;
+    border: 1px solid #717171;
+    background-color: #fff;
+}
 
-    #spaceBody > div .list .btn span {
-        margin: 0 1rem;
-    }
+#spaceBody > div .list .btn span {
+    margin: 0 1rem;
+}
 
 #spaceBody > div .form-check {
 margin: 1.5rem 0;
@@ -356,8 +355,12 @@ font-weight: 700;
 margin-bottom: .5rem;
 }
 
+#spaceBody .btn-dark{
+    margin: .5rem 0;
+}
+
 #photoBody {
-padding: 0 1rem;
+    padding: 0 1rem;
 }
 
 #photoBody > div {

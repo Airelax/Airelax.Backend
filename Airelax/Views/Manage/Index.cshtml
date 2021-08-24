@@ -6,8 +6,30 @@
         <h1>@Model.Title</h1>
         <div class="mix">
             <div class="sleep">
-                <a href="#basic" id="showStatus"><img src="~/icon/sleep.svg">已休眠</a>
-                <a href="#policy" id="showInstance"><img src="~/icon/instance-open.svg">已開啟即時預定功能</a>
+                <a href="#basic" id="changeStatus" class="barBtn">
+                    @switch (Model.Status)
+                    {
+                        case 1:
+                            <img src="/icon/Published.svg"><span>已發布</span>
+                            break;
+                        case 2:
+                            <img src="/icon/UnPublished.svg"><span>取消發布</span>
+                            break;
+                        default:
+                            <img src="/icon/RemovePublish.svg"><span>下架</span>
+                            break;
+                    }
+                </a>
+                <a href="#policy" id="changeInstance" class="barBtn">
+                    @if (Model.InstanceBooking)
+                    {
+                        <span>即時預訂功能已開啟</span>
+                    }
+                    else
+                    {
+                        <span>即時預訂功能已關閉</span>
+                    }
+                </a>
             </div>
             <div class="view"><a href="#">預覽房源</a></div>
         </div>
@@ -104,13 +126,26 @@
                             <div class="subtitle">房客人數</div>
                         </div>
                         <div class="col-4 control">
-                            <button class="minus">-</button><span>0</span><button class="plus">+</button>
+                            <button class="minus">-</button><span>@Model.Space.CustomerNumber</span><button class="plus">+</button>
                         </div>
                     </div>
                     <div class="row status">
                         <div class="col-10">
                             <div class="subtitle">房源狀態</div>
-                            <div class="content">未設定</div>
+                            <div class="content">
+                                @switch (Model.Status)
+                                {
+                                    case 1:
+                                        <div><img src="/icon/Published.svg"> 已發布</div>
+                                        break;
+                                    case 2:
+                                        <div><img src="/icon/UnPublished.svg"> 取消發布</div>
+                                        break;
+                                    default:
+                                        <div><img src="/icon/RemovePublish.svg"> 下架</div>
+                                        break;
+                                }
+                            </div>
                         </div>
                         <div class="col-2">
                             <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" radio="true" data='status'>編輯</button>
@@ -122,7 +157,12 @@
                 <div class="row facility mb-md-5 scroll" id="facility">
                     <div class="col-10">
                         <h2>設備與服務</h2>
-                        <div class="content">未設定</div>
+                        <div class="content" id="facilityContent">
+                            @foreach (var item in Model.ProvideFacilities)
+                            {
+                                <span>@item,</span>
+                            }
+                        </div>
                     </div>
                     <div class="col-2">
                         <a href="#" class="editBtn facilityBtn" data-bs-toggle="modal" data-bs-target="#facilityeModal">編輯<img src="~/icon/next.svg"></a>
@@ -134,7 +174,9 @@
                     <div class="row address">
                         <div class="col-10">
                             <div class="subtitle">地址</div>
-                            <div class="content">未設定</div>
+                            <div class="content">
+                                <span>@Model.Address.Address,@Model.Address.Town,@Model.Address.City,@Model.Address.Country,@Model.Address.ZipCode</span>
+                            </div>
                         </div>
                         <div class="col-2">
                             <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" address="true">編輯</button>
@@ -144,7 +186,7 @@
                     <div class="row block-description">
                         <div class="col-10">
                             <div class="subtitle">街區描述</div>
-                            <div class="content">未設定</div>
+                            <div class="content updateLocation">@Model.Address.LocationDescription</div>
                         </div>
                         <div class="col-2">
                             <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" textarea="true">編輯</button>
@@ -154,7 +196,7 @@
                     <div class="row traffic">
                         <div class="col-10">
                             <div class="subtitle">周邊交通</div>
-                            <div class="content">未設定</div>
+                            <div class="content updateLocation">@Model.Address.TrafficDescription</div>
                         </div>
                         <div class="col-2">
                             <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" textarea="true">編輯</button>
@@ -168,7 +210,7 @@
                     <div class="row category">
                         <div class="col-10">
                             <div class="subtitle">房源類型</div>
-                            <div class="content">未設定</div>
+                            <div class="content"></div>
                         </div>
                         <div class="col-2">
                             <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" select="true">編輯</button>
@@ -196,7 +238,7 @@
                             <div class="subtitle">每晚價格</div>
                             <div class="d-flex price-mix">
                                 <span>基礎價格：$&ensp;</span>
-                                <div class="content">0</div>
+                                <div class="content updatePrice">@Model.Origin</div>
                                 <span>&ensp;TWD</span>
                             </div>
                         </div>
@@ -240,7 +282,7 @@
                             <div class="subtitle">甜甜價</div>
                             <div class="d-flex price-mix">
                                 <span>基礎價格：$&ensp;</span>
-                                <div class="content">0</div>
+                                <div class="content updatePrice">@Model.SweetPrice</div>
                                 <span>&ensp;TWD</span>
                             </div>
                         </div>
@@ -277,7 +319,21 @@
                     <div class="row unbooking">
                         <div class="col-10">
                             <div class="subtitle">退訂政策</div>
-                            <div class="content">未設定</div>
+                            <div class="content">
+                                @{ 
+                                    List<string> unBooking = new List<string> {"彈性","彈性或不可退款", "中等", "中等或不可退", "稍嚴", "較嚴格或不可退款", "嚴格", "嚴格或不可退款"};
+                                    int index = 0;
+                                }
+                                @foreach (var item in unBooking)
+                                {
+                                    if(index + 1 == Model.Cancel)
+                                    {
+                                       @item;
+                                        break;
+                                    }
+                                    index++;
+                                }
+                            </div>
                         </div>
                         <div class="col-2">
                             <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" radio="true" data='unBooking'>編輯</button>
@@ -287,7 +343,16 @@
                     <div class="row instance">
                         <div class="col-10">
                             <div class="subtitle">即時預訂</div>
-                            <div class="content">未設定</div>
+                            <div class="content">
+                                @if (Model.InstanceBooking)
+                                {
+                                    <span>即時預訂功能已開啟</span>
+                                }
+                                else
+                                {
+                                    <span>即時預訂功能已關閉</span>
+                                }
+                            </div>
                         </div>
                         <div class="col-2">
                             <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" radio="true" data="instanceBooking">編輯</button>
@@ -297,17 +362,17 @@
                     <div class="row check-in">
                         <div class="col-10">
                             <div class="subtitle">入住時段</div>
-                            <div class="content">選擇時間</div>
+                            <div class="content updateCheckTime">@Model.CheckinTime</div>
                         </div>
                         <div class="col-2">
-                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" time="true">編輯</button>
+                            <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" time="true" checkin="true">編輯</button>
                             <span class="d-none">請自行決定租客的入住時間。</span>
                         </div>
                     </div>
                     <div class="row check-out">
                         <div class="col-10">
                             <div class="subtitle">退房時間</div>
-                            <div class="content">選擇時間</div>
+                            <div class="content updateCheckTime">@Model.CheckoutTime</div>
                         </div>
                         <div class="col-2">
                             <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" time="true">編輯</button>
@@ -319,7 +384,7 @@
                             <div class="subtitle">押金</div>
                             <div class="d-flex price-mix">
                                 <span>$&ensp;</span>
-                                <div class="content">0</div>
+                                <div class="content updatePrice">@Model.CashPledge</div>
                                 <span>&ensp;TWD</span>
                             </div>
                         </div>
@@ -339,10 +404,10 @@
                             <div class="explain">如果房源內的物品設施可能會對兒童造成傷害，你可以讓房客知道此房源不適合兒童入住。房客仍然可以聯絡你來了解詳情。</div>
                         </div>
                         <div class="col-4">
-                            <div class="btn-group btn-group-justified" data-toggle="buttons">
-                                <input type="radio" class="btn-check" name="children" id="noChildren" autocomplete="off">
-                                <label class="btn btn-outline-dark editBtn" for="noChildren">✕</label>
-                                <input type="radio" class="btn-check" name="children" id="yesChildren" autocomplete="off">
+                            <div class="btn-group btn-group-justified">
+                                <input type="radio" class="btn-check updateAllow" value="0" name="children" id="noChildren" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowChild==false? "checked=\"checked\"" : "")) >
+                                <label class="btn btn-outline-dark editBtn " for="noChildren">✕</label>
+                                <input type="radio" class="btn-check updateAllow" value="1" name="children" id="yesChildren" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowChild==true? "checked=\"checked\"" : "")) >
                                 <label class="btn btn-outline-dark editBtn ms-2" for="yesChildren">✓</label>
                             </div>
                         </div>
@@ -353,10 +418,10 @@
                             <div class="explain">如果房源內的物品設施可能會對嬰幼兒造成傷害，你可以讓房客知道此房源不適合嬰幼兒入住。房客仍然可以聯絡你來了解詳情。</div>
                         </div>
                         <div class="col-4">
-                            <div class="btn-group btn-group-justified" data-toggle="buttons">
-                                <input type="radio" class="btn-check" name="infant" id="noInfant" autocomplete="off">
-                                <label class="btn btn-outline-dark editBtn" for="noInfant">✕</label>
-                                <input type="radio" class="btn-check" name="infant" id="yesInfant" autocomplete="off">
+                            <div class="btn-group btn-group-justified">
+                                <input type="radio" class="btn-check updateAllow" value="0" name="infant" id="noInfant" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowBaby==false? "checked=\"checked\"" : "")) >
+                                <label class="btn btn-outline-dark editBtn " for="noInfant">✕</label>
+                                <input type="radio" class="btn-check updateAllow"  value="1" name="infant" id="yesInfant" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowBaby==true? "checked=\"checked\"" : "")) >
                                 <label class="btn btn-outline-dark editBtn ms-2" for="yesInfant">✓</label>
                             </div>
                         </div>
@@ -367,10 +432,10 @@
                             <div class="subtitle-explain">你可以限制房客攜帶寵物，但在合理情況下，仍須接受可能攜帶輔助性動物的房客。</div>
                         </div>
                         <div class="col-4">
-                            <div class="btn-group btn-group-justified" data-toggle="buttons">
-                                <input type="radio" class="btn-check" name="pet" id="noPet" autocomplete="off">
-                                <label class="btn btn-outline-dark editBtn" for="noPet">✕</label>
-                                <input type="radio" class="btn-check" name="pet" id="yesPet" autocomplete="off">
+                            <div class="btn-group btn-group-justified" >
+                                <input type="radio" class="btn-check updateAllow" value="0" name="pet" id="noPet" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowPet==false? "checked=\"checked\"" : "")) >
+                                <label class="btn btn-outline-dark editBtn " for="noPet">✕</label>
+                                <input type="radio" class="btn-check updateAllow"  value="1" name="pet" id="yesPet" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowPet==true? "checked=\"checked\"" : "")) >
                                 <label class="btn btn-outline-dark editBtn ms-2" for="yesPet">✓</label>
                             </div>
                         </div>
@@ -380,13 +445,12 @@
                             <div class="subtitle">允許吸煙</div>
                         </div>
                         <div class="col-4">
-                            <div class="btn-group btn-group-justified" data-toggle="buttons">
-                                <input type="radio" class="btn-check" name="smoke" id="noSmoke" autocomplete="off">
-                                <label class="btn btn-outline-dark editBtn" for="noSmoke">✕</label>
-                                <input type="radio" class="btn-check" name="smoke" id="yesSmoke" autocomplete="off">
+                            <div class="btn-group btn-group-justified">
+                                <input type="radio" class="btn-check updateAllow" value="0" name="smoke" id="noSmoke" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowSmoke==false? "checked=\"checked\"" : ""))>
+                                <label class="btn btn-outline-dark editBtn " for="noSmoke">✕</label>
+                                <input type="radio" class="btn-check updateAllow"  value="1" name="smoke" id="yesSmoke" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowSmoke==true? "checked=\"checked\"" : ""))>
                                 <label class="btn btn-outline-dark editBtn ms-2" for="yesSmoke">✓</label>
                             </div>
-
                         </div>
                     </div>
                     <div class="row event">
@@ -394,10 +458,10 @@
                             <div class="subtitle">允許舉辦活動</div>
                         </div>
                         <div class="col-4">
-                            <div class="btn-group btn-group-justified" data-toggle="buttons">
-                                <input type="radio" class="btn-check" name="event" id="noEvent" autocomplete="off">
+                            <div class="btn-group btn-group-justified">
+                                <input type="radio" class="btn-check updateAllow" value="0" name="event" id="noEvent" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowParty==false? "checked=\"checked\"" : ""))>
                                 <label class="btn btn-outline-dark editBtn" for="noEvent">✕</label>
-                                <input type="radio" class="btn-check" name="event" id="yesEvent" autocomplete="off">
+                                <input type="radio" class="btn-check updateAllow"  value="1" name="event" id="yesEvent" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowParty==true? "checked=\"checked\"" : ""))>
                                 <label class="btn btn-outline-dark editBtn ms-2" for="yesEvent">✓</label>
                             </div>
                         </div>
@@ -405,7 +469,7 @@
                     <div class="row others">
                         <div class="col-10">
                             <div class="subtitle">其他守則</div>
-                            <div class="content">未設定</div>
+                            <div class="content">@Model.HouseRule.Other</div>
                         </div>
                         <div class="col-2">
                             <button class="editBtn commonBtn" data-bs-toggle="collapse" href="#commonCollapse" textarea="true">編輯</button>
@@ -616,7 +680,7 @@
             }
     </style>
 
-    <form action="#">
+    <div>
         <div class="container">
             <div class="up">
                 <div class="top">
@@ -634,10 +698,10 @@
             </div>
             <div class="save">
                 <button class="btn cancel">取消</button>
-                <button class="btn saveBtn" type="submit">儲存</button>
+                <button class="btn saveBtn" type="button">儲存</button>
             </div>
         </div>
-    </form>
+    </div>
 </template>
 
 <!-- 設備與服務的modal -->
@@ -726,6 +790,7 @@
 </div>
 
 @section ManageJS {
+    
     <script>
         let barBtn = document.querySelectorAll('.barBtn');
         let detailSection = document.querySelector('.detail-section');
@@ -748,7 +813,6 @@
         ];
         let status = [
             { name: "unBooking", title: "已發布", detail: "房客可以在搜尋結果中找到你的房源，且可以提出預訂申請或預訂日曆上開放的日期。", icon: '<img src="/icon/Published.svg">' },
-            { name: "unBooking", title: "已休眠", detail: "在特定日期前，房客無法預訂或在搜尋結果中找到此房源。", icon: '<img src="/icon/sleep.svg">' },
             { name: "unBooking", title: "取消發布", detail: "房客無法預訂或在搜尋結果中找到此房源。", icon: '<img src="/icon/UnPublished.svg">' },
             { name: "unBooking", title: "下架", detail: "將你的房源從 Airbnb 永久下架。", icon: '<img src="/icon/RemovePublish.svg">' },
         ];
@@ -765,14 +829,14 @@
             },
             {
                 title: "住宿類型",
-                houseType: {
-                    "公寓": ["出租大樓", "私有公寓", "loft", "出租大樓", "服務式公寓", "古巴家庭旅館"],
-                    "獨棟房屋": ["住宅", "小木屋", "別墅", "連棟房屋", "村舍", "生態土屋", "船屋", "小屋", "農場住宿", "度假小木屋", "平房"],
-                    "附屬建築": ["客用住房", "客用套房", "農場住宿"],
-                    "獨特房源": ["穀倉", "小船", "公車", "露營車", "樹屋", "營地", "沙堡", "洞穴", "冰屋", "小島", "牧場", "宗教建築", "貨櫃屋", "帳篷", "火車", "蒙古包", "其他"],
-                    "家庭式旅館": ["家庭式旅館", "自然小屋", "臺灣民宿", "農場住宿"],
-                    "精品旅館": ["精品旅店", "自然小屋", "青年旅館", "服務式公寓", "公寓式旅店", "飯店", "渡假村"]
-                }
+                houseType: [
+                    ["出租大樓", "私有公寓", "loft", "服務式公寓", "古巴家庭旅館"],
+                    ["住宅", "小木屋", "別墅", "連棟房屋", "村舍", "生態土屋", "船屋", "小屋", "農場住宿", "度假小木屋", "平房"],
+                    ["客用住房", "客用套房", "農場住宿"],
+                    ["穀倉", "小船", "公車", "露營車", "樹屋", "營地", "沙堡", "洞穴", "冰屋", "小島", "牧場", "宗教建築", "貨櫃屋", "帳篷", "火車", "蒙古包", "其他"],
+                    ["家庭式旅館", "自然小屋", "農場住宿", "臺灣民宿", "日式旅館"],
+                    ["飯店", "青年旅館", "渡假村", "自然小屋", "精品旅店", "公寓式旅店", "服務式公寓", "文化遺產旅店", "客棧"]
+                ]
             },
             {
                 title: "房源類型",
@@ -780,19 +844,19 @@
             }
         ];
         let facility = {
-            "衛浴": ["浴缸", "坐浴盆", "沐浴乳", "清潔產品", "潤髮乳", "吹風機", "熱水", "戶外淋浴空間", "洗髮露", "沐浴乳"],
-            "臥室和洗衣": ["生活必需品", "床單", "衣櫥", "乾衣機", "曬衣架", "額外的枕頭和毛毯", "衣架", "熨斗", "蚊帳", "遮光窗簾", "衣架", "洗衣機"],
+            "衛浴": ["浴缸", "坐浴盆", "沐浴乳", "清潔產品", "潤髮乳", "吹風機", "熱水", "戶外淋浴空間", "洗髮露"],
+            "臥室和洗衣": ["生活必需品", "床單", "衣櫥", "乾衣機", "曬衣架", "額外的枕頭和毛毯", "衣架", "熨斗", "蚊帳", "遮光窗簾", "洗衣機"],
             "娛樂": ["書籍與讀物", "網路連線", "運動器材", "遊戲主機", "鋼琴", "乒乓球桌", "撞球桌", "黑膠唱片機", "音響系統", "電視"],
             "親子": ["嬰兒浴盆", "嬰兒監視器", "嬰兒安全門欄", "臨時保母推薦", "桌遊", "尿布台", "童書與玩具", "兒童餐具", "嬰兒床", "壁爐護欄", "兒童高腳椅", "插座蓋", "遊戲床/旅行用嬰兒床", "桌角防護", "窗栅"],
             "暖氣和冷氣": ["空調設備", "吊扇", "暖氣", "室內壁爐", "移動式電扇"],
             "居家安全": ["一氧化碳警報器", "滅火器", "急救包", "帶鎖的臥室", "煙霧警報器"],
             "網路和辦公": ["專門工作空間", "隨身WiFi", "無線網路"],
             "廚房和餐飲": ["烤盤", "燒烤用具", "麵包機", "調理機", "咖啡", "咖啡機", "基本廚具", "餐桌", "盤子和餐具", "洗碗機", "冷凍庫", "熱水壺", "廚房", "微波爐", "小冰箱", "烤箱", "冰箱", "電鍋", "爐子", "烤麵包機", "壓縮式垃圾桶", "葡萄酒杯"],
-            "位置特色": ["直達海灘", "湖畔", "附近有自助洗衣店", "獨立入口", "度假村入場證", "水岸"],
+            "位置特色": ["直達海灘", "湖畔", "附近有自助洗衣店", "獨立入口", "度假村入場證", "無須搭乘交通工具即可前往滑雪場", "水岸"],
             "戶外": ["後院", "烤肉區", "沙灘必備物品", "自行車", "船舷梯", "火坑", "吊床", "小輕艇", "戶外用餐區", "戶外家具", "戶外廚房", "庭院或陽台"],
             "停車位和設施": ["電梯", "電動汽車（EV）充電設備", "建築物內免費停車", "路邊有免費停車位", "健身房", "按摩浴池", "建築物範圍外有收費停車", "建築物內有收費停車位", "游泳池", "獨立客廳", "三溫暖", "獨立房屋"],
             "服務": ["早餐", "退房前需打掃", "可長期住宿", "可存放行李"]
-        }
+        };
         let space = {
             canUse: {
                 title: "房客可以使用哪些區域？",
@@ -807,7 +871,28 @@
                 title: "會和誰共用這些空間？",
                 check: ["我", "好友、家人或室友", "其他房客"]
             }
-        }
+        };
+        let updateDescription = {
+            Description: "",
+            SpaceDescription: "",
+            GuestPermission: "",
+            Others: "",
+        };
+        let updateAddress = {
+            Address: "",
+            Town: "",
+            City: "",
+            Country: "",
+            ZipCode: ""
+        };
+        let updateCategory = {
+            Category: 0,
+            HouseType: 0,
+            RoomCategory: 0
+        };
+        let firstTime = true;
+        let AddressFirstTime = true;
+        let CategoryFirstTime = true;
 
         let lastBar = '';
         barBtn.forEach(item => {
@@ -821,9 +906,9 @@
 
                 lastBar.classList.add('d-none');
 
-                if (e.target.getAttribute('id') === 'detailBtn') {
+                if (e.target.getAttribute('id') === 'detailBtn' || e.target.getAttribute('id') === 'changeStatus') {
                     detailSection.classList.remove('d-none');
-                    e.target.classList.add('active');
+                    document.querySelector('#detailBtn').classList.add('active');
                     lastBar = detailSection;
                 }
                 else if (e.target.getAttribute('id') === 'priceBtn') {
@@ -833,7 +918,7 @@
                 }
                 else {
                     policySection.classList.remove('d-none');
-                    e.target.classList.add('active');
+                    document.querySelector('#policyBtn').classList.add('active');
                     lastBar = policySection;
                 }
             });
@@ -906,6 +991,24 @@
 
                         if (e.target.getAttribute('data') === 'status') {
                             iconSpan.innerHTML += item.icon;
+                            if ('@Html.Raw(Model.Status)' == (index + 1)) {
+                                input.checked = true;
+                            }
+                        }
+
+                        if (e.target.getAttribute('data') === 'unBooking') {
+                            if ('@Html.Raw(Model.Cancel)' == (index + 1)) {
+                                input.checked = true;
+                            }
+                        }
+
+                        if (e.target.getAttribute('data') === 'instanceBooking') {
+                            if ('@Html.Raw(Model.InstanceBooking)' == 'True' && index == 0) {
+                                input.checked = true;
+                            }
+                            else if ('@Html.Raw(Model.InstanceBooking)' == 'False' && index == 1) {
+                                input.checked = true;
+                            }
                         }
 
                         iconSpan.appendChild(span);
@@ -922,6 +1025,8 @@
                         }
                     });
                 }
+
+
                 //房間詳情
                 if (this.getAttribute('description') !== null) {
                     description.forEach((item,i) => {
@@ -933,9 +1038,18 @@
                         h4.innerText = item.title;
                         span.classList.add('com-description');
                         span.innerText = item.detail;
-                        if (i == 0) textbox.value = '@Html.Raw(Model.Description.SpaceDescription)';
-                        else if (i == 1) textbox.value = '@Html.Raw(Model.Description.GuestPermission)';
-                        else textbox.value = '@Html.Raw(Model.Description.Others)';
+                        if (i == 0) {
+                            if (firstTime) textbox.value = '@Html.Raw(Model.Description.SpaceDescription)';
+                            else textbox.value = updateDescription.SpaceDescription;
+                        }
+                        if (i == 1) {
+                            if (firstTime) textbox.value = '@Html.Raw(Model.Description.GuestPermission)';
+                            else textbox.value = updateDescription.GuestPermission;
+                        }
+                        if (i == 2) {
+                            if (firstTime) textbox.value = '@Html.Raw(Model.Description.Others)';
+                            else textbox.value = updateDescription.Others;
+                        }
 
                         div.appendChild(h4);
                         div.appendChild(span);
@@ -947,12 +1061,33 @@
                 //地址
                 if (this.getAttribute('address') !== null) {
                     input.style.display = 'none';
-                    address.forEach(item => {
+                    address.forEach((item,index)=> {
                         let div = document.createElement('div');
                         let input = document.createElement('input');
                         let span = document.createElement('span');
                         div.classList.add('address');
                         span.innerText = item;
+                        switch (index) {
+                            case 0:
+                                if (AddressFirstTime)  input.value = '@Html.Raw(Model.Address.Address)';
+                                else input.value = updateAddress.Address;
+                                break;
+                            case 1:
+                                if (AddressFirstTime)  input.value = '@Html.Raw(Model.Address.Town)';
+                                else input.value = updateAddress.Town;
+                                break;
+                            case 2:
+                                if (AddressFirstTime)  input.value = '@Html.Raw(Model.Address.City)';
+                                else input.value = updateAddress.City;
+                                break;
+                            case 3:
+                                if (AddressFirstTime)  input.value = '@Html.Raw(Model.Address.Country)';
+                                else input.value = updateAddress.Country;
+                                break;
+                            default:
+                                if (AddressFirstTime)  input.value = '@Html.Raw(Model.Address.ZipCode)';
+                                else input.value = updateAddress.ZipCode;
+                        }
 
                         div.appendChild(span);
                         div.appendChild(input);
@@ -960,9 +1095,10 @@
                     })
                 }
 
-                //房源與房型
+                //房源類型
                 if (this.getAttribute('select') !== null) {
                     input.style.display = 'none';
+                    let temp;
                     typeSelect.forEach((item, i) => {
                         let div = document.createElement('div');
                         let select = document.createElement('select');
@@ -970,42 +1106,70 @@
                         div.classList.add('select');
                         span.innerText = item.title;
 
+                        //初始化
                         if (i == 0) {
-                            typeSelect[i].category.forEach(x => {
-                                createOption(x, select);
+                            typeSelect[i].category.forEach((x,i) => {
+                                let option = document.createElement('option').cloneNode(true);
+                                option.innerText = x;
+                                option.value = i+1;
+                                select.appendChild(option);
                             });
+                            select.value = updateCategory.Category != 0 ? Number(updateCategory.Category) : Number('@Html.Raw(Model.HouseCategory.Category)');
+                            temp = select.value;
                         }
-
                         if (i == 1) {
-                            component.shadowRoot.querySelector('select').addEventListener("change", (e) => {
-                                select.innerHTML = "";
-                                typeSelect[i].houseType[`${e.target.value}`].forEach(x => {
-                                    createOption(x, select);
-                                });
+                            typeSelect[i].houseType[temp-1].forEach((x, i) => {
+                                let option = document.createElement('option').cloneNode(true);
+                                option.innerText = x;
+                                option.value = Number(`${temp}${(i+1).toString().padStart(2, "0")}`)
+                                select.appendChild(option);
                             });
-                        }
+                            select.classList.add('second');
+                            select.value = updateCategory.HouseType != 0 ? Number(updateCategory.HouseType) : Number('@Html.Raw(Model.HouseCategory.HouseType)');
 
+                        }
                         if (i == 2) {
-                            typeSelect[i].roomCategory.forEach(x => {
-                                createOption(x, select);
+                            typeSelect[i].roomCategory.forEach((x,i) => {
+                                let option = document.createElement('option').cloneNode(true);
+                                option.innerText = x;
+                                option.value = i+1;
+                                select.appendChild(option);
                             });
+                            select.value = updateCategory.RoomCategory != 0 ? Number(updateCategory.RoomCategory) : Number('@Html.Raw(Model.HouseCategory.RoomCategory)');
                         }
 
                         div.appendChild(span);
                         div.appendChild(select);
                         component.shadowRoot.querySelector('.up').appendChild(div);
                     });
+
+                    component.shadowRoot.querySelector('select').addEventListener('change', (e) => {
+                        let second = component.shadowRoot.querySelector('.second');
+                        second.innerHTML = "";
+                        typeSelect[1].houseType[e.target.value-1].forEach((x, i) => {
+                            let option = document.createElement('option').cloneNode(true);
+                            option.innerText = x;
+                            option.value = Number(`${e.target.value}${(i+1).toString().padStart(2, "0")}`)
+                            second.appendChild(option);
+                        });
+                    });
                 }
 
                 //price區域
                 if (this.getAttribute('price') !== null) {
                     if (this.getAttribute('percent') !== null) {
-                        component.shadowRoot.querySelector('.com-price span').style.display = 'block';
+                        component.shadowRoot.querySelector('.com-priceHtmlspan').style.display = 'block';
                     }
                     else {
                         component.shadowRoot.querySelector('.com-price p').style.display = 'block';
                     }
                     activeContent.parentNode.style.opacity = '0';
+                }
+
+                //Time區域
+                if (this.getAttribute('time') !== null) {
+                    if (this.getAttribute('checkin') !== null) inputTime.value = '@Html.Raw(@Model.CheckinTime)';
+                    else inputTime.value = '@Html.Raw(@Model.CheckoutTime)';
                 }
 
                 //Time & textarea初始值
@@ -1054,35 +1218,139 @@
 
                 //儲存
                 saveBtn.addEventListener('click', (event) => {
+                    let updateTitle = { Title: "" };
+                    let updateStatus = { Status: 0 };
+                    let updateLocation = {
+                        LocationDescription: "",
+                        TrafficDescription: ""
+                    };
+                    let updatePrice = {
+                        Origin: 0,
+                        SweetPrice: 0,
+                        CashPledge: 0
+                    };
+                    let updateCancel = 0;
+                    let updateRealTime = false;
+                    let updateCheckTime = {
+                        CheckinTime: "",
+                        CheckoutTime: "",
+                    };
+                    let updateOthers = "";
+                    //event.preventDefault();
                     content.innerText = "";
-                    if (e.target.getAttribute('textarea') !== null)
+                    if (e.target.getAttribute('textarea') !== null) {
                         content.innerText = textarea.value;
-                    else if (e.target.getAttribute('time') !== null)
+                        switch (getParentNode(e.target, 2).querySelector('.subtitle').innerText) {
+                            case '房源描述':
+                                updateDescription.Description = textarea.value;
+                                component.shadowRoot.querySelectorAll('.description textarea').forEach((x, i) => {
+                                    if (i == 0) updateDescription.SpaceDescription = x.value;
+                                    if (i == 1) updateDescription.GuestPermission = x.value;
+                                    if (i == 2) updateDescription.Others = x.value;
+                                });
+                                PostData(updateDescription, "Description");
+                                firstTime = false;
+                                break;
+                            case '街區描述':
+                            case '周邊交通':
+                                document.querySelectorAll('.updateLocation').forEach((x, i) => {
+                                    Object.keys(updateLocation).forEach((item, index) => {
+                                        if (index == i) updateLocation[item] = x.innerText
+                                    });
+                                });
+                                PostData(updateLocation, "Location");
+                                break;
+                            case '其他守則':
+                                updateOthers = textarea.value;
+                                PostData(updateOthers, "Others");
+                                break;
+                        }
+                    }
+                    else if (e.target.getAttribute('time') !== null) {
                         content.innerText = inputTime.value;
+                        document.querySelectorAll('.updateCheckTime').forEach((x,i) => {
+                            Object.keys(updateCheckTime).forEach((item, index) => {
+                                if (index == i) updateCheckTime[item] = x.innerText;
+                            });
+                        });
+                        PostData(updateCheckTime, "CheckTime");
+                    }
                     else if (e.target.getAttribute('radio') !== null) {
-                        radio.querySelectorAll('input').forEach(x => {
+                        radio.querySelectorAll('input').forEach((x,index) => {
                             if (x.checked) {
                                 content.innerHTML = x.nextSibling.querySelector('div').innerHTML;
-                                if (e.target.getAttribute('data') === 'status')
-                                    document.getElementById('showStatus').innerHTML = content.innerHTML;
-                                else if (e.target.getAttribute('data') === 'instanceBooking')
-                                    document.getElementById('showInstance').innerHTML = content.innerHTML;
+                                switch (getParentNode(e.target, 2).querySelector('.subtitle').innerText) {
+                                    case '房源狀態':
+                                        updateStatus.Status = (index + 1);
+                                        PostData(updateStatus, "Status");
+                                        document.getElementById('changeStatus').innerHTML = content.innerHTML;
+                                        break;
+                                    case '退訂政策':
+                                        updateCancel = (index + 1);
+                                        PostData(updateCancel, "Cancel");
+                                        break;
+                                    case '即時預訂':
+                                        if (index == 0) updateRealTime = true;
+                                        else updateRealTime = false;
+                                        PostData(updateRealTime, "RealTime");
+                                        document.querySelector('#changeInstance').innerHTML = content.innerHTML;
+                                        break;
+                                }
                             }
-                        })
+                        });
                     }
                     else if (e.target.getAttribute('address') !== null) {
-                        up.querySelectorAll('input').forEach(x => {
+                        AddressFirstTime = false;
+                        up.querySelectorAll('.address input').forEach((x,i) => {
                             if (x.value !== "")
-                                content.innerText += `${x.value},`
+                                content.innerText += `${x.value},`;
+                                Object.keys(updateAddress).forEach((item, index) => {
+                                    if (i == index) updateAddress[item] = x.value;
+                            });
                         });
+                        PostData(updateAddress, "Address");
                     }
                     else if (e.target.getAttribute('select') !== null) {
-                        up.querySelectorAll('select').forEach(x => {
-                            content.innerText += `${x.value},`
+                        up.querySelectorAll('select').forEach((x,i) => {
+                            Object.keys(updateCategory).forEach((item, index) => {
+                                if (i == index) {
+                                    updateCategory[item] = Number(x.value);
+                                    if (i == 0) content.innerText += `${typeSelect[i].category[Number(x.value) - 1]}, `;
+                                    if (i == 1) {
+                                        let arr = (x.value).toString().split('');
+                                        let first = arr.length == 4 ? Number(x.value.toString().slice(0, 1)) - 1 : Number(arr[0]) - 1;
+                                        let num = arr[arr.length - 2] == 0 ? Number(arr[arr.length - 1]) - 1 : Number(x.value.toString().slice(-2)) - 1;
+                                        content.innerText += `${typeSelect[i].houseType[first][num]}, `;
+                                    }
+                                    if (i == 2) content.innerText += typeSelect[i].roomCategory[Number(x.value) - 1];
+                                }
+                            });
                         });
+                        CategoryFirstTime = false;
+                        PostData(updateCategory, "Category");
                     }
-                    else
+                    else {
                         content.innerText = input.value;
+                        switch (getParentNode(e.target, 2).querySelector('.subtitle').innerText) {
+                            case '房源標題':
+                                updateTitle.Title = input.value;
+                                PostData(updateTitle, "Title");
+                                document.querySelector('.title-div h1').innerText = input.value;
+                                break;
+                            case '每晚價格':
+                            case '甜甜價':
+                            case '押金':
+                                document.querySelectorAll('.updatePrice').forEach((x, i) => {
+                                    Object.keys(updatePrice).forEach((item, index) => {
+                                        if (index == i) {
+                                            updatePrice[item] = parseFloat(x.innerText).toFixed(2);
+                                        }
+                                    });
+                                });
+                                PostData(updatePrice, "Price");
+                                break;
+                        }
+                    }
 
                     destroyNode(event, 'commonCollapse');
                 });
@@ -1092,9 +1360,31 @@
             }, false);
         })
 
+        //axios
+        function PostData(request,type) {
+            axios({
+                method: 'Put',
+                url: `/Manage/@Html.Raw(Model.Id)/${type}`,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify(request),
+            }).then(function (res) {
+                console.log(res.data)
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+
         //設備與服務
+        let updateFacility = {
+            ProvideFacilities: [],
+            NotProvideFacilities: [],
+        };
         let facilityBody = document.getElementById('facilityBody');
-        document.querySelector('.facilityBtn').addEventListener('click', () => {
+        let provide = '@Html.Raw(String.Join(',', Model.ProvideFacilities))'.split(',');
+        let notProvide = '@Html.Raw(String.Join(',', Model.NotProvideFacilities))'.split(',');
+        window.addEventListener('load', () => {
             Object.keys(facility).forEach((x, index) => {
                 let div = document.createElement('div');
                 let h3 = document.createElement('h3');
@@ -1110,13 +1400,20 @@
                     let yesLabel = document.createElement('label');
                     span.innerText = item;
                     list.classList.add('modal-list');
-                    setAttributes(group, { "class": "btn-group btn-group-justified", "data-toggle": "buttons" });
-                    setAttributes(noInput, { "type": "radio", "class": "btn-check", "name": `${index + 1}-${i + 1}`, "id": `no-${index + 1}-${i + 1}`, "autocomplete": "off" });
+                    setAttributes(group, { "class": "btn-group btn-group-justified" });
+                    setAttributes(noInput, { "type": "radio", "class": "btn-check updateFacility", "name": `${index + 1}${(i + 1).toString().padStart(2, "0")}`, "id": `no-${index + 1}-${i + 1}`, "autocomplete": "off", "value": `${index + 1}${(i + 1).toString().padStart(2, "0")}`, "attr": "no" });
                     setAttributes(noLabel, { "class": "btn btn-outline-dark editBtn", "for": `no-${index + 1}-${i + 1}` });
-                    setAttributes(yesInput, { "type": "radio", "class": "btn-check yesInput", "name": `${index + 1}-${i + 1}`, "id": `yes-${index + 1}-${i + 1}`, "autocomplete": "off" });
+                    setAttributes(yesInput, { "type": "radio", "class": "btn-check updateFacility yesInput", "name": `${index + 1}${(i + 1).toString().padStart(2, "0")}`, "id": `yes-${index + 1}-${i + 1}`, "autocomplete": "off", "value": `${index + 1}${(i + 1).toString().padStart(2, "0")}` });
                     setAttributes(yesLabel, { "class": "btn btn-outline-dark editBtn", "for": `yes-${index + 1}-${i + 1}` });
                     noLabel.innerText = "✕";
                     yesLabel.innerText = "✓";
+
+                    provide.forEach(x => {
+                        if (x == yesInput.getAttribute('name')) { yesInput.setAttribute('checked', 'checked') }
+                    });
+                    notProvide.forEach(x => {
+                        if (x == noInput.getAttribute('name')) { noInput.setAttribute('checked', 'checked') }
+                    });
 
                     group.appendChild(noInput);
                     group.appendChild(noLabel);
@@ -1128,10 +1425,32 @@
                 });
                 facilityBody.appendChild(div);
             });
-
+            let content = document.querySelector('.facility .content');
+            content.innerText = "";
+            facilityBody.querySelectorAll('.yesInput').forEach(x => {
+                if (x.checked) {
+                    content.innerText += `${getParentNode(x, 2).querySelector('span').innerText},`;
+                }
+            })
+        });
+        document.querySelector('.facilityBtn').addEventListener('click', () => {
+            let updateFacilityBtn = document.querySelectorAll('#facilityBody .updateFacility');
+            updateFacilityBtn.forEach(item => {
+                item.addEventListener('change', (e) => {
+                    updateFacility.NotProvideFacilities = [];
+                    updateFacility.ProvideFacilities = [];
+                    document.querySelectorAll('#facilityBody .btn-group').forEach((x, i) => {
+                        let check = x.querySelector('input:checked');
+                        if (check == null) return;
+                        else if (check.getAttribute('attr') == 'no') updateFacility.NotProvideFacilities.push(Number(check.value));
+                        else updateFacility.ProvideFacilities.push(Number(check.value));
+                    });
+                });
+            });
             let content = document.querySelector('.facility .content');
             let saveBtn = document.getElementById('facility-save');
             saveBtn.addEventListener('click', () => {
+                PostData(updateFacility, "Facility");
                 content.innerText = "";
                 facilityBody.querySelectorAll('.yesInput').forEach(x => {
                     if (x.checked) {
@@ -1141,63 +1460,39 @@
             });
         });
 
+        //房源類型初始化
+        window.addEventListener('load', () => {
+            let content = document.querySelector('.category .content');
+            content.innerText += `${typeSelect[0].category[Number('@Html.Raw(Model.HouseCategory.Category)') - 1]}, `;
+            let arr = '@Html.Raw(Model.HouseCategory.HouseType)'.split('');
+            let num = arr[arr.length - 2] == 0 ? Number(arr[arr.length - 1])-1 : Number('@Html.Raw(Model.HouseCategory.HouseType)'.slice(-2))-1;
+            let first = arr.length == 4 ? Number('@Html.Raw(Model.HouseCategory.HouseType)'.slice(0, 1))-1 : Number(arr[0])-1;
+            content.innerText += `${typeSelect[1].houseType[first][num]}, `;
+            content.innerText += `${typeSelect[2].roomCategory[ Number('@Html.Raw(Model.HouseCategory.RoomCategory)') - 1]}, `;
+        });
+
         //房間與空間
         let spaceBody = document.getElementById('spaceBody');
-        document.querySelector('.spaceBtn').addEventListener('click', () => {
+        window.addEventListener('load', () => {
             Object.keys(space).forEach((x, index) => {
                 let div = document.createElement('div');
                 let h4 = document.createElement('h4');
                 h4.innerText = space[x].title;
                 div.appendChild(h4);
                 if (index == 0) div.classList.add('canUse');
-                else if (index == 1) div.classList.add('bedCount');
+                else if (index == 1) div.classList.add('bed');
 
                 if (space[x].check !== undefined) {
-                    space[x].check.forEach(item => {
-                        let list = document.createElement('div');
-                        let input = document.createElement('input');
-                        let label = document.createElement('label');
-                        list.classList.add('form-check');
-                        label.innerText = item;
-                        setAttributes(input, { "class": "form-check-input", "type": "checkbox", "id": `${x}-${index + 1}` });
-                        setAttributes(label, { "class": "form-check-label", "for": `${x}-${index + 1}` });
-
-                        list.appendChild(input);
-                        list.appendChild(label);
-                        div.appendChild(list);
-                    });
+                    if (index == 2) {
+                        addBebCheck(x, index, div)
+                    }
                 }
                 if (space[x].detail !== undefined) {
-                    space[x].detail.forEach(item => {
-                        let list = document.createElement('div');
-                        let span = document.createElement('span');
-                        let button = document.createElement('div');
-                        let minus = document.createElement('button');
-                        let plus = document.createElement('button');
-                        let num = document.createElement('span');
-                        list.classList.add('list');
-                        button.classList.add('btn');
-                        minus.addEventListener('click', (e) => {
-                            let span = e.target.parentNode.querySelector('span');
-                            span.innerText = Number(span.innerText) - 1;
-                            if (span.innerText < 0) span.innerText = 0;
+                    if (index == 0) {
+                        space[x].detail.forEach((item, i) => {
+                            addBedCount(item, div, i);
                         });
-                        plus.addEventListener('click', (e) => {
-                            let span = e.target.parentNode.querySelector('span');
-                            span.innerText = Number(span.innerText) + 1;
-                        });
-                        span.innerText = item;
-                        minus.innerText = '-';
-                        plus.innerText = '+';
-                        num.innerText = '0';
-
-                        button.appendChild(minus);
-                        button.appendChild(num);
-                        button.appendChild(plus);
-                        list.appendChild(span);
-                        list.appendChild(button);
-                        div.appendChild(list);
-                    });
+                    }
                 }
                 spaceBody.appendChild(div);
             });
@@ -1225,13 +1520,139 @@
             });
         });
 
+        function addBebCheck(x, index, div) {
+            space[x].check.forEach(item => {
+                let list = document.createElement('div');
+                let input = document.createElement('input');
+                let label = document.createElement('label');
+                list.classList.add('form-check');
+                label.innerText = item;
+                setAttributes(input, { "class": "form-check-input", "type": "checkbox", "id": `${x}-${index + 1}` });
+                setAttributes(label, { "class": "form-check-label", "for": `${x}-${index + 1}` });
+
+                list.appendChild(input);
+                list.appendChild(label);
+                div.appendChild(list);
+            });
+        }
+
+        function addBedCount(item, div, i) {
+            let list = document.createElement('div');
+            let span = document.createElement('span');
+            let button = document.createElement('div');
+            let minus = document.createElement('button');
+            let plus = document.createElement('button');
+            let num = document.createElement('span');
+            list.classList.add('list');
+            button.classList.add('btn');
+            plus.classList.add('plus');
+            minus.classList.add('minus');
+            minus.addEventListener('click', (e) => {
+                let span = e.target.parentNode.querySelector('span');
+                span.innerText = Number(span.innerText) - 1;
+                if (span.innerText < 0) span.innerText = 0;
+                if (i == 0) {
+                    let lastBtn = document.querySelector('#spaceBody .bed > div:last-child');
+                    lastBtn.parentNode.removeChild(lastBtn);
+                }
+            });
+            plus.addEventListener('click', (e) => {
+                let span = e.target.parentNode.querySelector('span');
+                span.innerText = Number(span.innerText) + 1;
+                // 增加臥室
+                if (i == 0) {
+                    let bed = document.createElement('div');
+                    let btn = document.createElement('button');
+                    let collapse = document.createElement('div');
+                    let card = document.createElement('div');
+                    let num = e.target.parentNode.querySelector('span').innerText;
+                    btn.innerText = `臥室${num}`;
+                    addBebCheck("bedroom", num, card);
+                    space.bedroom.detail.forEach(x => {
+                        addBedCount(x, card, 1);
+                    });
+
+                    setAttributes(btn, { "class": "btn btn-dark w-100", "data-bs-toggle": "collapse", "data-bs-target": `#collapseBed-${num}`, "type": "button", "aria-expanded": "false" });
+                    setAttributes(collapse, { "class": "collapse", "id": `collapseBed-${num}` });
+                    setAttributes(card, { "class": "card card-body" });
+
+                    collapse.appendChild(card)
+                    bed.appendChild(btn);
+                    bed.appendChild(collapse);
+                    document.querySelector('#spaceBody .bed').appendChild(bed);
+                }
+            });
+            span.innerText = item;
+            minus.innerText = '-';
+            plus.innerText = '+';
+            num.innerText = '0';
+
+            button.appendChild(minus);
+            button.appendChild(num);
+            button.appendChild(plus);
+            list.appendChild(span);
+            list.appendChild(button);
+            div.appendChild(list);
+        }
+
+        //房屋守則
+        let updateRule = {
+            AllowChild: null,
+            AllowBaby: null,
+            AllowPet: null,
+            AllowSmoke: null,
+            AllowParty: null,
+        };
+        let updateRuleBtn = document.querySelectorAll('#rule .updateAllow');
+        updateRuleBtn.forEach(item => {
+            item.addEventListener('change', (e) => {
+                document.querySelectorAll('#rule .btn-group').forEach((x, i) => {
+                    Object.keys(updateRule).forEach((item, index) => {
+                        if (i == index) {
+                            let check = x.querySelector('input:checked');
+                            if (check == null) updateRule[item] = null;
+                            else if (check.value == 0) updateRule[item] = false;
+                            else updateRule[item] = true;
+                        }
+                    });
+                });
+                PostData(updateRule, "Rules");
+            });
+        });
+
+        //顯示更多內容初始化
+        window.addEventListener('load', () => {
+            contentDiv.forEach(x => {
+                if (x.innerText.length > 200) {
+                    if (x.getAttribute('id') == 'facilityContent') return;
+                    x.classList.add('hide');
+                    let button = document.createElement('button').cloneNode(true);
+                    button.style.marginTop = "1rem";
+                    button.innerText = "顯示更多";
+                    button.addEventListener('mousedown', (e) => {
+                        if (x.getAttribute('class').includes('hide')) {
+                            x.classList.remove('hide');
+                            e.target.innerText = "隱藏";
+                        }
+                        else {
+                            x.classList.add('hide');
+                            e.target.innerText = "顯示更多";
+                        }
+                    })
+                    x.parentNode.appendChild(button)
+                }
+            });
+        });
+
         //顯示更多內容
         contentDiv.forEach(content => {
             var observer = new MutationObserver(function (mutations) {
                 let mutation = mutations[mutations.length - 1];
-                // console.log(mutation.addedNodes.length == 0)
                 if (mutation.addedNodes.length !== 0) {
-                    if (mutation.addedNodes[0].length > 80 && !mutation.target.parentNode.querySelector('button')) {
+                    if (mutation.addedNodes[0].length > 200) {
+                        let btn = mutation.target.parentNode.querySelectorAll('button');
+                        btn.forEach(x => { x.parentNode.removeChild(x) });
+
                         mutation.target.classList.add('hide');
                         let button = document.createElement('button').cloneNode(true);
                         button.style.marginTop = "1rem";
@@ -1257,14 +1678,6 @@
             observer.observe(content, { childList: true });
         });
 
-        //建立option
-        function createOption(x, select) {
-            let option = document.createElement('option').cloneNode(true);
-            option.innerText = x;
-            option.value = x;
-            select.appendChild(option);
-        }
-
         //setAttribute
         function setAttributes(el, attrs) {
             for (let key in attrs) {
@@ -1284,7 +1697,7 @@
         //銷毀虛擬節點
         function destroyNode(e, id) {
             $(`#${id}`).collapse('hide');
-            e.preventDefault();
+            //e.preventDefault();
             document.querySelector(`#${id}`).addEventListener('hidden.bs.collapse', (e) => {
                 e.target.parentNode.removeChild(e.target);
             })
@@ -1311,6 +1724,7 @@
         window.customElements.define('common-component', CommonComponent);
 
         //房客人數增減
+        let updateCustomer = { CustomerNumber: 0 };
         let minus = document.querySelectorAll('.minus');
         let plus = document.querySelectorAll('.plus');
         minus.forEach(x => {
@@ -1318,12 +1732,16 @@
                 let span = e.target.parentNode.querySelector('span');
                 span.innerText = Number(span.innerText) - 1;
                 if (span.innerText < 0) span.innerText = 0;
+                updateCustomer.CustomerNumber = Number(span.innerText);
+                PostData(updateCustomer, "CustomerNumber");
             });
         });
         plus.forEach(x => {
             x.addEventListener('click', (e) => {
                 let span = e.target.parentNode.querySelector('span');
                 span.innerText = Number(span.innerText) + 1;
+                updateCustomer.CustomerNumber = Number(span.innerText);
+                PostData(updateCustomer, "CustomerNumber");
             });
         });
 
@@ -1424,7 +1842,6 @@
             item.target.classList.remove('drag-sort-active');
         }
 
-
         //相片的modal儲存改變相片及張數
         let photoSave = document.getElementById('photo-save');
         photoSave.addEventListener('click', () => {
@@ -1442,15 +1859,12 @@
         let li = document.querySelectorAll('.collapse a');
         collapse.forEach(item => {
             item.addEventListener('click', (e) => {
+                collapse.forEach(x => { x.classList.remove('active')});
                 e.target.classList.add('active');
                 e.target.parentNode.querySelector('li:first-child').classList.add('active');
                 collapse.forEach(x => { x.parentNode.querySelector('.collapsed').classList.remove('show') });
-                li.forEach(x => {
-                    x.parentNode.classList.remove('active');
-                });
-                document.querySelectorAll('.collapsed li:first-child').forEach(x => {
-                    x.classList.add('active');
-                });
+                li.forEach(x => {x.parentNode.classList.remove('active')});
+                document.querySelectorAll('.collapsed li:first-child').forEach(x => {x.classList.add('active');});
             });
         });
 

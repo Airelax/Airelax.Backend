@@ -14,9 +14,4 @@ namespace Airelax.Application.Houses.Dtos.Response
         public decimal CashPledge { get; set; }
         public string Other { get; set; }
     }
-
-    //public class ManageVM {
-    //    public HouseRuleDto houseRule { get; set; }
-    //    public PolicyDto policy { get; set; }
-    //}
 }

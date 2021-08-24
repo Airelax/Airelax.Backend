@@ -9,8 +9,8 @@ namespace Airelax.Application.Houses.Dtos.Response
 {
     public class HouseCategoryVM
     {
-        public Category Category { get; set; }
-        public HouseType HouseType { get; set; }
-        public RoomCategory RoomCategory { get; set; }
+        public int? Category { get; set; }
+        public int? HouseType { get; set; }
+        public int? RoomCategory { get; set; }
     }
 }

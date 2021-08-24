@@ -98,11 +98,9 @@ namespace Airelax.Application.Houses
             var owner = await _repository.GetAsync<string, Member>(x => x.Id == input.MemberId);
             if (owner == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"member id: {input.MemberId} is not exist");
             var house = new House(input.MemberId);
-<<<<<<< HEAD
-            house.HouseCategory = new Domain.Houses.HouseCategory(house.Id) { Category= input.Category};
-=======
+
             house.HouseCategory = new HouseCategory(house.Id) {Category = input.Category};
->>>>>>> origin/SHOP-86
+
             await UpdateHouse(house);
             return house.Id;
         }
