@@ -1,0 +1,142 @@
+﻿@{
+    Layout = "~/Views/Shared/__LayoutSecurity.cshtml";
+}
+<div class="container ">
+    <div class="row d-flex justify-content-center">
+        <div class="d-md-none d-lg-none ">
+            <nav class="navbar navbar-light position-fixed bg-white w-100">
+                <div class="container-fluid w-100">
+                    <a class="navbar-brand fs-3" href="#"><i class="fas fa-angle-left"></i></a>
+                </div>
+            </nav>
+        </div>
+        <div class="row">
+            <div class="col my-4 mx-3 pt-5 ">
+                <div class="mb-3 fw-bold p_info">
+                    <a href="#" class="text-decoration-none text-dark">帳號<i class="fas fa-angle-right mx-3"></i></a>
+                    <span>登入與安全性</span>
+                </div>
+                <h2 class="fw-bolder c_info">登入與安全性</h2>
+                <button type="button" class="fw-bold p-0 my-5 d_login" style="color:#008489; border:none;">登入</button>
+            </div>
+            <h4 class="fw-bolder px-4">登入</h4>
+            <div class="col-sm col-md-7 ph_area px-4">
+                <div class="mt-4">
+                    <div class="d-flex justify-content-between">
+                        <div class="fw-bold">密碼</div>
+                        <button class="btn fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#passwordBtn"
+                                aria-expanded="false" style="color:#008489;" aria-controls="collapseExample">
+                            更新
+                        </button>
+                    </div>
+                    <div>
+                        <div>上次更新:</div>
+                    </div>
+                    <div>
+                        <div class="collapse" id="passwordBtn">
+                            <div class="card card-body" style="border: none;">
+                                <div class="col-6 mt-4">
+                                    <div class="mb-2">目前密碼</div>
+                                    <input type="password" class="form-control" aria-label="Text input with checkbox"
+                                           onkeyup="value=value.replace(/[\W]/g,'') ">
+                                </div>
+                                <div class="col-6 mt-4">
+                                    <div class="mb-2">新密碼</div>
+                                    <input type="password" class="form-control" aria-label="Text input with checkbox"
+                                           onkeyup="value=value.replace(/[\W]/g,'') ">
+                                </div>
+                                <div class="col-6 mt-4">
+                                    <div class="mb-2">確認密碼</div>
+                                    <input type="password" class="form-control" aria-label="Text input with checkbox"
+                                           onkeyup="value=value.replace(/[\W]/g,'') ">
+                                </div>
+                                <button type="button" class="btn mt-4 Send">更新密碼</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="mt-4">
+                    <div class="d-flex justify-content-between">
+                        <div class="fw-bolder fs-4 mb-4">社群帳號</div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="d-flex justify-content-between">
+                        <div class="fw-bold">Facebook</div>
+                        <button type="button" class="btn fw-bold" style="color:#008489;" data-bs-toggle="modal" data-bs-target="#confirmPasswordBtn">
+                            連結
+                        </button>
+                    </div>
+                    <div>
+                        <div id="gender" style="color: #767676;">未連結</div>
+                    </div>
+                    <div class="modal fade" id="confirmPasswordBtn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content p-4">
+                                <div class="header">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <h4 class="modal-title mt-3 fw-bold" id="exampleModalLabel">確認密碼以繼續操作</h4>
+                                </div>
+                                <div class="my-3 ">
+                                    <input type="password" class="form-control border border-danger" aria-label="Text input with checkbox" style="background-color: #fff8f6;"
+                                           onkeyup="value=value.replace(/[\W]/g,'') ">
+                                </div>
+                                <div class="mb-4">
+                                    <div>為了安全起見，請輸入您的Airbnb帳號密碼以繼續操作。</div>
+                                    <a href="#" class="text-decoration-none fw-bold" style="color: #008489;">需要新密碼嗎？</a>
+                                </div>
+                                <div class="">
+                                    <button type="button" class="btn fw-bold" style="background-color: #008489;color: #ffffff;">確認密碼</button>
+                                    <button type="button" class="btn fw-bold" style="border:2px solid #008489; color: #008489;" data-bs-dismiss="modal">取消</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="mt-4">
+                    <div class="d-flex justify-content-between">
+                        <div class="fw-bold">Google</div>
+                        <button type="button" class="btn fw-bold" style="color:#008489;">連結</button>
+                    </div>
+                    <div>
+                        <div id="gender" style="color: #767676;">未連結</div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div class="col-md-4 details">
+                <div class="col">
+                    <div class="card card shadow p-3 mb-3 bg-body rounded">
+                        <div class="card-body" style="border: none;">
+                            <img src="./img/002.svg" style="height: 38px;" class="mb-2" />
+                            <h5 class="card-title fw-bold" style="font-size: 18px;">確保你的帳號安全</h5>
+                            <p class="card-text" style="font-size: 16px;">我們會定期檢查帳號，確保安全無虞。如果還有其他可以提升帳號安全性的方式，我們也會通知你。</p>
+                            <p class="card-text" style="font-size: 16px;">
+                                進一步了解針對<a href="#" class="lodger"
+                                          style="color:#008489;">房客／參加者</a>和<a href="#" class="landlord"
+                                                                               style="color:#008489;">房東／體驗達人</a>的安全建議。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col mb-5 mx-3 pt-5 ">
+            <div class="d-flex justify-content-between">
+                <div class="fw-bolder fs-4 mb-4">帳號</div>
+            </div>
+            <div class="mt-4">
+                <div class="d-flex justify-content-between">
+                    <div class="">停用您的帳號</div>
+                    <button type="button" class="btn deactivate">停用</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section topCSS{
+    <link href="~/scss/Login_security.min.css" rel="stylesheet" />
+}

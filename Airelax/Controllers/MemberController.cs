@@ -43,7 +43,19 @@ namespace Airelax.Controllers
             };
             return View(memberViewModel);
         }
+        [HttpGet]
+        [Route("{memberId}/security")]
+        public IActionResult LoginAndSecurity(string memberId)
+        {
+            var member = _context.Members.FirstOrDefault(x => x.Id == memberId);
 
+            if (member == null)
+                // todo 倒到錯誤畫面
+                return View();
+            
+            return View();
+        }
+           
         [HttpPut]
         [Route("{memberId}/detail")]
         public async Task<bool> EditMember(string memberId,EditMemberInput input) 
@@ -51,6 +63,7 @@ namespace Airelax.Controllers
             var member = _context.Members.FirstOrDefault(x => x.Id == memberId);
 
             if (member == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"Member Id {memberId} does not match any member");
+
             member.Name = input.Name;
             member.Birthday = input.Birthday;
             member.Gender = input.Gender;
@@ -65,22 +78,21 @@ namespace Airelax.Controllers
         }
         [HttpPut]
         [Route("{memberId}/security")]
-        public async Task<bool> LoginAndSecurity(string memberId,LoginAndSecurityInput input)
+        public async Task<bool> LoginAndSecurity(string memberId,[FromBody] LoginAndSecurityInput input)
         {
             var member = (from m in _context.Members
                           join mi in _context.MemberLoginInfos on m.Id equals mi.Id
                           where m.Id == memberId
                           select new { Member = m, MemberLoginInfos = mi }).FirstOrDefault();
             if (member == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"Member Id {memberId} does not match any member");
+
+
             member.MemberLoginInfos.Password = input.Password;
-            
+            //todo密碼加密
 
             _context.Update(member);
             _context.SaveChanges();
             return true;
-
-
-
         }
     }
 }
