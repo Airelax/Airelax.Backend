@@ -32,7 +32,7 @@ namespace Airelax
         {
             // dotnet ef --startup-project Airelax migrations add $description -p Airelax.EntityFramework
             // dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework
-            
+
             //if use local DB
             if (HostEnvironment.IsDevelopment())
             {
@@ -63,6 +63,7 @@ namespace Airelax
             services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddHttpClient<GoogleGeocodingService>();
             services.Configure<GoogleMapApiSetting>(Configuration.GetSection(nameof(GoogleMapApiSetting)));
+            services.AddCors(opt => { opt.AddPolicy("dev", builder => builder.WithOrigins("http://localhost:8080")); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,14 +76,14 @@ namespace Airelax
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Airelax v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseSerilogRequestLogging();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseCors("dev");
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

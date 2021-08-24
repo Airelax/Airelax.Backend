@@ -69,7 +69,7 @@ namespace Airelax.Application.Houses
             }
 
 
-            var houses = _houseRepository.GetAll()
+            var houses = await _houseRepository.GetAll()
                 .Include(x => x.Member)
                 .ThenInclude(x => x.WishLists)
                 .Include(x => x.HouseLocation)
@@ -81,11 +81,14 @@ namespace Airelax.Application.Houses
                 .Where(specification.ToExpression())
                 .OrderByDescending(x => x.CreateTime)
                 .Skip((input.Page - 1) * 30).Take(30)
-                .ToList();
+                .ToListAsync();
 
             var results = houses.Select(x =>
             {
-                var simpleComment = new SearchHouseComment {Number = x.Comments?.Count ?? 0};
+                var simpleComment = new SearchHouseComment
+                {
+                    Number = x.Comments?.Count ?? 0
+                };
                 if (!x.Comments.IsNullOrEmpty())
                 {
                     simpleComment.Stars = Math.Round(x.Comments?.Average(c => c.Star?.Total ?? 0) ?? 0, 1);
@@ -276,12 +279,12 @@ namespace Airelax.Application.Houses
                         },
                         Fee = new FeeDto()
                         {
-                            CleanFee = x.Price.Fee?.CleanFee,
-                            ServiceFee = x.Price.Fee?.ServiceFee,
-                            TaxFee = x.Price.Fee?.TaxFee,
+                            CleanFee = x.Price.Fee?.CleanFee ?? 0,
+                            ServiceFee = x.Price.Fee?.ServiceFee ?? 0,
+                            TaxFee = x.Price.Fee?.TaxFee ?? 0,
                         },
                         Origin = x.Price.PerNight,
-                        SweetPrice = x.Price.PerWeekNight
+                        SweetPrice = x.Price.PerWeekNight ?? x.Price.PerNight
                     },
                     Space = new SpaceDto()
                     {
