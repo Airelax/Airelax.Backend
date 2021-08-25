@@ -1,5 +1,5 @@
 ﻿@using Airelax.Application.Houses.Dtos.Response
-@model ManageDto
+@model ManageHouseDto
 
 <div class="main">
     <div class="title-div">
@@ -126,7 +126,7 @@
                             <div class="subtitle">房客人數</div>
                         </div>
                         <div class="col-4 control">
-                            <button class="minus">-</button><span>@Model.Space.CustomerNumber</span><button class="plus">+</button>
+                            <button class="minus">-</button><span>@Model.CustomerNumber</span><button class="plus">+</button>
                         </div>
                     </div>
                     <div class="row status">
@@ -1364,7 +1364,7 @@
         function PostData(request,type) {
             axios({
                 method: 'Put',
-                url: `/Manage/@Html.Raw(Model.Id)/${type}`,
+                url: `/ManageHouse/@Html.Raw(Model.Id)/${type}`,
                 headers: {
                     'Content-Type': 'application/json'
                 },

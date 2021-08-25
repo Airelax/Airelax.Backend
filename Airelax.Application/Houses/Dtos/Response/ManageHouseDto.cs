@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Defines;
 
 namespace Airelax.Application.Houses.Dtos.Response
 {
-    public class ManageDto
+    public class ManageHouseDto
     {
         public string Id { get; set; }
         public string Title { get; set; }
@@ -18,7 +19,7 @@ namespace Airelax.Application.Houses.Dtos.Response
         public List<int> NotProvideFacilities { get; set; }
         public AddressDto Address { get; set; }
         public HouseCategoryVM HouseCategory { get; set; }
-        public SpaceDto Space { get; set; }
+        public int CustomerNumber { get; set; }
         public string Origin { get; set; }
         public string SweetPrice { get; set; }
         public string Fee { get; set; }
@@ -28,13 +29,6 @@ namespace Airelax.Application.Houses.Dtos.Response
         public string CheckoutTime { get; set; }
         public string CashPledge { get; set; }
         public HouseRuleDto HouseRule { get; set; }
-        public ManageSpace ManageSpaces { get; set; }
-    }
-
-    public class ManageSpace
-    {
-        public string HouseId { get; set; }
-        public int SpaceType { get; set; }
-        public bool IsShared { get; set; }
+        public List<Space> ManageSpaces { get; set; }
     }
 }

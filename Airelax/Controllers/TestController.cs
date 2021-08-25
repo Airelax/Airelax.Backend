@@ -29,17 +29,27 @@ namespace Airelax.Controllers
     {
         private readonly IHouseAppService _houseAppService;
         private readonly ILogger _logger;
+        private readonly AirelaxContext _context;
 
-        public TestController(IHouseAppService houseAppService, ILogger<TestController> logger)
+        public TestController(IHouseAppService houseAppService, ILogger<TestController> logger, AirelaxContext context)
         {
             _houseAppService = houseAppService;
             _logger = logger;
+            _context = context;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<SimpleHouseDto>> t([FromQuery] SearchInput searchInput)
+        public async Task<IEnumerable<SimpleHouseDto>> t()
         {
-            return await _houseAppService.Search(searchInput);
+            var x = from h in _context.Houses
+                    from s in _context.Spaces.Where(x => x.HouseId == h.Id).DefaultIfEmpty()
+                    from b in _context.BedroomDetails.Where(x => x.SpaceId == s.Id).DefaultIfEmpty()
+                    where h.Id == "H005ba2165b"
+                    select new { s = s, b = b };
+
+            var y = x.ToList();
+
+            return null;
         }
     }
 }
