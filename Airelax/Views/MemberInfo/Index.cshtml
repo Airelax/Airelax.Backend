@@ -35,7 +35,22 @@
                     <span>千萬則評價</span>
                 </div>
             </div>
-            <partial name="~/Views/Shared/_AboutMePartial.cshtml" />
+            <div class="row writtenAboutMe">
+                <div class="writtenAbout">
+                    <h3>關於我</h3>
+                    <p id="writtenAboutMe">
+                        @Model.About
+                    </p>
+                </div>
+                <div class="writtenLocationArea">
+                    <img src="~/dist/img/memberInfo/home.svg" alt="writtenLocation">
+                    <span id="writtenLocation">@Model.Location</span>
+                </div>
+                <div class="writtenWorkArea">
+                    <img src="~/dist/img/memberInfo/bag.svg" alt="writtenWork">
+                    <span id="writtenWork">@Model.WorkTime</span>
+                </div>
+            </div>
             <div class="row writingAboutMe collapse" id="aboutCollapse">
                 <partial name="~/Views/Shared/_AboutCollapsePartial.cshtml" />
             </div>
@@ -70,9 +85,24 @@
                     編輯個人資料
                 </div>
             </div>
-            <partial name="~/Views/Shared/_AboutMePartial.cshtml" />
+            <div class="row writtenAboutMe">
+                <div class="writtenAbout">
+                    <h3>關於我</h3>
+                    <p id="MdWrittenAboutMe">
+                        @Model.About
+                    </p>
+                </div>
+                <div class="writtenLocationArea">
+                    <img src="~/dist/img/memberInfo/home.svg" alt="writtenLocation">
+                    <span id="MdWrittenLocation">@Model.Location</span>
+                </div>
+                <div class="writtenWorkArea">
+                    <img src="~/dist/img/memberInfo/bag.svg" alt="writtenWork">
+                    <span id="MdWrittenWork">@Model.WorkTime</span>
+                </div>
+            </div>
             <div class="row mdWritingAboutMe collapse" id="mdAboutCollapse">
-                <partial name="~/Views/Shared/_AboutMdCollapsePartial.cshtml"/>
+                <partial name="~/Views/Shared/_AboutMdCollapsePartial.cshtml" />
             </div>
             <div class="row houseSource">
                 <h3>
@@ -98,10 +128,16 @@
         //#region 各種宣告
         //負責傳去後端資料的物件
         let MemberInfoInput = { About: "", Location: "", WorkTime: "" };
+        let tempInputValue = { About: "", Location: "", WorkTime: "" };
         //要呈現的地方
+        ////手機
         const writtenAboutMe = document.getElementById("writtenAboutMe");
         const writtenLocation = document.getElementById("writtenLocation");
         const writtenWork = document.getElementById("writtenWork");
+        ////桌機
+        const MdWrittenAboutMe = document.getElementById("MdWrittenAboutMe");
+        const MdWrittenLocation = document.getElementById("MdWrittenLocation");
+        const MdWrittenWork = document.getElementById("MdWrittenWork");
         //手機collapse
         const meTextArea = document.getElementById("meTextArea");
         const locationInput = document.getElementById("locationInput");
@@ -116,20 +152,69 @@
         const MdSaveBtn = document.getElementById("MdSaveBtn");
         //#endregion
 
+        //#region 儲存按鈕的click事件監聽
         MdSaveBtn.addEventListener("click", () => {
-            MemberInfoInput.About = MdMeTextArea.value;
-            MemberInfoInput.Location = MdLocationInput.value;
-            MemberInfoInput.WorkTime = MdWorkInput.value;
+            saveAboutMeAction(MemberInfoInput,
+                MdMeTextArea, MdLocationInput, MdWorkInput);
+
             putToBack();
+
+            saveTempInputValue(tempInputValue,
+                MdMeTextArea, MdLocationInput, MdWorkInput);
+
+            showSameValue(tempInputValue, meTextArea, locationInput, workInput);
+
         });
 
         saveBtn.addEventListener("click", () => {
-            MemberInfoInput.About = meTextArea.value;
-            MemberInfoInput.Location = locationInput.value;
-            MemberInfoInput.WorkTime = workInput.value;
-            putToBack();
-        });
+            saveAboutMeAction(MemberInfoInput,
+                meTextArea, locationInput, workInput);
 
+            putToBack();
+
+            saveTempInputValue(tempInputValue,
+                meTextArea, locationInput, workInput);
+
+            showSameValue(tempInputValue, MdMeTextArea, MdLocationInput, MdWorkInput);
+        });
+        //#endregion
+
+        //#region 取消按鈕的click事件監聽
+        cancelBtn.addEventListener("click", () => {
+            meTextArea.value = writtenAboutMe.innerText;
+            locationInput.value = writtenLocation.innerText;
+            workInput.value = writtenWork.innerText;
+        });
+        MdCancelBtn.addEventListener("click", () => {
+            MdMeTextArea.value = MdWrittenAboutMe.innerText;
+            MdLocationInput.value = MdWrittenLocation.innerText;
+            MdWorkInput.value = MdWrittenWork.innerText;
+        })
+
+        //#endregion
+
+
+        //#region  Methods
+
+        ////把手機板與桌機板的input value弄成一致
+        function showSameValue(input, otherMeTextArea, otherLocationInput, otherWorkInput) {
+            otherMeTextArea.value = input.About;
+            otherLocationInput.value = input.Location;
+            otherWorkInput.value = input.WorkTime;
+        }
+        ////暫存input的value
+        function saveTempInputValue(input, meTextArea, locationInput, workInput) {
+            input.About = meTextArea.value;
+            input.Location = locationInput.value;
+            input.WorkTime = workInput.value;
+        }
+        ////儲存要傳出去的資料
+        function saveAboutMeAction(input, meTextArea, locationInput, workInput) {
+            input.About = meTextArea.value;
+            input.Location = locationInput.value;
+            input.WorkTime = workInput.value;
+        }
+        ////把資料傳出給後端
         function putToBack () {
             axios({
                 method: 'Put',
@@ -139,16 +224,27 @@
                 },
                 data: JSON.stringify(MemberInfoInput),
             })
-            .then(function (res) {
-                if (res.data == true && res.status==200)
-                    writtenAboutMe.innerHTML = "1234";
-                    writtenLocation.innerHTML = MemberInfoInput.Location;
-                    writtenWork.innerHTML = MemberInfoInput.WorkTime;
+                .then(function (res) {
+                    console.log(res.status);
+                if (res.status == 200) {
+                    updateWrittenArea(MemberInfoInput,
+                        writtenAboutMe, writtenLocation, writtenWork);
+                    updateWrittenArea(MemberInfoInput,
+                        MdWrittenAboutMe, MdWrittenLocation, MdWrittenWork);
+                }
             })
             .catch(function (error) {
-                console.log(error)
+                alert(error.toString());
             });
         }
+        ////更新手機版或桌機板關於我
+        function updateWrittenArea(input, me, location, work) {
+            me.innerHTML = input.About;
+            location.innerHTML = input.Location;
+            work.innerHTML = input.WorkTime;
+        }
+
+        //#endregion
     </script>
     <!-- SWIPER -->
     <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
