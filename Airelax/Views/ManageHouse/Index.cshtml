@@ -320,15 +320,15 @@
                         <div class="col-10">
                             <div class="subtitle">退訂政策</div>
                             <div class="content">
-                                @{ 
-                                    List<string> unBooking = new List<string> {"彈性","彈性或不可退款", "中等", "中等或不可退", "稍嚴", "較嚴格或不可退款", "嚴格", "嚴格或不可退款"};
+                                @{
+                                    List<string> unBooking = new List<string> { "彈性", "彈性或不可退款", "中等", "中等或不可退", "稍嚴", "較嚴格或不可退款", "嚴格", "嚴格或不可退款" };
                                     int index = 0;
                                 }
                                 @foreach (var item in unBooking)
                                 {
-                                    if(index + 1 == Model.Cancel)
+                                    if (index + 1 == Model.Cancel)
                                     {
-                                       @item;
+                                        @item;
                                         break;
                                     }
                                     index++;
@@ -405,9 +405,9 @@
                         </div>
                         <div class="col-4">
                             <div class="btn-group btn-group-justified">
-                                <input type="radio" class="btn-check updateAllow" value="0" name="children" id="noChildren" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowChild==false? "checked=\"checked\"" : "")) >
+                                <input type="radio" class="btn-check updateAllow" value="0" name="children" id="noChildren" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowChild == false ? "checked=\"checked\"" : ""))>
                                 <label class="btn btn-outline-dark editBtn " for="noChildren">✕</label>
-                                <input type="radio" class="btn-check updateAllow" value="1" name="children" id="yesChildren" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowChild==true? "checked=\"checked\"" : "")) >
+                                <input type="radio" class="btn-check updateAllow" value="1" name="children" id="yesChildren" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowChild == true ? "checked=\"checked\"" : ""))>
                                 <label class="btn btn-outline-dark editBtn ms-2" for="yesChildren">✓</label>
                             </div>
                         </div>
@@ -419,9 +419,9 @@
                         </div>
                         <div class="col-4">
                             <div class="btn-group btn-group-justified">
-                                <input type="radio" class="btn-check updateAllow" value="0" name="infant" id="noInfant" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowBaby==false? "checked=\"checked\"" : "")) >
+                                <input type="radio" class="btn-check updateAllow" value="0" name="infant" id="noInfant" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowBaby == false ? "checked=\"checked\"" : ""))>
                                 <label class="btn btn-outline-dark editBtn " for="noInfant">✕</label>
-                                <input type="radio" class="btn-check updateAllow"  value="1" name="infant" id="yesInfant" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowBaby==true? "checked=\"checked\"" : "")) >
+                                <input type="radio" class="btn-check updateAllow" value="1" name="infant" id="yesInfant" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowBaby == true ? "checked=\"checked\"" : ""))>
                                 <label class="btn btn-outline-dark editBtn ms-2" for="yesInfant">✓</label>
                             </div>
                         </div>
@@ -432,10 +432,10 @@
                             <div class="subtitle-explain">你可以限制房客攜帶寵物，但在合理情況下，仍須接受可能攜帶輔助性動物的房客。</div>
                         </div>
                         <div class="col-4">
-                            <div class="btn-group btn-group-justified" >
-                                <input type="radio" class="btn-check updateAllow" value="0" name="pet" id="noPet" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowPet==false? "checked=\"checked\"" : "")) >
+                            <div class="btn-group btn-group-justified">
+                                <input type="radio" class="btn-check updateAllow" value="0" name="pet" id="noPet" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowPet == false ? "checked=\"checked\"" : ""))>
                                 <label class="btn btn-outline-dark editBtn " for="noPet">✕</label>
-                                <input type="radio" class="btn-check updateAllow"  value="1" name="pet" id="yesPet" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowPet==true? "checked=\"checked\"" : "")) >
+                                <input type="radio" class="btn-check updateAllow" value="1" name="pet" id="yesPet" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowPet == true ? "checked=\"checked\"" : ""))>
                                 <label class="btn btn-outline-dark editBtn ms-2" for="yesPet">✓</label>
                             </div>
                         </div>
@@ -446,9 +446,9 @@
                         </div>
                         <div class="col-4">
                             <div class="btn-group btn-group-justified">
-                                <input type="radio" class="btn-check updateAllow" value="0" name="smoke" id="noSmoke" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowSmoke==false? "checked=\"checked\"" : ""))>
+                                <input type="radio" class="btn-check updateAllow" value="0" name="smoke" id="noSmoke" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowSmoke == false ? "checked=\"checked\"" : ""))>
                                 <label class="btn btn-outline-dark editBtn " for="noSmoke">✕</label>
-                                <input type="radio" class="btn-check updateAllow"  value="1" name="smoke" id="yesSmoke" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowSmoke==true? "checked=\"checked\"" : ""))>
+                                <input type="radio" class="btn-check updateAllow" value="1" name="smoke" id="yesSmoke" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowSmoke == true ? "checked=\"checked\"" : ""))>
                                 <label class="btn btn-outline-dark editBtn ms-2" for="yesSmoke">✓</label>
                             </div>
                         </div>
@@ -459,9 +459,9 @@
                         </div>
                         <div class="col-4">
                             <div class="btn-group btn-group-justified">
-                                <input type="radio" class="btn-check updateAllow" value="0" name="event" id="noEvent" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowParty==false? "checked=\"checked\"" : ""))>
+                                <input type="radio" class="btn-check updateAllow" value="0" name="event" id="noEvent" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowParty == false ? "checked=\"checked\"" : ""))>
                                 <label class="btn btn-outline-dark editBtn" for="noEvent">✕</label>
-                                <input type="radio" class="btn-check updateAllow"  value="1" name="event" id="yesEvent" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowParty==true? "checked=\"checked\"" : ""))>
+                                <input type="radio" class="btn-check updateAllow" value="1" name="event" id="yesEvent" autocomplete="off" @(Html.Raw(Model.HouseRule.AllowParty == true ? "checked=\"checked\"" : ""))>
                                 <label class="btn btn-outline-dark editBtn ms-2" for="yesEvent">✓</label>
                             </div>
                         </div>
@@ -792,6 +792,7 @@
 @section ManageJS {
     
     <script>
+
         let barBtn = document.querySelectorAll('.barBtn');
         let detailSection = document.querySelector('.detail-section');
         let priceSection = document.querySelector('.price-section');
@@ -868,8 +869,8 @@
                 detail: ["小號雙人床", "標準雙人床", "傳統單人床", "沙發床", "加大雙人床", "標準單人床", "小型沙發床", "雙層床", "地板床墊", "充氣床墊", "嬰兒床", "幼兒床", "吊床", "水床"]
             },
             share: {
-                title: "會和誰共用這些空間？",
-                check: ["我", "好友、家人或室友", "其他房客"]
+                title: "會和房東共用這些空間？",
+                check: ["會，房客會與房東共用空間", "不會，房客可享有單獨的空間"]
             }
         };
         let updateDescription = {
@@ -1029,7 +1030,7 @@
 
                 //房間詳情
                 if (this.getAttribute('description') !== null) {
-                    description.forEach((item,i) => {
+                    description.forEach((item, i) => {
                         let div = document.createElement('div');
                         let textbox = document.createElement('textarea');
                         let h4 = document.createElement('h4');
@@ -1061,7 +1062,7 @@
                 //地址
                 if (this.getAttribute('address') !== null) {
                     input.style.display = 'none';
-                    address.forEach((item,index)=> {
+                    address.forEach((item, index) => {
                         let div = document.createElement('div');
                         let input = document.createElement('input');
                         let span = document.createElement('span');
@@ -1069,23 +1070,23 @@
                         span.innerText = item;
                         switch (index) {
                             case 0:
-                                if (AddressFirstTime)  input.value = '@Html.Raw(Model.Address.Address)';
+                                if (AddressFirstTime) input.value = '@Html.Raw(Model.Address.Address)';
                                 else input.value = updateAddress.Address;
                                 break;
                             case 1:
-                                if (AddressFirstTime)  input.value = '@Html.Raw(Model.Address.Town)';
+                                if (AddressFirstTime) input.value = '@Html.Raw(Model.Address.Town)';
                                 else input.value = updateAddress.Town;
                                 break;
                             case 2:
-                                if (AddressFirstTime)  input.value = '@Html.Raw(Model.Address.City)';
+                                if (AddressFirstTime) input.value = '@Html.Raw(Model.Address.City)';
                                 else input.value = updateAddress.City;
                                 break;
                             case 3:
-                                if (AddressFirstTime)  input.value = '@Html.Raw(Model.Address.Country)';
+                                if (AddressFirstTime) input.value = '@Html.Raw(Model.Address.Country)';
                                 else input.value = updateAddress.Country;
                                 break;
                             default:
-                                if (AddressFirstTime)  input.value = '@Html.Raw(Model.Address.ZipCode)';
+                                if (AddressFirstTime) input.value = '@Html.Raw(Model.Address.ZipCode)';
                                 else input.value = updateAddress.ZipCode;
                         }
 
@@ -1108,20 +1109,20 @@
 
                         //初始化
                         if (i == 0) {
-                            typeSelect[i].category.forEach((x,i) => {
+                            typeSelect[i].category.forEach((x, i) => {
                                 let option = document.createElement('option').cloneNode(true);
                                 option.innerText = x;
-                                option.value = i+1;
+                                option.value = i + 1;
                                 select.appendChild(option);
                             });
                             select.value = updateCategory.Category != 0 ? Number(updateCategory.Category) : Number('@Html.Raw(Model.HouseCategory.Category)');
                             temp = select.value;
                         }
                         if (i == 1) {
-                            typeSelect[i].houseType[temp-1].forEach((x, i) => {
+                            typeSelect[i].houseType[temp - 1].forEach((x, i) => {
                                 let option = document.createElement('option').cloneNode(true);
                                 option.innerText = x;
-                                option.value = Number(`${temp}${(i+1).toString().padStart(2, "0")}`)
+                                option.value = Number(`${temp}${(i + 1).toString().padStart(2, "0")}`)
                                 select.appendChild(option);
                             });
                             select.classList.add('second');
@@ -1129,10 +1130,10 @@
 
                         }
                         if (i == 2) {
-                            typeSelect[i].roomCategory.forEach((x,i) => {
+                            typeSelect[i].roomCategory.forEach((x, i) => {
                                 let option = document.createElement('option').cloneNode(true);
                                 option.innerText = x;
-                                option.value = i+1;
+                                option.value = i + 1;
                                 select.appendChild(option);
                             });
                             select.value = updateCategory.RoomCategory != 0 ? Number(updateCategory.RoomCategory) : Number('@Html.Raw(Model.HouseCategory.RoomCategory)');
@@ -1146,10 +1147,10 @@
                     component.shadowRoot.querySelector('select').addEventListener('change', (e) => {
                         let second = component.shadowRoot.querySelector('.second');
                         second.innerHTML = "";
-                        typeSelect[1].houseType[e.target.value-1].forEach((x, i) => {
+                        typeSelect[1].houseType[e.target.value - 1].forEach((x, i) => {
                             let option = document.createElement('option').cloneNode(true);
                             option.innerText = x;
-                            option.value = Number(`${e.target.value}${(i+1).toString().padStart(2, "0")}`)
+                            option.value = Number(`${e.target.value}${(i + 1).toString().padStart(2, "0")}`)
                             second.appendChild(option);
                         });
                     });
@@ -1216,7 +1217,7 @@
                     }
                 });
 
-                //儲存
+                //儲存Model
                 saveBtn.addEventListener('click', (event) => {
                     let updateTitle = { Title: "" };
                     let updateStatus = { Status: 0 };
@@ -1248,7 +1249,7 @@
                                     if (i == 1) updateDescription.GuestPermission = x.value;
                                     if (i == 2) updateDescription.Others = x.value;
                                 });
-                                PostData(updateDescription, "Description");
+                                PostData(updateDescription, "Description", "Put");
                                 firstTime = false;
                                 break;
                             case '街區描述':
@@ -1258,41 +1259,41 @@
                                         if (index == i) updateLocation[item] = x.innerText
                                     });
                                 });
-                                PostData(updateLocation, "Location");
+                                PostData(updateLocation, "Location", "Put");
                                 break;
                             case '其他守則':
                                 updateOthers = textarea.value;
-                                PostData(updateOthers, "Others");
+                                PostData(updateOthers, "Others", "Put");
                                 break;
                         }
                     }
                     else if (e.target.getAttribute('time') !== null) {
                         content.innerText = inputTime.value;
-                        document.querySelectorAll('.updateCheckTime').forEach((x,i) => {
+                        document.querySelectorAll('.updateCheckTime').forEach((x, i) => {
                             Object.keys(updateCheckTime).forEach((item, index) => {
                                 if (index == i) updateCheckTime[item] = x.innerText;
                             });
                         });
-                        PostData(updateCheckTime, "CheckTime");
+                        PostData(updateCheckTime, "CheckTime", "Put");
                     }
                     else if (e.target.getAttribute('radio') !== null) {
-                        radio.querySelectorAll('input').forEach((x,index) => {
+                        radio.querySelectorAll('input').forEach((x, index) => {
                             if (x.checked) {
                                 content.innerHTML = x.nextSibling.querySelector('div').innerHTML;
                                 switch (getParentNode(e.target, 2).querySelector('.subtitle').innerText) {
                                     case '房源狀態':
                                         updateStatus.Status = (index + 1);
-                                        PostData(updateStatus, "Status");
+                                        PostData(updateStatus, "Status", "Put");
                                         document.getElementById('changeStatus').innerHTML = content.innerHTML;
                                         break;
                                     case '退訂政策':
                                         updateCancel = (index + 1);
-                                        PostData(updateCancel, "Cancel");
+                                        PostData(updateCancel, "Cancel", "Put");
                                         break;
                                     case '即時預訂':
                                         if (index == 0) updateRealTime = true;
                                         else updateRealTime = false;
-                                        PostData(updateRealTime, "RealTime");
+                                        PostData(updateRealTime, "RealTime", "Put");
                                         document.querySelector('#changeInstance').innerHTML = content.innerHTML;
                                         break;
                                 }
@@ -1301,17 +1302,17 @@
                     }
                     else if (e.target.getAttribute('address') !== null) {
                         AddressFirstTime = false;
-                        up.querySelectorAll('.address input').forEach((x,i) => {
+                        up.querySelectorAll('.address input').forEach((x, i) => {
                             if (x.value !== "")
                                 content.innerText += `${x.value},`;
-                                Object.keys(updateAddress).forEach((item, index) => {
-                                    if (i == index) updateAddress[item] = x.value;
+                            Object.keys(updateAddress).forEach((item, index) => {
+                                if (i == index) updateAddress[item] = x.value;
                             });
                         });
-                        PostData(updateAddress, "Address");
+                        PostData(updateAddress, "Address", "Put");
                     }
                     else if (e.target.getAttribute('select') !== null) {
-                        up.querySelectorAll('select').forEach((x,i) => {
+                        up.querySelectorAll('select').forEach((x, i) => {
                             Object.keys(updateCategory).forEach((item, index) => {
                                 if (i == index) {
                                     updateCategory[item] = Number(x.value);
@@ -1327,14 +1328,14 @@
                             });
                         });
                         CategoryFirstTime = false;
-                        PostData(updateCategory, "Category");
+                        PostData(updateCategory, "Category", "Put");
                     }
                     else {
                         content.innerText = input.value;
                         switch (getParentNode(e.target, 2).querySelector('.subtitle').innerText) {
                             case '房源標題':
                                 updateTitle.Title = input.value;
-                                PostData(updateTitle, "Title");
+                                PostData(updateTitle, "Title", "Put");
                                 document.querySelector('.title-div h1').innerText = input.value;
                                 break;
                             case '每晚價格':
@@ -1347,7 +1348,7 @@
                                         }
                                     });
                                 });
-                                PostData(updatePrice, "Price");
+                                PostData(updatePrice, "Price", "Put");
                                 break;
                         }
                     }
@@ -1358,12 +1359,12 @@
                 getParentNode(this, 2).appendChild(component);
 
             }, false);
-        })
+        });
 
         //axios
-        function PostData(request,type) {
+        function PostData(request,type,method) {
             axios({
-                method: 'Put',
+                method: method,
                 url: `/ManageHouse/@Html.Raw(Model.Id)/${type}`,
                 headers: {
                     'Content-Type': 'application/json'
@@ -1450,7 +1451,7 @@
             let content = document.querySelector('.facility .content');
             let saveBtn = document.getElementById('facility-save');
             saveBtn.addEventListener('click', () => {
-                PostData(updateFacility, "Facility");
+                PostData(updateFacility, "Facility","Put");
                 content.innerText = "";
                 facilityBody.querySelectorAll('.yesInput').forEach(x => {
                     if (x.checked) {
@@ -1472,7 +1473,9 @@
         });
 
         //房間與空間
+        let SpaceArray = JSON.parse('@Html.Raw(Model.SpaceBed)');
         let spaceBody = document.getElementById('spaceBody');
+        console.log(SpaceArray);
         window.addEventListener('load', () => {
             Object.keys(space).forEach((x, index) => {
                 let div = document.createElement('div');
@@ -1495,6 +1498,42 @@
                     }
                 }
                 spaceBody.appendChild(div);
+            });
+
+            //初始化
+            SpaceArray.forEach(x => {
+                let canCreate = true;
+                document.querySelectorAll('.canUse .list').forEach((item, itemIndex) => {
+                    let span = item.querySelector('.btn span');
+                    if (itemIndex + 1 == x.SpaceVM.SpaceType) {
+                        if (Number(x.SpaceVM.SpaceType) != 1) span.innerText = Number(span.innerText) + 1
+                        else {
+                            let allRoom = document.querySelectorAll('.bed > div');
+                            allRoom.forEach(y => {
+                                if (y.getAttribute('spaceid') == x.SpaceVM.Id) canCreate = false;
+                            });
+                            if (canCreate) span.innerText = Number(span.innerText) + 1
+                        }
+                    }
+                });
+                if (Number(x.SpaceVM.SpaceType) == 1) {
+                    if (canCreate) addRoom(Number(document.querySelector('.canUse .list:nth-child(2) .btn span').innerText));
+                    let room = document.querySelectorAll('#spaceBody .bed > div');
+                    room.forEach(rm => {
+                        if (rm.getAttribute('spaceid') == x.SpaceVM.Id || rm.getAttribute('spaceid') == undefined) {
+                            rm.setAttribute('spaceid', x.SpaceVM.Id);
+                            if (x.SpaceVM.IsShared) rm.querySelector('.form-check:first-child input').checked = true;
+                            if (x.BedroomDetailVM.HasIndependentBath) rm.querySelector('.form-check:nth-child(2) input').checked = true;
+                            rm.querySelectorAll('.list').forEach((list,listIndex) => {
+                                if (listIndex + 1 == x.BedroomDetailVM.BedType) list.querySelector('.btn span').innerText = x.BedroomDetailVM.BedCount;
+                            });
+                        }
+                    });
+                }
+                let yesShare = document.querySelector('#spaceBody > div:last-child .form-check:first-child input');
+                let noShare = document.querySelector('#spaceBody > div:last-child .form-check:nth-child(2) input');
+                if (x.SpaceVM.IsShared && yesShare != null && noShare != null) yesShare.checked = true;
+                else noShare.checked = true;
             });
 
             let content = document.querySelector('.space .content');
@@ -1536,6 +1575,12 @@
             });
         }
 
+        let UpdateSpace = {
+            HouseId: '@Html.Raw(Model.Id)',
+            SpaceType: 0,
+            IsShared: false
+        };
+
         function addBedCount(item, div, i) {
             let list = document.createElement('div');
             let span = document.createElement('span');
@@ -1544,9 +1589,11 @@
             let plus = document.createElement('button');
             let num = document.createElement('span');
             list.classList.add('list');
+            list.setAttribute('index', i + 1);
             button.classList.add('btn');
             plus.classList.add('plus');
             minus.classList.add('minus');
+
             minus.addEventListener('click', (e) => {
                 let span = e.target.parentNode.querySelector('span');
                 span.innerText = Number(span.innerText) - 1;
@@ -1555,32 +1602,20 @@
                     let lastBtn = document.querySelector('#spaceBody .bed > div:last-child');
                     lastBtn.parentNode.removeChild(lastBtn);
                 }
+                UpdateSpace.SpaceType = Number(getParentNode(e.target, 2).getAttribute('index'));
+                PostData(UpdateSpace, "Space", "Delete");
             });
             plus.addEventListener('click', (e) => {
                 let span = e.target.parentNode.querySelector('span');
                 span.innerText = Number(span.innerText) + 1;
                 // 增加臥室
                 if (i == 0) {
-                    let bed = document.createElement('div');
-                    let btn = document.createElement('button');
-                    let collapse = document.createElement('div');
-                    let card = document.createElement('div');
                     let num = e.target.parentNode.querySelector('span').innerText;
-                    btn.innerText = `臥室${num}`;
-                    addBebCheck("bedroom", num, card);
-                    space.bedroom.detail.forEach(x => {
-                        addBedCount(x, card, 1);
-                    });
-
-                    setAttributes(btn, { "class": "btn btn-dark w-100", "data-bs-toggle": "collapse", "data-bs-target": `#collapseBed-${num}`, "type": "button", "aria-expanded": "false" });
-                    setAttributes(collapse, { "class": "collapse", "id": `collapseBed-${num}` });
-                    setAttributes(card, { "class": "card card-body" });
-
-                    collapse.appendChild(card)
-                    bed.appendChild(btn);
-                    bed.appendChild(collapse);
-                    document.querySelector('#spaceBody .bed').appendChild(bed);
+                    addRoom(num);
                 }
+                UpdateSpace.SpaceType = Number(getParentNode(e.target, 2).getAttribute('index'));
+                UpdateSpace.IsShared = true;
+                PostData(UpdateSpace, "Space", "Post");
             });
             span.innerText = item;
             minus.innerText = '-';
@@ -1595,6 +1630,26 @@
             div.appendChild(list);
         }
 
+        function addRoom(num) {
+            let bed = document.createElement('div');
+            let btn = document.createElement('button');
+            let collapse = document.createElement('div');
+            let card = document.createElement('div');
+            btn.innerText = `臥室${num}`;
+            addBebCheck("bedroom", num, card);
+            space.bedroom.detail.forEach(x => {
+                addBedCount(x, card, 1);
+            });
+
+            setAttributes(btn, { "class": "btn btn-dark w-100", "data-bs-toggle": "collapse", "data-bs-target": `#collapseBed-${num}`, "type": "button", "aria-expanded": "false" });
+            setAttributes(collapse, { "class": "collapse", "id": `collapseBed-${num}` });
+            setAttributes(card, { "class": "card card-body" });
+
+            collapse.appendChild(card)
+            bed.appendChild(btn);
+            bed.appendChild(collapse);
+            document.querySelector('#spaceBody .bed').appendChild(bed);
+        }
         //房屋守則
         let updateRule = {
             AllowChild: null,
@@ -1616,7 +1671,7 @@
                         }
                     });
                 });
-                PostData(updateRule, "Rules");
+                PostData(updateRule,"Rules","Put");
             });
         });
 
@@ -1733,7 +1788,7 @@
                 span.innerText = Number(span.innerText) - 1;
                 if (span.innerText < 0) span.innerText = 0;
                 updateCustomer.CustomerNumber = Number(span.innerText);
-                PostData(updateCustomer, "CustomerNumber");
+                PostData(updateCustomer, "CustomerNumber", "Put");
             });
         });
         plus.forEach(x => {
@@ -1741,7 +1796,7 @@
                 let span = e.target.parentNode.querySelector('span');
                 span.innerText = Number(span.innerText) + 1;
                 updateCustomer.CustomerNumber = Number(span.innerText);
-                PostData(updateCustomer, "CustomerNumber");
+                PostData(updateCustomer, "CustomerNumber", "Put");
             });
         });
 

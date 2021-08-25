@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Airelax.Application.Houses.Dtos.Request.ManageHouse;
 using Airelax.Application.Houses.Dtos.Response;
+using Airelax.Domain.Houses;
+using Airelax.Domain.Houses.Defines.Spaces;
 using Lazcat.Infrastructure.DependencyInjection;
 
 namespace Airelax
@@ -12,7 +14,7 @@ namespace Airelax
     [DependencyInjection(typeof(IManageHouseService))]
     public class ManageHouseService : IManageHouseService
     {
-        public readonly IManageHouseRepository _manageHouseRepository;
+        private readonly IManageHouseRepository _manageHouseRepository;
         public ManageHouseService(IManageHouseRepository manageHouseRepository)
         {
             _manageHouseRepository = manageHouseRepository;
@@ -21,6 +23,8 @@ namespace Airelax
         public ManageHouseDto GetManageHouseInfo(string id)
         {
             var house = _manageHouseRepository.Get(id);
+            var space = _manageHouseRepository.GetSpace(id);
+
             ManageHouseDto manage = new ManageHouseDto()
             {
                 Id = id,
@@ -52,6 +56,7 @@ namespace Airelax
                     HouseType = (int)house.HouseCategory?.HouseType,
                     RoomCategory = (int)house.HouseCategory?.RoomCategory
                 },
+                SpaceBed = space,
                 CustomerNumber = house.CustomerNumber,
                 Origin = Convert.ToString((int)house.HousePrice.PerNight),
                 SweetPrice = Convert.ToString((int)house.HousePrice.PerWeekNight),
@@ -214,6 +219,31 @@ namespace Airelax
             var house = _manageHouseRepository.Get(id);
             house.ProvideFacilities = input.ProvideFacilities;
             house.NotProvideFacilities = input.NotProvideFacilities;
+            _manageHouseRepository.Update(house);
+            _manageHouseRepository.SaveChange();
+            return input;
+        }
+
+        public HouseSpaceInput UpdateSpace(string id, HouseSpaceInput input)
+        {
+            var house = _manageHouseRepository.Get(id);
+            var space=  new Space(house.Id)
+            {
+                HouseId = input.HouseId,
+                SpaceType = (SpaceType)input.SpaceType,
+                IsShared = input.IsShared
+            };
+            house.Spaces.Add(space);     
+            _manageHouseRepository.Update(house);
+            _manageHouseRepository.SaveChange();
+            return input;
+        }
+
+        public HouseSpaceInput DeleteSpace(string id, HouseSpaceInput input)
+        {
+            var house = _manageHouseRepository.Get(id);
+            var deleteObj = house.Spaces.LastOrDefault(x => (int)x.SpaceType == input.SpaceType);
+            house.Spaces.Remove(deleteObj);
             _manageHouseRepository.Update(house);
             _manageHouseRepository.SaveChange();
             return input;

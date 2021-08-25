@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Defines;
+using Airelax.Domain.Houses.Defines.Spaces;
 
 namespace Airelax.Application.Houses.Dtos.Response
 {
@@ -29,6 +30,35 @@ namespace Airelax.Application.Houses.Dtos.Response
         public string CheckoutTime { get; set; }
         public string CashPledge { get; set; }
         public HouseRuleDto HouseRule { get; set; }
-        public List<Space> ManageSpaces { get; set; }
+        public string SpaceBed { get; set; }
+    }
+
+    public class SpaceBed
+    {
+        public SpaceVM SpaceVM { get; set; }
+        public BedroomDetailVM BedroomDetailVM { get; set; }
+    }
+
+    public class SpaceVM
+    {
+        public string Id { get; set; }
+        public string HouseId { get; set; }
+        public int SpaceType { get; set; }
+        public bool IsShared { get; set; }
+    }
+
+    public class BedroomDetailVM 
+    {
+        public string SpaceId { get; set; }
+        public int? BedType { get; set; }
+        public int? BedCount { get; set; }
+        public bool? HasIndependentBath { get; set; }
+    }
+
+    public class HouseCategoryVM
+    {
+        public int? Category { get; set; }
+        public int? HouseType { get; set; }
+        public int? RoomCategory { get; set; }
     }
 }

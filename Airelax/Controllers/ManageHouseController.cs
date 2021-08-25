@@ -20,121 +20,137 @@ namespace Airelax.Controllers
         [Route("{id}")]
         public IActionResult Index(string id)
         {
-            return View(_manageHouseService.GetManageHouseInfo(id));
+            var manageInfo = _manageHouseService.GetManageHouseInfo(id);
+            return View(manageInfo);
         }
 
         [HttpPut]
         [Route("{id}/Description")]
         public IActionResult UpdateDescription(string id, [FromBody] HouseDescriptionInput input)
         {
-            return Ok(_manageHouseService.UpdateDescription(id, input));
+            var description = _manageHouseService.UpdateDescription(id, input);
+            return Ok(description);
         }
 
         [HttpPut]
         [Route("{id}/Title")]
         public IActionResult UpdateTitle(string id, [FromBody] HouseTitleInput input)
         {
-            return Ok(_manageHouseService.UpdateTitle(id, input));
+            var title = _manageHouseService.UpdateTitle(id, input);
+            return Ok(title);
         }
 
         [HttpPut]
         [Route("{id}/CustomerNumber")]
         public IActionResult UpdateCustomerNumber(string id, [FromBody] CustomerNumberInput input)
         {
-            return Ok(_manageHouseService.UpdateCustomerNumber(id, input));
+            var customerNumber = _manageHouseService.UpdateCustomerNumber(id, input);
+            return Ok(customerNumber);
         }
 
         [HttpPut]
         [Route("{id}/Status")]
         public IActionResult UpdateStatus(string id, [FromBody] HouseStatusInput input)
         {
-            return Ok(_manageHouseService.UpdateStatus(id, input));
+            var status = _manageHouseService.UpdateStatus(id, input);
+            return Ok(status);
         }
 
         [HttpPut]
         [Route("{id}/Address")]
         public IActionResult UpdateAddress(string id, [FromBody] HouseAddressInput input)
         {
-            return Ok(_manageHouseService.UpdateAddress(id, input));
+            var address = _manageHouseService.UpdateAddress(id, input);
+            return Ok(address);
         }
 
         [HttpPut]
         [Route("{id}/Location")]
         public IActionResult UpdateLocation(string id, [FromBody] HouseLocationInupt input)
         {
-            return Ok(_manageHouseService.UpdateLocation(id, input));
+            var location = _manageHouseService.UpdateLocation(id, input);
+            return Ok(location);
         }
 
         [HttpPut]
         [Route("{id}/Category")]
         public IActionResult UpdateCategory(string id, [FromBody] HouseCategoryInput input)
         {
-            return Ok(_manageHouseService.UpdateCategory(id, input));
+            var category = _manageHouseService.UpdateCategory(id, input);
+            return Ok(category);
         }
 
         [HttpPut]
         [Route("{id}/Price")]
         public IActionResult UpdatePrice(string id, [FromBody] HousePriceInput input)
         {
-            return Ok(_manageHouseService.UpdatePrice(id, input));
+            var price = _manageHouseService.UpdatePrice(id, input);
+            return Ok(price);
         }
 
         [HttpPut]
         [Route("{id}/Cancel")]
         public IActionResult UpdateCancel(string id, [FromBody] CancelPolicyInput input)
         {
-            return Ok(_manageHouseService.UpdateCancel(id, input));
+            var cancel = _manageHouseService.UpdateCancel(id, input);
+            return Ok(cancel);
         }
 
         [HttpPut]
         [Route("{id}/RealTime")]
         public IActionResult UpdateRealTime(string id, [FromBody] RealTimeInput input)
         {
-            return Ok(_manageHouseService.UpdateRealTime(id, input));
+            var realTime = _manageHouseService.UpdateRealTime(id, input);
+            return Ok(realTime);
         }
 
         [HttpPut]
         [Route("{id}/CheckTime")]
         public IActionResult UpdateCheckTime(string id, [FromBody] CheckTimeInput input)
         {
-            return Ok(_manageHouseService.UpdateCheckTime(id, input));
+            var checkTime = _manageHouseService.UpdateCheckTime(id, input);
+            return Ok(checkTime);
         }
 
         [HttpPut]
         [Route("{id}/Others")]
         public IActionResult UpdateOthers(string id, [FromBody] HouseOtherInput input)
         {
-            return Ok(_manageHouseService.UpdateOthers(id, input));
+            var others = _manageHouseService.UpdateOthers(id, input);
+            return Ok(others);
         }
 
         [HttpPut]
         [Route("{id}/Rules")]
         public IActionResult UpdateRules(string id, [FromBody] HouseRuleInput input)
         {
-            return Ok(_manageHouseService.UpdateRules(id, input));
+            var rules = _manageHouseService.UpdateRules(id, input);
+            return Ok(rules);
         }
 
         [HttpPut]
         [Route("{id}/Facility")]
         public IActionResult UpdateFacility(string id, [FromBody] HouseFacilityInput input)
         {
-            return Ok(_manageHouseService.UpdateFacility(id, input));
+            var facility = _manageHouseService.UpdateFacility(id, input);
+            return Ok(facility);
         }
 
-        //[HttpPut]
-        //[Route("{id}/Space")]
-        //public IActionResult UpdateSpace(string id, [FromBody] Space input)
-        //{
-        //    var x = from h in _context.Houses
-        //            from s in _context.Spaces.Where(x => x.HouseId == h.Id).DefaultIfEmpty()
-        //            from b in _context.BedroomDetails.Where(x => x.SpaceId == s.Id).DefaultIfEmpty()
-        //            where h.Id == "H005ba2165b"
-        //            select new { s = s, b = b };
+        //TODO-改Space的PK
+        [HttpPost]
+        [Route("{id}/Space")]
+        public IActionResult UpdateSpace(string id, [FromBody] HouseSpaceInput input)
+        {
+            var space = _manageHouseService.UpdateSpace(id, input);
+            return Ok(space);
+        }
 
-        //    var y = x.ToList();
-
-        //    _ctx.SaveChanges();
-        //    return Ok(input);
-        //}
+        [HttpDelete]
+        [Route("{id}/Space")]
+        public IActionResult DeleteSpace(string id, [FromBody] HouseSpaceInput input)
+        {
+            var space = _manageHouseService.DeleteSpace(id, input);
+            return Ok(space);
+        }
     }
 }
