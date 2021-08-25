@@ -63,6 +63,7 @@ namespace Airelax
             services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddHttpClient<GoogleGeocodingService>();
             services.Configure<GoogleMapApiSetting>(Configuration.GetSection(nameof(GoogleMapApiSetting)));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

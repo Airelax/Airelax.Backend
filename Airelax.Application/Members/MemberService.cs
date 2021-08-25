@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace Airelax.Application.Members
 {
-    public class MemberService : IMemberService
+    public class MemberService
     {
+        
+
     }
       
 }

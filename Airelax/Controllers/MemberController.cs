@@ -15,7 +15,7 @@ namespace Airelax.Controllers
     public class MemberController : Controller
     {
         private readonly AirelaxContext _context;
-        public MemberController(AirelaxContext context)
+        public MemberController(AirelaxContext context,IMemberRepository memberRepository)
         {
             _context = context;
         }
@@ -59,15 +59,15 @@ namespace Airelax.Controllers
            
         [HttpPut]
         [Route("{memberId}/detail")]
-        public async Task<bool> EditMember(string memberId,EditMemberInput input) 
+        public async Task<bool> EditMember(string memberId,[FromBody] EditMemberInput input) 
         {
             var member = _context.Members.FirstOrDefault(x => x.Id == memberId);
 
             if (member == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"Member Id {memberId} does not match any member");
 
             member.Name = input.Name;
-            member.Birthday = input.Birthday;
-            member.Gender = input.Gender;
+            //member.Birthday = input.Birthday;
+            //member.Gender = input.Gender;
             member.Phone = input.Phone;
             member.Country = input.Country;
             member.AddressDetail = input.AddressDetail;

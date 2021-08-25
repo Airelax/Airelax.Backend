@@ -229,9 +229,10 @@
     <script>
     const sendNameBtn = document.getElementById("sendNameBtn");
     const nameInput = document.getElementById("nameInput");
-    let memberInput = { Name: "", Gender: "", Birthdat: "", Country: "", Zipcode: "", AddressDetail: "", Phone: "" };
+    let memberInput = { Name: "",Gender:0,Birthday:"", Country: "", Zipcode: "", AddressDetail: "", Phone: "" };
         sendNameBtn.addEventListener("click", () => {
             memberInput.Name = nameInput.value;
+            console.log(JSON.stringify(memberInput));
             putToBack();
         })
 
@@ -250,6 +251,17 @@
         .catch(function (error) {
         console.log(error)
         });
+        @*fetch(`/Member/@Html.Raw(Model.MemberId)/detail`, {
+            body: JSON.stringify(memberInput),
+            method: 'PUT'
+        }
+            ).then(function (res) {
+                res.json()
+               
+            }).then(j=>console.log(j) )
+            .catch(function (error) {
+                console.log(error)
+            });*@
      }
     </script>
 

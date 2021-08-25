@@ -10,8 +10,8 @@ namespace Airelax.Application.Members.Request
     public class EditMemberInput
     {
         public string Name { get; set; }
-        public Gender Gender { get; set; }
-        public DateTime Birthday { get; set; }
+        public int Gender { get; set; }
+        public string Birthday { get; set; }
         public string Country { get; set; }
         public string Zipcode { get; set; }
         public string AddressDetail { get; set; }
