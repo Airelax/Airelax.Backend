@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Airelax.Domain.DomainObject;
 using Airelax.Domain.Houses.Defines.Spaces;
+using Lazcat.Infrastructure.Common;
 
 namespace Airelax.Domain.Houses
 {
@@ -15,6 +16,7 @@ namespace Airelax.Domain.Houses
 
         public Space(string houseId)
         {
+            Id = GuidHelper.CreateId(prefix: "S");
             HouseId = houseId;
             SpaceType = SpaceType.Bedroom;
             IsShared = false;
