@@ -31,7 +31,7 @@
                     {
                         @foreach (var house in Model)
                         {
-                            <option value=@($"{int.Parse(house.HouseId)-1}")>@($"{house.HouseName}({house.HouseState})")</option>
+                            <option value=@house.HouseId>@($"{house.HouseName}({house.HouseState})")</option>
                         }
                     }
                     else
@@ -82,7 +82,7 @@
 
         let all = document.querySelector("#all");
         all.addEventListener("click", () => {
-            rendering(jsonData[status].Comments)
+            rendering(jsonData.find((x) => x.HouseId == status).Comments);
         });
     }
 
@@ -94,7 +94,11 @@
         label.setAttribute("id", `${5 - index}`);
         if (jsonData != null && jsonData.length != 0) {
             label.addEventListener("click", () => {
-                rendering(jsonData[status].Comments.filter((x) => parseInt(x.Stars) == label.id));
+                rendering(
+                    jsonData
+                        .find((x) => x.HouseId == status)
+                        .Comments.filter((x) => parseInt(x.Stars) == label.id)
+                );
             });
         }
         label.innerText = element;
@@ -102,22 +106,24 @@
     });
 
     function Selected(v) {
-        status = parseInt(v);
+        status = v
 
-        initialize()
+        initialize(status)
     }
 
     function initialize() {
-        rScores.innerText = jsonData[status].Comments.length
+        if (status === 0) status = jsonData[0].HouseId;
+        const data = jsonData.find((x) => x.HouseId == status);
+        rScores.innerText = data.Comments.length;
 
         let sum = 0;
-        jsonData[status].Comments.forEach(x => {
-            sum += x.Stars
+        data.Comments.forEach((x) => {
+            sum += x.Stars;
         });
-        sum /= jsonData[status].Comments.length;
+        sum /= data.Comments.length;
         lScores.innerText = sum.toFixed(1);
 
-        rendering(jsonData[status].Comments)
+        rendering(data.Comments);
     }
 
     function rendering(para) {
@@ -146,11 +152,4 @@
             message.append(msg);
         });
     }
-
-    //function A(B) {
-    //    const formatDate = (B) => {
-    //        let formatted_date = B.getDate() + "-" + (B.getMonth() + 1) + "-" + B.getFullYear()
-    //        return formatted_date;
-    //    }
-    //}
 </script>
