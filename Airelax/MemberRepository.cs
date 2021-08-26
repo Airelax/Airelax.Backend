@@ -16,24 +16,32 @@ namespace Airelax
         {
             _context = context;
         }
-        public IQueryable<Member> GetAll()
-        {
-            return _context.Set<Member>();
-        }
-        public Member Get(string memberId)
+        //public IQueryable<Member> GetAll()
+        //{
+        //    return _context.Set<Member>();
+        //}
+        public Member GetMember(string memberId)
         {
             return _context.Members.FirstOrDefault(x => x.Id == memberId);
         }
-        public void Delete(Member member)
+        public MemberTables GetMemberTables(string memberId)
         {
-            member.IsDeleted = true;
-            Update(member);
+            return (from m in _context.Members
+            join mi in _context.MemberLoginInfos on m.Id equals mi.Id
+            where m.Id == memberId
+            select new MemberTables { Member = m, MemberLoginInfos = mi }).FirstOrDefault();
         }
+        //public void Delete(Member member)
+        //{
+        //    member.IsDeleted = true;
+        //    Update(member);
+        //}
         public void Update(Member member)
         {
             _context.Update(member);
         }
-        public void SaveChange()
+     
+        public void SaveChanges()
         {
             _context.SaveChanges();
         }

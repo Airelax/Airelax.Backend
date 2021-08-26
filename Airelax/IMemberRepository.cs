@@ -4,9 +4,11 @@ namespace Airelax
 {
     public interface IMemberRepository
     {
-        void Delete(Member member);
-        Member Get(string memberId);
-        void SaveChange();
+        
+        Member GetMember(string memberId);
+        void SaveChanges();
         void Update(Member member);
+
+        MemberTables GetMemberTables(string memberId);
     }
 }
