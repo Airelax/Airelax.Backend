@@ -30,11 +30,12 @@
         d-md-flex
         flex-md-column
         justify-content-md-between
-        my-1 px-md-2
+        my-1
+        px-md-2
       "
     >
       <div class="row">
-        <div class="col col-md-10 ">
+        <div class="col col-md-10">
           <div class="comment d-inline-flex d-md-none my-1">
             <Star></Star>
             <span class="starScore" id="starScore">
@@ -47,7 +48,7 @@
           <div class="typeAddress d-md-none my-1">
             {{ room.houseType }}．{{ room.address }}
           </div>
-          <div class="mdTypeAddress d-none d-md-block ">
+          <div class="mdTypeAddress d-none d-md-block">
             位於{{ room.address }}的{{ room.houseType }}
           </div>
           <div class="title my-1">
@@ -72,19 +73,19 @@
           ></Heart>
         </div>
       </div>
-      <div class="row d-none d-md-block ">
+      <div class="row d-none d-md-block">
         <div class="space">
-          <span v-if="room.Space.CustomerNumber" class="customer">
-            {{ room.Space.CustomerNumber }}位．</span
+          <span v-if="room.space.customerNumber" class="customer">
+            {{ room.space.customerNumber }}位．</span
           >
-          <span v-if="room.Space.Bedroom" class="bedRoom">
-            {{ room.Space.Bedroom }}間臥室．</span
+          <span v-if="room.space.bedroom" class="bedRoom">
+            {{ room.space.bedroom }}間臥室．</span
           >
-          <span v-if="room.Space.Bed" class="bed">
-            {{ room.Space.Bed }}張床．</span
+          <span v-if="room.space.bed" class="bed">
+            {{ room.space.bed }}張床．</span
           >
-          <span v-if="room.Space.Bathroom" class="bathRoom">
-            {{ room.Space.Bathroom }}間衛浴
+          <span v-if="room.space.bathroom" class="bathRoom">
+            {{ room.space.bathroom }}間衛浴
           </span>
         </div>
         <div class="facility">
@@ -97,11 +98,11 @@
       <div class="row">
         <div class="originAndSweet text-md-end my-1">
           <span class="origin">
-            $ {{ convertToLocaleString(room.Price.origin) }}
+            $ {{ convertToLocaleString(room.price.origin) }}
           </span>
           <span class="sweetPrice">
             $
-            {{ plusServiceFee(room.Price, nightCount) }}
+            {{ plusServiceFee(room.price) }}
             TWD
           </span>
           / 晚
@@ -122,18 +123,19 @@
             data-bs-target="#PriceDetail"
             data-bs-toggle="offcanvas"
             aria-controls="offcanvasBottom"
-            v-on:click="deliverDataToDetail(room.Price)"
+            v-on:click="deliverDataToDetail(room.price)"
           >
-            總計 ${{ getTotal(room.Price, nightCount) }} TWD
+            總計 ${{ getTotal(room.price, nightCount) }} TWD
           </div>
           <a
             class="btn mdTotalLink d-none d-md-inline ms-md-auto"
             id="mdTotalLink"
             role="button"
-            data-bs-toggle="modal" data-bs-target="#myModal"
-            v-on:click="deliverDataToDetail(room.Price)"
+            data-bs-toggle="modal"
+            data-bs-target="#myModal"
+            v-on:click="deliverDataToDetail(room.price)"
           >
-            總計 ${{ getTotal(room.Price, nightCount) }} TWD
+            總計 ${{ getTotal(room.price, nightCount) }} TWD
           </a>
         </div>
       </div>
@@ -181,31 +183,29 @@ export default {
     convertToLocaleString(price) {
       return price.toLocaleString();
     },
-    plusServiceFee(price, nightCount) {
-      return Math.round(
-        (Number(price.sweetPrice) * nightCount + Number(price.Fee.ServiceFee)) /
-          nightCount
+    plusServiceFee(price) {
+      return Number(
+        price.sweetPrice == null ? price.origin : price.sweetPrice
       ).toLocaleString();
     },
     getTotal(price, nightCount) {
       let feeTotal;
-      let sweetprice = price.sweetPrice;
-      let cleanFee = price.Fee.CleanFee;
-      let taxFee = price.Fee.taxFee;
-      let serviceFee = price.Fee.ServiceFee;
-      if (cleanFee && taxFee && serviceFee) {
-        feeTotal = Number(cleanFee) + Number(serviceFee) + Number(taxFee);
-      } else if (!cleanFee && !taxFee && !serviceFee) {
-        feeTotal = Number(serviceFee);
-      } else if (cleanFee && !taxFee && serviceFee) {
-        feeTotal = Number(serviceFee) + Number(cleanFee);
-      } else if (!cleanFee && taxFee && serviceFee) {
-        feeTotal = Number(taxFee) + Number(serviceFee);
-      }
-      return (Number(sweetprice) * nightCount + feeTotal).toLocaleString();
+      let sweetPrice =
+        price.sweetPrice == null ? price.origin : price.sweetPrice;
+      let cleanFee = this.getPrice(price.fee.cleanFee);
+      let taxFee = this.getPrice(price.fee.taxFee);
+      let serviceFee = this.getPrice(price.fee.serviceFee);
+      feeTotal = cleanFee + taxFee + serviceFee;
+
+      return Number(sweetPrice) * nightCount + feeTotal;
     },
     deliverDataToDetail(price) {
-      this.priceDetail = price
+      this.priceDetail = price;
+    },
+
+    getPrice(price) {
+      if (typeof price == undefined) return 0;
+      return Number(price);
     },
   },
 };
