@@ -252,6 +252,12 @@ namespace Airelax
         public BedroomDetailInput CreateBedroomDetail(string id, BedroomDetailInput input)
         {
             var house = _manageHouseRepository.Get(id);
+            var updateObj = _manageHouseRepository.GetBedroom().FirstOrDefault(y => y.SpaceId == input.SpaceId && (int)y.BedType == input.BedType);
+            if (updateObj != null)
+            {
+                UpdateBedroomDetail(id, input);
+                return input;
+            }
             var bedroomDetail = new BedroomDetail(input.SpaceId)
             {
                 SpaceId = input.SpaceId,
