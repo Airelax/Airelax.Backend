@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Airelax.Application.Houses.Dtos.Response;
 using Airelax.Domain.Houses;
+using Microsoft.EntityFrameworkCore;
 
 namespace Airelax
 {
@@ -11,5 +12,7 @@ namespace Airelax
         string GetSpace(string id);
         void SaveChange();
         void Update(House house);
+        void CreateBedroom(BedroomDetail bedroom);
+        DbSet<BedroomDetail> GetBedroom();
     }
 }

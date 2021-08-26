@@ -77,5 +77,15 @@ namespace Airelax
         {
             _context.Update(house);
         }
+
+        public void CreateBedroom(BedroomDetail bedroom)
+        {
+            _context.Add(bedroom);
+        }
+
+        public DbSet<BedroomDetail> GetBedroom()
+        {
+            return _context.BedroomDetails;
+        }
     }
 }

@@ -20,7 +20,9 @@ namespace Airelax
         RealTimeInput UpdateRealTime(string id, RealTimeInput input);
         HouseRuleInput UpdateRules(string id, HouseRuleInput input);
         HouseStatusInput UpdateStatus(string id, HouseStatusInput input);
-        HouseSpaceInput UpdateSpace(string id, HouseSpaceInput input);
+        HouseSpaceInput CreateSpace(string id, HouseSpaceInput input);
         HouseSpaceInput DeleteSpace(string id, HouseSpaceInput input);
+        BedroomDetailInput CreateBedroomDetail(string id, BedroomDetailInput input);
+        BedroomDetailInput UpdateBedroomDetail(string id, BedroomDetailInput input);
     }
 }

@@ -60,8 +60,8 @@ namespace Airelax
                 CustomerNumber = house.CustomerNumber,
                 Origin = Convert.ToString((int)house.HousePrice.PerNight),
                 SweetPrice = Convert.ToString((int)house.HousePrice.PerWeekNight),
-                //Discount
-                //Fee = price.Fee,
+                ////Discount
+                ////Fee = price.Fee,
                 Cancel = (int)house.Policy.CancelPolicy,
                 InstanceBooking = house.Policy.CanRealTime,
                 CheckinTime = house.Policy.CheckinTime.ToString("t", DateTimeFormatInfo.InvariantInfo),
@@ -224,7 +224,7 @@ namespace Airelax
             return input;
         }
 
-        public HouseSpaceInput UpdateSpace(string id, HouseSpaceInput input)
+        public HouseSpaceInput CreateSpace(string id, HouseSpaceInput input)
         {
             var house = _manageHouseRepository.Get(id);
             var space=  new Space(house.Id)
@@ -244,6 +244,35 @@ namespace Airelax
             var house = _manageHouseRepository.Get(id);
             var deleteObj = house.Spaces.LastOrDefault(x => (int)x.SpaceType == input.SpaceType);
             house.Spaces.Remove(deleteObj);
+            _manageHouseRepository.Update(house);
+            _manageHouseRepository.SaveChange();
+            return input;
+        }
+
+        public BedroomDetailInput CreateBedroomDetail(string id, BedroomDetailInput input)
+        {
+            var house = _manageHouseRepository.Get(id);
+            //var createObj = house.Spaces.LastOrDefault(x => x.Id == input.SpaceId).BedroomDetails;
+            var bedroomDetail = new BedroomDetail(input.SpaceId)
+            {
+                SpaceId = input.SpaceId,
+                BedType = (BedType)input.BedType,
+                BedCount = (int)input.BedCount,
+                HasIndependentBath = (bool)input.HasIndependentBath
+            };
+            //createObj.Add(bedroomDetail);
+            _manageHouseRepository.CreateBedroom(bedroomDetail);
+            _manageHouseRepository.Update(house);
+            _manageHouseRepository.SaveChange();
+            return input;
+        }
+
+        public BedroomDetailInput UpdateBedroomDetail(string id, BedroomDetailInput input)
+        {
+            var house = _manageHouseRepository.Get(id);
+            var updateObj = _manageHouseRepository.GetBedroom().FirstOrDefault(y => y.SpaceId == input.SpaceId && (int)y.BedType == input.BedType);
+            updateObj.BedCount = (int)input.BedCount;
+            updateObj.HasIndependentBath = (bool)input.HasIndependentBath;
             _manageHouseRepository.Update(house);
             _manageHouseRepository.SaveChange();
             return input;

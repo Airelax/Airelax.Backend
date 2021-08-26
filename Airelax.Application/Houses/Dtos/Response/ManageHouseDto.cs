@@ -42,7 +42,7 @@ namespace Airelax.Application.Houses.Dtos.Response
     public class SpaceVM
     {
         public string Id { get; set; }
-        public string HouseId { get; set; }
+        public string? HouseId { get; set; }
         public int SpaceType { get; set; }
         public bool IsShared { get; set; }
     }

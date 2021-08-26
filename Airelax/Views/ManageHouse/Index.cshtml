@@ -1581,6 +1581,13 @@
             IsShared: false
         };
 
+        let UpdateBedroom = {
+            SpaceId: "",
+            BedType: 0,
+            BedCount: 0,
+            HasIndependentBath: true
+        };
+
         function addBedCount(item, div, i) {
             let list = document.createElement('div');
             let span = document.createElement('span');
@@ -1598,6 +1605,14 @@
                 let span = e.target.parentNode.querySelector('span');
                 span.innerText = Number(span.innerText) - 1;
                 if (span.innerText < 0) span.innerText = 0;
+                if (getParentNode(e.target, 4).getAttribute('class').includes('collapse')) {
+                    UpdateBedroom.SpaceId = getParentNode(e.target, 5).getAttribute('spaceid');
+                    UpdateBedroom.BedCount = Number(getParentNode(e.target, 1).querySelector('span').innerText);
+                    UpdateBedroom.BedType = Number(getParentNode(e.target, 2).getAttribute('index')) - 1;
+                    PostData(UpdateBedroom, "BedroomDetail", "Put");
+                    return
+                }
+                // 減少臥室
                 if (i == 0) {
                     let lastBtn = document.querySelector('#spaceBody .bed > div:last-child');
                     lastBtn.parentNode.removeChild(lastBtn);
@@ -1608,6 +1623,13 @@
             plus.addEventListener('click', (e) => {
                 let span = e.target.parentNode.querySelector('span');
                 span.innerText = Number(span.innerText) + 1;
+                if (getParentNode(e.target, 4).getAttribute('class').includes('collapse')) {
+                    UpdateBedroom.SpaceId = getParentNode(e.target, 5).getAttribute('spaceid');
+                    UpdateBedroom.BedCount = Number(getParentNode(e.target, 1).querySelector('span').innerText);
+                    UpdateBedroom.BedType = Number(getParentNode(e.target, 2).getAttribute('index')) - 1;
+                    PostData(UpdateBedroom, "BedroomDetail", "Post");
+                    return
+                }
                 // 增加臥室
                 if (i == 0) {
                     let num = e.target.parentNode.querySelector('span').innerText;
@@ -1637,8 +1659,8 @@
             let card = document.createElement('div');
             btn.innerText = `臥室${num}`;
             addBebCheck("bedroom", num, card);
-            space.bedroom.detail.forEach(x => {
-                addBedCount(x, card, 1);
+            space.bedroom.detail.forEach((x,i) => {
+                addBedCount(x, card, i+1);
             });
 
             setAttributes(btn, { "class": "btn btn-dark w-100", "data-bs-toggle": "collapse", "data-bs-target": `#collapseBed-${num}`, "type": "button", "aria-expanded": "false" });
@@ -1650,6 +1672,7 @@
             bed.appendChild(collapse);
             document.querySelector('#spaceBody .bed').appendChild(bed);
         }
+
         //房屋守則
         let updateRule = {
             AllowChild: null,

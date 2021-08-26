@@ -136,12 +136,11 @@ namespace Airelax.Controllers
             return Ok(facility);
         }
 
-        //TODO-改Space的PK
         [HttpPost]
         [Route("{id}/Space")]
-        public IActionResult UpdateSpace(string id, [FromBody] HouseSpaceInput input)
+        public IActionResult CreateSpace(string id, [FromBody] HouseSpaceInput input)
         {
-            var space = _manageHouseService.UpdateSpace(id, input);
+            var space = _manageHouseService.CreateSpace(id, input);
             return Ok(space);
         }
 
@@ -151,6 +150,22 @@ namespace Airelax.Controllers
         {
             var space = _manageHouseService.DeleteSpace(id, input);
             return Ok(space);
+        }
+
+        [HttpPost]
+        [Route("{id}/BedroomDetail")]
+        public IActionResult CreateBedroomDetail(string id, [FromBody] BedroomDetailInput input)
+        {
+            var bedroomDetail = _manageHouseService.CreateBedroomDetail(id, input);
+            return Ok(bedroomDetail);
+        }
+
+        [HttpPut]
+        [Route("{id}/BedroomDetail")]
+        public IActionResult UpdateBedroomDetail(string id, [FromBody] BedroomDetailInput input)
+        {
+            var bedroomDetail = _manageHouseService.UpdateBedroomDetail(id, input);
+            return Ok(bedroomDetail);
         }
     }
 }
