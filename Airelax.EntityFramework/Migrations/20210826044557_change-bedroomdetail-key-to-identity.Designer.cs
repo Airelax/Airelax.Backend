@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Airelax.EntityFramework.Migrations
 {
     [DbContext(typeof(AirelaxContext))]
-    [Migration("20210825145550_add-identity-key")]
-    partial class addidentitykey
+    [Migration("20210826044557_change-bedroomdetail-key-to-identity")]
+    partial class changebedroomdetailkeytoidentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -94,6 +94,7 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Houses.BedroomDetail", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:IdentityIncrement", 1)
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
@@ -445,6 +446,9 @@ namespace Airelax.EntityFramework.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<byte[]>("Cover")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -472,7 +476,7 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<DateTime>("RegisterTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 8, 25, 22, 55, 50, 351, DateTimeKind.Local).AddTicks(5370));
+                        .HasDefaultValue(new DateTime(2021, 8, 26, 12, 45, 57, 63, DateTimeKind.Local).AddTicks(4446));
 
                     b.Property<string>("Town")
                         .HasMaxLength(50)
@@ -495,6 +499,9 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<string>("Location")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("WorkTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
