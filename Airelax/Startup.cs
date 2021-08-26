@@ -36,7 +36,6 @@ namespace Airelax
 
             //if use local DB
             var connectString = HostEnvironment.IsDevelopment() ? Define.Database.LOCAL_CONNECT_STRING : Define.Database.DB_CONNECT_STRING;
-
             services.AddDbContext<AirelaxContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString(connectString),
                     x =>
@@ -48,7 +47,7 @@ namespace Airelax
             
             services.AddByDependencyInjectionAttribute();
             services.AddControllersWithViews();
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Airelax", Version = "v1"}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Airelax", Version = "v1" }); });
             services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddHttpClient<GoogleGeocodingService>();
             services.Configure<GoogleMapApiSetting>(Configuration.GetSection(nameof(GoogleMapApiSetting)));

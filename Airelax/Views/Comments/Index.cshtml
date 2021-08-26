@@ -1,0 +1,155 @@
+﻿@{
+    @model IEnumerable<HouseCommentViewModel>
+    @using System.Text.Json
+}
+@section topCSS{
+    <link href="~/css/Comments.css" rel="stylesheet" />
+}
+<div class="my-content">
+    <div class="header">
+        <h2>成效</h2>
+        <div class="my-navbar"></div>
+    </div>
+    <div class="main">
+        <div class="column">
+            <div class="fraction-column">
+                <div class="fraction-container">
+                    <div class="scores" id="l-scores">‒</div>
+                    <img src="~/image/coment-star.svg" />
+                </div>
+                <p>整體評分</p>
+            </div>
+            <div class="quantity-column">
+                <div class="scores" id="r-scores"></div>
+                <p>評價總數</p>
+            </div>
+        </div>
+        <div class="shop">
+            <div class="subMenu">
+                <select class="form-select" onchange="Selected(this.value)">
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var house in Model)
+                        {
+                            <option value=@house.HouseId>@($"{house.HouseName}({house.HouseState})")</option>
+                        }
+                    }
+                    else
+                    {
+                        <option selected>@($"沒有房源")</option>
+                    }
+                </select>
+                <div class="icon"></div>
+                <div class="iconMask"></div>
+            </div>
+            <div class="btn-group"
+                 role="group"
+                 aria-label="Basic radio toggle button group">
+                <label class="btn btn-outline-secondary" id="all">全部</label>
+            </div>
+        </div>
+
+        <div class="msg-title">
+            @if (Model != null && Model.Any())
+            {
+                <span class="tab-span">全部</span><h3>評價</h3>
+                <span>關於房源的最新評價</span>
+            }
+            else
+            {
+                <span class="tab-span">尚未有</span><h3>評價</h3>
+                <span>你的首筆評價會顯示在這裡。</span>
+            }
+        </div>
+        <div class="message">
+            @for (int i = 0; i < 3; i++)
+            {
+                <div class="msg-column"></div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    const jsonData = JSON.parse('@Html.Raw((JsonSerializer.Serialize(Model.ToList())))')
+    const message = document.querySelector(".message");
+    const rScores = document.querySelector("#r-scores");
+    const lScores = document.querySelector("#l-scores");
+    let status = 0;
+
+    if (jsonData != null && jsonData.length != 0) {
+        initialize();
+
+        let all = document.querySelector("#all");
+        all.addEventListener("click", () => {
+            rendering(jsonData.find((x) => x.HouseId == status).Comments);
+        });
+    }
+
+    const btnGroup = document.querySelector(".btn-group");
+    const labelData = ["5★", "4★", "3★", "2★", "1★"];
+    labelData.forEach((element, index) => {
+        const label = document.createElement("label");
+        label.classList = "btn btn-outline-secondary";
+        label.setAttribute("id", `${5 - index}`);
+        if (jsonData != null && jsonData.length != 0) {
+            label.addEventListener("click", () => {
+                rendering(
+                    jsonData
+                        .find((x) => x.HouseId == status)
+                        .Comments.filter((x) => parseInt(x.Stars) == label.id)
+                );
+            });
+        }
+        label.innerText = element;
+        btnGroup.append(label);
+    });
+
+    function Selected(v) {
+        status = v
+
+        initialize(status)
+    }
+
+    function initialize() {
+        if (status === 0) status = jsonData[0].HouseId;
+        const data = jsonData.find((x) => x.HouseId == status);
+        rScores.innerText = data.Comments.length;
+
+        let sum = 0;
+        data.Comments.forEach((x) => {
+            sum += x.Stars;
+        });
+        sum /= data.Comments.length;
+        lScores.innerText = sum.toFixed(1);
+
+        rendering(data.Comments);
+    }
+
+    function rendering(para) {
+        message.innerHTML = "";
+        para.forEach((element, index) => {
+            const msg = document.createElement("div");
+            msg.classList = "msg-column";
+            msg.innerHTML = `
+            <div class="user">
+                <div class="user-wrapper">
+                   <img src="https://picsum.photos/56/56/?random=${index}" />
+                    <div class="item">
+                        <span>${element.AuthorName}</span>
+                        <span>${element.CommentTime}</span>
+                    </div>
+                </div>
+                <div class="fractionContainer">
+                    <div class="fraction">${element.Stars}</div>
+                    <img src="@Url.Content("~/image/coment-star.svg")" />
+                </div>
+            </div>
+            <div class="msg-content">
+                <p>${element.Content}</p>
+            </div>
+           `;
+            message.append(msg);
+        });
+    }
+</script>
