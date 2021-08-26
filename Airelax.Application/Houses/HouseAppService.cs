@@ -119,7 +119,6 @@ namespace Airelax.Application.Houses
         {
             var house = await _houseRepository.GetAsync(x => x.Id == id);
             if (house == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"House Id : {id} does not match any house");
-
             var member = await _memberRepository.GetAsync(x => x.Id == house.OwnerId);
             if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"House exist but member has been deleted");
             var houseDto = new HouseDto()

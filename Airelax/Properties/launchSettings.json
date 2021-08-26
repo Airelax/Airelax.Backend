@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "Manage/H005ba2165b",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -20,7 +20,7 @@
     "Airelax": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "memberinfo/M00305f255b",
+      "launchUrl": "ManageHouse/H0067450a86",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

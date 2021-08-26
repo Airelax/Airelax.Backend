@@ -1,4 +1,4 @@
-﻿using System;
+
 
 namespace Airelax.Application.Houses.Dtos.Response
 {
