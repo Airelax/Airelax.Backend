@@ -1,0 +1,32 @@
+.lodger,.landlord{
+    text-decoration: none;
+    &:hover{
+        text-decoration:underline
+    }
+}
+.deactivate{
+    color: #d93900;
+    &:hover{
+        color: #008489;
+        text-decoration: underline;
+    }
+}
+.Send{
+    width:fit-content;
+    background-color: #008489;
+    padding: 10px 22px;
+    color: #ffffff;
+    &:hover{
+        color: #ffffff;
+    }
+}
+@media screen and (max-width: 767px){
+    .d_login,.p_Lo{
+        display: none;
+    }
+}
+@media screen and (min-width: 768px){
+    .c_Lfo{
+        font-size: 32px;
+    }
+}

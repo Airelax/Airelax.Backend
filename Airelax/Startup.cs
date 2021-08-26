@@ -51,6 +51,7 @@ namespace Airelax
             services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddHttpClient<GoogleGeocodingService>();
             services.Configure<GoogleMapApiSetting>(Configuration.GetSection(nameof(GoogleMapApiSetting)));
+
             services.AddCors(opt => { opt.AddPolicy("dev", builder => builder.WithOrigins("http://localhost:8080")); });
         }
 
