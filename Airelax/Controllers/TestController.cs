@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Airelax.Application;
+using Airelax.Application.Houses;
+using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Application.Houses.Dtos.Response;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Defines;
@@ -12,8 +15,12 @@ using Airelax.Domain.Members.Defines;
 using Airelax.Domain.RepositoryInterface;
 using Airelax.EntityFramework.DbContexts;
 using AutoMapper;
+using Lazcat.Infrastructure.ExceptionHandlers;
+using Lazcat.Infrastructure.Map.Abstractions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using JsonSerializer = SpanJson.JsonSerializer;
 
@@ -23,86 +30,37 @@ namespace Airelax.Controllers
     [Route("api/[controller]")]
     public class TestController : Controller
     {
+        private readonly IHouseAppService _houseAppService;
+        private readonly ILogger _logger;
         private readonly AirelaxContext _context;
-        private readonly IMapper _mapper;
-        private IHouseRepository _houseRepository;
 
-        public TestController(AirelaxContext context, IMapper mapper, IHouseRepository houseRepository)
+        public TestController(IHouseAppService houseAppService, ILogger<TestController> logger, AirelaxContext context)
         {
+            _houseAppService = houseAppService;
+            _logger = logger;
             _context = context;
-            _mapper = mapper;
-            _houseRepository = houseRepository;
         }
 
         [HttpGet]
-        public string Get()
+        public async Task<IEnumerable<SimpleHouseDto>> t()
         {
-            var house = _context.Houses.FirstOrDefault(x => x.Id == "H75a54f44ff");
-            
-            return System.Text.Json.JsonSerializer.Serialize(house.ProvideFacilities);
+            var x = from h in _context.Houses
+                    from s in _context.Spaces.Where(x => x.HouseId == h.Id).DefaultIfEmpty()
+                    from b in _context.BedroomDetails.Where(x => x.SpaceId == s.Id).DefaultIfEmpty()
+                    where h.Id == "H005ba2165b"
+                    select new { s = s, b = b };
 
-            _context.SaveChanges();
+            var y = x.ToList();
 
-            // var member = new Member()
-            // {
-            //     City = "c", Birthday = DateTime.Now, Country = "con", Email = "adfjakd", Gender = Gender.Man, Name = "asdf", Town = "adfa", Phone = "adfa", RegisterTime = DateTime.Now,
-            //     AddressDetail = "as"
-            // };
-            // _context.Members.Add(member);
-            // _context.SaveChanges();
-            //
-            // var house = new House()
-            // {
-            //     OwnerId = member.Id,
-            //     CreateState = CreateState.Building,
-            //     CreateTime = DateTime.Now, CustomerNumber = 1,
-            //     Status = HouseStatus.Off,
-            //     LastModifyTime = DateTime.Now, Title = "123",
-            // };
-            //
-            // house.HouseCategory = new HouseCategory(house.Id);
-            // _context.Houses.Add(house);
-            // _context.SaveChanges();
-
-            // var housePrice = new HousePrice()
-            // {
-            //     Id = 2, PerNight = 1000, Discount = new Discount()
-            //     {
-            //         Month = 12, Week = 20, OtherDiscount = new List<DiscountDetail>
-            //         {
-            //             new DiscountDetail()
-            //             {
-            //                 Days = 5,
-            //                 Discount = 3
-            //             }
-            //         }
-            //     },
-            //     Fee = new Fee()
-            //     {
-            //         CleanFee = 500,
-            //         ServiceFee = 100,
-            //         TaxFee = 50
-            //     },
-            // };
-            // _context.HousePrices.Add(housePrice);
-            //_context.SaveChanges();
-
-            //var house = _context.Houses.Include(x=>x.HouseRule).FirstOrDefault(x => x.Id == 2);
-            return default;
-            //return JsonConvert.SerializeObject(_mapper.Map<House,HouseDto>(house));
+            return null;
         }
 
-        // [HttpGet]
-        // [Route("id")]
-        // public async Task<HouseDto> Get(string id)
-        // {
-        //     id = "H75a54f44ff";
-        //     var house = await _houseRepository.GetAsync(x => x.Id == id);
-        //     //Console.WriteLine(JsonConvert.SerializeObject(house.HouseDescription));
-        //     var houseDto = _mapper.Map<House, HouseDto>(house);
-        //     Console.WriteLine(JsonSerializer.Generic.Utf16.Serialize(houseDto));
-        //     houseDto.Description = _mapper.Map<HouseDescription, DescriptionDto>(house.HouseDescription);
-        //     return houseDto;
-        // }
+        [HttpPost]
+        [Route("{id}")]
+        public async Task<bool> test(string id)
+        {
+            var house = _context.Members.FirstOrDefault(x => x.Id == id);
+            return true;
+        }
     }
 }

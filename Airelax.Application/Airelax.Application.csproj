@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
@@ -6,7 +6,8 @@
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="10.1.1" />
-      <PackageReference Include="Lazcat.Infrastructure" Version="1.0.5" />
+      <PackageReference Include="BCrypt.Net" Version="0.1.0" />
+      <PackageReference Include="Lazcat.Infrastructure" Version="1.0.7" />
       <PackageReference Include="SpanJson" Version="3.1.0" />
     </ItemGroup>
 
@@ -15,7 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Houses\Dtos\Request\" />
+      <Folder Include="Account\Dtos\Response\" />
     </ItemGroup>
-
 </Project>

@@ -1,0 +1,542 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- reset css -->
+    <link rel="stylesheet" href="./assets/reset.css">
+    <!-- BS@5.0.2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- SWIPER CSS -->
+    <link rel="stylesheet" href="./assets/swiper-bundle.css">
+    <link rel="stylesheet" href="./assets/scss/swiper.css">
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- SHOP-68 CSS -->
+    <link rel="stylesheet" href="./assets/scss/SHOP-68.css">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <nav>眼睛業障重nav</nav>
+    <div class="container-xl">
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <div class="row headInfo">
+                    <div class="col-9 d-md-none">
+                        <h2>嗨!我是Rou-Cyuan</h2>
+                        <p>加入時間:2021</p>
+                        <div class="aboutBtn" type="button" data-bs-toggle="collapse" data-bs-target="#aboutCollapse"
+                             aria-expanded="false" aria-controls="aboutCollapse">
+                            編輯個人資料
+                        </div>
+                    </div>
+                    <div class="col-2 col-md-12">
+                        <div>
+                            <img class="portrait" src="./assets/images/portrait.png">
+                        </div>
+                        <a href="#">更新照騙</a>
+                        <div>
+                            <img class="honor" src="./assets/images/honor.svg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="row bestAndComment">
+                    <div class="best">
+                        <img src="./assets/images/bestLandLord.svg" alt="best">
+                        <span>超讚的阿</span>
+                    </div>
+                    <div class="comment">
+                        <img src="./assets/images/star.svg" alt="comment">
+                        <span>千萬則評價</span>
+                    </div>
+                </div>
+                <div class="row writtenAboutMe d-md-none">
+                    <div class="writtenAbout">
+                        <h3>關於我</h3>
+                        <p>
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Possimus, pariatur.
+                        </p>
+                    </div>
+                    <div class="writtenLocation">
+                        <img src="./assets/images/home.svg" alt="writtenLocation">
+                        <span>住在你心裡</span>
+                    </div>
+                    <div class="writtenWork">
+                        <img src="./assets/images/bag.svg" alt="writtenWork">
+                        <span>在家打雜</span>
+                    </div>
+
+                </div>
+                <div class="row writingAboutMe collapse d-md-none" id="aboutCollapse">
+                    <div class="mb-3">
+                        <label for="meTextarea" class="form-label">關於我</label>
+                        <textarea class="form-control" id="meTextarea" rows="4"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="locationInput" class="form-label">位置</label>
+                        <input type="text" class="form-control" id="locationInput">
+                    </div>
+                    <div class="mb-3">
+                        <label for="workInput" class="form-label">工作單位</label>
+                        <input type="text" class="form-control" id="workInput">
+                    </div>
+                    <div class="cancelOrSave">
+                        <div class="btn cancelBtn" data-bs-toggle="collapse" data-bs-target="#aboutCollapse">取消</div>
+                        <div class="btn btn-dark saveBtn">儲存</div>
+                    </div>
+                </div>
+                <div class="row checked">
+                    <h3>
+                        <span>RouCyuan</span>
+                        已確認
+                    </h3>
+                    <div class="col col-md-12">
+                        <img src="./assets/images/hook.svg">
+                        <span>電子郵件</span>
+                    </div>
+                    <div class="col col-md-12">
+                        <img src="./assets/images/hook.svg">
+                        <span>電話號碼</span>
+                    </div>
+                </div>
+                <div class="row houseSource d-md-none">
+                    <h3>
+                        <span>RouCyuan</span>
+                        的房源
+                    </h3>
+                    <div class="swiper-container Swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-none d-md-block col-md-6">
+                <div class="row mdHeadInfo">
+                    <h2>嗨！我是Rou-Cyuan</h2>
+                    <p>加入時間：2021</p>
+                    <div class="mdAboutBtn" type="button" data-bs-toggle="collapse" data-bs-target="#mdAboutCollapse"
+                         aria-expanded="true" aria-controls="mdAboutCollapse">
+                        編輯個人資料
+                    </div>
+                </div>
+                <div class="row writtenAboutMe ">
+                    <div class="writtenAbout">
+                        <h3>關於我</h3>
+                        <p>
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Possimus, pariaturLorem ipsum dolor
+                            sit amet consectetur adipisicing elit. Dicta iste accusamus dolores
+                            blanditiis vitae minus maiores consectetur dolorum voluptates suscipit dolor sapiente, atque
+                            molestiae aperiam quibusdam itaque, enim fugit repellat. Natus illo repudiandae
+                            exercitationem consectetur quod possimus ea expedita hic! Dolorem, atque! Nostrum sequi,
+                            autem voluptatem sint iure unde rerum!
+                        </p>
+                    </div>
+                    <div class="writtenLocation">
+                        <img src="./assets/images/home.svg" alt="writtenLocation">
+                        <span>住在你心裡</span>
+                    </div>
+                    <div class="writtenWork">
+                        <img src="./assets/images/bag.svg" alt="writtenWork">
+                        <span>在家打雜</span>
+                    </div>
+                </div>
+                <div class="row mdWritingAboutMe collapse" id="mdAboutCollapse">
+                    <div class="mb-3">
+                        <label for="meTextarea" class="form-label">關於我</label>
+                        <textarea class="form-control" id="meTextarea" rows="4"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="locationInput" class="form-label">位置</label>
+                        <input type="text" class="form-control" id="locationInput">
+                    </div>
+                    <div class="mb-3">
+                        <label for="workInput" class="form-label">工作單位</label>
+                        <input type="text" class="form-control" id="workInput">
+                    </div>
+                    <div class="cancelOrSave">
+                        <div class="btn cancelBtn" data-bs-toggle="collapse" data-bs-target="#aboutCollapse">取消</div>
+                        <div class="btn btn-dark saveBtn">儲存</div>
+                    </div>
+                </div>
+                <div class="row houseSource">
+                    <h3>
+                        <span>RouCyuan</span>
+                        的房源
+                    </h3>
+                    <div class="swiper-container Swiper mySwiper  ">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="container btn">
+                                    <div>
+                                        <img src="https://picsum.photos/200/200/?random=1">
+                                    </div>
+                                    <div class="comment">
+                                        <img class="starImg" src="./assets/images/starFilling.svg" alt="starFilling">
+                                        <span>3.55</span>
+                                        (<span>123</span>)
+                                    </div>
+                                    <div class="roomAndHouseType">
+                                        <span class="roomType">獨立套房</span>
+                                        <span class="houseType">整棟大樓</span>
+                                    </div>
+                                    <h3 class="roomTitle">
+                                        漫漫回嘉/桃城經濟三人房
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- BS@5.0.2 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+    <!-- SHOP-68 JS -->
+    <script src="./assets/js/SHOP-68.js"></script>
+    <!-- SWIPER -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <!-- swiper initialize -->
+    <script src="./assets/js/swiper.js"></script>
+    <!-- popover -->
+    <script src="./assets/js/popover.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+﻿<div class="mb-3">
+    <label for="MdMeTextArea" class="form-label">關於我</label>
+    <textarea class="form-control" id="MdMeTextArea" rows="4">@Model.About</textarea>
+</div>
+<div class="mb-3">
+    <label for="MdLocationInput" class="form-label">位置</label>
+    <input type="text" class="form-control" id="MdLocationInput" value="@Model.Location">
+</div>
+<div class="mb-3">
+    <label for="MdWorkInput" class="form-label">工作時間</label>
+    <input type="text" class="form-control" id="MdWorkInput" value="@Model.WorkTime">
+</div>
+<div class="cancelOrSave">
+    <div class="btn MdCancelBtn" id="MdCancelBtn" data-bs-toggle="collapse" data-bs-target="#mdAboutCollapse">取消</div>
+    <div class="btn btn-dark MdSaveBtn" id="MdSaveBtn" data-bs-toggle="collapse" data-bs-target="#mdAboutCollapse">儲存</div>
+</div>
+<style>
+    .cancelOrSave {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .MdCancelBtn {
+        text-align: center;
+        text-decoration: underline;
+        font-weight: bold;
+    }
+
+    .MdSaveBtn {
+        padding: 10px 20px;
+        border-radius: 10px;
+    }
+</style>

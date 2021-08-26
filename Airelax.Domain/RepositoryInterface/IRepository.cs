@@ -6,46 +6,13 @@ using Airelax.Domain.DomainObject;
 
 namespace Airelax.Domain.RepositoryInterface
 {
-    public interface IRepository<in TId, TEntity> where TEntity : Entity<TId>
+    public interface IRepository
     {
-        /// <summary>
-        /// 取得Entity全部筆數的IQueryable。
-        /// </summary>
-        /// <returns>Entity全部筆數的IQueryable。</returns>
-        IQueryable<TEntity> GetAll();
-        
-        /// <summary>
-        /// 透過指定條件選取第一個符合的Entity
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>符合條件的第一個Entity，若無則回傳default</returns>
-        Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> exp);
-
-        /// <summary>
-        /// 建立一個Entity
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        Task CreateAsync(TEntity item);
-
-        /// <summary>
-        /// 更新Entity
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        Task UpdateAsync(TEntity item);
-        
-        /// <summary>
-        /// 刪除Entity
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        Task DeleteAsync(TEntity item);
-        
-        /// <summary>
-        /// 儲存變更
-        /// </summary>
-        /// <returns></returns>
+        IQueryable<TEntity> GetAll<TId, TEntity>() where TEntity : Entity<TId>;
+        Task<TEntity> GetAsync<TId, TEntity>(Expression<Func<TEntity, bool>> exp) where TEntity : Entity<TId>;
+        Task CreateAsync<TId, TEntity>(TEntity item) where TEntity : Entity<TId>;
+        Task UpdateAsync<TId, TEntity>(TEntity item) where TEntity : Entity<TId>;
+        Task DeleteAsync<TId, TEntity>(TEntity item) where TEntity : Entity<TId>;
         Task SaveChangesAsync();
     }
 }

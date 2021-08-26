@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Airelax.Domain.DomainObject;
+using Lazcat.Infrastructure.Map.Responses;
 
 namespace Airelax.Domain.Houses.Specifications
 {
-    public class InRangeLocationSpecification : ExpressionSpecification<House>
+    public class InRangeLocationSpecification : Specification<House>
     {
-        private readonly (double lat, double lng) _startCoordinate;
-        private readonly (double lat, double lng) _endCoordinate;
+        private readonly Coordinate _southwest;
+        private readonly Coordinate _northeast;
 
 
-        public InRangeLocationSpecification((double lat, double lng) startCoordinate, (double lat, double lng) endCoordinate)
+        public InRangeLocationSpecification(Coordinate southwest, Coordinate northeast)
         {
-            _startCoordinate = startCoordinate;
-            _endCoordinate = endCoordinate;
+            _southwest = southwest;
+            _northeast = northeast;
         }
 
         public override Expression<Func<House, bool>> ToExpression()
         {
-            return house => house.HouseLocation.Longitude >= _startCoordinate.lng &&
-                            house.HouseLocation.Longitude <= _endCoordinate.lng &&
-                            house.HouseLocation.Latitude >= _startCoordinate.lat &&
-                            house.HouseLocation.Latitude <= _endCoordinate.lat;
+            return house => house.HouseLocation.Longitude >= _southwest.Longitude &&
+                            house.HouseLocation.Longitude <= _northeast.Longitude &&
+                            house.HouseLocation.Latitude >= _southwest.Latitude &&
+                            house.HouseLocation.Latitude <= _northeast.Latitude;
         }
     }
 }

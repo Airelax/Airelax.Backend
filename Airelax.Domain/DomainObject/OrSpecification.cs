@@ -1,11 +1,14 @@
-﻿namespace Airelax.Domain.DomainObject
+﻿using System;
+using System.Linq.Expressions;
+
+namespace Airelax.Domain.DomainObject
 {
     public class OrSpecification<T> : Specification<T>
     {
-        private readonly ISpecification<T> _leftSpecification;
-        private readonly ISpecification<T> _rightSpecification;
+        private readonly Specification<T> _leftSpecification;
+        private readonly Specification<T> _rightSpecification;
 
-        public OrSpecification(ISpecification<T> left, ISpecification<T> right)
+        public OrSpecification(Specification<T> left, Specification<T> right)
         {
             _leftSpecification = left;
             _rightSpecification = right;
@@ -15,6 +18,16 @@
         {
             return _leftSpecification.IsSatisfy(o)
                    || _rightSpecification.IsSatisfy(o);
+        }
+
+        public override Expression<Func<T, bool>> ToExpression()
+        {
+            var leftExpression = _leftSpecification.ToExpression();
+            var rightExpression = _rightSpecification.ToExpression();
+            var paramExpr = Expression.Parameter(typeof(T));
+            var exprBody = Expression.OrElse(leftExpression.Body, rightExpression.Body);
+            exprBody = (BinaryExpression) new ParameterReplacer(paramExpr).Visit(exprBody);
+            return Expression.Lambda<Func<T, bool>>(exprBody, paramExpr);
         }
     }
 }
