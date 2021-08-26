@@ -727,13 +727,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title fw-bolder" id="spaceLabel">房間和空間</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="space-close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="spaceBody"></div>
-            <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-dark" id="space-save" data-bs-dismiss="modal">儲存</button>
-            </div>
         </div>
     </div>
 </div>
@@ -1230,13 +1226,19 @@
                         SweetPrice: 0,
                         CashPledge: 0
                     };
-                    let updateCancel = 0;
-                    let updateRealTime = false;
+                    let updateCancel = {
+                        CancelPolicy: 0
+                    };
+                    let updateRealTime = {
+                        CanRealTime: false
+                    };
                     let updateCheckTime = {
                         CheckinTime: "",
                         CheckoutTime: "",
                     };
-                    let updateOthers = "";
+                    let updateOthers = {
+                        Other: ""
+                    };
                     //event.preventDefault();
                     content.innerText = "";
                     if (e.target.getAttribute('textarea') !== null) {
@@ -1262,7 +1264,7 @@
                                 PostData(updateLocation, "Location", "Put");
                                 break;
                             case '其他守則':
-                                updateOthers = textarea.value;
+                                updateOthers.Other = textarea.value;
                                 PostData(updateOthers, "Others", "Put");
                                 break;
                         }
@@ -1287,12 +1289,12 @@
                                         document.getElementById('changeStatus').innerHTML = content.innerHTML;
                                         break;
                                     case '退訂政策':
-                                        updateCancel = (index + 1);
+                                        updateCancel.CancelPolicy = (index + 1);
                                         PostData(updateCancel, "Cancel", "Put");
                                         break;
                                     case '即時預訂':
-                                        if (index == 0) updateRealTime = true;
-                                        else updateRealTime = false;
+                                        if (index == 0) updateRealTime.CanRealTime = true;
+                                        else updateRealTime.CanRealTime = false;
                                         PostData(updateRealTime, "RealTime", "Put");
                                         document.querySelector('#changeInstance').innerHTML = content.innerHTML;
                                         break;
@@ -1535,27 +1537,10 @@
                 if (x.SpaceVM.IsShared && yesShare != null && noShare != null) yesShare.checked = true;
                 else noShare.checked = true;
             });
-
-            let content = document.querySelector('.space .content');
-            let saveBtn = document.getElementById('space-save');
-            saveBtn.addEventListener('click', () => {
-                let bedroom = 0;
-                let bed = 0;
-                let bathroom = 0;
-                let otherSpace = 0;
-                spaceBody.querySelectorAll('.canUse .list').forEach(x => {
-                    let span = x.querySelector('span').innerText;
-                    let num = x.lastChild.querySelector('span').innerText;
-                    if (span == "臥室") bedroom = num;
-                    else if (span == "全套衛浴") bathroom = num;
-                    else otherSpace += Number(num)
-                })
-                spaceBody.querySelectorAll('.bedCount .list').forEach(x => {
-
-                    let num = x.lastChild.querySelector('span').innerText;
-                    bed += Number(num)
-                })
-                content.innerHTML = `臥室: ${bedroom}<br/>床數：${bed}<br/>衛浴：${bathroom}<br/>其他區域：${otherSpace}<br/>`;
+            showSpaceContent();
+            let closeBtn = document.getElementById('space-close');
+            closeBtn.addEventListener('click', () => {
+                showSpaceContent();
             });
         });
 
@@ -1575,7 +1560,24 @@
             });
         }
 
+        function showSpaceContent() {
+            let content = document.querySelector('.space .content');
+            let bedroom = 0;
+            let bathroom = 0;
+            let otherSpace = 0;
+            spaceBody.querySelectorAll('.canUse .list').forEach(x => {
+                let span = x.querySelector('span').innerText;
+                let num = x.lastChild.querySelector('span').innerText;
+                if (span == "臥室") bedroom = num;
+                else if (span == "全套衛浴") bathroom = Number(num);
+                else if (span == "廁所") bathroom += 0.5 * Number(num);
+                else otherSpace += Number(num)
+            })
+            content.innerHTML = `臥室: ${bedroom}<br/>衛浴：${bathroom}<br/>其他區域：${otherSpace}<br/>`;
+        }
+
         let UpdateSpace = {
+            Id: "",
             HouseId: '@Html.Raw(Model.Id)',
             SpaceType: 0,
             IsShared: false
@@ -1617,6 +1619,7 @@
                     let lastBtn = document.querySelector('#spaceBody .bed > div:last-child');
                     lastBtn.parentNode.removeChild(lastBtn);
                 }
+                UpdateSpace.Id = document.querySelector('.bed > div:last-child').getAttribute('spaceid');
                 UpdateSpace.SpaceType = Number(getParentNode(e.target, 2).getAttribute('index'));
                 PostData(UpdateSpace, "Space", "Delete");
             });
