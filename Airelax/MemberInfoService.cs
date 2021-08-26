@@ -22,7 +22,7 @@ namespace Airelax
         public MemberInfoViewModel GetMemberInfoViewModel(string memberId)
         {
             var info = _memberInfoRepository.GetMemberInfoSearchObject(memberId);
-            if (info == null) return null;
+            if (info.IsNullOrEmpty()) return null;
 
             var groupInfo = info.GroupBy(x => x.HouseId);
             var memberInfoViewModel = new MemberInfoViewModel()
