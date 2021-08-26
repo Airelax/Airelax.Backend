@@ -1627,7 +1627,12 @@
                     UpdateBedroom.SpaceId = getParentNode(e.target, 5).getAttribute('spaceid');
                     UpdateBedroom.BedCount = Number(getParentNode(e.target, 1).querySelector('span').innerText);
                     UpdateBedroom.BedType = Number(getParentNode(e.target, 2).getAttribute('index')) - 1;
-                    PostData(UpdateBedroom, "BedroomDetail", "Post");
+                    if (UpdateBedroom.BedCount == 1) {
+                        PostData(UpdateBedroom, "BedroomDetail", "Post");
+                    }
+                    else {
+                        PostData(UpdateBedroom, "BedroomDetail", "Put");
+                    }
                     return
                 }
                 // 增加臥室

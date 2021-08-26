@@ -252,7 +252,6 @@ namespace Airelax
         public BedroomDetailInput CreateBedroomDetail(string id, BedroomDetailInput input)
         {
             var house = _manageHouseRepository.Get(id);
-            //var createObj = house.Spaces.LastOrDefault(x => x.Id == input.SpaceId).BedroomDetails;
             var bedroomDetail = new BedroomDetail(input.SpaceId)
             {
                 SpaceId = input.SpaceId,
@@ -260,7 +259,6 @@ namespace Airelax
                 BedCount = (int)input.BedCount,
                 HasIndependentBath = (bool)input.HasIndependentBath
             };
-            //createObj.Add(bedroomDetail);
             _manageHouseRepository.CreateBedroom(bedroomDetail);
             _manageHouseRepository.Update(house);
             _manageHouseRepository.SaveChange();
