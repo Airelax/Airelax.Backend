@@ -1,10 +1,8 @@
-using System;
-using System.Text.Json;
 using Airelax.Application;
 using Airelax.Defines;
 using Airelax.EntityFramework.DbContexts;
+using Airelax.Infrastructure.Map;
 using Lazcat.Infrastructure.Extensions;
-using Lazcat.Infrastructure.Map;
 using Lazcat.Infrastructure.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

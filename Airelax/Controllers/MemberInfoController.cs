@@ -1,13 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Airelax.EntityFramework.DbContexts;
-using Microsoft.EntityFrameworkCore;
-using Lazcat.Infrastructure.Extensions;
-using Lazcat.Infrastructure.ExceptionHandlers;
-using Airelax.Domain.Members;
 
 namespace Airelax.Controllers
 {

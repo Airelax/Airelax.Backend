@@ -13,13 +13,13 @@ using Airelax.Domain.Houses.Defines.Spaces;
 using Airelax.Domain.Houses.Specifications;
 using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
-using Lazcat.Infrastructure.Map.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Airelax.Domain.Members;
 using Airelax.Domain.Houses.Price;
+using Airelax.Infrastructure.Map.Abstractions;
+using Airelax.Infrastructure.Map.Responses;
 using Lazcat.Infrastructure.Extensions;
-using Lazcat.Infrastructure.Map.Responses;
 
 namespace Airelax.Application.Houses
 {
@@ -41,6 +41,7 @@ namespace Airelax.Application.Houses
         public async Task<IEnumerable<SimpleHouseDto>> Search(SearchInput input)
         {
             Check.CheckNull(input);
+            //todo
             //var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.Location);
             var geocodingInfo = new GeocodingInfo()
             {
