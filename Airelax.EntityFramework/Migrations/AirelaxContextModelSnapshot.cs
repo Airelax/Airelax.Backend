@@ -92,10 +92,7 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Houses.BedroomDetail", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("BedCount")
                         .HasColumnType("int");
@@ -470,7 +467,7 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<DateTime>("RegisterTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 8, 25, 22, 55, 50, 351, DateTimeKind.Local).AddTicks(5370));
+                        .HasDefaultValue(new DateTime(2021, 8, 18, 15, 52, 23, 270, DateTimeKind.Local).AddTicks(3956));
 
                     b.Property<string>("Town")
                         .HasMaxLength(50)
