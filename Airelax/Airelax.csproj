@@ -9,6 +9,7 @@
   </PropertyGroup>
 
     <ItemGroup>
+      <Content Remove="compilerconfig.json" />
       <Compile Remove="wwwroot\image\**" />
       <Content Remove="wwwroot\image\**" />
       <EmbeddedResource Remove="wwwroot\image\**" />
@@ -37,6 +38,7 @@
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Pages\Home\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="wwwroot\scss\UploadPicture.min.css" />
     </ItemGroup>
 
     <ItemGroup>
@@ -44,7 +46,28 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="wwwroot\image\coment-star.svg" />
+      <None Include="compilerconfig.json" />
+      <None Include="wwwroot\images\bag.svg" />
+      <None Include="wwwroot\images\bestLandLord.svg" />
+      <None Include="wwwroot\images\checked.svg" />
+      <None Include="wwwroot\images\home.svg" />
+      <None Include="wwwroot\images\honor.svg" />
+      <None Include="wwwroot\images\hook.svg" />
+      <None Include="wwwroot\images\portrait.png" />
+      <None Include="wwwroot\images\star.svg" />
+      <None Include="wwwroot\images\starFilling.svg" />
+      <None Include="wwwroot\js\popover.js" />
+      <None Include="wwwroot\js\SHOP-68.js" />
+      <None Include="wwwroot\js\swiper.js" />
+      <None Include="wwwroot\css\reset.css" />
+      <None Include="wwwroot\scss\SHOP-68.css" />
+      <None Include="wwwroot\scss\SHOP-68.css.map" />
+      <None Include="wwwroot\scss\SHOP-68.scss" />
+      <None Include="wwwroot\scss\swiper.css" />
+      <None Include="wwwroot\scss\swiper.css.map" />
+      <None Include="wwwroot\scss\swiper.scss" />
+      <None Include="wwwroot\scss\UploadPicture.scss" />
+      <None Include="wwwroot\css\swiper-bundle.css" />
     </ItemGroup>
 
 </Project>
