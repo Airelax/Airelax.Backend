@@ -8,6 +8,7 @@ using Airelax.Domain.Houses.Price;
 using Airelax.Domain.Members;
 using Lazcat.Infrastructure.Common;
 
+
 namespace Airelax.Domain.Houses
 {
     public class House : AggregateRoot<string>
@@ -40,9 +41,11 @@ namespace Airelax.Domain.Houses
 
         #endregion
 
-        public House()
+        public House(string ownerId)
         {
+            OwnerId = ownerId;
             Id = GuidHelper.CreateId(prefix: "H");
+            Title = "未命名房源";
             Status = HouseStatus.CancelPublish;
             CreateState = CreateState.Building;
             CustomerNumber = 1;

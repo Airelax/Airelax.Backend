@@ -18,5 +18,4 @@
     <ItemGroup>
       <Folder Include="Account\Dtos\Response\" />
     </ItemGroup>
-
 </Project>

@@ -3,7 +3,7 @@
     v-if="price && fullWidth >= 768"
     class="collapse position-absolute"
     id="mdPriceDetail"
-    style="top:0"
+    style="top: 0"
   >
     <div class="header d-flex align-items-center">
       <button
@@ -26,70 +26,91 @@
           ${{ convertToLocaleString(Number(price.sweetPrice) * nightCount) }}
         </div>
       </div>
-      <div class="row" v-if="price.Fee.CleanFee">
+      <div class="row" v-if="price.fee.cleanFee">
         <div class="col">清潔費</div>
         <div class="col">
-          ${{ convertToLocaleString(Number(price.Fee.CleanFee)) }}
+          ${{ convertToLocaleString(Number(price.fee.cleanFee)) }}
         </div>
       </div>
-      <div class="row" v-if="price.Fee.ServiceFee">
+      <div class="row" v-if="price.fee.serviceFee">
         <div class="col">服務費</div>
         <div class="col">
-          ${{ convertToLocaleString(Number(price.Fee.ServiceFee)) }}
+          ${{ convertToLocaleString(Number(price.fee.serviceFee)) }}
         </div>
       </div>
 
-      <div class="row" v-if="price.Fee.taxFee">
+      <div class="row" v-if="price.fee.taxFee">
         <p class="col">稅額</p>
         <p class="col">
-          ${{ convertToLocaleString(Number(price.Fee.taxFee)) }}
+          ${{ convertToLocaleString(Number(price.fee.taxFee)) }}
         </p>
       </div>
     </div>
   </div>
 
-  <div class="modal fade" tabindex="-1" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false"  v-if="price && fullWidth >= 768"> 
-      <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-fullscreen-md-down">
-          <div class="modal-content">
-            <div class="modal-header">
-              <div class="title mx-auto">價格明細</div>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div
+    class="modal fade"
+    tabindex="-1"
+    id="myModal"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    v-if="price && fullWidth >= 768"
+  >
+    <div
+      class="
+        modal-dialog
+        modal-dialog-scrollable
+        modal-dialog-centered
+        modal-fullscreen-md-down
+      "
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="title mx-auto">價格明細</div>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="body">
+            <div class="row">
+              <div class="col">
+                ${{ convertToLocaleString(Number(price.sweetPrice)) }}x{{
+                  nightCount
+                }}晚
+              </div>
+              <div class="col">
+                ${{
+                  convertToLocaleString(Number(price.sweetPrice) * nightCount)
+                }}
+              </div>
             </div>
-          <div class="modal-body">
-            <div class="body">
-              <div class="row">
-                <div class="col">
-                  ${{ convertToLocaleString(Number(price.sweetPrice)) }}x{{
-                    nightCount
-                  }}晚
-                </div>
-                <div class="col">
-                  ${{ convertToLocaleString(Number(price.sweetPrice) * nightCount) }}
-                </div>
+            <div class="row" v-if="price.fee.cleanFee">
+              <div class="col">清潔費</div>
+              <div class="col">
+                ${{ convertToLocaleString(Number(price.fee.cleanFee)) }}
               </div>
-              <div class="row" v-if="price.Fee.CleanFee">
-                <div class="col">清潔費</div>
-                <div class="col">
-                  ${{ convertToLocaleString(Number(price.Fee.CleanFee)) }}
-                </div>
+            </div>
+            <div class="row" v-if="price.fee.serviceFee">
+              <div class="col">服務費</div>
+              <div class="col">
+                ${{ convertToLocaleString(Number(price.fee.serviceFee)) }}
               </div>
-              <div class="row" v-if="price.Fee.ServiceFee">
-                <div class="col">服務費</div>
-                <div class="col">
-                  ${{ convertToLocaleString(Number(price.Fee.ServiceFee)) }}
-                </div>
-              </div>
+            </div>
 
-              <div class="row" v-if="price.Fee.taxFee">
-                <p class="col">稅額</p>
-                <p class="col">
-                  ${{ convertToLocaleString(Number(price.Fee.taxFee)) }}
-                </p>
-              </div>
+            <div class="row" v-if="price.fee.taxFee">
+              <p class="col">稅額</p>
+              <p class="col">
+                ${{ convertToLocaleString(Number(price.fee.taxFee)) }}
+              </p>
             </div>
           </div>
         </div>
       </div>
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -130,7 +151,7 @@
     }
   }
 }
-.img{
+.img {
   width: 1.2rem;
 }
 </style>
@@ -142,12 +163,12 @@ export default {
     },
     nightCount: {
       type: Number,
-    }
+    },
   },
   methods: {
     convertToLocaleString(price) {
       return price.toLocaleString();
-    }
+    },
   },
   data() {
     return {
@@ -157,7 +178,7 @@ export default {
   watch: {
     fullWidth(val) {
       this.fullWidth = val;
-    }
+    },
   },
   mounted() {
     const vm = this;

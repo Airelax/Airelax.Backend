@@ -13,7 +13,7 @@ namespace Airelax.Domain.RepositoryInterface
         /// </summary>
         /// <returns>Entity全部筆數的IQueryable。</returns>
         IQueryable<TEntity> GetAll();
-        
+
         /// <summary>
         /// 透過指定條件選取第一個符合的Entity
         /// </summary>
@@ -34,14 +34,14 @@ namespace Airelax.Domain.RepositoryInterface
         /// <param name="item"></param>
         /// <returns></returns>
         Task UpdateAsync(TEntity item);
-        
+
         /// <summary>
         /// 刪除Entity
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
         Task DeleteAsync(TEntity item);
-        
+
         /// <summary>
         /// 儲存變更
         /// </summary>

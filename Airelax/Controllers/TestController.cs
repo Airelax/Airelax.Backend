@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Airelax.Application;
 using Airelax.Application.Houses;
@@ -14,8 +15,10 @@ using Airelax.Domain.Members.Defines;
 using Airelax.Domain.RepositoryInterface;
 using Airelax.EntityFramework.DbContexts;
 using AutoMapper;
+using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Map.Abstractions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -29,18 +32,35 @@ namespace Airelax.Controllers
     {
         private readonly IHouseAppService _houseAppService;
         private readonly ILogger _logger;
+        private readonly AirelaxContext _context;
 
-        public TestController(IHouseAppService houseAppService, ILogger<TestController> logger)
+        public TestController(IHouseAppService houseAppService, ILogger<TestController> logger, AirelaxContext context)
         {
             _houseAppService = houseAppService;
             _logger = logger;
+            _context = context;
         }
 
         [HttpGet]
-        public async Task t([FromQuery] SearchInput searchInput)
+        public async Task<IEnumerable<SimpleHouseDto>> t()
         {
-            _logger.Log(LogLevel.Critical, "test");
-            await _houseAppService.Search(searchInput);
+            var x = from h in _context.Houses
+                    from s in _context.Spaces.Where(x => x.HouseId == h.Id).DefaultIfEmpty()
+                    from b in _context.BedroomDetails.Where(x => x.SpaceId == s.Id).DefaultIfEmpty()
+                    where h.Id == "H005ba2165b"
+                    select new { s = s, b = b };
+
+            var y = x.ToList();
+
+            return null;
+        }
+
+        [HttpPost]
+        [Route("{id}")]
+        public async Task<bool> test(string id)
+        {
+            var house = _context.Members.FirstOrDefault(x => x.Id == id);
+            return true;
         }
     }
 }

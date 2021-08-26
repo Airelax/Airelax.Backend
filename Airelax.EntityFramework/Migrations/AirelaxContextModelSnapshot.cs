@@ -31,8 +31,8 @@ namespace Airelax.EntityFramework.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Content")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("HouseId")
                         .HasColumnType("nvarchar(450)");
@@ -92,7 +92,11 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Houses.BedroomDetail", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BedCount")
                         .HasColumnType("int");
@@ -150,8 +154,8 @@ namespace Airelax.EntityFramework.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -185,23 +189,23 @@ namespace Airelax.EntityFramework.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("GuestPermission")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<int?>("HouseHighlight")
                         .HasColumnType("int");
 
                     b.Property<string>("Others")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("SpaceDescription")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.HasKey("Id");
 
@@ -229,8 +233,8 @@ namespace Airelax.EntityFramework.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("LocationDescription")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<double?>("Longitude")
                         .HasColumnType("float");
@@ -273,8 +277,8 @@ namespace Airelax.EntityFramework.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Other")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.HasKey("Id");
 
@@ -412,8 +416,8 @@ namespace Airelax.EntityFramework.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Phone")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -433,16 +437,19 @@ namespace Airelax.EntityFramework.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("City")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Country")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<byte[]>("Cover")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Gender")
                         .HasColumnType("int");
@@ -461,17 +468,17 @@ namespace Airelax.EntityFramework.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Phone")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("RegisterTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 8, 11, 0, 8, 22, 915, DateTimeKind.Local).AddTicks(296));
+                        .HasDefaultValue(new DateTime(2021, 8, 26, 12, 45, 57, 63, DateTimeKind.Local).AddTicks(4446));
 
                     b.Property<string>("Town")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -490,6 +497,9 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<string>("Location")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("WorkTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -549,8 +559,8 @@ namespace Airelax.EntityFramework.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 

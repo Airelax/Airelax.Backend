@@ -11,8 +11,8 @@ namespace Airelax.Domain.Houses
         public string AddressDetail { get; set; }
         public string LocationDescription { get; set; }
         public string TrafficDescription { get; set; }
-        public double? Latitude { get; set; }
-        public double? Longitude { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
 
         public HouseLocation(string id)
         {
