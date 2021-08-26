@@ -28,25 +28,15 @@
     <div class="row">
       <div class="col">
         <div class="comment d-inline-flex my-1">
-          <svg
-            class="star"
-            viewBox="0 0 32 32"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-            role="presentation"
-            focusable="false"
-          >
-            <path
-              d="M15.094 1.579l-4.124 8.885-9.86 1.27a1 1 0 0 0-.542 1.736l7.293 6.565-1.965 9.852a1 1 0 0 0 1.483 1.061L16 25.951l8.625 4.997a1 1 0 0 0 1.482-1.06l-1.965-9.853 7.293-6.565a1 1 0 0 0-.541-1.735l-9.86-1.271-4.127-8.885a1 1 0 0 0-1.814 0z"
-              fill-rule="evenodd"
-            ></path>
-          </svg>
+          <Star></Star>
           <span class="starScore">
             {{ room.comment.star }}
           </span>
           <span class="commentCount">({{ room.comment.TotalComments }})</span>
         </div>
-        <div class="typeAddress my-1">{{ room.houseType }}．{{ room.address }}</div>
+        <div class="typeAddress my-1">
+          {{ room.houseType }}．{{ room.address }}
+        </div>
         <div class="title my-1">
           {{ room.Title }}
         </div>
@@ -78,7 +68,8 @@
           class="btn mdTotalLink d-none d-md-inline ms-md-auto"
           id="mdTotalLink"
           role="button"
-          data-bs-toggle="modal" data-bs-target="#myModal"
+          data-bs-toggle="modal"
+          data-bs-target="#myModal"
           v-on:click="deliverDataToDetail(room.Price)"
         >
           總計 ${{ getTotal(room.Price, nightCount) }} TWD
@@ -105,7 +96,7 @@
     color: #000;
   }
   .eachRoomCol {
-    padding: .5rem;
+    padding: 0.5rem;
     position: relative;
     bottom: 20px;
     .row {
@@ -193,6 +184,7 @@
 
 
 <script>
+import Star from "./Star.vue";
 import RecordPriceDetail from "./RecordPriceDetail.vue";
 import RoomSwiper from "./Swiper.vue";
 import Wish from "./Wish.vue";
@@ -200,11 +192,12 @@ import Heart from "./Heart.vue";
 import MdPriceDetail from "./MdPriceDetail.vue";
 export default {
   components: {
+    Star,
     RecordPriceDetail,
     RoomSwiper,
     Wish,
     Heart,
-    MdPriceDetail
+    MdPriceDetail,
   },
   data() {
     return {

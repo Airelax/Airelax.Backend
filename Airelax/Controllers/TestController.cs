@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Airelax.Application;
 using Airelax.Application.Houses;
@@ -14,8 +15,10 @@ using Airelax.Domain.Members.Defines;
 using Airelax.Domain.RepositoryInterface;
 using Airelax.EntityFramework.DbContexts;
 using AutoMapper;
+using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Map.Abstractions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -50,6 +53,14 @@ namespace Airelax.Controllers
             var y = x.ToList();
 
             return null;
+        }
+
+        [HttpPost]
+        [Route("{id}")]
+        public async Task<bool> test(string id)
+        {
+            var house = _context.Members.FirstOrDefault(x => x.Id == id);
+            return true;
         }
     }
 }

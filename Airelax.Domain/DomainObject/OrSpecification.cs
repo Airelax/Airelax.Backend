@@ -22,9 +22,12 @@ namespace Airelax.Domain.DomainObject
 
         public override Expression<Func<T, bool>> ToExpression()
         {
-            var left = _leftSpecification.ToExpression();
-            var body = Expression.OrElse(left.Body, _rightSpecification.ToExpression().Body);
-            return Expression.Lambda<Func<T, bool>>(body, left.Parameters[0]);
+            var leftExpression = _leftSpecification.ToExpression();
+            var rightExpression = _rightSpecification.ToExpression();
+            var paramExpr = Expression.Parameter(typeof(T));
+            var exprBody = Expression.OrElse(leftExpression.Body, rightExpression.Body);
+            exprBody = (BinaryExpression) new ParameterReplacer(paramExpr).Visit(exprBody);
+            return Expression.Lambda<Func<T, bool>>(exprBody, paramExpr);
         }
     }
 }

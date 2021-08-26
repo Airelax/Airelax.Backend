@@ -13,9 +13,9 @@ namespace Airelax.Controllers
     [Route("api/[controller]/new-house")]
     public class NewHouseController : Controller
     {
-        private readonly IHouseAppService _houseAppService;
+        private readonly INewHouseService _houseAppService;
 
-        public NewHouseController(IHouseAppService houseAppService)
+        public NewHouseController(INewHouseService houseAppService)
         {
             _houseAppService = houseAppService;
         }

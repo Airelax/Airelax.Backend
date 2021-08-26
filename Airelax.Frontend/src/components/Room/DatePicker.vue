@@ -127,7 +127,7 @@ h2{
 }
 @media screen and (min-width:768px){
     .offcanvas{
-        margin: 5rem 20rem;
+        margin: 2rem 20rem;
     }
 }
 </style>

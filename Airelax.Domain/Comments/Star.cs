@@ -14,7 +14,7 @@ namespace Airelax.Domain.Comments
 
         public double Total
         {
-            get => Math.Round((CleanScore + CheapScore + CommunicationScore + ExperienceScore + LocationScore + AccuracyScore) / 6.0 * 5.0 / 6.0, 1);
+            get => Math.Round((CleanScore + CheapScore + CommunicationScore + ExperienceScore + LocationScore + AccuracyScore) / 6.0, 1);
         }
 
         public Star(string id, int cleanScore, int communicationScore, int experienceScore, int cheapScore, int locationScore, int accuracyScore)
