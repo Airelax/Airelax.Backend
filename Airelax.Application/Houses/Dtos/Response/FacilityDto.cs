@@ -1,8 +1,10 @@
-﻿namespace Airelax.Application.Houses.Dtos.Response
+﻿using System.Collections.Generic;
+
+namespace Airelax.Application.Houses.Dtos.Response
 {
     public class FacilityDto
     {
-        public int[] Provide { get; set; }
-        public int[] NotProvide { get; set; }
+        public IEnumerable<int> Provide { get; set; }
+        public IEnumerable<int> NotProvide { get; set; }
     }
 }

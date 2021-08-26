@@ -23,6 +23,7 @@ namespace Airelax.Domain.Members
         public bool IsEmailVerified { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime RegisterTime { get; set; }
+        public byte[] Cover { get; set; }
 
         public ICollection<House> Houses { get; set; }
         public MemberLoginInfo MemberLoginInfo { get; set; }

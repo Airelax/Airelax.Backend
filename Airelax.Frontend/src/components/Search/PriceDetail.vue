@@ -26,17 +26,17 @@
         </p>
       </div>
       <div class="fees">
-        <div class="clean" v-if="price.Fee.CleanFee">
+        <div class="clean" v-if="price.fee.cleanFee">
           <p>清潔費</p>
-          <p>${{ convertToLocaleString(Number(price.Fee.CleanFee)) }}</p>
+          <p>${{ convertToLocaleString(Number(price.fee.cleanFee)) }}</p>
         </div>
-        <div class="service" v-if="price.Fee.ServiceFee">
+        <div class="service" v-if="price.fee.serviceFee">
           <p>服務費</p>
-          <p>${{ convertToLocaleString(Number(price.Fee.ServiceFee)) }}</p>
+          <p>${{ convertToLocaleString(Number(price.fee.serviceFee)) }}</p>
         </div>
-        <div class="tax" v-if="price.Fee.taxFee">
+        <div class="tax" v-if="price.fee.taxFee">
           <p>稅額</p>
-          <p>${{ convertToLocaleString(Number(price.Fee.taxFee)) }}</p>
+          <p>${{ convertToLocaleString(Number(price.fee.taxFee)) }}</p>
         </div>
       </div>
     </div>
