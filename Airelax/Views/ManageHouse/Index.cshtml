@@ -786,7 +786,7 @@
 </div>
 
 @section ManageJS {
-    
+
     <script>
 
         let barBtn = document.querySelectorAll('.barBtn');
@@ -1475,7 +1475,8 @@
         });
 
         //房間與空間
-        let SpaceArray = JSON.parse('@Html.Raw(Model.SpaceBed)');
+        const spaceBed =@Html.Raw(Model.SpaceBed);
+        let SpaceArray = spaceBed == null ? null: JSON.parse('@Html.Raw(Model.SpaceBed)');
         let spaceBody = document.getElementById('spaceBody');
         console.log(SpaceArray);
         window.addEventListener('load', () => {
@@ -1501,7 +1502,7 @@
                 }
                 spaceBody.appendChild(div);
             });
-
+            if(!SpaceArray) return;
             //初始化
             SpaceArray.forEach(x => {
                 let canCreate = true;

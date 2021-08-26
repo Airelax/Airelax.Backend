@@ -7,6 +7,7 @@ using Airelax.Domain.Houses;
 using Microsoft.EntityFrameworkCore;
 using Lazcat.Infrastructure.DependencyInjection;
 using Airelax.Application.Houses.Dtos.Response;
+using Lazcat.Infrastructure.Extensions;
 using Newtonsoft.Json;
 
 namespace Airelax
@@ -34,32 +35,20 @@ namespace Airelax
                 .FirstOrDefault(x => x.Id == id);
         }
 
-        public string GetSpace(string id)
+        public List<SpaceBed> GetSpace(string id)
         {
-            var x = from h in _context.Houses
-                    from s in _context.Spaces.Where(x => x.HouseId == h.Id).DefaultIfEmpty()
-                    from b in _context.BedroomDetails.Where(x => x.SpaceId == s.Id).DefaultIfEmpty()
-                    where h.Id == id
-                    select new SpaceBed
-                    {
-                        SpaceVM = new SpaceVM
-                        {
-                            Id = s.Id,
-                            HouseId = s.HouseId,
-                            SpaceType = (int)s.SpaceType,
-                            IsShared = s.IsShared
-                        },
-                        BedroomDetailVM = new BedroomDetailVM
-                        {
-                            BedCount = b.BedCount,
-                            BedType = (int)b.BedType,
-                            SpaceId = b.SpaceId,
-                            HasIndependentBath = b.HasIndependentBath
-                        }
-                    };
-            var space = x.ToList();
-            string jsonString = JsonConvert.SerializeObject(space);
-            return jsonString;
+            var spaceBeds = from h in _context.Houses
+                from s in _context.Spaces.Where(x => x.HouseId == h.Id)
+                from b in _context.BedroomDetails.Where(x => x.SpaceId == s.Id).DefaultIfEmpty()
+                where h.Id == id
+                select new SpaceBed
+                {
+                    Space = s,
+                    BedroomDetail = b
+                };
+            
+            var space = spaceBeds?.ToList();
+            return space;
         }
 
         public void SaveChange()

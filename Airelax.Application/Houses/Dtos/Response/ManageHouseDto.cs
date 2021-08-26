@@ -35,8 +35,14 @@ namespace Airelax.Application.Houses.Dtos.Response
 
     public class SpaceBed
     {
-        public SpaceVM SpaceVM { get; set; }
-        public BedroomDetailVM BedroomDetailVM { get; set; }
+        public Space Space { get; set; }
+        public BedroomDetail BedroomDetail { get; set; }
+    }
+
+    public class SpaceBedVM
+    {
+        public SpaceVM Space { get; set; }
+        public BedroomDetailVM BedroomDetail { get; set; }
     }
 
     public class SpaceVM
@@ -47,7 +53,7 @@ namespace Airelax.Application.Houses.Dtos.Response
         public bool IsShared { get; set; }
     }
 
-    public class BedroomDetailVM 
+    public class BedroomDetailVM
     {
         public string SpaceId { get; set; }
         public int? BedType { get; set; }
