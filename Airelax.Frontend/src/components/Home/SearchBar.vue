@@ -1,262 +1,303 @@
 <template>
-    <header>
-        <form action="#">
-          <div class="searchBar">
-            <div class="search-div search-position" @click="HideBody">
-              <i class="fas fa-search sm-search-icon"></i>
-              <label>
-                <span class="search-title sm-search-title">位置</span>
-                <input id="searchInput" type="text" placeholder="你想去哪裡 ?" autocomplete="off" v-model="$store.state.destination"/>
-              </label>
-            </div>
-            <div class="lg-search">
-                <v-date-picker :transition="'none'" :columns="$screens({ default: 2})" color="pink" :model-config="modelConfig" is-range v-model="$store.state.date">
-                <template v-slot="{ inputValue, inputEvents }">
-                  <div class="picker">
-                    <div  id="in-date-time" class="search-div in-date">
-                        <span class="search-title">入住</span>
-                        <input
-                          placeholder="新增日期"
-                          :value="inputValue.start"
-                          v-on="inputEvents.start"
-                          class="px-2 py-1 focus:outline-none focus:border-indigo-300"
-                          readonly
-                        />
-                    </div>
-                    <div id="out-date-time" class="search-div out-date">
-                        <span class="search-title">退房</span>
-                        <input
-                        placeholder="新增日期"
-                          :value="inputValue.end"
-                          v-on="inputEvents.end"
-                          class="px-2 py-1 rounded focus:outline-none focus:border-indigo-300"
-                          readonly
-                        />
-                    </div>
-                  </div>
-                </template>
-                </v-date-picker>
-              <div class="search-div search-people">
-                  <div>
-                    <span class="search-title">人數</span>
-                    <div class="placeholder" v-if="adult===0">新增人數</div>
-                    <div class="placeholder" v-else>{{adult+child}}位,{{toddler}}名嬰幼兒</div>
-                  </div>
-                  <div class="lg-search-icon">
-                    <i class="fas fa-search"></i>
-                    <span class="lg-search-icon-txt">搜尋</span>
-                  </div>
+  <header>
+    <form action="#">
+      <div class="searchBar">
+        <div class="search-div search-position" @click="HideBody">
+          <i class="fas fa-search sm-search-icon"></i>
+          <label>
+            <span class="search-title sm-search-title">位置</span>
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="你想去哪裡 ?"
+              autocomplete="off"
+              v-model="$store.state.destination"
+            />
+          </label>
+        </div>
+        <div class="lg-search">
+          <v-date-picker
+            :transition="'none'"
+            :columns="$screens({ default: 2 })"
+            color="pink"
+            :model-config="modelConfig"
+            is-range
+            v-model="$store.state.date"
+          >
+            <template v-slot="{ inputValue, inputEvents }">
+              <div class="picker">
+                <div id="in-date-time" class="search-div in-date">
+                  <span class="search-title">入住</span>
+                  <input
+                    placeholder="新增日期"
+                    :value="inputValue.start"
+                    v-on="inputEvents.start"
+                    class="px-2 py-1 focus:outline-none focus:border-indigo-300"
+                    readonly
+                  />
+                </div>
+                <div id="out-date-time" class="search-div out-date">
+                  <span class="search-title">退房</span>
+                  <input
+                    placeholder="新增日期"
+                    :value="inputValue.end"
+                    v-on="inputEvents.end"
+                    class="
+                      px-2
+                      py-1
+                      rounded
+                      focus:outline-none
+                      focus:border-indigo-300
+                    "
+                    readonly
+                  />
+                </div>
+              </div>
+            </template>
+          </v-date-picker>
+          <div class="search-div search-people">
+            <div>
+              <span class="search-title">人數</span>
+              <div class="placeholder" v-if="adult === 0">新增人數</div>
+              <div class="placeholder" v-else>
+                {{ adult + child }}位,{{ toddler }}名嬰幼兒
               </div>
             </div>
+            <div class="lg-search-icon" @click="search()">
+              <i class="fas fa-search"></i>
+              <span class="lg-search-icon-txt">搜尋</span>
+            </div>
           </div>
-          <button class="sm-cancel" @click="TurnBack">取消</button>
-        </form>
-      <div class="location">
-        <ul>
-          <li>
-            <ul>
-              <li><span>隨時隨地出發</span></li>
-              <li>
-                <a href="#">
-                  <div class="everywhere">
-                    <p>隨心所欲</p>
-                    <i class="fas fa-home"></i>
-                  </div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <ul class="record">
-              <li><span>近期搜尋紀錄</span></li>
-              <li class="place">
-                <a href="#">
-                  <div class="clock"><i class="far fa-clock"></i></div>
-                  <div class="searchPlace">近期搜尋地點</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ul>
+        </div>
       </div>
-      <div class="people">
-        <div class="people-control">
-          <div class="txt">
-            <strong>成人</strong>
-            <span>滿13歲</span>
-          </div>
-          <div>
-            <button class="minus" @click="minus" id="adult-minus">-</button><span id="adult">{{adult}}</span
-            ><button class="plus" @click="plus" id="adult-plus">+</button>
-          </div>
-        </div>
-        <div class="people-control" id="child">
-          <div class="txt">
-            <strong>兒童</strong>
-            <span>2 - 12歲</span>
-          </div>
-          <div>
-            <button class="minus" @click="minus" id="child-minus">-</button><span>{{child}}</span
-            ><button class="plus" @click="plus" id="child-plus">+</button>
-          </div>
-        </div>
-        <div class="people-control" id="toddler">
-          <div class="txt">
-            <strong>嬰幼兒</strong>
-            <span>2歲以下</span>
-          </div>
-          <div>
-            <button class="minus" @click="minus" id="toddler-minus">-</button><span>{{toddler}}</span
-            ><button class="plus" @click="plus" id="toddler-plus">+</button>
-          </div>
-        </div>
+      <button class="sm-cancel" @click="TurnBack">取消</button>
+    </form>
+    <div class="location">
+      <ul>
+        <li>
+          <ul>
+            <li><span>隨時隨地出發</span></li>
+            <li>
+              <a href="#">
+                <div class="everywhere">
+                  <p>隨心所欲</p>
+                  <i class="fas fa-home"></i>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <ul class="record">
+            <li><span>近期搜尋紀錄</span></li>
+            <li class="place">
+              <a href="#">
+                <div class="clock"><i class="far fa-clock"></i></div>
+                <div class="searchPlace">近期搜尋地點</div>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
-    </header>
-     
+    <div class="people">
+      <div class="people-control">
+        <div class="txt">
+          <strong>成人</strong>
+          <span>滿13歲</span>
+        </div>
+        <div>
+          <button class="minus" @click="minus" id="adult-minus">-</button
+          ><span id="adult">{{ adult }}</span
+          ><button class="plus" @click="plus" id="adult-plus">+</button>
+        </div>
+      </div>
+      <div class="people-control" id="child">
+        <div class="txt">
+          <strong>兒童</strong>
+          <span>2 - 12歲</span>
+        </div>
+        <div>
+          <button class="minus" @click="minus" id="child-minus">-</button
+          ><span>{{ child }}</span
+          ><button class="plus" @click="plus" id="child-plus">+</button>
+        </div>
+      </div>
+      <div class="people-control" id="toddler">
+        <div class="txt">
+          <strong>嬰幼兒</strong>
+          <span>2歲以下</span>
+        </div>
+        <div>
+          <button class="minus" @click="minus" id="toddler-minus">-</button
+          ><span>{{ toddler }}</span
+          ><button class="plus" @click="plus" id="toddler-plus">+</button>
+        </div>
+      </div>
+    </div>
+  </header>
 </template>
 
 <script>
 export default {
-    data(){
-        return{
-            modelConfig: {
-                type: 'string',
-                mask: 'YYYY年MM月DD日'
-            },
-        }
-    },
-    methods:{
-        HideBody(){
-          if(this.$store.state.fullWidth<768)
-            this.$store.state.isBodyShow = false;
-        },
-        TurnBack(e){
-          this.$store.state.isBodyShow = true;
-          document.querySelector('.location').classList.remove('rwdShow');
-          document.querySelector('.searchBar').classList.remove('toggle');
-          document.querySelector('.searchBar').parentElement.style.backgroundColor = 'transparent';
-          document.getElementById('footer').style.display = 'flex';
-          e.target.style.display = 'none';
-        },
-        plus(e){
-          if(e.target.getAttribute('id')=='adult-plus') this.$store.state.adult+=1;
-          else if(e.target.getAttribute('id')=='child-plus') this.$store.state.child+=1;
-          else if(e.target.getAttribute('id')=='toddler-plus') this.$store.state.toddler+=1;
-        },
-        minus(e){
-          if(e.target.getAttribute('id')=='adult-minus') this.$store.state.adult-=1;
-          else if(e.target.getAttribute('id')=='child-minus') this.$store.state.child-=1;
-          else if(e.target.getAttribute('id')=='toddler-minus') this.$store.state.toddler-=1;
-        }
-    },
-    computed:{
-      adult(){
-        return this.$store.state.adult
+  data() {
+    return {
+      modelConfig: {
+        type: "string",
+        mask: "YYYY年MM月DD日",
       },
-      child(){
-        return this.$store.state.child
-      },
-      toddler(){
-        return this.$store.state.toddler
+    };
+  },
+  methods: {
+    HideBody() {
+      if (this.$store.state.fullWidth < 768)
+        this.$store.state.isBodyShow = false;
+    },
+    TurnBack(e) {
+      this.$store.state.isBodyShow = true;
+      document.querySelector(".location").classList.remove("rwdShow");
+      document.querySelector(".searchBar").classList.remove("toggle");
+      document.querySelector(".searchBar").parentElement.style.backgroundColor =
+        "transparent";
+      document.getElementById("footer").style.display = "flex";
+      e.target.style.display = "none";
+    },
+    plus(e) {
+      if (e.target.getAttribute("id") == "adult-plus")
+        this.$store.state.adult += 1;
+      else if (e.target.getAttribute("id") == "child-plus")
+        this.$store.state.child += 1;
+      else if (e.target.getAttribute("id") == "toddler-plus")
+        this.$store.state.toddler += 1;
+    },
+    minus(e) {
+      if (e.target.getAttribute("id") == "adult-minus")
+        this.$store.state.adult -= 1;
+      else if (e.target.getAttribute("id") == "child-minus")
+        this.$store.state.child -= 1;
+      else if (e.target.getAttribute("id") == "toddler-minus")
+        this.$store.state.toddler -= 1;
+    },
+    search() {
+      console.log(111);
+      this.$router.push({
+        path: "search",
+        query: {
+          location: this.$store.state.destination,
+        },
+      });
+    },
+  },
+  computed: {
+    adult() {
+      return this.$store.state.adult;
+    },
+    child() {
+      return this.$store.state.child;
+    },
+    toddler() {
+      return this.$store.state.toddler;
+    },
+  },
+  watch: {
+    adult(val) {
+      if (val <= 0) {
+        this.$store.state.adult = 0;
+        this.$store.state.child = 0;
+        this.$store.state.toddler = 0;
       }
     },
-    watch:{
-      adult(val){
-        if(val<=0){
-          this.$store.state.adult = 0;
-          this.$store.state.child = 0;
-          this.$store.state.toddler = 0;
-        }
-      },
-      child(val){
-        if(val<0 || this.$store.state.adult===0) this.$store.state.child = 0
-      },
-      toddler(val){
-        if(val<0 || this.$store.state.adult===0) this.$store.state.toddler = 0
-      }
+    child(val) {
+      if (val < 0 || this.$store.state.adult === 0) this.$store.state.child = 0;
     },
-    mounted(){
-        const vm = this;
+    toddler(val) {
+      if (val < 0 || this.$store.state.adult === 0)
+        this.$store.state.toddler = 0;
+    },
+  },
+  mounted() {
+    const vm = this;
 
-        let searchBar = document.querySelector('.searchBar');
-        let lgSearchBtn = document.querySelector('.lg-search-icon');
-        let lgSearchTxt = document.querySelector('.lg-search-icon-txt');
-        let searchPosition = document.querySelector('.search-position');
-        let locationPart = document.querySelector('.location');
-        let searchPeople = document.querySelector('.search-people');
-        let peoplePart = document.querySelector('.people');
-        let footer = document.getElementById('footer');
-        const cancelBtn = document.querySelector('.sm-cancel');
-        const rwdWidth = 768;
+    let searchBar = document.querySelector(".searchBar");
+    let lgSearchBtn = document.querySelector(".lg-search-icon");
+    let lgSearchTxt = document.querySelector(".lg-search-icon-txt");
+    let searchPosition = document.querySelector(".search-position");
+    let locationPart = document.querySelector(".location");
+    let searchPeople = document.querySelector(".search-people");
+    let peoplePart = document.querySelector(".people");
+    let footer = document.getElementById("footer");
+    const cancelBtn = document.querySelector(".sm-cancel");
+    const rwdWidth = 768;
 
-        //下滑fixed
-        window.addEventListener("scroll", function() {
-            let top = document.documentElement.scrollTop;
-            banner.style.display = 'none'
-            locationPart.classList.add('toggle');
-            peoplePart.classList.add('toggle');
-            lgSearchBtn.classList.remove('toggle');
-            lgSearchTxt.style.display = 'none';
-            if(top>1 && vm.$store.state.fullWidth<768){
-              searchBar.classList.add('fixed');
-            }
-            else{
-              searchBar.classList.remove('fixed');
-            }
+    //下滑fixed
+    window.addEventListener("scroll", function () {
+      let top = document.documentElement.scrollTop;
+      banner.style.display = "none";
+      locationPart.classList.add("toggle");
+      peoplePart.classList.add("toggle");
+      lgSearchBtn.classList.remove("toggle");
+      lgSearchTxt.style.display = "none";
+      if (top > 1 && vm.$store.state.fullWidth < 768) {
+        searchBar.classList.add("fixed");
+      } else {
+        searchBar.classList.remove("fixed");
+      }
+    });
+
+    // 搜尋按下去的畫面
+    searchPosition.addEventListener("click", () => {
+      // 手機板
+      if (document.body.clientWidth < rwdWidth) {
+        locationPart.style.marginLeft = "unset";
+        locationPart.classList.remove("show", "toggle");
+        locationPart.classList.add("rwdShow");
+        searchBar.classList.add("toggle");
+        searchBar.parentElement.style.backgroundColor = "#fff";
+        searchPosition.style.backgroundColor = "transparent";
+        cancelBtn.style.display = "block";
+        footer.style.display = "none";
+      }
+      // 電腦版
+      else {
+        peoplePart.classList.remove("show");
+        locationPart.classList.remove("toggle");
+        locationPart.classList.add("show");
+        locationPart.style.marginLeft = `${searchBar.offsetLeft}px`;
+      }
+    });
+
+    searchPeople.addEventListener("click", (e) => {
+      if (locationPart.style.display === "")
+        locationPart.classList.add("toggle");
+
+      peoplePart.classList.remove("toggle");
+      peoplePart.classList.add("show");
+      peoplePart.style.marginLeft = `${
+        searchBar.offsetLeft + searchBar.offsetWidth - peoplePart.offsetWidth
+      }px`;
+      focus(e.target);
+    });
+
+    let banner = document.getElementById("banner");
+    // 電腦版搜尋按下去會跑出'搜尋'
+    searchBar.addEventListener("click", () => {
+      // 鎖定
+      if (document.body.clientWidth > rwdWidth) {
+        lgSearchBtn.classList.add("toggle");
+        lgSearchTxt.style.display = "block";
+        banner.style.display = "block";
+        banner.addEventListener("click", (e) => {
+          // 復原
+          e.target.style.display = "none";
+          locationPart.classList.add("toggle");
+          peoplePart.classList.add("toggle");
+          lgSearchBtn.classList.remove("toggle");
+          lgSearchTxt.style.display = "none";
         });
-
-        // 搜尋按下去的畫面
-        searchPosition.addEventListener('click', () => {
-        // 手機板
-        if (document.body.clientWidth < rwdWidth) {
-            locationPart.style.marginLeft = 'unset';
-            locationPart.classList.remove('show','toggle');
-            locationPart.classList.add('rwdShow');
-            searchBar.classList.add('toggle');
-            searchBar.parentElement.style.backgroundColor = '#fff';
-            searchPosition.style.backgroundColor = 'transparent';
-            cancelBtn.style.display = 'block';
-            footer.style.display = 'none'
-        }
-        // 電腦版
-        else {
-            peoplePart.classList.remove('show');
-            locationPart.classList.remove('toggle');
-            locationPart.classList.add('show');
-            locationPart.style.marginLeft = `${searchBar.offsetLeft}px`;
-        }
-        });
-
-        searchPeople.addEventListener('click', (e) => {
-        if(locationPart.style.display === '')
-            locationPart.classList.add('toggle');
-
-        peoplePart.classList.remove('toggle');
-        peoplePart.classList.add('show');
-        peoplePart.style.marginLeft = `${searchBar.offsetLeft + searchBar.offsetWidth - peoplePart.offsetWidth}px`;
-        focus(e.target);
-        });
-
-        let banner = document.getElementById('banner');
-        // 電腦版搜尋按下去會跑出'搜尋'
-        searchBar.addEventListener('click', () => {
-        // 鎖定
-        if (document.body.clientWidth > rwdWidth) {
-            lgSearchBtn.classList.add('toggle');
-            lgSearchTxt.style.display = 'block';
-            banner.style.display = 'block';
-            banner.addEventListener('click', (e) => {
-            // 復原
-            e.target.style.display = 'none';
-            locationPart.classList.add('toggle');
-            peoplePart.classList.add('toggle');
-            lgSearchBtn.classList.remove('toggle');
-            lgSearchTxt.style.display = 'none';
-            });
-        }
-        });
-    }
-}
+      }
+    });
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -285,9 +326,9 @@ header {
       background-color: #fff;
       border-radius: 28px;
       align-items: center;
-      &.fixed{
+      &.fixed {
         position: fixed;
-        transition: .3s;
+        transition: 0.3s;
         top: 1.8%;
         border: 2px solid rgb(121, 121, 121);
         box-shadow: 5px 5px 10px rgb(160, 160, 160);
@@ -319,7 +360,7 @@ header {
         display: none;
         align-items: center;
         width: 100%;
-        
+
         .search-people {
           display: flex;
           justify-content: space-between;
@@ -334,7 +375,7 @@ header {
             background-color: #ff385c;
             color: #fff;
             border-radius: 50%;
-            &.toggle{
+            &.toggle {
               width: 6rem;
               border-radius: 28px;
             }
@@ -377,19 +418,19 @@ header {
     height: 100vh;
     background-color: #fff;
     position: relative;
-    &.rwdShow{
-      width:100%;
+    &.rwdShow {
+      width: 100%;
       display: flex;
       border-radius: unset;
       height: 100vh;
     }
-    &.show{
-      width:25rem;
+    &.show {
+      width: 25rem;
       display: block;
       border-radius: 28px;
       height: 40vh;
     }
-    &.show.toggle{
+    &.show.toggle {
       display: none;
     }
     ul {
@@ -463,10 +504,10 @@ header {
     display: none;
     flex-direction: column;
     margin-top: 1rem;
-    &.show{
+    &.show {
       display: flex;
     }
-    &.show.toggle{
+    &.show.toggle {
       display: none;
     }
     .people-control {
@@ -505,8 +546,8 @@ header {
 }
 
 @media screen and (min-width: 768px) {
-  header{
-    form{
+  header {
+    form {
       padding-top: 6rem;
       .searchBar {
         padding: 0rem;
@@ -520,7 +561,7 @@ header {
           .sm-search-title {
             display: inline;
           }
-          #searchInput{
+          #searchInput {
             margin-top: 0.2rem;
             font-size: 0.9rem;
             margin-left: 1rem;
@@ -532,11 +573,11 @@ header {
           .search-div {
             flex-grow: 1;
           }
-          .picker{
+          .picker {
             display: flex;
             align-items: center;
             width: 30%;
-            input{
+            input {
               display: block;
               border: none;
               outline: none;
@@ -546,15 +587,15 @@ header {
               background-color: transparent;
               font-size: 0.9rem;
             }
-            .search-div{
-              padding-top: .9rem;
+            .search-div {
+              padding-top: 0.9rem;
             }
           }
         }
         .search-div {
           border-radius: 50px;
           cursor: pointer;
-          padding: .6rem 0;
+          padding: 0.6rem 0;
           height: 4rem;
           label {
             cursor: pointer;
@@ -575,18 +616,18 @@ header {
         }
       }
     }
-    .people{
+    .people {
       width: 25rem;
       border: 1px solid rgb(202, 202, 202);
     }
-    .location{
+    .location {
       margin-top: 1rem;
       border: 1px solid rgb(202, 202, 202);
     }
   }
 }
 @media screen and (min-width: 1280px) {
-  form{
+  form {
     padding-top: 0 !important;
   }
 }

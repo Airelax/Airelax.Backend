@@ -42,30 +42,25 @@ namespace Airelax.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<SimpleHouseDto>> t([FromQuery] SearchInput searchInput)
+        public async Task<IEnumerable<SimpleHouseDto>> t()
         {
-            return await _houseAppService.Search(searchInput);
+            var x = from h in _context.Houses
+                    from s in _context.Spaces.Where(x => x.HouseId == h.Id).DefaultIfEmpty()
+                    from b in _context.BedroomDetails.Where(x => x.SpaceId == s.Id).DefaultIfEmpty()
+                    where h.Id == "H005ba2165b"
+                    select new { s = s, b = b };
+
+            var y = x.ToList();
+
+            return null;
         }
 
         [HttpPost]
         [Route("{id}")]
-        public async Task<bool> test(string id, HouseDescription input)
+        public async Task<bool> test(string id)
         {
-            var house = _context.Houses.Include(x => x.HouseDescription).FirstOrDefault(x => x.Id == id);
-            if (house == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"id: {id} 會員不存在");
-            house.HouseDescription = new HouseDescription(house.Id)
-            {
-                Description = input.Description,
-                GuestPermission = input.GuestPermission,
-                Others = input.Others,
-                SpaceDescription = input.SpaceDescription
-            };
-
-            _context.Update(house);
-            _context.SaveChanges();
+            var house = _context.Members.FirstOrDefault(x => x.Id == id);
             return true;
         }
-        
-        
     }
 }

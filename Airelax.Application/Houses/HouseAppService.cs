@@ -19,6 +19,7 @@ using Lazcat.Infrastructure.ExceptionHandlers;
 using Airelax.Domain.Members;
 using Airelax.Domain.Houses.Price;
 using Lazcat.Infrastructure.Extensions;
+using Lazcat.Infrastructure.Map.Responses;
 
 namespace Airelax.Application.Houses
 {
@@ -40,11 +41,25 @@ namespace Airelax.Application.Houses
         public async Task<IEnumerable<SimpleHouseDto>> Search(SearchInput input)
         {
             Check.CheckNull(input);
-            var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.Location);
-
+            //var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.Location);
+            var geocodingInfo = new GeocodingInfo()
+            {
+                Bounds = new CoordinateRange()
+                {
+                    Northeast = new Coordinate(25.2103038, 121.6659421),
+                    SouthWest = new Coordinate(24.9605084, 121.4570603)
+                },
+                Location = new Coordinate(25.0329636, 121.5654268),
+                Viewport = new CoordinateRange()
+                {
+                    Northeast = new Coordinate(25.2103038, 121.6659421),
+                    SouthWest = new Coordinate(24.9605084, 121.4570603)
+                }
+            };
             Specification<House> specification = new InRangeLocationSpecification(geocodingInfo.Bounds.SouthWest, geocodingInfo.Bounds.Northeast);
             var customerNumberSpecification = new MaxCustomerNumberSpecification(input.CustomerNumber);
             specification = specification.And(customerNumberSpecification);
+
 
             if (input.Checkin.HasValue && input.Checkout.HasValue)
             {
@@ -53,7 +68,8 @@ namespace Airelax.Application.Houses
                 specification = specification.And(availableDateSpecification);
             }
 
-            var houses = _houseRepository.GetAll()
+
+            var houses = await _houseRepository.GetAll()
                 .Include(x => x.Member)
                 .ThenInclude(x => x.WishLists)
                 .Include(x => x.HouseLocation)
@@ -62,13 +78,17 @@ namespace Airelax.Application.Houses
                 .Include(x => x.HouseCategory)
                 .Include(x => x.Spaces)
                 .Include(x => x.Photos)
-                .ToList();
+                .Where(specification.ToExpression())
+                .OrderByDescending(x => x.CreateTime)
+                .Skip((input.Page - 1) * 30).Take(30)
+                .ToListAsync();
 
-            var specificationResult = houses.Where(x => specification.IsSatisfy(x)).Skip((input.Page - 1) * 30).Take(30);
-
-            var results = specificationResult.Select(x =>
+            var results = houses.Select(x =>
             {
-                var simpleComment = new SearchHouseComment {Number = x.Comments?.Count ?? 0};
+                var simpleComment = new SearchHouseComment
+                {
+                    Number = x.Comments?.Count ?? 0
+                };
                 if (!x.Comments.IsNullOrEmpty())
                 {
                     simpleComment.Stars = Math.Round(x.Comments?.Average(c => c.Star?.Total ?? 0) ?? 0, 1);
@@ -99,7 +119,6 @@ namespace Airelax.Application.Houses
         {
             var house = await _houseRepository.GetAsync(x => x.Id == id);
             if (house == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"House Id : {id} does not match any house");
-
             var member = await _memberRepository.GetAsync(x => x.Id == house.OwnerId);
             if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"House exist but member has been deleted");
             var houseDto = new HouseDto()
@@ -259,12 +278,12 @@ namespace Airelax.Application.Houses
                         },
                         Fee = new FeeDto()
                         {
-                            CleanFee = x.Price.Fee?.CleanFee,
-                            ServiceFee = x.Price.Fee?.ServiceFee,
-                            TaxFee = x.Price.Fee?.TaxFee,
+                            CleanFee = x.Price.Fee?.CleanFee ?? 0,
+                            ServiceFee = x.Price.Fee?.ServiceFee ?? 0,
+                            TaxFee = x.Price.Fee?.TaxFee ?? 0,
                         },
                         Origin = x.Price.PerNight,
-                        SweetPrice = x.Price.PerWeekNight
+                        SweetPrice = x.Price.PerWeekNight ?? x.Price.PerNight
                     },
                     Space = new SpaceDto()
                     {

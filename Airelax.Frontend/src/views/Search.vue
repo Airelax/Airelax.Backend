@@ -991,7 +991,7 @@
         </div>
       </div>
       <div class="Result">
-        <div class="col-12" v-if="get">
+        <div class="col-12" v-if="false && get">
           <BrowsingRecord
             :rooms="rooms"
             :nightCount="nightCount"
@@ -1014,21 +1014,26 @@ import ResultRoom from "../components/Search/ResultRoom";
 import BrowsingRecord from "../components/Search/BrowsingRecord";
 export default {
   created() {
-    axios
-      .get(
-        "https://raw.githubusercontent.com/Airelax/Airelax.Frontend/SHOP-48/fake-search-data.json"
-      )
-      .then((res) => {
-        this.rooms = res.data;
-        this.get = true;
-      });
-    //todo
     // axios
-    //   .get(`/api/houses/search?location=${this.$route.query.location}`)
+    //   .get(
+    //     "https://raw.githubusercontent.com/Airelax/Airelax.Frontend/SHOP-48/fake-search-data.json"
+    //   )
     //   .then((res) => {
     //     this.rooms = res.data;
     //     this.get = true;
     //   });
+    //todo
+    axios
+      .get(`/api/houses/search?location=${this.$route.query.location}`, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+      .then((res) => {
+        this.rooms = res.data;
+        console.log(this.rooms);
+        this.get = true;
+      });
   },
   mounted() {
     const vm = this;
