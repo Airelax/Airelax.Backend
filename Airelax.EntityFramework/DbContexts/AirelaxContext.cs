@@ -101,8 +101,8 @@ namespace Airelax.EntityFramework.DbContexts
         {
             modelBuilder.Entity<BedroomDetail>(builder =>
             {
-                builder.SetEntityKey<BedroomDetail, int>();
-                builder.Property(x => x.Id).UseIdentityColumn();
+                builder.HasKey(x => x.Id);
+                builder.Property(x => x.Id).UseIdentityColumn().IsRequired();
                 builder.SetEnumDbMapping(x => x.BedType).IsRequired();
                 builder.HasOne<Space>().WithMany(x => x.BedroomDetails).HasForeignKey(x => x.SpaceId);
             });
