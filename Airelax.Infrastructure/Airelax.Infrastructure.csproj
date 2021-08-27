@@ -5,7 +5,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Lazcat.Infrastructure" Version="1.0.8" />
+      <PackageReference Include="CloudinaryDotNet" Version="1.15.2" />
+      <PackageReference Include="Lazcat.Infrastructure" Version="1.0.9" />
+      <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
     </ItemGroup>
 
 </Project>

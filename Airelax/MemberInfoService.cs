@@ -79,7 +79,5 @@ namespace Airelax
             _memberInfoRepository.SaveChanges();
             return input;
         }
-
-
     }
 }

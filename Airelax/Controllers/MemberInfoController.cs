@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Airelax.Application.MemberInfo.Request;
 
 namespace Airelax.Controllers
 {
@@ -35,10 +36,21 @@ namespace Airelax.Controllers
         public async Task<MemberInfoInput> UpdateMemberInfo(string memberId, [FromBody] MemberInfoInput input)
         {
             var aboutMe = _memberInfoService.GetAboutMe(memberId, input);
-
             return aboutMe;
         }
 
-
+        [HttpGet]
+        [Route("{memberId}/edit-photo")]
+        public IActionResult EditPhoto(string memberId)
+        {
+            return View();
+        }
+        //
+        // [HttpPost]
+        // [Route("{memberId}/edit-photo")]
+        // public async Task<string> EditPhoto(string memberId, EditPhotoInput input)
+        // {
+        //     
+        // }
     }
 }

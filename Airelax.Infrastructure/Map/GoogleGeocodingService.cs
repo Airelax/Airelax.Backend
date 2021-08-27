@@ -11,6 +11,7 @@ using Airelax.Infrastructure.Map.Responses;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Settings;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Airelax.Infrastructure.Map
@@ -18,12 +19,14 @@ namespace Airelax.Infrastructure.Map
     [DependencyInjection(typeof(IGeocodingService))]
     public class GoogleGeocodingService : IGeocodingService
     {
+        private readonly ILogger<GoogleGeocodingService> _logger;
         private HttpClient _httpClient;
         private readonly GoogleMapApiSetting _googleMapApiSetting;
         private const int Timeout = 5000;
 
-        public GoogleGeocodingService(HttpClient httpClient, IOptions<GoogleMapApiSetting> options)
+        public GoogleGeocodingService(HttpClient httpClient, IOptions<GoogleMapApiSetting> options, ILogger<GoogleGeocodingService> logger)
         {
+            _logger = logger;
             _googleMapApiSetting = options.Value;
             SetHttpClient(httpClient);
         }
@@ -47,7 +50,7 @@ namespace Airelax.Infrastructure.Map
             }
             catch (Exception e)
             {
-                //todo log
+                _logger.Log(LogLevel.Error, e.ToString());
                 throw ExceptionBuilder.Build(HttpStatusCode.InternalServerError, "cannot not get map data");
             }
         }

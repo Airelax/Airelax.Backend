@@ -14,11 +14,10 @@ namespace Airelax.Controllers
     [Route("[controller]")]
     public class MemberController : Controller
     {
-
         private readonly IMemberService _memberService;
+
         public MemberController(IMemberService memberService)
         {
-
             _memberService = memberService;
         }
 
@@ -29,6 +28,7 @@ namespace Airelax.Controllers
             var memberViewModel = _memberService.GetMemberViewModel(memberId);
             return View(memberViewModel);
         }
+
         [HttpGet]
         [Route("{memberId}/security")]
         public IActionResult LoginAndSecurity(string memberId)
@@ -38,22 +38,21 @@ namespace Airelax.Controllers
             if (member == null)
                 // todo 倒到錯誤畫面
                 return View();
-            
+
             return View();
         }
-           
+
         [HttpPut]
         [Route("{memberId}/detail")]
-        public async Task<bool> UpdateMember(string memberId,[FromBody] EditMemberInput input) 
+        public async Task<bool> UpdateMember(string memberId, [FromBody] EditMemberInput input)
         {
             return await _memberService.EditMember(memberId, input);
-            
         }
+
         [HttpPut]
         [Route("{memberId}/security")]
-        public async Task<bool> UpdateLoginAndSecurity(string memberId,[FromBody] LoginAndSecurityInput input)
+        public async Task<bool> UpdateLoginAndSecurity(string memberId, [FromBody] LoginAndSecurityInput input)
         {
-
             return await _memberService.EditLoginAndSecurity(memberId, input);
         }
     }

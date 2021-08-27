@@ -24,9 +24,7 @@ namespace Airelax.Controllers
             _accountService = accountService;
             
         }
-
-
-
+        
 
         //註冊
         [HttpGet]
