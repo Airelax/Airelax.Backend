@@ -2,7 +2,7 @@
 
 namespace Airelax.Controllers
 {
-    public class MemberInfoTables
+    public class MemberWithMemberInfo
     {
         public Member Member { get; set; }
         public MemberInfo MemberInfos { get; set; }

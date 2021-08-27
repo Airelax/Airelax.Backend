@@ -37,7 +37,7 @@
         </div>
         <div class="card-body">
             <p>提供清晰的臉部相片，能讓其他房東／體驗達人或房客／參加者對您有初步印象。 Airbnb要求所有房東／體驗達人都必須提供個人相片。 我們不會要求房客／參加者提供個人相片，但房東／體驗達人可以提出此要求。 但即使房東／體驗達人要求提供個人相片，也只會在預訂確認之後才會看到房客／參加者的相片。</p>
-            <form action="post">
+            <form>
                 <label for="person-icon" class="btn">上傳相片</label>
                 <input type="file" name="files" accept="image/gif, image/jpeg, image/png" id="person-icon">
             </form>
@@ -57,7 +57,8 @@
     const pic = document.querySelector('.pic');
     const loading = document.querySelector('.lds-spinner');
     const img = pic.querySelector('img');
-    const url = '@Html.Raw(_photoUploadSetting.Value.BaseUrl)/@Html.Raw(_photoUploadSetting.Value.CloudName)/@Html.Raw(_photoUploadSetting.Value.UploadImageApi)';
+    const fileUploadUrl = '@Html.Raw(_photoUploadSetting.Value.BaseUrl)/@Html.Raw(_photoUploadSetting.Value.CloudName)/@Html.Raw(_photoUploadSetting.Value.UploadImageApi)';
+    const editCoverApiUrl='/memberInfo/M00056b77d3/edit-photo';
     files.addEventListener('change', function () {
         img.classList.add('d-none');
         loading.classList.add('d-block');
@@ -66,19 +67,35 @@
             const formData = new FormData();
             formData.append("file", this.files[0]);
             formData.append("upload_preset", "dsojvh87");
-            fetch(url, {
+            fetch(fileUploadUrl, {
                 method: 'POST',
                 body: formData
             }).then(res => {
                 return res.json();
-            }).then(
-                json => {
-                    console.log(json);
-                    loading.classList.remove('d-block');
-                    img.src=json.secure_url;
-                    img.classList.remove('d-none');                                              
-                }).catch(err => console.log(err))
+            }).then(json => {
+                editCover(json);                           
+            }).catch(err => console.log(err))
         }
     });
+    
+    function editCover(info){
+        fetch(editCoverApiUrl,{
+            method: 'PUT',
+            body: JSON.stringify({
+                PhotoUrl : info.secure_url
+            }),
+           headers: {
+              'content-type': 'application/json'
+            },
+        })
+        .then(response =>response.text())
+        .then(photo =>
+        {
+           loading.classList.remove('d-block');
+           img.src=photo;
+           img.classList.remove('d-none');   
+        })
+        .catch(err=>console.log(err));
+    }
     </script>
 }

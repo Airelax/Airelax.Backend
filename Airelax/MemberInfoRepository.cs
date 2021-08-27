@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Airelax.Application.MemberInfo.Request;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Airelax.Controllers;
@@ -22,7 +23,7 @@ namespace Airelax
             _context = context;
         }
 
-        public IEnumerable<MemberInfoSearchObject> GetMemberInfoSearchObject(string memberId)
+        public List<MemberInfoSearchObject> GetMemberInfoSearchObject(string memberId)
         {
             return (from member in _context.Members
                 from contextMemberInfo in _context.MemberInfos.Where(x => x.Id == member.Id).DefaultIfEmpty()
@@ -45,7 +46,9 @@ namespace Airelax
                     RoomType = contextHouseCategory.RoomCategory,
                     StarTotal = contextStar,
                     CommentHouseId = contextComment.HouseId,
-                    HouseId = contextHouse.Id
+                    HouseId = contextHouse.Id,
+                    Cover = member.Cover,
+                    HousePhoto = contextPhoto.Image
                     //todo 會員相片 跟 房屋相片
                 })?.ToList();
         }
@@ -65,12 +68,22 @@ namespace Airelax
             _context.Update(input);
         }
 
-        public MemberInfoTables GetMemberInfoTables(string memberId)
+        public async Task Update(Member member)
+        {
+            await Task.Run(() => _context.Members.Update(member));
+        }
+
+        public async Task SaveChangeAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        public MemberWithMemberInfo GetMemberWithMemberInfo(string memberId)
         {
             return (from m in _context.Members
                 from mi in _context.MemberInfos.Where(x => x.Id == m.Id).DefaultIfEmpty()
                 where m.Id == memberId
-                select new MemberInfoTables {Member = m, MemberInfos = mi}).FirstOrDefault();
+                select new MemberWithMemberInfo {Member = m, MemberInfos = mi}).FirstOrDefault();
         }
     }
 }

@@ -126,7 +126,7 @@ namespace Airelax.EntityFramework.DbContexts
             modelBuilder.Entity<Photo>(builder =>
             {
                 builder.SetEntityKey<Photo, int>();
-                builder.Property(x => x.Image).IsRequired().HasMaxLength(50);
+                builder.Property(x => x.Image).IsRequired().HasMaxLength(200);
                 builder.HasOne<House>().WithMany(x => x.Photos).HasForeignKey(x => x.HouseId).IsRequired();
                 builder.HasOne<Space>().WithMany().OnDelete(DeleteBehavior.ClientSetNull).HasForeignKey(x => x.SpaceId);
             });
@@ -224,7 +224,7 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetPropMaxLength(x => x.Town, 50);
                 builder.SetPropMaxLength(x => x.AddressDetail, 50);
                 builder.SetPropMaxLength(x => x.Phone, 50);
-                builder.SetPropMaxLength(x => x.Cover, 50);
+                builder.SetPropMaxLength(x => x.Cover, 200);
                 builder.Property(x => x.RegisterTime).IsRequired();
             });
         }
@@ -276,7 +276,7 @@ namespace Airelax.EntityFramework.DbContexts
             {
                 builder.SetEntityKey<WishList, int>();
                 builder.SetPropMaxLength(x => x.Name, 50);
-                builder.SetPropMaxLength(x => x.Cover, 50);
+                builder.SetPropMaxLength(x => x.Cover, 200);
                 builder.Property(x => x.Houses).HasJsonConversion();
                 builder.HasOne<Member>().WithMany(x => x.WishLists).HasForeignKey(x => x.MemberId);
             });

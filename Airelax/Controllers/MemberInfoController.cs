@@ -45,12 +45,12 @@ namespace Airelax.Controllers
         {
             return View();
         }
-        //
-        // [HttpPost]
-        // [Route("{memberId}/edit-photo")]
-        // public async Task<string> EditPhoto(string memberId, EditPhotoInput input)
-        // {
-        //     
-        // }
+
+        [HttpPut]
+        [Route("{memberId}/edit-photo")]
+        public async Task<string> EditPhoto(string memberId, [FromBody] EditPhotoInput input)
+        {
+            return await _memberInfoService.UpdateCover(memberId, input);
+        }
     }
 }

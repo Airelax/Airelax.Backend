@@ -17,7 +17,7 @@
                 </div>
                 <div class="col-2 col-md-12">
                     <div>
-                        <img class="portrait" src="~/dist/img/memberInfo/portrait.png">
+                        <img class="portrait" src=@(string.IsNullOrEmpty(Model.MemberImg) ? "~/dist/img/memberInfo/portrait.png" : Model.MemberImg) alt="金城武">
                     </div>
                     <a asp-controller="MemberInfo" asp-action="EditPhoto" asp-route-memberId="@Model.MemberId">更新照片</a>
                     <div>
