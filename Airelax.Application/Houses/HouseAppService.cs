@@ -269,7 +269,7 @@ namespace Airelax.Application.Houses
                         Wifi = x.Facilities.Any(f => f == Facility.Wifi),
                     },
                     HouseType = x.Category.Category.ToString() + x.Category.HouseType.ToString() + x.Category.RoomCategory.ToString(),
-                    Picture = x.Picture.Select(p => p.ConvertToBase64String()),
+                    Picture = x.Picture.Select(p => p),
                     Price = new PriceDto()
                     {
                         Discount = new DiscountDto()
@@ -300,7 +300,7 @@ namespace Airelax.Application.Houses
                 {
                     simpleHouseDto.WishList = new WishListDto()
                     {
-                        Cover = wishList.Cover.ConvertToBase64String(),
+                        Cover = wishList?.Cover,
                         Houses = wishList.Houses,
                         Id = wishList.Id,
                         Name = wishList.Name

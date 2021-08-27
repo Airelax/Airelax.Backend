@@ -7,7 +7,7 @@ namespace Airelax.Domain.Members
     {
         public string MemberId { get; set; }
         public string Name { get; set; }
-        public byte[] Cover { get; set; }
+        public string Cover { get; set; }
         public List<string> Houses { get; set; }
 
         public WishList(string memberId)
