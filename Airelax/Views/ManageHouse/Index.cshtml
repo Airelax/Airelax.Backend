@@ -1475,8 +1475,8 @@
         });
 
         //房間與空間
-        const spaceBed =@Html.Raw(Model.SpaceBed);
-        let SpaceArray = spaceBed == null ? null: JSON.parse('@Html.Raw(Model.SpaceBed)');
+        const spaceBed ='@(Model.SpaceBed==null||!Model.SpaceBed.Any()?string.Empty:Html.Raw(Model.SpaceBed))';
+        let SpaceArray = spaceBed ==='' ? null: JSON.parse('@Html.Raw(Model.SpaceBed)');
         let spaceBody = document.getElementById('spaceBody');
         console.log(SpaceArray);
         window.addEventListener('load', () => {

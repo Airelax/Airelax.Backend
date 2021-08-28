@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Airelax.Application.MemberInfo.Request;
 
 namespace Airelax
 {
@@ -15,10 +16,12 @@ namespace Airelax
     public class MemberInfoService : IMemberInfoService
     {
         private readonly IMemberInfoRepository _memberInfoRepository;
+
         public MemberInfoService(IMemberInfoRepository memberInfoRepository)
         {
             _memberInfoRepository = memberInfoRepository;
         }
+
         public MemberInfoViewModel GetMemberInfoViewModel(string memberId)
         {
             var info = _memberInfoRepository.GetMemberInfoSearchObject(memberId);
@@ -34,7 +37,7 @@ namespace Airelax
                 MemberName = info.First().MemberName,
                 RegisterTime = info.First().RegisterTime.ToString("yyyy"),
                 Email = info.First().Email,
-                //todo 會員相片
+                MemberImg = info.First().Cover,
                 HouseSource = info.Select
                 (x => new MemberInfoHouseDto
                 {
@@ -53,11 +56,7 @@ namespace Airelax
 
         public MemberInfoInput GetAboutMe(string memberId, [FromBody] MemberInfoInput input)
         {
-            var member = _memberInfoRepository.GetMemberInfoTables(memberId);
-
-            if (member == null)
-                throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest
-                    , $"Member Id:{memberId} does not match any member");//400
+            var member = GetMemberWithMemberInfo(memberId);
 
             if (member?.MemberInfos == null)
             {
@@ -76,10 +75,28 @@ namespace Airelax
                 member.MemberInfos.WorkTime = input.WorkTime;
                 _memberInfoRepository.Update(member.MemberInfos);
             }
+
             _memberInfoRepository.SaveChanges();
             return input;
         }
 
+        public async Task<string> UpdateCover(string memberId, EditPhotoInput input)
+        {
+            var memberWithMemberInfo = GetMemberWithMemberInfo(memberId);
+            memberWithMemberInfo.Member.Cover = input.PhotoUrl;
+            await _memberInfoRepository.Update(memberWithMemberInfo.Member);
+            await _memberInfoRepository.SaveChangeAsync();
+            return memberWithMemberInfo.Member.Cover;
+        }
 
+        private MemberWithMemberInfo GetMemberWithMemberInfo(string memberId)
+        {
+            var member = _memberInfoRepository.GetMemberWithMemberInfo(memberId);
+
+            if (member?.Member == null)
+                throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest
+                    , $"Member Id:{memberId} does not match any member"); //400
+            return member;
+        }
     }
 }

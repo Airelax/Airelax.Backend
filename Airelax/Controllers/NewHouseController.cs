@@ -1,11 +1,7 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Airelax.Application.Houses;
 using Airelax.Application.Houses.Dtos.Request;
-using Airelax.Domain.Members;
-using Airelax.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Airelax.Controllers
 {

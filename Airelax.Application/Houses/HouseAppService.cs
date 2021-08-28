@@ -13,13 +13,13 @@ using Airelax.Domain.Houses.Defines.Spaces;
 using Airelax.Domain.Houses.Specifications;
 using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
-using Lazcat.Infrastructure.Map.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Airelax.Domain.Members;
 using Airelax.Domain.Houses.Price;
+using Airelax.Infrastructure.Map.Abstractions;
+using Airelax.Infrastructure.Map.Responses;
 using Lazcat.Infrastructure.Extensions;
-using Lazcat.Infrastructure.Map.Responses;
 
 namespace Airelax.Application.Houses
 {
@@ -41,6 +41,7 @@ namespace Airelax.Application.Houses
         public async Task<IEnumerable<SimpleHouseDto>> Search(SearchInput input)
         {
             Check.CheckNull(input);
+            //todo
             //var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.Location);
             var geocodingInfo = new GeocodingInfo()
             {
@@ -268,7 +269,7 @@ namespace Airelax.Application.Houses
                         Wifi = x.Facilities.Any(f => f == Facility.Wifi),
                     },
                     HouseType = x.Category.Category.ToString() + x.Category.HouseType.ToString() + x.Category.RoomCategory.ToString(),
-                    Picture = x.Picture.Select(p => p.ConvertToBase64String()),
+                    Picture = x.Picture.Select(p => p),
                     Price = new PriceDto()
                     {
                         Discount = new DiscountDto()
@@ -299,7 +300,7 @@ namespace Airelax.Application.Houses
                 {
                     simpleHouseDto.WishList = new WishListDto()
                     {
-                        Cover = wishList.Cover.ConvertToBase64String(),
+                        Cover = wishList?.Cover,
                         Houses = wishList.Houses,
                         Id = wishList.Id,
                         Name = wishList.Name
