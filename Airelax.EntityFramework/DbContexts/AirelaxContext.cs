@@ -125,7 +125,7 @@ namespace Airelax.EntityFramework.DbContexts
         {
             modelBuilder.Entity<Photo>(builder =>
             {
-                builder.SetEntityKey<Photo, int>();
+                builder.HasKey(x => x.Id);
                 builder.Property(x => x.Image).IsRequired().HasMaxLength(200);
                 builder.HasOne<House>().WithMany(x => x.Photos).HasForeignKey(x => x.HouseId).IsRequired();
                 builder.HasOne<Space>().WithMany().OnDelete(DeleteBehavior.ClientSetNull).HasForeignKey(x => x.SpaceId);
@@ -274,7 +274,7 @@ namespace Airelax.EntityFramework.DbContexts
         {
             modelBuilder.Entity<WishList>(builder =>
             {
-                builder.SetEntityKey<WishList, int>();
+                builder.HasKey(x => x.Id);
                 builder.SetPropMaxLength(x => x.Name, 50);
                 builder.SetPropMaxLength(x => x.Cover, 200);
                 builder.Property(x => x.Houses).HasJsonConversion();
