@@ -34,13 +34,13 @@ namespace Airelax
 
         public ManageHouseDto GetManageHouseInfo(string id)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = _houseRepository.GetAsync(x => x.Id == id).Result;
             var space = _manageHouseRepository.GetSpace(id);
             ManageHouseDto manage = new ManageHouseDto()
             {
                 Id = id,
                 Title = house.Title,
-                //Pictures
+                Pictures = house.Photos?.Select(x => x.Image) ?? new List<string>(),
                 Description = new DescriptionDto()
                 {
                     HouseDescription = house.HouseDescription?.Description,
@@ -328,7 +328,7 @@ namespace Airelax
         {
             var house = await _houseRepository.GetAsync(x => x.Id == id);
             if (house == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"houseId: {id} not match any house");
-            house.Photos = input.Images.Select(x => new Photo(house.Id)
+            house.Photos = input.Images?.Select(x => new Photo(house.Id)
             {
                 Image = x
             }).ToList();

@@ -8,7 +8,7 @@
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a asp-action="Index" asp-route-memberId="">個人資料</a>
+                <a asp-action="Index" asp-route-memberId="@ViewBag.MemberId">個人資料</a>
             </li>
             <li class="breadcrumb-item active">個人相片</li>
         </ol>
@@ -58,7 +58,8 @@
     const loading = document.querySelector('.lds-spinner');
     const img = pic.querySelector('img');
     const fileUploadUrl = '@Html.Raw(_photoUploadSetting.Value.BaseUrl)/@Html.Raw(_photoUploadSetting.Value.CloudName)/@Html.Raw(_photoUploadSetting.Value.UploadImageApi)';
-    const editCoverApiUrl='/memberInfo/M00056b77d3/edit-photo';
+    // todo memberId
+    const editCoverApiUrl='/memberInfo/@Html.Raw(ViewBag.MemberId)/edit-photo';
     files.addEventListener('change', function () {
         img.classList.add('d-none');
         loading.classList.add('d-block');

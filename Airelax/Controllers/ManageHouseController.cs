@@ -170,9 +170,9 @@ namespace Airelax.Controllers
             return Ok(bedroomDetail);
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("{id}/pictures")]
-        public async Task<UploadHouseImagesViewModel> UploadHouseImages(string id, UploadHouseImagesInput input)
+        public async Task<UploadHouseImagesViewModel> UploadHouseImages(string id, [FromBody] UploadHouseImagesInput input)
         {
             return await _manageHouseService.UploadHouseImages(id, input);
         }

@@ -42,6 +42,7 @@ namespace Airelax.Controllers
         [Route("{memberId}/edit-photo")]
         public IActionResult EditPhoto(string memberId)
         {
+            ViewBag.MemberId = memberId;
             return View();
         }
 

@@ -775,12 +775,6 @@
                 <h5 class="modal-title fw-bolder" id="photoLabel">相片</h5>
             </div>
             <div class="modal-body" id="photoBody">
-                @* <div class="cover"> *@
-                @*     <h2>封面相片</h2> *@
-                @*     <span>您的封面相片是房客對房源的第一印象。</span> *@
-                @*     <button class="btn border-dark fw-bolder" data-bs-toggle="modal" data-bs-target="#coverModal">更換相片</button> *@
-                @*     <div id="coverPicture"></div> *@
-                @* </div> *@
                 <div class="upload">
                     <h2>所有相片</h2>
                     <span>拖放相片即可更改順序。</span>
@@ -797,22 +791,6 @@
             <div class="modal-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
                 <button type="button" class="btn btn-dark" id="photo-save" data-bs-dismiss="modal">儲存</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Cover的Modal -->
-<div class="modal fade" id="coverModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="coverLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-fullscreen-md-down modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-bolder" id="coverLabel">選擇封面相片</h5>
-            </div>
-            <div class="modal-body" id="coverBody"></div>
-            <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-dark" id="cover-save" data-bs-dismiss="modal">儲存</button>
             </div>
         </div>
     </div>
@@ -1893,8 +1871,31 @@
         // 拖曳監聽(必須)
         uploadDiv.addEventListener("dragover", function (e) { e.preventDefault(); })
 
-        // 照片上傳監聽
-        const photoArray = [];
+        //初始化圖片
+        const photoModel = document.querySelector('#photoModal');
+        let photoArray = JSON.parse('@(Html.Raw(Json.Serialize(Model.Pictures)))');
+        const showPhoto = document.getElementById('showPhoto');
+        const cover = document.querySelector('.showPic');
+        cover.setAttribute('style',`background-Image:url("${photoArray[0]}");`);
+        (function (){
+           photoArray.forEach(image=>{
+               const div = document.createElement('div');
+               div.classList.add('delete');
+               div.style.backgroundImage = `url(${image})`
+               showPhoto.appendChild(div);
+               div.addEventListener('click',e => deleteImage(e, image));
+           });
+        })();
+        
+        //刪除相片
+        function deleteImage(e, photoUrl) {
+          e.target.parentNode.removeChild(e.target);
+          const fileIndex = photoArray.indexOf(photoUrl);
+          if (fileIndex<= -1) return;
+          photoArray.splice(fileIndex,1);
+        }
+           
+        // 照片上傳監聽        
         const fileBtn = document.querySelector('#upload_img');
         fileBtn.addEventListener("change", function () {
             //將上傳檔案轉換為base64字串
@@ -1902,9 +1903,6 @@
             let file = this.files[0];
             UploadImages(file);   
         })
-
-       
-
 
         //圖片移動順序
         function enableDragSort(listClass) {
@@ -1937,20 +1935,38 @@
         }
 
         //相片的modal儲存改變相片及張數
-        let photoSave = document.getElementById('photo-save');
+        const photoSave = document.getElementById('photo-save');
+        const picNumber = document.querySelector('.up span');
+        const savePhotoApiUrl = '/ManageHouse/@Html.Raw(Model.Id)/pictures'
         photoSave.addEventListener('click', () => {
             //todo
-            // let cover = document.querySelector('#coverPicture .delete');
-            // let picNumber = document.querySelector('.up span');
-            // if (cover !== null) {
-            //     let src = cover.style.backgroundImage
-            //     document.querySelector('.showPic').style.backgroundImage = src;
-            // }
-            // picNumber.innerText = `(${showPhoto.querySelectorAll('.delete').length}張照片)`;
+            if (photoArray){
+                fetch(savePhotoApiUrl, {
+                    method:'POST',
+                    body: JSON.stringify({
+                    Images: photoArray
+                    }),
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                })
+                .then(response=>response.json())
+                .then(json => {
+                    console.log(json);
+                    photoArray = json.images;
+                    console.log(photoArray);
+                    console.log((photoArray && photoArray.length));
+                    if (photoArray && photoArray.length){
+                        cover.setAttribute('style',`background-Image:url:("${photoArray[0]}")`);
+                    }
+                    picNumber.innerText = `${photoArray.length}張照片` 
+                } )
+            }
+           
         });
         
         //上傳圖片到第三方圖床
-         const showPhoto = document.getElementById('showPhoto');
+         
         const fileUploadUrl = '@Html.Raw(_photoUploadSetting.Value.BaseUrl)/@Html.Raw(_photoUploadSetting.Value.CloudName)/@Html.Raw(_photoUploadSetting.Value.UploadImageApi)';
         function UploadImages(image){
             const div = document.createElement('div');
@@ -1978,26 +1994,16 @@
          // 照片進來後的處理
                
         function loadPic(photoUrl, div) {
-            let coverBody = document.getElementById('coverBody');            
+                    
             console.log(photoArray);
             div.classList.remove('col-6');
             div.classList.remove('mb-3');
             div.innerHTML='';
-            //新增相片到所有相片
             div.classList.add('delete');
             div.style.backgroundImage = `url(${photoUrl})`
             showPhoto.appendChild(div);
-            //刪除相片
-            div.addEventListener('click', (e) => {
-                e.target.parentNode.removeChild(e.target);
-                coverBody.innerHTML = "";
-                showPhoto.querySelectorAll('.delete').forEach(x => {
-                    coverBody.appendChild(x.cloneNode(true));
-                });
-                const fileIndex = photoArray.indexOf(photoUrl);
-                if (fileIndex<= -1) return;
-                photoArray.splice(fileIndex,1);
-            });      
+            
+            div.addEventListener('click', (e) => deleteImage(e, photoUrl));      
              enableDragSort('drag-sort-enable');
         }
         
@@ -2052,7 +2058,6 @@
                 }
             });
         });
-
     </script>
 }
 
