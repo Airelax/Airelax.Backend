@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Specifications;
-using Lazcat.Infrastructure.Map.Responses;
+using Airelax.Infrastructure.Map.Responses;
 using Shouldly;
 using Xunit;
 

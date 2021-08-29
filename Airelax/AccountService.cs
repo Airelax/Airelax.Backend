@@ -76,9 +76,7 @@ namespace Airelax
                 return ("此信箱已被註冊");
             }
         }
-
-
-
+        
         public string LoginAccount(LoginInput input)
         {
             string account = HttpUtility.HtmlEncode(input.Account);

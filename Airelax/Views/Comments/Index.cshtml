@@ -1,10 +1,14 @@
-﻿@{
+﻿@using System.Text.Json
+@{
     @model IEnumerable<HouseCommentViewModel>
-    @using System.Text.Json
-}
+
+    
+    }
+
 @section topCSS{
-    <link href="~/css/Comments.css" rel="stylesheet" />
+    <link href="~/css/Comments.css" rel="stylesheet"/>
 }
+
 <div class="my-content">
     <div class="header">
         <h2>成效</h2>
@@ -15,7 +19,7 @@
             <div class="fraction-column">
                 <div class="fraction-container">
                     <div class="scores" id="l-scores">‒</div>
-                    <img src="~/image/coment-star.svg" />
+                    <img src="~/image/coment-star.svg"/>
                 </div>
                 <p>整體評分</p>
             </div>
@@ -52,12 +56,14 @@
         <div class="msg-title">
             @if (Model != null && Model.Any())
             {
-                <span class="tab-span">全部</span><h3>評價</h3>
+                <span class="tab-span">全部</span>
+                <h3>評價</h3>
                 <span>關於房源的最新評價</span>
             }
             else
             {
-                <span class="tab-span">尚未有</span><h3>評價</h3>
+                <span class="tab-span">尚未有</span>
+                <h3>評價</h3>
                 <span>你的首筆評價會顯示在這裡。</span>
             }
         </div>

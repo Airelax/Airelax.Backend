@@ -7,8 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BCrypt.Net" Version="0.1.0" />
-        <PackageReference Include="Lazcat.Infrastructure" Version="1.0.7" />
+        <PackageReference Include="Lazcat.Infrastructure" Version="1.0.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="5.0.8" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
@@ -26,9 +25,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Airelax.Application\Airelax.Application.csproj" />
-      <ProjectReference Include="..\Airelax.Domain\Airelax.Domain.csproj" />
-      <ProjectReference Include="..\Airelax\Airelax.csproj" />
+        <ProjectReference Include="..\Airelax.Application\Airelax.Application.csproj" />
+        <ProjectReference Include="..\Airelax.Domain\Airelax.Domain.csproj" />
+        <ProjectReference Include="..\Airelax.Infrastructure\Airelax.Infrastructure.csproj" />
+        <ProjectReference Include="..\Airelax\Airelax.csproj" />
     </ItemGroup>
 
 </Project>
