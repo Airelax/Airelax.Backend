@@ -236,11 +236,11 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetEntityKey<MemberLoginInfo, string>();
                 builder.SetEnumDbMapping(x => x.LoginType).IsRequired();
                 builder.SetPropMaxLength(x => x.Account, 50).IsRequired();
-                builder.SetPropMaxLength(x => x.Token, 300);
-                builder.SetPropMaxLength(x => x.Password, 300);
-                builder.SetPropMaxLength(x => x.RefreshToken, 300);
-                builder.SetPropMaxLength(x => x.ThirdPartyToken, 300);
-                builder.SetPropMaxLength(x => x.ThirdPartyRefreshToken, 300);
+                builder.SetPropMaxLength(x => x.Token, 2000);
+                builder.SetPropMaxLength(x => x.Password, 1000);
+                builder.SetPropMaxLength(x => x.RefreshToken, 2000);
+                builder.SetPropMaxLength(x => x.ThirdPartyToken, 2000);
+                builder.SetPropMaxLength(x => x.ThirdPartyRefreshToken, 2000);
 
                 builder.HasOne<Member>().WithOne(x => x.MemberLoginInfo).HasForeignKey<MemberLoginInfo>(x => x.Id);
             });
