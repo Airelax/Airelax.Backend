@@ -3,6 +3,7 @@ using System.Text.Json;
 using Airelax.Application;
 using Airelax.Defines;
 using Airelax.EntityFramework.DbContexts;
+using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
 using Lazcat.Infrastructure.Map;
 using Lazcat.Infrastructure.Settings;
@@ -67,6 +68,7 @@ namespace Airelax
 
             //app.UseHttpsRedirection();
             app.UseSerilogRequestLogging();
+            app.UseExceptionHandler(builder => builder.Run(async context => await ExceptionHandler.HandleError(context)));
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
