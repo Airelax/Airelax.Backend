@@ -127,7 +127,7 @@ namespace Airelax.Application.Houses
                 Id = house.Id,
                 Title = house.Title,
                 CancelPolicy = (int) house.Policy.CancelPolicy,
-                Pictures = house.Photos?.Select(x => x.Image),
+                Pictures = house.Photos?.Select(x => x.Image) ?? new List<string>(),
                 Space = ConvertToSpaceDto(house),
                 BedroomDetail = ConvertToBedroomDetailDtos(house),
                 Description = ConvertToDescriptionDto(house.HouseDescription),
