@@ -4,8 +4,6 @@ using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Airelax.Application.MemberInfo.Request;
@@ -46,8 +44,8 @@ namespace Airelax
                     HouseType = x.HouseType.ToString(),
                     RoomType = x.RoomType.ToString(),
                     RoomTitle = x.HouseTitle,
-                    StarScore = x.StarTotal?.Total
-                    //todo 房屋相片
+                    StarScore = x.StarTotal?.Total,
+                    Cover = x.HousePhoto
                 })
             };
 

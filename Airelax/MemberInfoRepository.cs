@@ -49,7 +49,6 @@ namespace Airelax
                     HouseId = contextHouse.Id,
                     Cover = member.Cover,
                     HousePhoto = contextPhoto.Image
-                    //todo 會員相片 跟 房屋相片
                 })?.ToList();
         }
 

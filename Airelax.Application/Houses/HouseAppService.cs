@@ -127,8 +127,7 @@ namespace Airelax.Application.Houses
                 Id = house.Id,
                 Title = house.Title,
                 CancelPolicy = (int) house.Policy.CancelPolicy,
-                // todo photo to url
-                Pictures = house.Photos.Select(x => x.Image.ToString()),
+                Pictures = house.Photos?.Select(x => x.Image),
                 Space = ConvertToSpaceDto(house),
                 BedroomDetail = ConvertToBedroomDetailDtos(house),
                 Description = ConvertToDescriptionDto(house.HouseDescription),
@@ -269,7 +268,7 @@ namespace Airelax.Application.Houses
                         Wifi = x.Facilities.Any(f => f == Facility.Wifi),
                     },
                     HouseType = x.Category.Category.ToString() + x.Category.HouseType.ToString() + x.Category.RoomCategory.ToString(),
-                    Picture = x.Picture.Select(p => p),
+                    Picture = x.Picture,
                     Price = new PriceDto()
                     {
                         Discount = new DiscountDto()
@@ -302,7 +301,7 @@ namespace Airelax.Application.Houses
                     {
                         Cover = wishList?.Cover,
                         Houses = wishList.Houses,
-                        Id = wishList.Id,
+                        //Id = wishList.Id,
                         Name = wishList.Name
                     };
                 }

@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Airelax.Application.Houses.Dtos.Request.ManageHouse;
+using Airelax.Application.ManageHouses.Request;
+using Airelax.Application.ManageHouses.Response;
 
 namespace Airelax.Controllers
 {
@@ -7,6 +10,7 @@ namespace Airelax.Controllers
     public class ManageHouseController : Controller
     {
         private readonly IManageHouseService _manageHouseService;
+
         public ManageHouseController(IManageHouseService manageHouseService)
         {
             _manageHouseService = manageHouseService;
@@ -164,6 +168,13 @@ namespace Airelax.Controllers
         {
             var bedroomDetail = _manageHouseService.UpdateBedroomDetail(id, input);
             return Ok(bedroomDetail);
+        }
+
+        [HttpPut]
+        [Route("{id}/pictures")]
+        public async Task<UploadHouseImagesViewModel> UploadHouseImages(string id, UploadHouseImagesInput input)
+        {
+            return await _manageHouseService.UploadHouseImages(id, input);
         }
     }
 }

@@ -13,8 +13,7 @@ namespace Airelax.Controllers
         {
             _memberInfoService = memberInfoService;
         }
-
-
+        
         [HttpGet]
         [Route("{memberId}")]
         public IActionResult Index(string memberId)
