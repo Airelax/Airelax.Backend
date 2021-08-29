@@ -1,13 +1,23 @@
 using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Airelax.Application;
 using Airelax.Defines;
 using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.Extensions;
 using Lazcat.Infrastructure.Map;
 using Lazcat.Infrastructure.Settings;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,6 +62,66 @@ namespace Airelax
             services.AddHttpClient<GoogleGeocodingService>();
             services.Configure<GoogleMapApiSetting>(Configuration.GetSection(nameof(GoogleMapApiSetting)));
 
+            //google + facebook +line - login
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddGoogle(options =>
+            {
+                options.ClientId = "865648669684-03selfd92d6gerlkovpp1h1jkmom1957.apps.googleusercontent.com";
+                options.ClientSecret = "Mwi0S31Al65rL7u0l-sHzUtw";
+            }).AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = "238384391515675";
+                facebookOptions.AppSecret = "40d38fd0cd1c5a854682163e76b06453";
+                facebookOptions.AccessDeniedPath = "/Account/Login";
+            }).AddCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+            }).AddOAuth("Line", "Line", options =>
+            {
+                options.ClientId = "1656361877";
+                options.ClientSecret = "384ac2d24675db0c2185b84ec3db16f2";
+                options.AuthorizationEndpoint = "https://access.line.me/oauth2/v2.1/authorize";
+                options.TokenEndpoint = "https://api.line.me/oauth2/v2.1/token";
+                options.UserInformationEndpoint = "https://api.line.me/v2/profile";
+                options.CallbackPath = new PathString("/signin-line");
+
+                options.Scope.Add("profile");
+                options.Scope.Add("openid");
+
+                options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userId");
+                options.ClaimActions.MapJsonKey(ClaimTypes.Name, "displayName", "string");
+
+                options.Events = new OAuthEvents
+                {
+                    OnCreatingTicket = async context =>
+                    {
+                        var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
+                        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
+                        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                        var response = await context.Backchannel.SendAsync(request, context.HttpContext.RequestAborted);
+                        response.EnsureSuccessStatusCode();
+
+                        var json = await response.Content.ReadAsStringAsync();
+                        var user = JsonDocument.Parse(json);
+
+                        context.RunClaimActions(user.RootElement);
+                    },
+                    OnRemoteFailure = context =>
+                    {
+                        context.HandleResponse();
+                        context.Response.Redirect("/Account/Error?message=" + context.Failure.Message);
+                        return Task.FromResult(0);
+                    }
+                };
+            });
+            services.AddControllersWithViews();
+
             services.AddCors(opt => { opt.AddPolicy("dev", builder => builder.WithOrigins("http://localhost:8080")); });
         }
 
@@ -65,6 +135,8 @@ namespace Airelax
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Airelax v1"));
             }
 
+            
+
             //app.UseHttpsRedirection();
             app.UseSerilogRequestLogging();
 
@@ -73,6 +145,8 @@ namespace Airelax
 
             app.UseRouting();
             app.UseCors("dev");
+            //google login
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

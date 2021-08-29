@@ -35,16 +35,28 @@ namespace Airelax
                 .FirstOrDefault(x => x.Id == id);
         }
 
-        public List<SpaceBed> GetSpace(string id)
+        public List<SpaceBedVM> GetSpace(string id)
         {
             var spaceBeds = from h in _context.Houses
-                from s in _context.Spaces.Where(x => x.HouseId == h.Id)
+                from s in _context.Spaces.Where(x => x.HouseId == h.Id).DefaultIfEmpty()
                 from b in _context.BedroomDetails.Where(x => x.SpaceId == s.Id).DefaultIfEmpty()
                 where h.Id == id
-                select new SpaceBed
+                select new SpaceBedVM
                 {
-                    Space = s,
-                    BedroomDetail = b
+                    SpaceVM = new SpaceVM
+                    {
+                        Id = s.Id,
+                        HouseId = s.HouseId,
+                        IsShared = s.IsShared,
+                        SpaceType = (int)s.SpaceType
+                    },
+                    BedroomDetailVM = new BedroomDetailVM
+                    {
+                        BedCount = b.BedCount,
+                        BedType = (int)b.BedType,
+                        HasIndependentBath = b.HasIndependentBath,
+                        SpaceId = b.SpaceId
+                    }
                 };
             
             var space = spaceBeds?.ToList();

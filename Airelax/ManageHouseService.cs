@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Airelax.Application.Houses.Dtos.Request.ManageHouse;
 using Airelax.Application.Houses.Dtos.Response;
 using Airelax.Domain.Houses;
-using Airelax.Domain.Houses.Defines;
 using Airelax.Domain.Houses.Defines.Spaces;
 using Lazcat.Infrastructure.DependencyInjection;
-using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
 
 namespace Airelax
@@ -20,7 +17,6 @@ namespace Airelax
     public class ManageHouseService : IManageHouseService
     {
         private readonly IManageHouseRepository _manageHouseRepository;
-
         public ManageHouseService(IManageHouseRepository manageHouseRepository)
         {
             _manageHouseRepository = manageHouseRepository;
@@ -30,6 +26,7 @@ namespace Airelax
         {
             var house = _manageHouseRepository.Get(id);
             var space = _manageHouseRepository.GetSpace(id);
+
             ManageHouseDto manage = new ManageHouseDto()
             {
                 Id = id,
@@ -37,14 +34,14 @@ namespace Airelax
                 //Pictures
                 Description = new DescriptionDto()
                 {
-                    HouseDescription = house.HouseDescription?.Description,
-                    SpaceDescription = house.HouseDescription?.SpaceDescription,
-                    GuestPermission = house.HouseDescription?.GuestPermission,
-                    Others = house.HouseDescription?.Others
+                    HouseDescription = house.HouseDescription.Description,
+                    SpaceDescription = house.HouseDescription.SpaceDescription,
+                    GuestPermission = house.HouseDescription.GuestPermission,
+                    Others = house.HouseDescription.Others
                 },
-                Status = (int) house.Status,
-                ProvideFacilities = house.ProvideFacilities?.Select(s => (int) s).ToList(),
-                NotProvideFacilities = house.NotProvideFacilities?.Select(s => (int) s).ToList(),
+                Status = (int)house.Status,
+                ProvideFacilities = house.ProvideFacilities.Select(s => (int)s).ToList(),
+                NotProvideFacilities = house.NotProvideFacilities.Select(s => (int)s).ToList(),
                 Address = new AddressDto()
                 {
                     City = house.HouseLocation?.City,
@@ -57,48 +54,49 @@ namespace Airelax
                 },
                 HouseCategory = new HouseCategoryVM()
                 {
-                    Category = (int) (house.HouseCategory?.Category ?? Category.Apartment),
-                    HouseType = (int?) house.HouseCategory?.HouseType,
-                    RoomCategory = (int?) house.HouseCategory?.RoomCategory
+                    Category = (int)house.HouseCategory.Category,
+                    HouseType = (int)house.HouseCategory?.HouseType,
+                    RoomCategory = (int)house.HouseCategory?.RoomCategory
                 },
-                SpaceBed = space.IsNullOrEmpty()
-                    ? null
-                    : JsonSerializer.Serialize(
-                        space.Select(s => new SpaceBedVM
-                        {
-                            Space = new SpaceVM
-                            {
-                                Id = s.Space.Id,
-                                HouseId = s.Space.HouseId,
-                                IsShared = s.Space.IsShared,
-                                SpaceType = (int) s.Space.SpaceType
-                            },
-                            BedroomDetail = new BedroomDetailVM
-                            {
-                                BedCount = s.BedroomDetail.BedCount,
-                                BedType = (int) s.BedroomDetail.BedType,
-                                HasIndependentBath = s.BedroomDetail.HasIndependentBath,
-                                SpaceId = s.BedroomDetail.SpaceId
-                            }
-                        })),
+                SpaceBed = space.IsNullOrEmpty()?null: JsonSerializer.Serialize(space),
+                //SpaceBed = space.IsNullOrEmpty()
+                //    ? null
+                //    : JsonSerializer.Serialize(
+                //        space.Select(s => new SpaceBedVM
+                //        {
+                //            Space = new SpaceVM
+                //            {
+                //                Id = s.Space.Id,
+                //                HouseId = s.Space.HouseId,
+                //                IsShared = s.Space.IsShared,
+                //                SpaceType = (int) s.Space.SpaceType
+                //            },
+                //            BedroomDetail = new BedroomDetailVM
+                //            {
+                //                BedCount = s.BedroomDetail.BedCount,
+                //                BedType = (int) s.BedroomDetail.BedType,
+                //                HasIndependentBath = s.BedroomDetail.HasIndependentBath,
+                //                SpaceId = s.BedroomDetail.SpaceId
+                //            }
+                //        })),
                 CustomerNumber = house.CustomerNumber,
-                Origin = Convert.ToString(house.HousePrice.PerNight),
-                SweetPrice = Convert.ToString(house.HousePrice.PerWeekNight ?? house.HousePrice.PerNight),
+                Origin = Convert.ToString((int)house.HousePrice.PerNight),
+                SweetPrice = Convert.ToString((int)house.HousePrice.PerWeekNight),
                 ////Discount
                 ////Fee = price.Fee,
-                Cancel = (int) house.Policy?.CancelPolicy,
-                InstanceBooking = house.Policy?.CanRealTime ?? false,
-                CheckinTime = house.Policy?.CheckinTime.ToString("t", DateTimeFormatInfo.InvariantInfo),
-                CheckoutTime = house.Policy?.CheckoutTime.ToString("t", DateTimeFormatInfo.InvariantInfo),
-                CashPledge = (house.Policy?.CashPledge ?? 0).ToString(),
+                Cancel = (int)house.Policy.CancelPolicy,
+                InstanceBooking = house.Policy.CanRealTime,
+                CheckinTime = house.Policy.CheckinTime.ToString("t", DateTimeFormatInfo.InvariantInfo),
+                CheckoutTime = house.Policy.CheckoutTime.ToString("t", DateTimeFormatInfo.InvariantInfo),
+                CashPledge = Convert.ToString((int)house.Policy.CashPledge),
                 HouseRule = new HouseRuleDto()
                 {
-                    AllowChild = house.HouseRule?.AllowChild,
-                    AllowBaby = house.HouseRule?.AllowBaby,
-                    AllowPet = house.HouseRule?.AllowPet,
-                    AllowSmoke = house.HouseRule?.AllowSmoke,
-                    AllowParty = house.HouseRule?.AllowParty,
-                    Other = house.HouseRule?.Other
+                    AllowChild = house.HouseRule.AllowChild,
+                    AllowBaby = house.HouseRule.AllowBaby,
+                    AllowPet = house.HouseRule.AllowPet,
+                    AllowSmoke = house.HouseRule.AllowSmoke,
+                    AllowParty = house.HouseRule.AllowParty,
+                    Other = house.HouseRule.Other
                 }
             };
             return manage;
@@ -107,16 +105,10 @@ namespace Airelax
         public HouseDescriptionInput UpdateDescription(string id, HouseDescriptionInput input)
         {
             var house = _manageHouseRepository.Get(id);
-            if (house == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"house id: {id} cannot match any house");
-            var houseDescription = new HouseDescription(house.Id)
-            {
-                Description = input.Description,
-                SpaceDescription = input.SpaceDescription,
-                GuestPermission = input.GuestPermission,
-                Others = input.Others
-            };
-
-            house.HouseDescription = houseDescription;
+            house.HouseDescription.Description = input.Description;
+            house.HouseDescription.SpaceDescription = input.SpaceDescription;
+            house.HouseDescription.GuestPermission = input.GuestPermission;
+            house.HouseDescription.Others = input.Others;
             _manageHouseRepository.Update(house);
             _manageHouseRepository.SaveChange();
             return input;
@@ -257,13 +249,13 @@ namespace Airelax
         public HouseSpaceInput CreateSpace(string id, HouseSpaceInput input)
         {
             var house = _manageHouseRepository.Get(id);
-            var space = new Space(house.Id)
+            var space=  new Space(house.Id)
             {
                 HouseId = input.HouseId,
-                SpaceType = (SpaceType) input.SpaceType,
+                SpaceType = (SpaceType)input.SpaceType,
                 IsShared = input.IsShared
             };
-            house.Spaces.Add(space);
+            house.Spaces.Add(space);     
             _manageHouseRepository.Update(house);
             _manageHouseRepository.SaveChange();
             return input;
@@ -272,7 +264,7 @@ namespace Airelax
         public HouseSpaceInput DeleteSpace(string id, HouseSpaceInput input)
         {
             var house = _manageHouseRepository.Get(id);
-            var deleteObj = house.Spaces.LastOrDefault(x => (int) x.SpaceType == input.SpaceType);
+            var deleteObj = house.Spaces.LastOrDefault(x => (int)x.SpaceType == input.SpaceType);
             house.Spaces.Remove(deleteObj);
             _manageHouseRepository.Update(house);
             _manageHouseRepository.SaveChange();
@@ -282,19 +274,18 @@ namespace Airelax
         public BedroomDetailInput CreateBedroomDetail(string id, BedroomDetailInput input)
         {
             var house = _manageHouseRepository.Get(id);
-            var updateObj = _manageHouseRepository.GetBedroom().FirstOrDefault(y => y.SpaceId == input.SpaceId && (int) y.BedType == input.BedType);
+            var updateObj = _manageHouseRepository.GetBedroom().FirstOrDefault(y => y.SpaceId == input.SpaceId && (int)y.BedType == input.BedType);
             if (updateObj != null)
             {
                 UpdateBedroomDetail(id, input);
                 return input;
             }
-
             var bedroomDetail = new BedroomDetail(input.SpaceId)
             {
                 SpaceId = input.SpaceId,
-                BedType = (BedType) input.BedType,
-                BedCount = (int) input.BedCount,
-                HasIndependentBath = (bool) input.HasIndependentBath
+                BedType = (BedType)input.BedType,
+                BedCount = (int)input.BedCount,
+                HasIndependentBath = (bool)input.HasIndependentBath
             };
             _manageHouseRepository.CreateBedroom(bedroomDetail);
             _manageHouseRepository.Update(house);
@@ -305,9 +296,9 @@ namespace Airelax
         public BedroomDetailInput UpdateBedroomDetail(string id, BedroomDetailInput input)
         {
             var house = _manageHouseRepository.Get(id);
-            var updateObj = _manageHouseRepository.GetBedroom().FirstOrDefault(y => y.SpaceId == input.SpaceId && (int) y.BedType == input.BedType);
-            updateObj.BedCount = (int) input.BedCount;
-            updateObj.HasIndependentBath = (bool) input.HasIndependentBath;
+            var updateObj = _manageHouseRepository.GetBedroom().FirstOrDefault(y => y.SpaceId == input.SpaceId && (int)y.BedType == input.BedType);
+            updateObj.BedCount = (int)input.BedCount;
+            updateObj.HasIndependentBath = (bool)input.HasIndependentBath;
             _manageHouseRepository.Update(house);
             _manageHouseRepository.SaveChange();
             return input;

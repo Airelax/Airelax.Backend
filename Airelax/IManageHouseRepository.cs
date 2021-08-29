@@ -9,7 +9,7 @@ namespace Airelax
     {
         void Delete(House house);
         House Get(string id);
-        List<SpaceBed> GetSpace(string id);
+        List<SpaceBedVM> GetSpace(string id);
         void SaveChange();
         void Update(House house);
         void CreateBedroom(BedroomDetail bedroom);
