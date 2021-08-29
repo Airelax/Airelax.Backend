@@ -40,6 +40,22 @@ namespace Airelax
             return _ctx.MemberLoginInfos.SingleOrDefault((m) => m.Account == account);
         }
 
+        public string GetCoverByEmail(string email)
+        {
+            Member memcomfirm = _ctx.Members.SingleOrDefault((m) => m.Email == email);
+            return memcomfirm.Cover;
+        }
+
+        public string GetNameByEmail(string email)
+        {
+            Member memcomfirm = _ctx.Members.SingleOrDefault((m) => m.Email == email);
+            return memcomfirm.Name;
+        }
+
+        public Member GetMemByAccount(string account)
+        {
+            return _ctx.Members.SingleOrDefault((m) => m.Email == account);
+        }
 
 
 
@@ -68,6 +84,13 @@ namespace Airelax
         public void addMemInfo(MemberLoginInfo meminfo)
         {
             _ctx.MemberLoginInfos.Add(meminfo);
+        }
+
+        public void UpdateToken(string id,string token)
+        {
+            var memLoginInfo = _ctx.MemberLoginInfos.SingleOrDefault((m) => m.Id == id);
+            memLoginInfo.Token = token;
+            SaveChange();
         }
     }
 }

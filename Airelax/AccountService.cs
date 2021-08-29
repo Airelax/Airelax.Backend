@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Lazcat.Infrastructure.DependencyInjection;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Airelax.Application.Account.Dtos.Response;
 
 namespace Airelax
 {
@@ -40,7 +45,8 @@ namespace Airelax
                 {
                     Name = name,
                     Birthday = birthday,
-                    Email = email
+                    Email = email,
+                    Cover="acvavevasabhetscv"
                 };
 
                 //Member mem = _regService.memObj(input);
@@ -52,7 +58,7 @@ namespace Airelax
                 _accountRepo.SaveChange();
                 //以產出Id
 
-                _accountRepo.SaveChange();
+                
 
 
                 string memId = _accountRepo.GetIdByEmail(email);
@@ -61,7 +67,8 @@ namespace Airelax
                 {
                     Account = email,
                     Password = password,
-                    LoginType = logintype
+                    LoginType = logintype,
+                    Token=CreateToken(mem)
                 };
 
                 _accountRepo.addMemInfo(meminfo);
@@ -77,30 +84,88 @@ namespace Airelax
             }
         }
         
-        public string LoginAccount(LoginInput input)
+        public LoginResult LoginAccount(LoginInput input)
         {
             string account = HttpUtility.HtmlEncode(input.Account);
             MemberLoginInfo member = _accountRepo.GetAccountByAccount(account);
-
+            LoginResult result = new LoginResult();
+           
             if (member != null)
             {
                 bool password = Cryptography.VerifyHash(HttpUtility.HtmlEncode(input.Password), member.Password);
 
-
                 if (password == true)
                 {
-                    return "success";
+                    var token = CreateTokenByLoginVM(input);
+                    _accountRepo.UpdateToken(member.Id,token);
+
+                    result.token = token;
+                    result.result = "success";
+                   
+                    return result;
                 }
                 else
                 {
-                    return "wrongPassword";
+                    result.token = "";
+                    result.result = "wrongPassword";
+                    return result;
                 }
             }
             else
             {
-                
-                return "signup";
+                result.token = "";
+                result.result = "signup";
+                return result;
             }
         }
+
+
+        private string CreateToken(Member mem)
+        {
+            var memId = _accountRepo.GetIdByEmail(mem.Email);
+            var memName = _accountRepo.GetNameByEmail(mem.Email);
+            var memCover = _accountRepo.GetCoverByEmail(mem.Email);
+
+            var claims = new List<Claim>()
+            {
+                    new Claim(ClaimTypes.NameIdentifier, memId.ToString()),
+                    new Claim(ClaimTypes.Name, memName),
+                    new Claim(ClaimTypes.UserData,memCover)
+            };
+
+
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MagicMagicMagicMagic"));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var token = new JwtSecurityToken(claims: claims, signingCredentials: creds);
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            return jwt;
+        }
+
+
+
+        private string CreateTokenByLoginVM(LoginInput input)
+        {
+            var mem = _accountRepo.GetMemByAccount(input.Account);
+            var memId = _accountRepo.GetIdByEmail(mem.Email);
+            var memName = _accountRepo.GetNameByEmail(mem.Email);
+            var memCover = _accountRepo.GetCoverByEmail(mem.Email);
+
+            var claims = new List<Claim>()
+            {
+                    new Claim(ClaimTypes.NameIdentifier, memId.ToString()),
+                    new Claim(ClaimTypes.Name, memName),
+                    new Claim(ClaimTypes.UserData,memCover)
+            };
+
+
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MagicMagicMagicMagic"));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var token = new JwtSecurityToken(claims: claims, signingCredentials: creds);
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            return jwt;
+        }
+
     }
 }
