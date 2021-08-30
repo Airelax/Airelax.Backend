@@ -13,13 +13,13 @@ using Airelax.Domain.Houses.Defines.Spaces;
 using Airelax.Domain.Houses.Specifications;
 using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
-using Lazcat.Infrastructure.Map.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Airelax.Domain.Members;
 using Airelax.Domain.Houses.Price;
+using Airelax.Infrastructure.Map.Abstractions;
+using Airelax.Infrastructure.Map.Responses;
 using Lazcat.Infrastructure.Extensions;
-using Lazcat.Infrastructure.Map.Responses;
 
 namespace Airelax.Application.Houses
 {
@@ -41,6 +41,7 @@ namespace Airelax.Application.Houses
         public async Task<IEnumerable<SimpleHouseDto>> Search(SearchInput input)
         {
             Check.CheckNull(input);
+            //todo
             //var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.Location);
             var geocodingInfo = new GeocodingInfo()
             {
@@ -126,8 +127,7 @@ namespace Airelax.Application.Houses
                 Id = house.Id,
                 Title = house.Title,
                 CancelPolicy = (int) house.Policy.CancelPolicy,
-                // todo photo to url
-                Pictures = house.Photos.Select(x => x.Image.ToString()),
+                Pictures = house.Photos?.Select(x => x.Image) ?? new List<string>(),
                 Space = ConvertToSpaceDto(house),
                 BedroomDetail = ConvertToBedroomDetailDtos(house),
                 Description = ConvertToDescriptionDto(house.HouseDescription),
@@ -268,7 +268,7 @@ namespace Airelax.Application.Houses
                         Wifi = x.Facilities.Any(f => f == Facility.Wifi),
                     },
                     HouseType = x.Category.Category.ToString() + x.Category.HouseType.ToString() + x.Category.RoomCategory.ToString(),
-                    Picture = x.Picture.Select(p => p.ConvertToBase64String()),
+                    Picture = x.Picture,
                     Price = new PriceDto()
                     {
                         Discount = new DiscountDto()
@@ -299,9 +299,9 @@ namespace Airelax.Application.Houses
                 {
                     simpleHouseDto.WishList = new WishListDto()
                     {
-                        Cover = wishList.Cover.ConvertToBase64String(),
+                        Cover = wishList?.Cover,
                         Houses = wishList.Houses,
-                        Id = wishList.Id,
+                        //Id = wishList.Id,
                         Name = wishList.Name
                     };
                 }

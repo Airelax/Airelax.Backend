@@ -1,13 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Airelax.EntityFramework.DbContexts;
-using Microsoft.EntityFrameworkCore;
-using Lazcat.Infrastructure.Extensions;
-using Lazcat.Infrastructure.ExceptionHandlers;
-using Airelax.Domain.Members;
+using Airelax.Application.MemberInfo.Request;
 
 namespace Airelax.Controllers
 {
@@ -20,8 +13,7 @@ namespace Airelax.Controllers
         {
             _memberInfoService = memberInfoService;
         }
-
-
+        
         [HttpGet]
         [Route("{memberId}")]
         public IActionResult Index(string memberId)
@@ -43,10 +35,22 @@ namespace Airelax.Controllers
         public async Task<MemberInfoInput> UpdateMemberInfo(string memberId, [FromBody] MemberInfoInput input)
         {
             var aboutMe = _memberInfoService.GetAboutMe(memberId, input);
-
             return aboutMe;
         }
 
+        [HttpGet]
+        [Route("{memberId}/edit-photo")]
+        public IActionResult EditPhoto(string memberId)
+        {
+            ViewBag.MemberId = memberId;
+            return View();
+        }
 
+        [HttpPut]
+        [Route("{memberId}/edit-photo")]
+        public async Task<string> EditPhoto(string memberId, [FromBody] EditPhotoInput input)
+        {
+            return await _memberInfoService.UpdateCover(memberId, input);
+        }
     }
 }
