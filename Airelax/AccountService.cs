@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Airelax.Application.Account.Dtos.Response;
+using Microsoft.Extensions.Configuration;
 
 namespace Airelax
 {
@@ -21,9 +22,11 @@ namespace Airelax
     public class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepo;
-        public AccountService(IAccountRepository accountRepo)
+        private readonly IConfiguration _configuration;
+        public AccountService(IAccountRepository accountRepo, IConfiguration configuration)
         {
             _accountRepo = accountRepo;
+            _configuration = configuration;
         }
 
 
@@ -134,7 +137,7 @@ namespace Airelax
 
 
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MagicMagicMagicMagic"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             var token = new JwtSecurityToken(claims: claims, signingCredentials: creds);
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
