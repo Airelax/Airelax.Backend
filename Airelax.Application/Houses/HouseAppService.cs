@@ -287,10 +287,10 @@ namespace Airelax.Application.Houses
                     },
                     Space = new SpaceDto()
                     {
-                        Bathroom = x.Space.Count(s => s.SpaceType == SpaceType.Bath),
-                        Bed = x.Space.Where(s => s.SpaceType == SpaceType.Bedroom).SelectMany(s => s.BedroomDetails).Sum(b => b.BedCount),
+                        //    Bathroom = x.Space.Count(s => s.SpaceType == SpaceType.Bath),
+                        //    Bed = x.Space.Where(s => s.SpaceType == SpaceType.Bedroom).SelectMany(s => s.BedroomDetails).Sum(b => b.BedCount),
                         CustomerNumber = x.CustomerNumber,
-                        Bedroom = x.Space.Count(s => s.SpaceType == SpaceType.Bedroom)
+                        //    Bedroom = x.Space.Count(s => s.SpaceType == SpaceType.Bedroom)
                     },
                     Title = x.Title,
                 };

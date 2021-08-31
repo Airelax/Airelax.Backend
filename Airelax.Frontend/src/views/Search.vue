@@ -1014,14 +1014,6 @@ import ResultRoom from "../components/Search/ResultRoom";
 import BrowsingRecord from "../components/Search/BrowsingRecord";
 export default {
   created() {
-    // axios
-    //   .get(
-    //     "https://raw.githubusercontent.com/Airelax/Airelax.Frontend/SHOP-48/fake-search-data.json"
-    //   )
-    //   .then((res) => {
-    //     this.rooms = res.data;
-    //     this.get = true;
-    //   });
     //todo
     axios
       .get(`/api/houses/search?location=${this.$route.query.location}`, {
