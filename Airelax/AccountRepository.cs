@@ -16,40 +16,13 @@ namespace Airelax
         public AccountRepository(AirelaxContext airelaxContext)
         {
             _ctx = airelaxContext;
-        }
+        }       
 
-        public MemberLoginInfo GetAccountByEmail(string email)
-        {
-            return _ctx.MemberLoginInfos.SingleOrDefault((m) => m.Account == email);
-        }
 
-        public Member GetEmailByEmail(string email)
-        {
-            return _ctx.Members.SingleOrDefault((m) => m.Email == email);
-        }
-
-        public string GetIdByEmail(string email)
-        {
-            Member memcomfirm = _ctx.Members.SingleOrDefault((m) => m.Email == email);
-            return memcomfirm.Id;
-        }
-
-        public MemberLoginInfo GetAccountByAccount(string account)
+        public MemberLoginInfo GetMeminfoByAccount(string account)
         {
 
             return _ctx.MemberLoginInfos.SingleOrDefault((m) => m.Account == account);
-        }
-
-        public string GetCoverByEmail(string email)
-        {
-            Member memcomfirm = _ctx.Members.SingleOrDefault((m) => m.Email == email);
-            return memcomfirm.Cover;
-        }
-
-        public string GetNameByEmail(string email)
-        {
-            Member memcomfirm = _ctx.Members.SingleOrDefault((m) => m.Email == email);
-            return memcomfirm.Name;
         }
 
         public Member GetMemByAccount(string account)
@@ -57,6 +30,11 @@ namespace Airelax
             return _ctx.Members.SingleOrDefault((m) => m.Email == account);
         }
 
+        public Member GetMemByEmail(string email)
+        {
+            return _ctx.Members.SingleOrDefault((m) => m.Email == email);
+        }
+        
 
 
 

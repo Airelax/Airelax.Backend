@@ -4,13 +4,11 @@ namespace Airelax
 {
     public interface IAccountRepository
     {
-        MemberLoginInfo GetAccountByAccount(string account);
-        MemberLoginInfo GetAccountByEmail(string email);
-        Member GetEmailByEmail(string email);
+        MemberLoginInfo GetMeminfoByAccount(string account);
+      
+        Member GetMemByEmail(string email);
         Member GetMemByAccount(string account);
-        string GetIdByEmail(string email);
-        string GetCoverByEmail(string email);
-        string GetNameByEmail(string email);
+        
         void SaveChange();
         void Update(Member mem);
         void Update(MemberLoginInfo memInfo);

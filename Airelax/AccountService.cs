@@ -30,9 +30,9 @@ namespace Airelax
 
         public string RegisterAccount(RegisterInput input)
         {
-            Member memberEmail = _accountRepo.GetEmailByEmail(HttpUtility.HtmlEncode(input.Email));
+            Member member = _accountRepo.GetMemByEmail(HttpUtility.HtmlEncode(input.Email));
 
-            if (memberEmail == null)//未被註冊的email
+            if (member == null)//未被註冊的email
             {
                 string name = HttpUtility.HtmlEncode(input.LastName) + HttpUtility.HtmlEncode(input.FirstName);
                 DateTime birthday = input.Birthday;
@@ -54,16 +54,15 @@ namespace Airelax
 
 
                 //尚未產出Id
-                _accountRepo.addMem(mem);
-                _accountRepo.SaveChange();
+                _accountRepo.addMem(mem);               
                 //以產出Id
 
-                
 
 
-                string memId = _accountRepo.GetIdByEmail(email);
 
-                MemberLoginInfo meminfo = new MemberLoginInfo(memId)
+                //string memId = _accountRepo.GetIdByEmail(email);
+
+                MemberLoginInfo meminfo = new MemberLoginInfo(mem.Id)
                 {
                     Account = email,
                     Password = password,
@@ -87,17 +86,18 @@ namespace Airelax
         public LoginResult LoginAccount(LoginInput input)
         {
             string account = HttpUtility.HtmlEncode(input.Account);
-            MemberLoginInfo member = _accountRepo.GetAccountByAccount(account);
+            MemberLoginInfo memberInfo = _accountRepo.GetMeminfoByAccount(account);
+            Member mem = _accountRepo.GetMemByAccount(account);
             LoginResult result = new LoginResult();
            
-            if (member != null)
+            if (mem != null)
             {
-                bool password = Cryptography.VerifyHash(HttpUtility.HtmlEncode(input.Password), member.Password);
+                bool password = Cryptography.VerifyHash(HttpUtility.HtmlEncode(input.Password), memberInfo.Password);
 
                 if (password == true)
                 {
                     var token = CreateTokenByLoginVM(input);
-                    _accountRepo.UpdateToken(member.Id,token);
+                    _accountRepo.UpdateToken(memberInfo.Id,token);
 
                     result.token = token;
                     result.result = "success";
@@ -120,17 +120,16 @@ namespace Airelax
         }
 
 
-        private string CreateToken(Member mem)
+        private string CreateToken(Member member)
         {
-            var memId = _accountRepo.GetIdByEmail(mem.Email);
-            var memName = _accountRepo.GetNameByEmail(mem.Email);
-            var memCover = _accountRepo.GetCoverByEmail(mem.Email);
+            
+            
 
             var claims = new List<Claim>()
             {
-                    new Claim(ClaimTypes.NameIdentifier, memId.ToString()),
-                    new Claim(ClaimTypes.Name, memName),
-                    new Claim(ClaimTypes.UserData,memCover)
+                    new Claim(ClaimTypes.NameIdentifier, member.Id.ToString()),
+                    new Claim(ClaimTypes.Name, member.Name),
+                    new Claim(ClaimTypes.UserData,member.Cover)
             };
 
 
@@ -147,24 +146,7 @@ namespace Airelax
         private string CreateTokenByLoginVM(LoginInput input)
         {
             var mem = _accountRepo.GetMemByAccount(input.Account);
-            var memId = _accountRepo.GetIdByEmail(mem.Email);
-            var memName = _accountRepo.GetNameByEmail(mem.Email);
-            var memCover = _accountRepo.GetCoverByEmail(mem.Email);
-
-            var claims = new List<Claim>()
-            {
-                    new Claim(ClaimTypes.NameIdentifier, memId.ToString()),
-                    new Claim(ClaimTypes.Name, memName),
-                    new Claim(ClaimTypes.UserData,memCover)
-            };
-
-
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MagicMagicMagicMagic"));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var token = new JwtSecurityToken(claims: claims, signingCredentials: creds);
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-            return jwt;
+            return CreateToken(mem);
         }
 
     }
