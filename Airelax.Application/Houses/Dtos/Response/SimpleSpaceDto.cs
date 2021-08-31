@@ -1,6 +1,6 @@
 ﻿namespace Airelax.Application.Houses.Dtos.Response
 {
-    public class SpaceDto
+    public class SimpleSpaceDto
     {
         public int CustomerNumber { get; set; }
         public int Bedroom { get; set; }

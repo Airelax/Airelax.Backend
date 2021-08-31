@@ -51,6 +51,8 @@ namespace Airelax.Domain.Houses
             CustomerNumber = 1;
             CreateTime = DateTime.Now;
             IsDeleted = false;
+            ProvideFacilities = new List<Facility>();
+            NotProvideFacilities = new List<Facility>();
         }
     }
 }

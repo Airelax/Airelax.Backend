@@ -12,7 +12,7 @@ namespace Airelax.Application.Houses.Dtos.Response
         public WishListDto WishList { get; set; }
         public IEnumerable<HonorDto> Honor { get; set; }
         public DescriptionDto Description { get; set; }
-        public SpaceDto Space { get; set; }
+        public SimpleSpaceDto Space { get; set; }
         public PriceDto Price { get; set; }
         public IEnumerable<BedroomDetailDto> BedroomDetail { get; set; }
         public FacilityDto Facility { get; set; }

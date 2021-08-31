@@ -35,7 +35,7 @@ namespace Airelax.Controllers
         {
             return await _houseAppService.UpdateRoomCategory(id, input);
         }
-        
+
         [HttpPut]
         [Route("{id}/title")]
         public async Task<bool> UpdateHouseTitle(string id, UpdateHouseTitleInput input)
@@ -69,6 +69,13 @@ namespace Airelax.Controllers
         public async Task<bool> UpdateHousePrice(string id, UpdateHousePriceInput input)
         {
             return await _houseAppService.UpdateHousePriceInput(id, input);
+        }
+
+        [HttpPost]
+        [Route("{id}/location")]
+        public async Task<bool> SetHouseLocation(string id, CreateLocationInput input)
+        {
+            return false;
         }
     }
 }
