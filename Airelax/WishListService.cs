@@ -48,14 +48,13 @@ namespace Airelax
             var wishListHouse = _wishListRepository.GetHouses(HouseId);
             CheckHouse(wishListHouse);
 
-            Random ram = new();
             var wishList = (
             new WishList(member.Id)
             {
                 Name = WishName,
                 Houses = new List<string> { wishListHouse.Id },
-                Id = ram.Next(100)
-            });//Todo Cover
+                Cover = wishListHouse.Photos?.Select(x => x.Image).FirstOrDefault()
+            });
             _wishListRepository.Add(wishList);
             _wishListRepository.SaveChanges();
         }
@@ -88,7 +87,7 @@ namespace Airelax
             var wishListsViewModel = member.WishLists.Select(m => new WishListViewModel()
             {
                 Name = m.Name,
-                //Todo Cover
+                Cover = m.Cover,
                 Houses = m.Houses
             });
 

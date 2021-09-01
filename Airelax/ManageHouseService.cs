@@ -5,11 +5,15 @@ using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Airelax.Application;
 using Airelax.Application.Houses.Dtos.Request.ManageHouse;
 using Airelax.Application.Houses.Dtos.Response;
+using Airelax.Application.ManageHouses.Request;
+using Airelax.Application.ManageHouses.Response;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Defines;
 using Airelax.Domain.Houses.Defines.Spaces;
+using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
@@ -20,21 +24,23 @@ namespace Airelax
     public class ManageHouseService : IManageHouseService
     {
         private readonly IManageHouseRepository _manageHouseRepository;
+        private readonly IHouseRepository _houseRepository;
 
-        public ManageHouseService(IManageHouseRepository manageHouseRepository)
+        public ManageHouseService(IManageHouseRepository manageHouseRepository, IHouseRepository houseRepository)
         {
             _manageHouseRepository = manageHouseRepository;
+            _houseRepository = houseRepository;
         }
 
         public ManageHouseDto GetManageHouseInfo(string id)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = _houseRepository.GetAsync(x => x.Id == id).Result;
             var space = _manageHouseRepository.GetSpace(id);
             ManageHouseDto manage = new ManageHouseDto()
             {
                 Id = id,
                 Title = house.Title,
-                //Pictures
+                Pictures = house.Photos?.Select(x => x.Image) ?? new List<string>(),
                 Description = new DescriptionDto()
                 {
                     HouseDescription = house.HouseDescription?.Description,
@@ -64,22 +70,27 @@ namespace Airelax
                 SpaceBed = space.IsNullOrEmpty()
                     ? null
                     : JsonSerializer.Serialize(
-                        space.Select(s => new SpaceBedVM
+                        space.Select(s =>
                         {
-                            Space = new SpaceVM
-                            {
-                                Id = s.Space.Id,
-                                HouseId = s.Space.HouseId,
-                                IsShared = s.Space.IsShared,
-                                SpaceType = (int) s.Space.SpaceType
-                            },
-                            BedroomDetail = new BedroomDetailVM
-                            {
-                                BedCount = s.BedroomDetail.BedCount,
-                                BedType = (int) s.BedroomDetail.BedType,
-                                HasIndependentBath = s.BedroomDetail.HasIndependentBath,
-                                SpaceId = s.BedroomDetail.SpaceId
-                            }
+                            var spaceBedVm = new SpaceBedVM();
+
+                            if (s.Space != null)
+                                spaceBedVm.Space = new SpaceVM
+                                {
+                                    Id = s.Space.Id,
+                                    HouseId = s.Space.HouseId,
+                                    IsShared = s.Space.IsShared,
+                                    SpaceType = (int) s.Space.SpaceType
+                                };
+                            if (s.BedroomDetail != null)
+                                spaceBedVm.BedroomDetail = new BedroomDetailVM()
+                                {
+                                    BedCount = s.BedroomDetail.BedCount,
+                                    BedType = (int?) s.BedroomDetail?.BedType,
+                                    HasIndependentBath = s.BedroomDetail.HasIndependentBath,
+                                    SpaceId = s.BedroomDetail.SpaceId
+                                };
+                            return spaceBedVm;
                         })),
                 CustomerNumber = house.CustomerNumber,
                 Origin = Convert.ToString(house.HousePrice.PerNight),
@@ -311,6 +322,19 @@ namespace Airelax
             _manageHouseRepository.Update(house);
             _manageHouseRepository.SaveChange();
             return input;
+        }
+
+        public async Task<UploadHouseImagesViewModel> UploadHouseImages(string id, UploadHouseImagesInput input)
+        {
+            var house = await _houseRepository.GetAsync(x => x.Id == id);
+            if (house == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"houseId: {id} not match any house");
+            house.Photos = input.Images?.Select(x => new Photo(house.Id)
+            {
+                Image = x
+            }).ToList();
+            await _houseRepository.UpdateAsync(house);
+            await _houseRepository.SaveChangesAsync();
+            return new UploadHouseImagesViewModel() {Images = input.Images};
         }
     }
 }

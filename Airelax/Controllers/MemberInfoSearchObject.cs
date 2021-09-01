@@ -18,5 +18,7 @@ namespace Airelax.Controllers
         public Star StarTotal { get; set; }
         public string CommentHouseId { get; set; }
         public string HouseId { get; set; }
+        public string Cover { get; set; }
+        public string HousePhoto { get; set; }
     }
 }
