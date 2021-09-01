@@ -1,15 +1,15 @@
 <template>
-    <div class="mix">
+    <div class="mixHome">
         <div class="menu">
 			<router-link to="/" class="logo"><img src="../../assets/image/Home/logo.png" alt="logo"></router-link >
-				<div class="min_search" @click="show">
+				<div class="min_search_home d-none" @click="show">
 					<button type="button" class="form-control " style="box-shadow:3px 3px 12px #cccccc;">開始搜尋
 						<div class="iconSlt"><i class="fa fa-search"></i></div>
 					</button>
 				</div>
 			<div class="d-flex align-items-center">
 				<!-- Todo-根據有無登入顯示不同button -->
-				<router-link to="/new-house"><button type="button" id="register">成為房東 / 體驗達人</button></router-link>
+				<router-link to="/new-house"><button type="button" id="registerHome">成為房東 / 體驗達人</button></router-link>
 				<Member></Member>
 			</div>
 		</div>
@@ -37,33 +37,76 @@ export default {
 		show(){
 			let vm = this
 			vm.isShow = true;
-			let minSearch = document.querySelector('.min_search');
+			let minSearch = document.querySelector('.min_search_home');
 			minSearch.classList.add('d-none');
 			window.addEventListener('scroll',()=>{
 				vm.isShow = false;
 				minSearch.classList.remove('d-none');
 			})
-		}
-	}
+		},
+		change(){
+            let mix = document.querySelector('.mixHome');
+            let minSearch = document.querySelector('.min_search_home');
+            let register = document.getElementById('registerHome');
+            if (top!==null && mix !== null && minSearch !== null){
+                window.addEventListener("scroll", function() {
+                    let top = document.documentElement.scrollTop; 
+                    if(top>100){
+                        mix.classList.add('homeStyle');
+                        minSearch.classList.remove('d-none');
+                        register.classList.add('toggle');
+                    }
+                    else{
+                        mix.classList.remove('homeStyle');
+                        minSearch.classList.add('d-none');
+                        register.classList.remove('toggle');
+                    }
+                });
+            }
+        }
+	},
+	mounted(){
+        const vm = this;
+        window.addEventListener("scroll",function(){
+            vm.change();
+            let cHeight = document.documentElement.clientHeight;
+            let sHeight = document.documentElement.scrollHeight;
+            let sTop = document.documentElement.scrollTop;
+            if(sHeight <= cHeight+ sTop +200)
+                vm.isRwdShow = false;
+            else
+                vm.isRwdShow = true;
+            })
+    },
+    computed:{
+      getWidth(){
+        return this.$store.state.fullWidth;
+      }
+    },
+    watch:{
+      getWidth(){
+        this.change();
+      }
+    }
 }
 </script>
 
 <style lang="scss" scoped>
-.mix{
+.mixHome{
 	width: 100%;
 	height: fit-content;
-	position: fixed;
+	position: absolute;
 	padding: .5rem 0;
 	top: 0;
 	left: 0;
 	z-index: 20;
-	background-color: #fff;
-	box-shadow: 3px 3px 5px rgb(160, 159, 159);
+	background-color: transparent;
+	box-shadow: unset;
 	&.homeStyle{
-		position: absolute;
-		background-color: transparent;
 		transition: .3s;
-		box-shadow: unset;
+		position: fixed;
+		background-color: #fff;
+		box-shadow: 3px 3px 5px rgb(160, 159, 159);
 	}
 	.search-div{
 		width: 100%;
@@ -97,7 +140,7 @@ export default {
 				padding: 00px 16px;
 			}
 		}
-		#register {
+		#registerHome {
 			font-size: 14px;
 			font-weight: bold;
 			margin-right: 1rem;
@@ -105,8 +148,9 @@ export default {
 			border: none;
 			padding: 1rem 1rem;
 			border-radius: 30px;
+			color: #fff;
 			&.toggle {
-				color: rgb(255, 255, 255);
+				color: rgb(0, 0, 0);
 			}
 			&:hover {
 				background-color: rgba(126, 125, 125, 0.2) !important;
@@ -134,7 +178,7 @@ export default {
 				padding-left: 12px;
 			}
 		}
-		.min_search {
+		.min_search_home {
 			display: flex;
 			justify-content: center;
 			align-items: center;

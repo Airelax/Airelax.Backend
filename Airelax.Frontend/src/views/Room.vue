@@ -19,8 +19,8 @@
             <span class="dot">·</span>
             <a href="#"
               ><span
-                >{{ data.Location.Town }}、{{ data.Location.City }}、{{
-                  data.Location.country
+                >{{ data.locationDto.town }}、{{ data.locationDto.city }}、{{
+                  data.locationDto.country
                 }}</span
               ></a
             >
@@ -35,11 +35,11 @@
             <div class="house">
               <div class="txt">
                 <h2 v-if="fullWidth > 768">
-                  {{ data.Owner.name }}出租的整套出租住所
+                  {{ data.owner.name }}出租的整套出租住所
                 </h2>
                 <div v-if="fullWidth < 768">
                   <p>整套出租住所</p>
-                  <p>房東 : {{ data.Owner.name }}</p>
+                  <p>房東 : {{ data.owner.name }}</p>
                 </div>
               </div>
               <a class="img">
@@ -48,15 +48,15 @@
             </div>
             <div class="detail">
               <span
-                >{{ data.Space.CustomerNumber }}位 ·
-                {{ data.Space.Bedroom }}間臥室 · {{ data.Space.Bed }}張床 ·
-                {{ data.Space.Bathroom }}間衛浴</span
+                >{{ data.space.customerNumber }}位 ·
+                {{ data.space.bedroom }}間臥室 · {{ data.space.bed }}張床 ·
+                {{ data.space.bathroom }}間衛浴</span
               >
             </div>
           </div>
           <div class="honor">
             <ul>
-              <li v-for="item in data.Honor" :key="item.type">
+              <li v-for="item in data.honor" :key="item.type">
                 <i class="fas fa-home"></i>
                 <div class="detail">
                   <p>type:{{ item.type }} 整套房源</p>
@@ -67,7 +67,7 @@
           </div>
 
           <div class="description">
-            <p>{{ data.Description.HouseDescription }}</p>
+            <p>{{ data.description.houseDescription }}</p>
             <a
               data-bs-toggle="modal"
               data-bs-target="#myModal"
@@ -96,7 +96,7 @@
               >顯示全部{{ data.facility.provide.length }}項設備與服務</a
             >
           </div>
-          <Location :detail="data.Location" v-if="fullWidth < 768"></Location>
+          <Location :detail="data.locationDto" v-if="fullWidth < 768"></Location>
           <div class="dateBottom">
             <keep-alive>
               <Date></Date>
@@ -108,7 +108,7 @@
             <div class="mix">
               <p>
                 ${{
-                  data.Price.origin
+                  data.price.origin
                     .toFixed(0)
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                 }}
@@ -144,7 +144,7 @@
               <div class="price-show">
                 <p>
                   ${{
-                    data.Price.origin
+                    data.price.origin
                       .toFixed(0)
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }}
@@ -152,7 +152,7 @@
                 </p>
                 <span
                   >${{
-                    data.Price.origin
+                    data.price.origin
                       .toFixed(0)
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }}</span
@@ -170,7 +170,7 @@
                 <p>總價</p>
                 <span
                   >${{
-                    data.Price.origin
+                    data.price.origin
                       .toFixed(0)
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }}</span
@@ -185,15 +185,15 @@
 
       <Comment @Show="CommentShow"></Comment>
 
-      <Location :detail="data.Location" v-if="fullWidth > 768"></Location>
+      <Location :detail="data.locationDto" v-if="fullWidth > 768"></Location>
 
       <div class="row landlord-section">
         <div class="col-12 col-md-6">
           <div class="landlord">
             <div class="detail">
               <div class="txt">
-                <p>房東 : {{ data.Owner.name }}</p>
-                <span>加入時間 : {{ data.Owner.registerTime }}</span>
+                <p>房東 : {{ data.owner.name }}</p>
+                <span>加入時間 : {{ data.owner.registerTime }}</span>
               </div>
               <a class="img">
                 <img src="https://picsum.photos/50/50/?random=1" />
@@ -206,7 +206,7 @@
               <p><i class="fas fa-user-shield"></i>身分已驗證</p>
             </div>
             <div class="brief">
-              <p>{{ data.Owner.name }}是超讚房東</p>
+              <p>{{ data.owner.name }}是超讚房東</p>
               <span
                 >超讚房東是一批經驗豐富、深獲房客好評的房東，全心為房客提供超棒的入住體驗。</span
               >
@@ -243,12 +243,12 @@
               <h2>《房屋守則》</h2>
               <span
                 >入住時間 : 下午{{
-                  data.HouseRule.checkinTime.split("-")[0]
+                  data.houseRule.checkinTime.split("-")[0]
                 }}</span
               >
               <HouseRule
                 v-if="fullWidth > 768"
-                :detail="data.HouseRule"
+                :detail="data.houseRule"
               ></HouseRule>
             </div>
             <div class="arrow">></div>
@@ -264,7 +264,7 @@
               <span>運用Airbnb社交距離指南和其他防疫指南</span>
               <Healthy
                 v-if="fullWidth > 768"
-                :detail="data.HouseRule"
+                :detail="data.houseRule"
               ></Healthy>
             </div>
             <div class="arrow">></div>
@@ -317,7 +317,7 @@
             <div class="modal-body">
               <Description
                 v-if="isDescShow"
-                :detail="data.Description"
+                :detail="data.description"
               ></Description>
               <Facility
                 v-if="isFacilityShow"
@@ -325,11 +325,11 @@
               ></Facility>
               <Connect
                 v-if="isConnectShow"
-                :detail="data.Owner"
-                :rule="data.HouseRule"
+                :detail="data.owner"
+                :rule="data.houseRule"
               ></Connect>
-              <HouseRule v-if="isRuleShow" :detail="data.HouseRule"></HouseRule>
-              <Healthy v-if="isHealthyShow" :detail="data.HouseRule"></Healthy>
+              <HouseRule v-if="isRuleShow" :detail="data.houseRule"></HouseRule>
+              <Healthy v-if="isHealthyShow" :detail="data.houseRule"></Healthy>
               <keep-alive>
                 <Date v-if="isDateShow"></Date>
               </keep-alive>
@@ -390,6 +390,18 @@ import CommentModal from "../components/Room/ModalComment";
 import Bed from "../components/Room/RoomDatasWithPic";
 
 export default {
+  // created() {
+  //   axios
+  //     .get(`/api/houses/${this.$route.params.houseId}`, {
+  //       headers: {
+  //         "Access-Control-Allow-Origin": "*",
+  //       },
+  //     })
+  //     .then((res) => {
+  //       this.data = res.data;
+  //       this.get = true;
+  //     });
+  // },
   data() {
     return {
       data: {},
@@ -408,17 +420,30 @@ export default {
     };
   },
   methods: {
+    // getList() {
+    //   const api = "https://bs-howard.github.io/Homework/fake-room-data.json";
+    //   axios
+    //     .get(api)
+    //     .then((response) => {
+    //       this.data = response.data;
+    //       this.get = true;
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // },
     getList() {
-      const api = "https://bs-howard.github.io/Homework/fake-room-data.json";
       axios
-        .get(api)
-        .then((response) => {
-          this.data = response.data;
-          this.get = true;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      .get(`/api/houses/${this.$route.params.houseId}`, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+      .then((res) => {
+        this.data = res.data;
+        this.get = true;
+        console.log(this.data)
+      });
     },
     invisible() {
       this.isDescShow = false;

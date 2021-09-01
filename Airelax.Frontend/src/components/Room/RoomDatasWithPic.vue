@@ -2,7 +2,7 @@
   <div class="cardTemplate">
     <h2>住宿地點</h2>
 
-    <swiper
+    <!-- <swiper
     :slides-per-view="4"
     :watchSlidesProgress="true"
     :spaceBetween="0"
@@ -23,7 +23,7 @@
 
      
       
-    </swiper>
+    </swiper> -->
 
     <swiper
     :slides-per-view="4"
@@ -90,7 +90,6 @@ export default {
         "https://raw.githubusercontent.com/Airelax/Airelax.Frontend/master/project/fake-room-data.json"
       )
       .then((response) => {
-        console.log(response.data);
         this.roomDatas = response.data[0].BedroomDetail;
       });
   },

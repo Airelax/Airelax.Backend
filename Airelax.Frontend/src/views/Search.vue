@@ -1016,7 +1016,7 @@ export default {
   created() {
     //todo
     axios
-      .get(`/api/houses/search?location=${this.$route.query.location}`, {
+      .get(`/api/houses/search?location=${this.$route.query.location}&customernumber=${this.$route.query.customerNumber}`, {
         headers: {
           "Access-Control-Allow-Origin": "*",
         },
@@ -1028,6 +1028,7 @@ export default {
       });
   },
   mounted() {
+    window.scrollTo(0, 0);
     const vm = this;
     window.addEventListener("scroll", function () {
       let top = document.documentElement.scrollTop;

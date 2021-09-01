@@ -1,5 +1,5 @@
 <template>
-  <div class="row eachRoom me-0 p-0" v-for="room in rooms" :key="room.id">
+  <div class="row eachRoom me-0 p-0" v-for="room in rooms" :key="room.id" @click="SearchRoom(room.id)">
     <div class="col-12 col-md-5">
       <div class="label d-flex position-relative">
         <div class="perfect me-auto">超讚房東</div>
@@ -180,6 +180,11 @@ export default {
     nightCount: { type: Number },
   },
   methods: {
+    SearchRoom(id){
+      this.$router.push({
+        path: `/room/${id}`,
+      });
+    },
     convertToLocaleString(price) {
       return price.toLocaleString();
     },

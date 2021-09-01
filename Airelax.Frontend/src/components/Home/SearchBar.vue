@@ -183,6 +183,7 @@ export default {
         path: "search",
         query: {
           location: this.$store.state.destination,
+          customerNumber:  this.$store.state.adult + this.$store.state.child
         },
       });
     },

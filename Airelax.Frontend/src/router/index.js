@@ -5,6 +5,9 @@ const routes = [
     path: '/',
     name: 'Home',
     component: () => import('../views/Home.vue'),
+    meta: {
+      homeLayout: true,
+    },
   },
   {
     path: '/search',
@@ -12,7 +15,7 @@ const routes = [
     component: () => import('../views/Search.vue')
   },
   {
-    path: '/room',
+    path: '/room/:houseId',
     name: 'Room',
     component: () => import('../views/Room.vue')
   },
@@ -31,7 +34,7 @@ const routes = [
     name: 'NewHouse',
     component: () => import('../views/NewHouse/NewHouse.vue'),
     meta: {
-      plainLayout: true,
+      newHouseLayout: true,
     },
   }
 ]

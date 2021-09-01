@@ -1,19 +1,23 @@
 <template>
-  <div v-if="!$route.meta.plainLayout">
-    <Layout>
+  
+  <!-- 創建new-house -->
+  <div v-if="$route.meta.newHouseLayout">
       <router-view />
-    </Layout>
   </div>
 
-  <div v-if="$route.meta.plainLayout">
+  <!-- default -->
+  <div v-else>
+    <DefaultLayout>
       <router-view />
+    </DefaultLayout>
   </div>
+
 </template>
 
 <script>
-import Layout from "./components/Layout/Default";
+import DefaultLayout from "./components/Layout/Default";
 export default {
-  components: { Layout },
+  components: { DefaultLayout },
   mounted() {
     let vm = this;
     vm.$store.state.fullWidth = document.body.clientWidth;
