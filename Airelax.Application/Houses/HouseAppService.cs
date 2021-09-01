@@ -5,7 +5,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Application.Houses.Dtos.Response;
-using Airelax.Domain.Comments;
 using Airelax.Domain.DomainObject;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Defines;
@@ -15,10 +14,10 @@ using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Lazcat.Infrastructure.ExceptionHandlers;
-using Airelax.Domain.Members;
 using Airelax.Domain.Houses.Price;
 using Airelax.Infrastructure.Map.Abstractions;
 using Airelax.Infrastructure.Map.Responses;
+using AutoMapper;
 using Lazcat.Infrastructure.Extensions;
 
 namespace Airelax.Application.Houses
@@ -29,13 +28,15 @@ namespace Airelax.Application.Houses
         private readonly IHouseRepository _houseRepository;
         private readonly IMemberRepository _memberRepository;
         private readonly IGeocodingService _geocodingService;
+        private readonly IMapper _mapper;
 
 
-        public HouseAppService(IHouseRepository houseRepository, IMemberRepository memberRepository, IGeocodingService geocodingService)
+        public HouseAppService(IHouseRepository houseRepository, IMemberRepository memberRepository, IGeocodingService geocodingService, IMapper mapper)
         {
             _houseRepository = houseRepository;
             _memberRepository = memberRepository;
             _geocodingService = geocodingService;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<SimpleHouseDto>> Search(SearchInput input)
@@ -57,6 +58,18 @@ namespace Airelax.Application.Houses
                     SouthWest = new Coordinate(24.9605084, 121.4570603)
                 }
             };
+
+            if (geocodingInfo == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "找不到地址");
+
+            var searchHousesResponse = new SearchHousesResponse()
+            {
+                LocationInfo = new LocationInfoDto()
+                {
+                    Center = _mapper.Map<Coordinate, CoordinateDto>(geocodingInfo.Location),
+                }
+            };
+
+
             Specification<House> specification = new InRangeLocationSpecification(geocodingInfo.Bounds.SouthWest, geocodingInfo.Bounds.Northeast);
             var customerNumberSpecification = new MaxCustomerNumberSpecification(input.CustomerNumber);
             specification = specification.And(customerNumberSpecification);
@@ -69,17 +82,21 @@ namespace Airelax.Application.Houses
                 specification = specification.And(availableDateSpecification);
             }
 
+            // var houses = await _houseRepository.GetAll()
+            //     .Include(x => x.Member)
+            //     .ThenInclude(x => x.WishLists)
+            //     .Include(x => x.HouseLocation)
+            //     .Include(x => x.Comments)
+            //     .Include(x => x.HousePrice)
+            //     .Include(x => x.HouseCategory)
+            //     .Include(x => x.Spaces)
+            //     .Include(x => x.Photos)
+            //     .Where(specification.ToExpression())
+            //     .OrderByDescending(x => x.CreateTime)
+            //     .Skip((input.Page - 1) * 30).Take(30)
+            //     .ToListAsync();
 
-            var houses = await _houseRepository.GetAll()
-                .Include(x => x.Member)
-                .ThenInclude(x => x.WishLists)
-                .Include(x => x.HouseLocation)
-                .Include(x => x.Comments)
-                .Include(x => x.HousePrice)
-                .Include(x => x.HouseCategory)
-                .Include(x => x.Spaces)
-                .Include(x => x.Photos)
-                .Where(specification.ToExpression())
+            var houses = await _houseRepository.GetSatisfyFromAsync(specification)
                 .OrderByDescending(x => x.CreateTime)
                 .Skip((input.Page - 1) * 30).Take(30)
                 .ToListAsync();
@@ -98,7 +115,7 @@ namespace Airelax.Application.Houses
                 var simpleHouse = new SearchHouse
                 {
                     Id = x.Id,
-                    Picture = x.Photos?.Select(p => p.Image),
+                    Pictures = x.Photos,
                     WishList = x.Member?.WishLists,
                     Location = x.HouseLocation,
                     Price = x.HousePrice,
@@ -112,7 +129,10 @@ namespace Airelax.Application.Houses
                 return simpleHouse;
             });
 
+
             var simpleHouseDtos = ConvertToSimpleHouseDtos(results);
+
+
             return simpleHouseDtos;
         }
 
@@ -163,6 +183,82 @@ namespace Airelax.Application.Houses
             return houseDto;
         }
 
+        private static IEnumerable<SimpleHouseDto> ConvertToSimpleHouseDtos(IEnumerable<SearchHouse> results)
+        {
+            var searchHouses = results.ToList();
+            return results.Select(x =>
+            {
+                var simpleHouseDto = new SimpleHouseDto
+                {
+                    Id = x.Id,
+                    Address = $"{x.Location.Town ?? string.Empty}",
+                    Comment = ConvertToSimpleCommentDto(x.Comment),
+                    Facility = ConvertToSimpleFacilityDto(x.Facilities),
+                    HouseType = x.Category?.Category.ToString(),
+                    Picture = x.Pictures?.Select(p => p.Image) ?? new List<string>(),
+                    Price = ConvertToPriceDto(x.Price),
+                    SimpleSpace = ConvertToSimpleSpaceDto(x),
+                    Title = x.Title,
+                };
+                SetWishWist(x, simpleHouseDto);
+
+                return simpleHouseDto;
+            });
+        }
+
+        private static void SetWishWist(SearchHouse x, SimpleHouseDto simpleHouseDto)
+        {
+            var wishList = x.WishList?.FirstOrDefault(w => w.Houses.Contains(x.Id));
+            if (wishList != null)
+            {
+                simpleHouseDto.WishList = new WishListDto()
+                {
+                    Cover = wishList.Cover,
+                    Houses = wishList.Houses,
+                    Name = wishList.Name
+                };
+            }
+        }
+
+        private static SimpleSpaceDto ConvertToSimpleSpaceDto(SearchHouse house)
+        {
+            var simpleSpaceDto = new SimpleSpaceDto()
+            {
+                CustomerNumber = house.CustomerNumber,
+            };
+
+            if (house.Space.IsNullOrEmpty()) return simpleSpaceDto;
+
+            simpleSpaceDto.Bathroom = house.Space.Count(s => s.SpaceType == SpaceType.Bath);
+            var bedroomDetails = house.Space.Where(s => s.SpaceType == SpaceType.Bedroom).SelectMany(s => s.BedroomDetails).ToList();
+            if (!bedroomDetails.IsNullOrEmpty()) simpleSpaceDto.Bed = bedroomDetails.Sum(b => b.BedCount);
+            simpleSpaceDto.Bedroom = house.Space.Count(s => s.SpaceType == SpaceType.Bedroom);
+
+            return simpleSpaceDto;
+        }
+
+        private static SimpleFacilityDto ConvertToSimpleFacilityDto(IEnumerable<Facility> facilities)
+        {
+            var facilitiesList = facilities?.ToList();
+            if (facilitiesList.IsNullOrEmpty()) return new SimpleFacilityDto();
+            return new SimpleFacilityDto()
+            {
+                AirConditioner = facilitiesList.Any(f => f == Facility.AirConditioner),
+                Kitchen = facilitiesList.Any(f => f == Facility.Kitchen),
+                WashingMachine = facilitiesList.Any(f => f == Facility.WashMachine),
+                Wifi = facilitiesList.Any(f => f == Facility.Wifi),
+            };
+        }
+
+        private static SimpleCommentDto ConvertToSimpleCommentDto(SearchHouseComment comment)
+        {
+            return new()
+            {
+                Star = comment?.Stars ?? 0,
+                TotalComments = comment?.Number ?? 0
+            };
+        }
+
         private static PriceDto ConvertToPriceDto(HousePrice housePrice)
         {
             var price = new PriceDto()
@@ -172,13 +268,20 @@ namespace Airelax.Application.Houses
             };
             if (housePrice == null) return price;
 
-            price.Origin = housePrice.PerNight;
-            price.SweetPrice = housePrice.PerWeekNight;
-            price.Discount.Month = housePrice.Discount?.Month ?? 0;
-            price.Discount.Week = housePrice.Discount?.Week ?? 0;
-            price.Fee.CleanFee = housePrice.Fee?.CleanFee ?? 0;
-            price.Fee.ServiceFee = housePrice.Fee?.ServiceFee ?? 0;
-            price.Fee.TaxFee = housePrice.Fee?.TaxFee ?? 0;
+            price.Origin = decimal.Round(housePrice.PerNight);
+            price.SweetPrice = housePrice.PerWeekNight == null ? price.Origin : decimal.Round(housePrice.PerWeekNight.Value);
+            if (price.Discount != null)
+            {
+                price.Discount.Month = housePrice.Discount.Month;
+                price.Discount.Week = housePrice.Discount.Week;
+            }
+
+            if (price.Fee == null) return price;
+
+            price.Fee.CleanFee = decimal.Round(housePrice.Fee.CleanFee);
+            price.Fee.ServiceFee = decimal.Round(housePrice.Fee.ServiceFee);
+            price.Fee.TaxFee = decimal.Round(housePrice.Fee.TaxFee);
+
             return price;
         }
 
@@ -246,70 +349,6 @@ namespace Airelax.Application.Houses
                 NotProvide = house.NotProvideFacilities?.Select(x => (int) x)
             };
         }
-
-        private static IEnumerable<SimpleHouseDto> ConvertToSimpleHouseDtos(IEnumerable<SearchHouse> results)
-        {
-            return results.Select(x =>
-            {
-                var simpleHouseDto = new SimpleHouseDto
-                {
-                    Id = x.Id,
-                    Address = $"{x.Location.Town ?? string.Empty}",
-                    Comment = new SimpleCommentDto()
-                    {
-                        Star = x.Comment?.Stars,
-                        TotalComments = x.Comment?.Number
-                    },
-                    Facility = new SimpleFacilityDto()
-                    {
-                        AirConditioner = x.Facilities.Any(f => f == Facility.AirConditioner),
-                        Kitchen = x.Facilities.Any(f => f == Facility.Kitchen),
-                        WashingMachine = x.Facilities.Any(f => f == Facility.WashMachine),
-                        Wifi = x.Facilities.Any(f => f == Facility.Wifi),
-                    },
-                    HouseType = x.Category.Category.ToString() + x.Category.HouseType.ToString() + x.Category.RoomCategory.ToString(),
-                    Picture = x.Picture,
-                    Price = new PriceDto()
-                    {
-                        Discount = new DiscountDto()
-                        {
-                            Month = x.Price.Discount?.Month ?? 100,
-                            Week = x.Price.Discount?.Week ?? 100
-                        },
-                        Fee = new FeeDto()
-                        {
-                            CleanFee = x.Price.Fee?.CleanFee ?? 0,
-                            ServiceFee = x.Price.Fee?.ServiceFee ?? 0,
-                            TaxFee = x.Price.Fee?.TaxFee ?? 0,
-                        },
-                        Origin = x.Price.PerNight,
-                        SweetPrice = x.Price.PerWeekNight ?? x.Price.PerNight
-                    },
-                    Space = new SpaceDto()
-                    {
-                        //    Bathroom = x.Space.Count(s => s.SpaceType == SpaceType.Bath),
-                        //    Bed = x.Space.Where(s => s.SpaceType == SpaceType.Bedroom).SelectMany(s => s.BedroomDetails).Sum(b => b.BedCount),
-                        CustomerNumber = x.CustomerNumber,
-                        //    Bedroom = x.Space.Count(s => s.SpaceType == SpaceType.Bedroom)
-                    },
-                    Title = x.Title,
-                };
-                var wishList = x.WishList.FirstOrDefault(w => w.Houses.Contains(x.Id));
-                if (wishList != null)
-                {
-                    simpleHouseDto.WishList = new WishListDto()
-                    {
-                        Cover = wishList?.Cover,
-                        Houses = wishList.Houses,
-                        //Id = wishList.Id,
-                        Name = wishList.Name
-                    };
-                }
-
-                return simpleHouseDto;
-            });
-        }
-
         private static IEnumerable<DateTime> GetDateRange(DateTime start, DateTime end)
         {
             var dateRange = new List<DateTime>();
@@ -321,9 +360,9 @@ namespace Airelax.Application.Houses
             return dateRange;
         }
 
-        private static SpaceDto ConvertToSpaceDto(House house)
+        private static SimpleSpaceDto ConvertToSpaceDto(House house)
         {
-            var spaceDto = new SpaceDto() {CustomerNumber = house.CustomerNumber};
+            var spaceDto = new SimpleSpaceDto() {CustomerNumber = house.CustomerNumber};
             var houseSpaces = house.Spaces;
             if (houseSpaces == null) return spaceDto;
 
