@@ -11,14 +11,9 @@ namespace Airelax.Domain.Orders
         public int Baby { get; set; }
         public int Child { get; set; }
 
-        public OrderDetail(string id, DateTime startDate, DateTime endDate, int adult, int baby, int child)
+        public OrderDetail(string id)
         {
             Id = id;
-            StartDate = startDate;
-            EndDate = endDate;
-            Adult = adult;
-            Baby = baby;
-            Child = child;
         }
     }
 }

@@ -28,6 +28,9 @@ namespace Airelax.Domain.Orders
             HouseId = houseId;
             OrderDate = DateTime.Now;
             State = OrderState.Established;
+            OrderDetail = new OrderDetail(Id);
+            Payment = new Payment(Id);
+            OrderPriceDetail = new OrderPriceDetail(Id);
         }
     }
 }
