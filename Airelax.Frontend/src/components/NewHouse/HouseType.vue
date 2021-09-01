@@ -9,7 +9,7 @@
   </button>
 </template>
 
-<style lang="scss" src="../../../assets/css/rentSelection.scss" scoped >
+<style lang="scss" src="../../assets/css/rentSelection.scss" scoped>
 </style>
 
 <style lang="scss" scoped>
@@ -36,8 +36,8 @@
 <script>
 export default {
   props: {
-    houseType: { type: Object },
-    isActive: { type: Boolean },
+    houseType: {type: Object},
+    isActive: {type: Boolean},
   },
   methods: {
     choose: function () {

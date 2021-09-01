@@ -39,7 +39,7 @@ namespace Airelax.Application.Houses
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<SimpleHouseDto>> Search(SearchInput input)
+        public async Task<SearchHousesResponse> Search(SearchInput input)
         {
             Check.CheckNull(input);
             //todo
@@ -69,71 +69,26 @@ namespace Airelax.Application.Houses
                 }
             };
 
+            var specification = GetSpecification(input, geocodingInfo);
 
-            Specification<House> specification = new InRangeLocationSpecification(geocodingInfo.Bounds.SouthWest, geocodingInfo.Bounds.Northeast);
-            var customerNumberSpecification = new MaxCustomerNumberSpecification(input.CustomerNumber);
-            specification = specification.And(customerNumberSpecification);
-
-
-            if (input.Checkin.HasValue && input.Checkout.HasValue)
-            {
-                var dateRange = GetDateRange(input.Checkin.Value, input.Checkout.Value);
-                var availableDateSpecification = new AvailableDateSpecification(dateRange);
-                specification = specification.And(availableDateSpecification);
-            }
-
-            // var houses = await _houseRepository.GetAll()
-            //     .Include(x => x.Member)
-            //     .ThenInclude(x => x.WishLists)
-            //     .Include(x => x.HouseLocation)
-            //     .Include(x => x.Comments)
-            //     .Include(x => x.HousePrice)
-            //     .Include(x => x.HouseCategory)
-            //     .Include(x => x.Spaces)
-            //     .Include(x => x.Photos)
-            //     .Where(specification.ToExpression())
-            //     .OrderByDescending(x => x.CreateTime)
-            //     .Skip((input.Page - 1) * 30).Take(30)
-            //     .ToListAsync();
-
+            var sNow = DateTime.Now;
+            Console.WriteLine(sNow);
             var houses = await _houseRepository.GetSatisfyFromAsync(specification)
                 .OrderByDescending(x => x.CreateTime)
                 .Skip((input.Page - 1) * 30).Take(30)
                 .ToListAsync();
 
-            var results = houses.Select(x =>
-            {
-                var simpleComment = new SearchHouseComment
-                {
-                    Number = x.Comments?.Count ?? 0
-                };
-                if (!x.Comments.IsNullOrEmpty())
-                {
-                    simpleComment.Stars = Math.Round(x.Comments?.Average(c => c.Star?.Total ?? 0) ?? 0, 1);
-                }
+            var dateTime = DateTime.Now;
+            Console.WriteLine(dateTime);
+            Console.WriteLine("cost" + (dateTime - sNow));
 
-                var simpleHouse = new SearchHouse
-                {
-                    Id = x.Id,
-                    Pictures = x.Photos,
-                    WishList = x.Member?.WishLists,
-                    Location = x.HouseLocation,
-                    Price = x.HousePrice,
-                    Title = x.Title,
-                    Category = x.HouseCategory,
-                    Facilities = x.ProvideFacilities?.Intersect(Definition.SimpleFacilities),
-                    CustomerNumber = x.CustomerNumber,
-                    Space = x.Spaces?.Where(s => s.SpaceType == SpaceType.Bath || s.SpaceType == SpaceType.Bedroom),
-                    Comment = simpleComment
-                };
-                return simpleHouse;
-            });
+            if (houses.IsNullOrEmpty())
+                return searchHousesResponse;
 
-
+            var results = GetSearchHouses(houses);
             var simpleHouseDtos = ConvertToSimpleHouseDtos(results);
-
-
-            return simpleHouseDtos;
+            searchHousesResponse.Houses = simpleHouseDtos;
+            return searchHousesResponse;
         }
 
         public async Task<HouseDto> GetHouse(string id)
@@ -183,9 +138,53 @@ namespace Airelax.Application.Houses
             return houseDto;
         }
 
+        private static Specification<House> GetSpecification(SearchInput input, GeocodingInfo geocodingInfo)
+        {
+            Specification<House> specification = new InRangeLocationSpecification(geocodingInfo.Bounds.SouthWest, geocodingInfo.Bounds.Northeast);
+            var customerNumberSpecification = new MaxCustomerNumberSpecification(input.CustomerNumber);
+            specification = specification.And(customerNumberSpecification);
+
+            if (!input.Checkin.HasValue || !input.Checkout.HasValue) return specification;
+            var dateRange = GetDateRange(input.Checkin.Value, input.Checkout.Value);
+            var availableDateSpecification = new AvailableDateSpecification(dateRange);
+            specification = specification.And(availableDateSpecification);
+
+            return specification;
+        }
+
+        private static IEnumerable<SearchHouse> GetSearchHouses(IEnumerable<House> houses)
+        {
+            return houses.Select(x =>
+            {
+                var simpleComment = new SearchHouseComment
+                {
+                    Number = x.Comments?.Count ?? 0
+                };
+                if (!x.Comments.IsNullOrEmpty())
+                {
+                    simpleComment.Stars = Math.Round(x.Comments?.Average(c => c.Star?.Total ?? 0) ?? 0, 1);
+                }
+
+                var simpleHouse = new SearchHouse
+                {
+                    Id = x.Id,
+                    Pictures = x.Photos,
+                    WishList = x.Member?.WishLists,
+                    Location = x.HouseLocation,
+                    Price = x.HousePrice,
+                    Title = x.Title,
+                    Category = x.HouseCategory,
+                    Facilities = x.ProvideFacilities?.Intersect(Definition.SimpleFacilities),
+                    CustomerNumber = x.CustomerNumber,
+                    Space = x.Spaces?.Where(s => s.SpaceType == SpaceType.Bath || s.SpaceType == SpaceType.Bedroom),
+                    Comment = simpleComment
+                };
+                return simpleHouse;
+            });
+        }
+
         private static IEnumerable<SimpleHouseDto> ConvertToSimpleHouseDtos(IEnumerable<SearchHouse> results)
         {
-            var searchHouses = results.ToList();
             return results.Select(x =>
             {
                 var simpleHouseDto = new SimpleHouseDto
@@ -197,7 +196,7 @@ namespace Airelax.Application.Houses
                     HouseType = x.Category?.Category.ToString(),
                     Picture = x.Pictures?.Select(p => p.Image) ?? new List<string>(),
                     Price = ConvertToPriceDto(x.Price),
-                    SimpleSpace = ConvertToSimpleSpaceDto(x),
+                    Space = ConvertToSimpleSpaceDto(x),
                     Title = x.Title,
                 };
                 SetWishWist(x, simpleHouseDto);

@@ -10,7 +10,7 @@ namespace Airelax.Application.Houses.Dtos.Response
         public string Address { get; set; }
         public string HouseType { get; set; }
         public string Title { get; set; }
-        public SimpleSpaceDto SimpleSpace { get; set; }
+        public SimpleSpaceDto Space { get; set; }
         public SimpleFacilityDto Facility { get; set; }
         public PriceDto Price { get; set; }
         public SimpleCommentDto Comment { get; set; }

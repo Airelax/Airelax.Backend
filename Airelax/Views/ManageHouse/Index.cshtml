@@ -1876,7 +1876,7 @@
         let photoArray = JSON.parse('@(Html.Raw(Json.Serialize(Model.Pictures)))');
         const showPhoto = document.getElementById('showPhoto');
         const cover = document.querySelector('.showPic');
-        cover.setAttribute('style',`background-Image:url("${photoArray[0]}");`);
+        cover.setAttribute('style',`background-image:url(${photoArray[0]});`);
         (function (){
            photoArray.forEach(image=>{
                const div = document.createElement('div');
@@ -1957,7 +1957,7 @@
                     console.log(photoArray);
                     console.log((photoArray && photoArray.length));
                     if (photoArray && photoArray.length){
-                        cover.setAttribute('style',`background-Image:url:("${photoArray[0]}")`);
+                        cover.setAttribute('style',`background-image:url(${photoArray[0]})`);
                     }
                     picNumber.innerText = `${photoArray.length}張照片` 
                 } )

@@ -63,6 +63,9 @@ img {
 <script>
 export default {
   props: ["facility"],
+  method(){
+    
+  }
 };
 </script>
 

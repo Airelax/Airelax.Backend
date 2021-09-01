@@ -27,7 +27,7 @@ namespace Airelax.Controllers
 
         [HttpGet]
         [Route("Search")]
-        public async Task<IEnumerable<SimpleHouseDto>> Search([FromQuery] SearchInput input)
+        public async Task<SearchHousesResponse> Search([FromQuery] SearchInput input)
         {
             return await _houseAppService.Search(input);
         }
