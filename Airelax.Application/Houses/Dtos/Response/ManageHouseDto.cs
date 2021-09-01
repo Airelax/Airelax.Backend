@@ -41,8 +41,8 @@ namespace Airelax.Application.Houses.Dtos.Response
 
     public class SpaceBedVM
     {
-        public SpaceVM Space { get; set; }
-        public BedroomDetailVM BedroomDetail { get; set; }
+        public SpaceVM SpaceVM { get; set; }
+        public BedroomDetailVM BedroomDetailVM { get; set; }
     }
 
     public class SpaceVM

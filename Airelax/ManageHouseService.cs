@@ -32,15 +32,15 @@ namespace Airelax
             _houseRepository = houseRepository;
         }
 
-        public ManageHouseDto GetManageHouseInfo(string id)
-        {
-            var house = _houseRepository.GetAsync(x => x.Id == id).Result;
+        public async Task<ManageHouseDto> GetManageHouseInfo(string id)
+        { 
+            var house =await _houseRepository.GetAsync(x => x.Id == id);
             var space = _manageHouseRepository.GetSpace(id);
             ManageHouseDto manage = new ManageHouseDto()
             {
                 Id = id,
                 Title = house.Title,
-                Pictures = house.Photos?.Select(x => x.Image) ?? new List<string>(),
+                
                 Description = new DescriptionDto()
                 {
                     HouseDescription = house.HouseDescription?.Description,
@@ -75,18 +75,18 @@ namespace Airelax
                             var spaceBedVm = new SpaceBedVM();
 
                             if (s.Space != null)
-                                spaceBedVm.Space = new SpaceVM
+                                spaceBedVm.SpaceVM = new SpaceVM
                                 {
                                     Id = s.Space.Id,
                                     HouseId = s.Space.HouseId,
                                     IsShared = s.Space.IsShared,
-                                    SpaceType = (int) s.Space.SpaceType
+                                    SpaceType = (int)s.Space.SpaceType
                                 };
                             if (s.BedroomDetail != null)
-                                spaceBedVm.BedroomDetail = new BedroomDetailVM()
+                                spaceBedVm.BedroomDetailVM = new BedroomDetailVM()
                                 {
                                     BedCount = s.BedroomDetail.BedCount,
-                                    BedType = (int?) s.BedroomDetail?.BedType,
+                                    BedType = (int?)s.BedroomDetail?.BedType,
                                     HasIndependentBath = s.BedroomDetail.HasIndependentBath,
                                     SpaceId = s.BedroomDetail.SpaceId
                                 };
@@ -112,6 +112,7 @@ namespace Airelax
                     Other = house.HouseRule?.Other
                 }
             };
+            manage.Pictures = house.Photos?.Select(x => x.Image) ?? new List<string>();
             return manage;
         }
 

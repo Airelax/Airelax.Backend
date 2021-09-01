@@ -1554,10 +1554,12 @@
                         if (rm.getAttribute('spaceid') == x.SpaceVM.Id || rm.getAttribute('spaceid') == undefined) {
                             rm.setAttribute('spaceid', x.SpaceVM.Id);
                             if (x.SpaceVM.IsShared) rm.querySelector('.form-check:first-child input').checked = true;
-                            if (x.BedroomDetailVM.HasIndependentBath) rm.querySelector('.form-check:nth-child(2) input').checked = true;
-                            rm.querySelectorAll('.list').forEach((list,listIndex) => {
-                                if (listIndex + 1 == x.BedroomDetailVM.BedType) list.querySelector('.btn span').innerText = x.BedroomDetailVM.BedCount;
-                            });
+                            if (x.BedroomDetailVM !== null) {
+                                if (x.BedroomDetailVM.HasIndependentBath) rm.querySelector('.form-check:nth-child(2) input').checked = true;
+                                rm.querySelectorAll('.list').forEach((list, listIndex) => {
+                                    if (listIndex + 1 == x.BedroomDetailVM.BedType) list.querySelector('.btn span').innerText = x.BedroomDetailVM.BedCount;
+                                });
+                            }
                         }
                     });
                 }
@@ -1876,16 +1878,16 @@
         let photoArray = JSON.parse('@(Html.Raw(Json.Serialize(Model.Pictures)))');
         const showPhoto = document.getElementById('showPhoto');
         const cover = document.querySelector('.showPic');
-        cover.setAttribute('style',`background-Image:url("${photoArray[0]}");`);
-        (function (){
-           photoArray.forEach(image=>{
-               const div = document.createElement('div');
-               div.classList.add('delete');
-               div.style.backgroundImage = `url(${image})`
-               showPhoto.appendChild(div);
-               div.addEventListener('click',e => deleteImage(e, image));
-           });
-        })();
+        //cover.setAttribute('style',`background-Image:url("${photoArray[0]}");`);
+        //(function (){
+        //   photoArray.forEach(image=>{
+        //       const div = document.createElement('div');
+        //       div.classList.add('delete');
+        //       div.style.backgroundImage = `url(${image})`
+        //       showPhoto.appendChild(div);
+        //       div.addEventListener('click',e => deleteImage(e, image));
+        //   });
+        //})();
         
         //刪除相片
         function deleteImage(e, photoUrl) {
