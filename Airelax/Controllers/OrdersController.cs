@@ -11,15 +11,15 @@ namespace Airelax.Controllers
     public class OrdersController : Controller
     {
         private readonly AirelaxContext _context;
+
         public OrdersController(AirelaxContext context)
         {
             _context = context;
         }
+
         public IActionResult Index()
         {
             return View();
         }
-
-        public
     }
 }
