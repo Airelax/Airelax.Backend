@@ -1,7 +1,7 @@
 <template>
   <div class="banner">
     <div class="logo">
-      <img src="https://picsum.photos/50/50/?random=1" />
+      <img :src="logoPath"/>
     </div>
     <div class="content">
       <Helper></Helper>
@@ -24,6 +24,7 @@
     margin: 0 5%;
   }
 }
+
 .helper {
   display: flex;
 }
@@ -67,9 +68,12 @@ h1 {
 
 <script>
 import Helper from "./Helper.vue";
+
 export default {
   data() {
-    return {};
+    return {
+      logoPath: require('@/assets/image/Home/logo.png')
+    };
   },
   props: {
     title: String,

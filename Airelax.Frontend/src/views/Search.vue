@@ -1,6 +1,6 @@
 <template>
-  <div class="row top">
-    <div class="col-md-6 col-12 position-relative">
+  <div class="row top content">
+    <div class="col-md-6 col-12 position-relative houses">
       <div class="back" v-if="$store.state.fullWidth < 768">
         <a href="#"><img src="@/assets/image/Room/icon/back.svg" /></a>
         <div class="date">
@@ -999,11 +999,8 @@
         </div>
       </div>
     </div>
-    <div class="col-6" v-if="$store.state.fullWidth > 768">
-      <img
-        src="https://images.pexels.com/photos/981153/pexels-photo-981153.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-        class="w-100 fake"
-      />
+    <div class="col-6 map" v-if="$store.state.fullWidth > 768">
+      <Map v-if="get" :location="location"></Map>
     </div>
   </div>
 </template>
@@ -1012,6 +1009,7 @@
 import axios from "axios";
 import ResultRoom from "../components/Search/ResultRoom";
 import BrowsingRecord from "../components/Search/BrowsingRecord";
+import Map from "../components/Map/SearchMap.vue";
 export default {
   created() {
     //todo
@@ -1022,8 +1020,9 @@ export default {
         },
       })
       .then((res) => {
-        this.rooms = res.data;
-        console.log(this.rooms);
+        const data = res.data;
+        this.rooms = data.houses;
+        this.location = data.locationInfo;
         this.get = true;
       });
   },
@@ -1040,12 +1039,13 @@ export default {
       }
     });
   },
-  components: { ResultRoom, BrowsingRecord },
+  components: { ResultRoom, BrowsingRecord, Map },
   data() {
     return {
       rooms: Array,
       nightCount: 3,
       get: false,
+      location: null,
       TypeOfPlace: [
         {
           id: "EntirePlace",
@@ -1185,6 +1185,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.houses.position-relative,
+.map {
+  height: calc(100vh - 100px);
+}
 .back {
   width: 100%;
   top: 0;
@@ -1282,7 +1286,7 @@ export default {
   }
   .top {
     margin-right: 0 !important;
-    margin-top: 5rem;
+    margin-top: 120px;
   }
   .Result {
     .col-12 {
