@@ -28,7 +28,7 @@ namespace Airelax
                 Comments = com.Select(c => new CommentViewModel()
                 {
                     CommentId = c.Comment.Id,
-                    CommentTime = c.Comment.CommentTime,
+                    CommentTime = c.Comment.CommentTime.ToString("yyyy/MM"),
                     Content = c.Comment.Content,
                     AuthorName = c.Members,
                     Stars = c.Stars.Total
