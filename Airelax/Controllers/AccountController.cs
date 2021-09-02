@@ -9,7 +9,7 @@ using Airelax.Domain.Members;
 using Airelax.Application.Helpers;
 using System.Web;
 using Airelax.Domain.Members.Defines;
-
+using Airelax.Application.Account.Dtos.Response;
 
 namespace Airelax.Controllers
 {
@@ -68,16 +68,16 @@ namespace Airelax.Controllers
 
             if (ModelState.IsValid)
             {
-                string result=_accountService.LoginAccount(input);
-                if(result== "success")
+                LoginResult loginresult =_accountService.LoginAccount(input);
+                if(loginresult.result == "success")
                 {
                     return Content("登入成功");
                 }
-                else if(result== "wrongPassword")
+                else if(loginresult.result == "wrongPassword")
                 {
                     return Content("密碼錯誤"); 
                 }
-                else if(result== "signup")
+                else if(loginresult.result == "signup")
                 {
 
 
