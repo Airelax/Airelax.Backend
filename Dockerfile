@@ -1,5 +1,5 @@
 ﻿#FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
-#COPY ["airelax/bin/Release/net5.0/publish/", "app/"]
+#COPY ["airelax/bin/Release/net5.0/publish/", "/app/publish"]
 #WORKDIR /app
 #ENV ASPNETCORE_URLS http://*:5000
 #ENTRYPOINT ["dotnet", "airelax.dll"]
@@ -18,7 +18,7 @@ RUN dotnet publish -c Release -o /app/publish
 # build Vue app
 FROM node:alpine as buildvue
 
-RUN apk --no-cache --virtual build-dependencies add python2 make g++
+# RUN apk --no-cache --virtual build-dependencies add python2 make g++
 
 WORKDIR /src
 COPY Airelax.Frontend/package.json .
@@ -29,7 +29,7 @@ RUN npm install
 COPY Airelax.Frontend .
 RUN npm run build
 
-RUN apk del build-dependencies
+# RUN apk del build-dependencies
 
 FROM base AS final
 WORKDIR /app
