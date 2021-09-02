@@ -30,7 +30,7 @@ RUN npm run build
 FROM base AS final
 WORKDIR /app
 
-ENV ASPNETCORE_ENVIRONMENT Develop
+ENV ASPNETCORE_ENVIRONMENT Production
 ENV ASPNETCORE_URLS http://*:5000
 
 COPY --from=base /app/publish .
