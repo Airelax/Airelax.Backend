@@ -16,12 +16,10 @@ namespace Airelax
         public AccountRepository(AirelaxContext airelaxContext)
         {
             _ctx = airelaxContext;
-        }       
-
-
-        public MemberLoginInfo GetMeminfoByAccount(string account)
+        }
+        
+        public MemberLoginInfo GetMemberInfoByAccount(string account)
         {
-
             return _ctx.MemberLoginInfos.SingleOrDefault((m) => m.Account == account);
         }
 
@@ -34,10 +32,6 @@ namespace Airelax
         {
             return _ctx.Members.SingleOrDefault((m) => m.Email == email);
         }
-        
-
-
-
 
         public void Update(Member mem)
         {
@@ -54,20 +48,20 @@ namespace Airelax
             _ctx.SaveChanges();
         }
 
-        public void addMem(Member mem)
+        public void AddMem(Member mem)
         {
             _ctx.Members.Add(mem);
         }
 
-        public void addMemInfo(MemberLoginInfo meminfo)
+        public void AddMemInfo(MemberLoginInfo memInfo)
         {
-            _ctx.MemberLoginInfos.Add(meminfo);
+            _ctx.MemberLoginInfos.Add(memInfo);
         }
 
-        public void UpdateToken(string id,string token)
+        public void UpdateToken(string id, string token)
         {
-            var memLoginInfo = _ctx.MemberLoginInfos.SingleOrDefault((m) => m.Id == id);
-            memLoginInfo.Token = token;
+            var memberLoginInfo = _ctx.MemberLoginInfos.SingleOrDefault((m) => m.Id == id);
+            memberLoginInfo.Token = token;
             SaveChange();
         }
     }

@@ -23,6 +23,7 @@ namespace Airelax
     {
         private readonly IAccountRepository _accountRepo;
         private readonly IConfiguration _configuration;
+
         public AccountService(IAccountRepository accountRepo, IConfiguration configuration)
         {
             _accountRepo = accountRepo;
@@ -30,12 +31,11 @@ namespace Airelax
         }
 
 
-
         public string RegisterAccount(RegisterInput input)
         {
             Member member = _accountRepo.GetMemByEmail(HttpUtility.HtmlEncode(input.Email));
 
-            if (member == null)//未被註冊的email
+            if (member == null) //未被註冊的email
             {
                 string name = HttpUtility.HtmlEncode(input.LastName) + HttpUtility.HtmlEncode(input.FirstName);
                 DateTime birthday = input.Birthday;
@@ -49,18 +49,15 @@ namespace Airelax
                     Name = name,
                     Birthday = birthday,
                     Email = email,
-                    Cover="acvavevasabhetscv"
+                    Cover = "acvavevasabhetscv"
                 };
 
                 //Member mem = _regService.memObj(input);
 
 
-
                 //尚未產出Id
-                _accountRepo.addMem(mem);               
+                _accountRepo.AddMem(mem);
                 //以產出Id
-
-
 
 
                 //string memId = _accountRepo.GetIdByEmail(email);
@@ -70,41 +67,40 @@ namespace Airelax
                     Account = email,
                     Password = password,
                     LoginType = logintype,
-                    Token=CreateToken(mem)
+                    Token = CreateToken(mem)
                 };
 
-                _accountRepo.addMemInfo(meminfo);
+                _accountRepo.AddMemInfo(meminfo);
                 _accountRepo.SaveChange();
 
 
                 return ("註冊成功!");
-
             }
             else
             {
                 return ("此信箱已被註冊");
             }
         }
-        
+
         public LoginResult LoginAccount(LoginInput input)
         {
-            string account = HttpUtility.HtmlEncode(input.Account);
-            MemberLoginInfo memberInfo = _accountRepo.GetMeminfoByAccount(account);
-            Member mem = _accountRepo.GetMemByAccount(account);
-            LoginResult result = new LoginResult();
-           
+            var account = HttpUtility.HtmlEncode(input.Account);
+            var memberInfo = _accountRepo.GetMemberInfoByAccount(account);
+            var mem = _accountRepo.GetMemByAccount(account);
+            var result = new LoginResult();
+
             if (mem != null)
             {
-                bool password = Cryptography.VerifyHash(HttpUtility.HtmlEncode(input.Password), memberInfo.Password);
+                var isPasswordPass = Cryptography.VerifyHash(HttpUtility.HtmlEncode(input.Password), memberInfo.Password);
 
-                if (password == true)
+                if (isPasswordPass)
                 {
-                    var token = CreateTokenByLoginVM(input);
-                    _accountRepo.UpdateToken(memberInfo.Id,token);
+                    var token = CreateToken(mem);
+                    _accountRepo.UpdateToken(memberInfo.Id, token);
 
                     result.token = token;
                     result.result = "success";
-                   
+
                     return result;
                 }
                 else
@@ -125,16 +121,12 @@ namespace Airelax
 
         private string CreateToken(Member member)
         {
-            
-            
-
             var claims = new List<Claim>()
             {
-                    new Claim(ClaimTypes.NameIdentifier, member.Id.ToString()),
-                    new Claim(ClaimTypes.Name, member.Name),
-                    new Claim(ClaimTypes.UserData,member.Cover)
+                new Claim(ClaimTypes.NameIdentifier, member.Id.ToString()),
+                new Claim(ClaimTypes.Name, member.Name),
+                new Claim(ClaimTypes.UserData, member.Cover ?? "")
             };
-
 
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
@@ -143,14 +135,5 @@ namespace Airelax
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
         }
-
-
-
-        private string CreateTokenByLoginVM(LoginInput input)
-        {
-            var mem = _accountRepo.GetMemByAccount(input.Account);
-            return CreateToken(mem);
-        }
-
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Airelax.Application.Houses.Dtos.Request.ManageHouse;
 using Airelax.Application.ManageHouses.Request;
 using Airelax.Application.ManageHouses.Response;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Airelax.Controllers
 {
@@ -17,6 +18,7 @@ namespace Airelax.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("{id}")]
         public IActionResult Index(string id)
         {

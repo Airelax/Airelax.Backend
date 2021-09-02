@@ -4,7 +4,7 @@ namespace Airelax
 {
     public interface IAccountRepository
     {
-        MemberLoginInfo GetMeminfoByAccount(string account);
+        MemberLoginInfo GetMemberInfoByAccount(string account);
       
         Member GetMemByEmail(string email);
         Member GetMemByAccount(string account);
@@ -12,8 +12,8 @@ namespace Airelax
         void SaveChange();
         void Update(Member mem);
         void Update(MemberLoginInfo memInfo);
-        void addMem(Member mem);
-        void addMemInfo(MemberLoginInfo meminfo);
+        void AddMem(Member mem);
+        void AddMemInfo(MemberLoginInfo memInfo);
         void UpdateToken(string id, string token);
     }
 }
