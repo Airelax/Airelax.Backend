@@ -1,4 +1,3 @@
-using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -12,12 +11,10 @@ using Lazcat.Infrastructure.Map;
 using Lazcat.Infrastructure.Settings;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -68,16 +65,6 @@ namespace Airelax
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-            .AddGoogle(options =>
-            {
-                options.ClientId = "865648669684-03selfd92d6gerlkovpp1h1jkmom1957.apps.googleusercontent.com";
-                options.ClientSecret = "Mwi0S31Al65rL7u0l-sHzUtw";
-            }).AddFacebook(facebookOptions =>
-            {
-                facebookOptions.AppId = "238384391515675";
-                facebookOptions.AppSecret = "40d38fd0cd1c5a854682163e76b06453";
-                facebookOptions.AccessDeniedPath = "/Account/Login";
             }).AddCookie(options =>
             {
                 options.LoginPath = "/Account/Login";
@@ -145,7 +132,7 @@ namespace Airelax
 
             app.UseRouting();
             app.UseCors("dev");
-            //google login
+            
             app.UseAuthentication();
             app.UseAuthorization();
 

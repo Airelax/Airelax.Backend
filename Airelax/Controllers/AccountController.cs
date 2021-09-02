@@ -1,16 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Airelax.Application.Account.Dtos.Request;
-using Airelax.EntityFramework.DbContexts;
-using Airelax.Domain.Members;
-using Airelax.Application.Helpers;
-using System.Web;
 using Airelax.Domain.Members.Defines;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Airelax.Controllers
