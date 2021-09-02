@@ -30,6 +30,9 @@ export default {
     background-color: #000;
     display: flex;
     align-items: center;
+    .img{
+        margin: auto;
+    }
     img{
         width: 100%;
     }

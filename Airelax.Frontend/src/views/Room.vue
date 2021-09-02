@@ -43,7 +43,7 @@
                 </div>
               </div>
               <a class="img">
-                <img src="https://picsum.photos/50/50/?random=1" />
+                <img :src="data.owner.cover" style="width: 3rem;"/>
               </a>
             </div>
             <div class="detail">
@@ -76,7 +76,7 @@
             >
           </div>
 
-          <Bed></Bed>
+          <Bed :bedroom="data.bedroomDetail"></Bed>
 
           <div class="facility">
             <h2>有提供的設備與服務</h2>
@@ -84,7 +84,7 @@
               <div class="row">
                 <div class="col-12 col-md-6">
                   <li v-for="item in data.facility.provide" :key="item">
-                    <i class="fas fa-tv"></i> <span> {{ item }} 電視</span>
+                    <i class="fas fa-tv"></i> <span>{{item}}</span>
                   </li>
                 </div>
               </div>

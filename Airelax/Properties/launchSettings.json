@@ -20,7 +20,7 @@
     "Airelax": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "Account/Login",
+      "launchUrl": "managehouse/H3f8b18bf10",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

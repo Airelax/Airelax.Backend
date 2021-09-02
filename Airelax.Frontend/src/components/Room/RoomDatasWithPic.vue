@@ -31,31 +31,27 @@
     @swiper="onSwiper"
     @slideChange="onSlideChange" 
     class="rooms">
-       <swiper-slide class="roomCards roomCardsWithOutPic" v-for="(room, index) in roomDatas" :key="room.index">
+       <swiper-slide class="roomCards roomCardsWithOutPic" v-for="(room, index) in bedroom" :key="room.index">
         <div class="card">
           <div class="card-body p-0 py-2">
-            <div
-              class="beds"
-              v-for="(bed, index) in room.BedCount"
-              :key="index"
-            >
-              <div class="singleBed" v-if="room.BedType == '單人床'">
+            <div class="beds"  v-for="(bed, index) in room.bedCount" :key="index">
+              <div class="singleBed" v-if="room.bedType.includes('Single')">
                 <img :src="require('@/assets/image/Room/bedWithoutPic/singleBed.svg')">
               </div>
             </div>
 
             <div
               class="beds"
-              v-for="(bed, index) in room.BedCount"
+              v-for="(bed, index) in room.bedCount"
               :key="index"
             >
-              <div class="doubleBed" v-if="room.BedType == '雙人床'">
-                <img  :src="require('@/assets/image/Room/bedWithoutPic/doubleBed.svg')">
+              <div class="doubleBed" v-if="room.bedType.includes('Double')">
+                <img :src="require('@/assets/image/Room/bedWithoutPic/doubleBed.svg')">
               </div>
             </div>
 
             <h3 class="card-text1 py-1"><strong>臥室{{ index + 1 }}</strong></h3>
-            <h4 class="card-text2 py-1">{{ room.BedCount }}張{{ room.BedType }}</h4>
+            <h4 class="card-text2 py-1">{{ room.bedCount }}張{{ room.bedType }}</h4>
           </div>
         </div>
       </swiper-slide>
@@ -65,7 +61,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import {Swiper,SwiperSlide} from'swiper/vue';
 import "@/assets/sass/pagination.scss";
@@ -77,22 +73,7 @@ export default {
     Swiper,
     SwiperSlide
   },
-  data: function () {
-    return {
-      roomDatas: [],
-    };
-  },
-  create() {},
-  methods: {},
-  mounted: function () {
-    axios
-      .get(
-        "https://raw.githubusercontent.com/Airelax/Airelax.Frontend/master/project/fake-room-data.json"
-      )
-      .then((response) => {
-        this.roomDatas = response.data[0].BedroomDetail;
-      });
-  },
+  props:["bedroom"]
 };
 </script>
 

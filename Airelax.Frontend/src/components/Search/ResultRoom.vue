@@ -21,7 +21,7 @@
       <CreateWish></CreateWish>
       <Wish></Wish>
       <div>
-        <RoomSwiper :roomPicture="room.picture[0]"></RoomSwiper>
+        <RoomSwiper :roomPicture="room.picture"></RoomSwiper>
       </div>
     </div>
     <div
@@ -75,17 +75,17 @@
       </div>
       <div class="row d-none d-md-block">
         <div class="space">
-          <span v-if="room.space.customerNumber" class="customer">
-            {{ room.space.customerNumber }}位．</span
+          <span v-if="room.simpleSpace.customerNumber" class="customer">
+            {{ room.simpleSpace.customerNumber }}位．</span
           >
-          <span v-if="room.space.bedroom" class="bedRoom">
-            {{ room.space.bedroom }}間臥室．</span
+          <span v-if="room.simpleSpace.bedroom" class="bedRoom">
+            {{ room.simpleSpace.bedroom }}間臥室．</span
           >
-          <span v-if="room.space.bed" class="bed">
-            {{ room.space.bed }}張床．</span
+          <span v-if="room.simpleSpace.bed" class="bed">
+            {{ room.simpleSpace.bed }}張床．</span
           >
-          <span v-if="room.space.bathroom" class="bathRoom">
-            {{ room.space.bathroom }}間衛浴
+          <span v-if="room.simpleSpace.bathroom" class="bathRoom">
+            {{ room.simpleSpace.bathroom }}間衛浴
           </span>
         </div>
         <div class="facility">

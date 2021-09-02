@@ -1016,7 +1016,7 @@ export default {
   created() {
     //todo
     axios
-      .get(`/api/houses/search?location=${this.$route.query.location}&customernumber=${this.$route.query.customerNumber}`, {
+      .get(`/api/houses/search?location=${this.$route.query.location}`, {
         headers: {
           "Access-Control-Allow-Origin": "*",
         },

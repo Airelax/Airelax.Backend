@@ -2,13 +2,13 @@
     <div class="main">
         <div class="txt">
             <h2>空間介紹</h2>
-            <p>{{detail.HouseDescription}}</p>
+            <p>{{detail.houseDescription}}</p>
             <h3>房源空間</h3>
-            <p>{{detail.SpaceDescription}}</p>
+            <p>{{detail.spaceDescription}}</p>
             <h3>房客使用權限</h3>
-            <p>{{detail.GuestPermission}}</p>
+            <p>{{detail.guestPermission}}</p>
             <h3>其他注意事項</h3>
-            <p>{{detail.Others}}</p>
+            <p>{{detail.others}}</p>
         </div>
     </div>
 </template>

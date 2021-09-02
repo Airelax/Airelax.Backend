@@ -44,6 +44,7 @@ export default {
         margin-bottom: .5rem;
         cursor: pointer;
         position: relative;
+        height: 12rem;
         img{
             width: 100%;
             height: 100%;
