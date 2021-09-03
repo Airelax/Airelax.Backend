@@ -13,7 +13,7 @@ namespace Airelax.Controllers
         {
             _memberInfoService = memberInfoService;
         }
-        
+
         [HttpGet]
         [Route("{memberId}")]
         public IActionResult Index(string memberId)
@@ -32,10 +32,10 @@ namespace Airelax.Controllers
 
         [HttpPut]
         [Route("{memberId}")]
-        public async Task<MemberInfoInput> UpdateMemberInfo(string memberId, [FromBody] MemberInfoInput input)
+        public Task<MemberInfoInput> UpdateMemberInfo(string memberId, [FromBody] MemberInfoInput input)
         {
             var aboutMe = _memberInfoService.GetAboutMe(memberId, input);
-            return aboutMe;
+            return Task.FromResult(aboutMe);
         }
 
         [HttpGet]

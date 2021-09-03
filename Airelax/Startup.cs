@@ -7,6 +7,7 @@ using Airelax.Application;
 using Airelax.Defines;
 using Airelax.EntityFramework.DbContexts;
 using Airelax.Infrastructure.Map;
+using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
 using Lazcat.Infrastructure.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -52,7 +53,7 @@ namespace Airelax
                 connectString = Define.Database.DB_CONNECT_STRING;
             }
             // dotnet ef --startup-project Airelax migrations add $description -p Airelax.EntityFramework
-            // dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework
+            // 更新資料庫 dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework
 
             //if use local DB
             services.AddDbContext<AirelaxContext>(opt =>
@@ -146,6 +147,7 @@ namespace Airelax
 
             //app.UseHttpsRedirection();
             app.UseSerilogRequestLogging();
+            app.UseExceptionHandler(builder => builder.Run(async context => await ExceptionHandler.HandleError(context)));
 
             app.UseDefaultFiles();
             app.UseStaticFiles();

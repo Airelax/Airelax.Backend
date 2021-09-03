@@ -137,7 +137,7 @@
     background-color: #ebebeb;
 }
 
-.btn.btn-outline-secondary:nth-child(1) {
+.btn.btn-outline-secondary.follow {
     color: #008489;
     border-bottom: 2px solid #008489;
     white-space: nowrap;
