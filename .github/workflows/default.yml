@@ -5,9 +5,10 @@ on:
     branches:
       - master
       - Develop
-      - cd-to-azure
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+      - Develop
 
 jobs:
   build:
