@@ -7,6 +7,7 @@ namespace Airelax.Controllers
         [HttpGet("/")]
         [HttpGet("/search")]
         [HttpGet("/room")]
+        [HttpGet("/new-house")]
         // GET
         public IActionResult Index()
         {

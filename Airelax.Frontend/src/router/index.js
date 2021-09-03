@@ -46,6 +46,7 @@ const routes = [
             },
             {
                 path: ':id/category',
+                name: 'HouseCategoryWithId',
                 component: () => import('../views/NewHouse/ChooseHouseCategory.vue'),
             },
             {

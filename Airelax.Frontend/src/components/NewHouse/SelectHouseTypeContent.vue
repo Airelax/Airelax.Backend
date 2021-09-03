@@ -18,7 +18,7 @@ export default {
   },
   created() {
     this.houseCategory = setting.houseCategories.find(
-      (x) => x.mapping === this.category
+        (x) => x.mapping === this.category  
     );
   },
   components: {

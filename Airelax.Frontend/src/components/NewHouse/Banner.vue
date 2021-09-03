@@ -54,6 +54,12 @@ h1 {
     left: 20px;
     display: block;
     position: absolute;
+    width: 50px;
+    height: 50px;
+
+    img {
+      width: 100%;
+    }
   }
 
   .helper {
@@ -72,7 +78,7 @@ import Helper from "./Helper.vue";
 export default {
   data() {
     return {
-      logoPath: require('@/assets/image/Home/logo.png')
+      logoPath: require('@/assets/image/Home/logo_w.png')
     };
   },
   props: {

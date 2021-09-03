@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Airelax.Application.Houses.Dtos.Request
 {
-    public class UpdateHouseCategoryInput
+    public class UpdateHouseTypeInput
     {
         public HouseType HouseType { get; set; }
         

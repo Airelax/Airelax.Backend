@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Airelax.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/new-house")]
+    [Route("api/new-house")]
     public class NewHouseController : Controller
     {
         private readonly INewHouseService _houseAppService;
@@ -23,10 +23,10 @@ namespace Airelax.Controllers
         }
 
         [HttpPut]
-        [Route("{id}/category")]
-        public async Task<bool> UpdateHouseCategory(string id, UpdateHouseCategoryInput input)
+        [Route("{id}/type")]
+        public async Task<bool> UpdateHouseType(string id, UpdateHouseTypeInput input)
         {
-            return await _houseAppService.UpdateHouseCategory(id, input);
+            return await _houseAppService.UpdateHouseType(id, input);
         }
 
         [HttpPut]

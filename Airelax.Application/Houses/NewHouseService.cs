@@ -25,9 +25,10 @@ namespace Airelax.Application.Houses
         {
             var owner = await _repository.GetAsync<string, Member>(x => x.Id == input.MemberId);
             if (owner == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"member id: {input.MemberId} is not exist");
-            var house = new House(input.MemberId);
+            var house = new House(owner.Id);
             house.HouseCategory = new HouseCategory(house.Id) {Category = input.Category};
-            await UpdateHouse(house);
+            await _houseRepository.CreateAsync(house);
+            await _houseRepository.SaveChangesAsync();
             return house.Id;
         }
 
@@ -47,7 +48,7 @@ namespace Airelax.Application.Houses
             return true;
         }
 
-        public async Task<bool> UpdateHouseCategory(string id, UpdateHouseCategoryInput input)
+        public async Task<bool> UpdateHouseType(string id, UpdateHouseTypeInput input)
         {
             var house = await GetHouse(id);
             house.HouseCategory.HouseType = input.HouseType;

@@ -25,6 +25,7 @@
   position: relative;
   display: block;
   height: 100%;
+  overflow: auto;
 }
 
 .content {
