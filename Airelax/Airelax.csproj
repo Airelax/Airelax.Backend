@@ -22,6 +22,7 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
         <PackageReference Include="Lazcat.Infrastructure" Version="1.0.9" />
+        <PackageReference Include="BCrypt.Net" Version="0.1.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.8">
             <PrivateAssets>all</PrivateAssets>
@@ -97,5 +98,7 @@
         <None Include="wwwroot\scss\UploadPicture.scss" />
         <None Include="wwwroot\css\swiper-bundle.css" />
     </ItemGroup>
+
+    <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

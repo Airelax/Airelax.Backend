@@ -17,33 +17,21 @@ namespace Airelax
         {
             _ctx = airelaxContext;
         }
-
-        public MemberLoginInfo GetAccountByEmail(string email)
+        
+        public MemberLoginInfo GetMemberInfoByAccount(string account)
         {
-            return _ctx.MemberLoginInfos.SingleOrDefault((m) => m.Account == email);
-        }
-
-        public Member GetEmailByEmail(string email)
-        {
-            return _ctx.Members.SingleOrDefault((m) => m.Email == email);
-        }
-
-        public string GetIdByEmail(string email)
-        {
-            Member memcomfirm = _ctx.Members.SingleOrDefault((m) => m.Email == email);
-            return memcomfirm.Id;
-        }
-
-        public MemberLoginInfo GetAccountByAccount(string account)
-        {
-
             return _ctx.MemberLoginInfos.SingleOrDefault((m) => m.Account == account);
         }
 
+        public Member GetMemByAccount(string account)
+        {
+            return _ctx.Members.SingleOrDefault((m) => m.Email == account);
+        }
 
-
-
-
+        public Member GetMemByEmail(string email)
+        {
+            return _ctx.Members.SingleOrDefault((m) => m.Email == email);
+        }
 
         public void Update(Member mem)
         {
@@ -60,14 +48,21 @@ namespace Airelax
             _ctx.SaveChanges();
         }
 
-        public void addMem(Member mem)
+        public void AddMem(Member mem)
         {
             _ctx.Members.Add(mem);
         }
 
-        public void addMemInfo(MemberLoginInfo meminfo)
+        public void AddMemInfo(MemberLoginInfo memInfo)
         {
-            _ctx.MemberLoginInfos.Add(meminfo);
+            _ctx.MemberLoginInfos.Add(memInfo);
+        }
+
+        public void UpdateToken(string id, string token)
+        {
+            var memberLoginInfo = _ctx.MemberLoginInfos.SingleOrDefault((m) => m.Id == id);
+            memberLoginInfo.Token = token;
+            SaveChange();
         }
     }
 }

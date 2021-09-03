@@ -9,6 +9,12 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Lazcat.Infrastructure.DependencyInjection;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Airelax.Application.Account.Dtos.Response;
+using Microsoft.Extensions.Configuration;
 
 namespace Airelax
 {
@@ -16,18 +22,20 @@ namespace Airelax
     public class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepo;
-        public AccountService(IAccountRepository accountRepo)
+        private readonly IConfiguration _configuration;
+
+        public AccountService(IAccountRepository accountRepo, IConfiguration configuration)
         {
             _accountRepo = accountRepo;
+            _configuration = configuration;
         }
-
 
 
         public string RegisterAccount(RegisterInput input)
         {
-            Member memberEmail = _accountRepo.GetEmailByEmail(HttpUtility.HtmlEncode(input.Email));
+            Member member = _accountRepo.GetMemByEmail(HttpUtility.HtmlEncode(input.Email));
 
-            if (memberEmail == null)//未被註冊的email
+            if (member == null) //未被註冊的email
             {
                 string name = HttpUtility.HtmlEncode(input.LastName) + HttpUtility.HtmlEncode(input.FirstName);
                 DateTime birthday = input.Birthday;
@@ -40,67 +48,92 @@ namespace Airelax
                 {
                     Name = name,
                     Birthday = birthday,
-                    Email = email
+                    Email = email,
+                    Cover = "acvavevasabhetscv"
                 };
 
                 //Member mem = _regService.memObj(input);
 
 
-
                 //尚未產出Id
-                _accountRepo.addMem(mem);
-                _accountRepo.SaveChange();
+                _accountRepo.AddMem(mem);
                 //以產出Id
 
-                _accountRepo.SaveChange();
 
+                //string memId = _accountRepo.GetIdByEmail(email);
 
-                string memId = _accountRepo.GetIdByEmail(email);
-
-                MemberLoginInfo meminfo = new MemberLoginInfo(memId)
+                MemberLoginInfo meminfo = new MemberLoginInfo(mem.Id)
                 {
                     Account = email,
                     Password = password,
-                    LoginType = logintype
+                    LoginType = logintype,
+                    Token = CreateToken(mem)
                 };
 
-                _accountRepo.addMemInfo(meminfo);
+                _accountRepo.AddMemInfo(meminfo);
                 _accountRepo.SaveChange();
 
 
                 return ("註冊成功!");
-
             }
             else
             {
                 return ("此信箱已被註冊");
             }
         }
-        
-        public string LoginAccount(LoginInput input)
+
+        public LoginResult LoginAccount(LoginInput input)
         {
-            string account = HttpUtility.HtmlEncode(input.Account);
-            MemberLoginInfo member = _accountRepo.GetAccountByAccount(account);
+            var account = HttpUtility.HtmlEncode(input.Account);
+            var memberInfo = _accountRepo.GetMemberInfoByAccount(account);
+            var mem = _accountRepo.GetMemByAccount(account);
+            var result = new LoginResult();
 
-            if (member != null)
+            if (mem != null)
             {
-                bool password = Cryptography.VerifyHash(HttpUtility.HtmlEncode(input.Password), member.Password);
+                var isPasswordPass = Cryptography.VerifyHash(HttpUtility.HtmlEncode(input.Password), memberInfo.Password);
 
-
-                if (password == true)
+                if (isPasswordPass)
                 {
-                    return "success";
+                    var token = CreateToken(mem);
+                    _accountRepo.UpdateToken(memberInfo.Id, token);
+
+                    result.token = token;
+                    result.result = "success";
+
+                    return result;
                 }
                 else
                 {
-                    return "wrongPassword";
+                    result.token = "";
+                    result.result = "wrongPassword";
+                    return result;
                 }
             }
             else
             {
-                
-                return "signup";
+                result.token = "";
+                result.result = "signup";
+                return result;
             }
+        }
+
+
+        private string CreateToken(Member member)
+        {
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.NameIdentifier, member.Id.ToString()),
+                new Claim(ClaimTypes.Name, member.Name),
+                new Claim(ClaimTypes.UserData, member.Cover ?? "")
+            };
+
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var token = new JwtSecurityToken(claims: claims, signingCredentials: creds);
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            return jwt;
         }
     }
 }
