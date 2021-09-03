@@ -152,7 +152,7 @@ namespace Airelax
 
             app.UseRouting();
             app.UseCors("dev");
-            
+
             app.UseAuthentication();
             app.UseAuthorization();
 
