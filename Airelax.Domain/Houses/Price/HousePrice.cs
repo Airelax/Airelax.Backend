@@ -16,9 +16,21 @@ namespace Airelax.Domain.Houses.Price
             Id = id;
         }
 
-        public decimal CalculateTotalPrice(DateTime checkin)
+        public decimal CalculateTotalPrice(DateTime checkin, DateTime checkout)
         {
-            return 0;
+            var diffTime = checkout - checkin;
+            var diffDay = diffTime.Days;
+
+            var sweetPrice = PerWeekNight ?? this.PerNight;
+            var nightsPrice = sweetPrice * diffDay;
+
+            if (Fee != null)
+            {
+                nightsPrice = Fee.CleanFee+ Fee.ServiceFee+ Fee.TaxFee;
+            }
+
+            return nightsPrice;
+            //return nightsPrice + Fee?.CleanFee ?? 0 + Fee?.ServiceFee ?? 0 + Fee?.TaxFee ?? 0;
         }
     }
 }

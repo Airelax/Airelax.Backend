@@ -1,6 +1,6 @@
-﻿@model MemberInfoViewModel
+@model MemberInfoViewModel
 @{
-    Layout = "~/Views/Shared/_Layout _memberInfo_bs5.cshtml";
+    Layout = "~/Views/Shared/_LayoutMemberInfo.cshtml";
 }
 <nav>眼睛業障重nav</nav>
 <div class="container-xl">
@@ -17,21 +17,21 @@
                 </div>
                 <div class="col-2 col-md-12">
                     <div>
-                        <img class="portrait" src=@(string.IsNullOrEmpty(Model.MemberImg) ? "~/dist/img/memberInfo/portrait.png" : Model.MemberImg) alt="金城武">
+                        <img class="portrait" src="~/images/memberInfo/portrait.png">
                     </div>
                     <a asp-controller="MemberInfo" asp-action="EditPhoto" asp-route-memberId="@Model.MemberId">更新照片</a>
                     <div>
-                        <img class="honor" src="~/dist/img/memberInfo/honor.svg" alt="">
+                        <img class="honor" src="~/images/memberInfo/honor.svg" alt="">
                     </div>
                 </div>
             </div>
             <div class="row bestAndComment">
                 <div class="best">
-                    <img src="~/dist/img/memberInfo/bestLandLord.svg" alt="best">
+                    <img src="~/images/memberInfo/bestLandLord.svg" alt="best">
                     <span>超讚的阿</span>
                 </div>
                 <div class="comment">
-                    <img src="~/dist/img/memberInfo/star.svg" alt="comment">
+                    <img src="~/images/memberInfo/star.svg" alt="comment">
                     <span>千萬則評價</span>
                 </div>
             </div>
@@ -43,16 +43,16 @@
                     </p>
                 </div>
                 <div class="writtenLocationArea">
-                    <img src="~/dist/img/memberInfo/home.svg" alt="writtenLocation">
+                    <img src="~/images/memberInfo/home.svg" alt="writtenLocation">
                     <span id="writtenLocation">@Model.Location</span>
                 </div>
                 <div class="writtenWorkArea">
-                    <img src="~/dist/img/memberInfo/bag.svg" alt="writtenWork">
+                    <img src="~/images/memberInfo/bag.svg" alt="writtenWork">
                     <span id="writtenWork">@Model.WorkTime</span>
                 </div>
             </div>
             <div class="row writingAboutMe collapse" id="aboutCollapse">
-                <partial name="~/Views/Shared/_AboutCollapsePartial.cshtml"/>
+                <partial name="~/Views/Shared/MemberInfo/_AboutCollapsePartial.cshtml" />
             </div>
             <div class="row checked">
                 <h3>
@@ -60,11 +60,11 @@
                     已確認
                 </h3>
                 <div class="col col-md-12">
-                    <img src="~/dist/img/memberInfo/hook.svg"/>
+                    <img src="~/images/memberInfo/hook.svg" />
                     <span>電子郵件</span>
                 </div>
                 <div class="col col-md-12">
-                    <img src="~/dist/img/memberInfo/hook.svg"/>
+                    <img src="~/images/memberInfo/hook.svg" />
                     <span>電話號碼</span>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                     <span>@Model.MemberName</span>
                     的房源
                 </h3>
-                <partial name="~/Views/Shared/_HousesSourseSwiperPartial.cshtml"/>
+                <partial name="~/Views/Shared/MemberInfo/_HousesSourseSwiperPartial.cshtml" />
             </div>
         </div>
         <div class="d-none d-md-block col-md-6">
@@ -93,23 +93,23 @@
                     </p>
                 </div>
                 <div class="writtenLocationArea">
-                    <img src="~/dist/img/memberInfo/home.svg" alt="writtenLocation">
+                    <img src="~/images/memberInfo/home.svg" alt="writtenLocation">
                     <span id="MdWrittenLocation">@Model.Location</span>
                 </div>
                 <div class="writtenWorkArea">
-                    <img src="~/dist/img/memberInfo/bag.svg" alt="writtenWork">
+                    <img src="~/images/memberInfo/bag.svg" alt="writtenWork">
                     <span id="MdWrittenWork">@Model.WorkTime</span>
                 </div>
             </div>
             <div class="row mdWritingAboutMe collapse" id="mdAboutCollapse">
-                <partial name="~/Views/Shared/_AboutMdCollapsePartial.cshtml"/>
+                <partial name="~/Views/Shared/MemberInfo/_AboutMdCollapsePartial.cshtml" />
             </div>
             <div class="row houseSource">
                 <h3>
                     <span>@Model.MemberName</span>
                     的房源
                 </h3>
-                <partial name="~/Views/Shared/_HousesSourseSwiperPartial.cshtml"/>
+                <partial name="~/Views/Shared/MemberInfo/_HousesSourseSwiperPartial.cshtml" />
             </div>
         </div>
     </div>
@@ -118,10 +118,10 @@
 
 @section topCSS{
     <!-- SWIPER CSS -->
-    <link rel="stylesheet" href="~/dist/css/memberInfo/swiper-bundle.css">
-    <link rel="stylesheet" href="~/dist/scss/swiper.min.css">
+    <link rel="stylesheet" href="~/css/memberInfo/swiper-bundle.css">
+    <link rel="stylesheet" href="~/scss/memberinfo/swiper.css">
     <!-- SHOP-68 CSS -->
-    <link rel="stylesheet" href="~/dist/scss/SHOP-68.css">
+    <link rel="stylesheet" href="~/scss/memberinfo/MemberInfo.min.css">
 }
 
 @section endJS{
@@ -251,5 +251,6 @@
     <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <!-- swiper initialize -->
-    <script src="~/dist/js/memberInfo/swiper.js"></script>
+    <script src="~/js/memberInfo/swiper.js"></script>
 }
+
