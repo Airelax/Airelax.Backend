@@ -44,7 +44,7 @@ namespace Airelax
                         x.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
                     })
             );
-            
+
             services.AddByDependencyInjectionAttribute();
             services.AddControllersWithViews();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Airelax", Version = "v1" }); });

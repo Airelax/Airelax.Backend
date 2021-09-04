@@ -45,6 +45,7 @@
 
     <ItemGroup>
       <Folder Include="Views\Home" />
+      <Folder Include="Views\Orders\" />
       <Folder Include="wwwroot\dist\scss\" />
     </ItemGroup>
 

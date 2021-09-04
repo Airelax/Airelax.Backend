@@ -1,5 +1,7 @@
 ﻿using Airelax.EntityFramework.DbContexts;
+using Lazcat.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,19 +9,21 @@ using System.Threading.Tasks;
 
 namespace Airelax.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class OrdersController : Controller
     {
-        private readonly AirelaxContext _context;
+        private readonly IOrderService _orderService;
 
-        public OrdersController(AirelaxContext context)
+        public OrdersController(IOrderService orderService)
         {
-            _context = context;
+            _orderService = orderService;
         }
-
-        public IActionResult Index()
+        [HttpPost]
+        public bool CreateOrder([FromBody] OrdersInput input)
         {
-            return View();
+            var order = _orderService.CreateOrder(input);
+            if (!ModelState.IsValid) return false;
+            return order;
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Airelax.Domain.Orders
             OrderDetail = new OrderDetail(Id);
             Payment = new Payment(Id);
             OrderPriceDetail = new OrderPriceDetail(Id);
+            LastModifyTime = DateTime.Now;
         }
     }
 }
