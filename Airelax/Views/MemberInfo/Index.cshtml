@@ -1,4 +1,4 @@
-﻿@model MemberInfoViewModel
+@model MemberInfoViewModel
 @{
     Layout = "~/Views/Shared/_LayoutMemberInfo.cshtml";
 }
@@ -19,7 +19,7 @@
                     <div>
                         <img class="portrait" src="~/images/memberInfo/portrait.png">
                     </div>
-                    <a href="#">更新照騙</a>
+                    <a asp-controller="MemberInfo" asp-action="EditPhoto" asp-route-memberId="@Model.MemberId">更新照片</a>
                     <div>
                         <img class="honor" src="~/images/memberInfo/honor.svg" alt="">
                     </div>
@@ -123,6 +123,7 @@
     <!-- SHOP-68 CSS -->
     <link rel="stylesheet" href="~/scss/memberinfo/MemberInfo.min.css">
 }
+
 @section endJS{
     <script>
         //#region 各種宣告
@@ -252,3 +253,4 @@
     <!-- swiper initialize -->
     <script src="~/js/memberInfo/swiper.js"></script>
 }
+

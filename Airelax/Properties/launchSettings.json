@@ -20,7 +20,7 @@
     "Airelax": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/Orders",
+      "launchUrl": "Swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

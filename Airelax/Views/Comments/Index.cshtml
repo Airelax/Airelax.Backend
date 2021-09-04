@@ -1,10 +1,13 @@
-﻿@{
+@using System.Text.Json
+@{
     @model IEnumerable<HouseCommentViewModel>
-    @using System.Text.Json
 }
+
+
 @section topCSS{
     <link href="~/css/Comments.css" rel="stylesheet" />
 }
+
 <div class="my-content">
     <div class="header">
         <h2>成效</h2>
@@ -45,19 +48,21 @@
             <div class="btn-group"
                  role="group"
                  aria-label="Basic radio toggle button group">
-                <label class="btn btn-outline-secondary" id="all">全部</label>
+                <label class="btn btn-outline-secondary follow" id="all">全部</label>
             </div>
         </div>
 
         <div class="msg-title">
             @if (Model != null && Model.Any())
             {
-                <span class="tab-span">全部</span><h3>評價</h3>
+                <span class="tab-span">全部</span>
+                <h3>評價</h3>
                 <span>關於房源的最新評價</span>
             }
             else
             {
-                <span class="tab-span">尚未有</span><h3>評價</h3>
+                <span class="tab-span">尚未有</span>
+                <h3>評價</h3>
                 <span>你的首筆評價會顯示在這裡。</span>
             }
         </div>
@@ -76,14 +81,17 @@
     const rScores = document.querySelector("#r-scores");
     const lScores = document.querySelector("#l-scores");
     let status = 0;
+    let all = document.querySelector("#all");
 
     if (jsonData != null && jsonData.length != 0) {
         initialize();
 
-        let all = document.querySelector("#all");
         all.addEventListener("click", () => {
             rendering(jsonData.find((x) => x.HouseId == status).Comments);
         });
+        all.addEventListener("click", () => {
+            follow("all");
+        })
     }
 
     const btnGroup = document.querySelector(".btn-group");
@@ -92,6 +100,9 @@
         const label = document.createElement("label");
         label.classList = "btn btn-outline-secondary";
         label.setAttribute("id", `${5 - index}`);
+        label.addEventListener("click", () => {
+            follow(`${5 - index}`);
+        })
         if (jsonData != null && jsonData.length != 0) {
             label.addEventListener("click", () => {
                 rendering(
@@ -109,6 +120,8 @@
         status = v
 
         initialize(status)
+
+        follow("all");
     }
 
     function initialize() {
@@ -124,6 +137,13 @@
         lScores.innerText = sum.toFixed(1);
 
         rendering(data.Comments);
+    }
+
+    function follow(item) {
+        let old = document.querySelector(".follow");
+        old.classList = "btn btn-outline-secondary"
+        let fresh = document.getElementById(`${item}`);
+        fresh.classList = "btn btn-outline-secondary follow"
     }
 
     function rendering(para) {

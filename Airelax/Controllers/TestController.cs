@@ -16,7 +16,6 @@ using Airelax.Domain.RepositoryInterface;
 using Airelax.EntityFramework.DbContexts;
 using AutoMapper;
 using Lazcat.Infrastructure.ExceptionHandlers;
-using Lazcat.Infrastructure.Map.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
@@ -42,17 +41,9 @@ namespace Airelax.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<SimpleHouseDto>> t()
+        public async Task t()
         {
-            var x = from h in _context.Houses
-                    from s in _context.Spaces.Where(x => x.HouseId == h.Id).DefaultIfEmpty()
-                    from b in _context.BedroomDetails.Where(x => x.SpaceId == s.Id).DefaultIfEmpty()
-                    where h.Id == "H005ba2165b"
-                    select new { s = s, b = b };
-
-            var y = x.ToList();
-
-            return null;
+            await _houseAppService.Search(new SearchInput() {Location = "taipei"});
         }
 
         [HttpPost]

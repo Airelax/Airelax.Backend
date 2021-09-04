@@ -18,7 +18,7 @@ namespace Airelax
     public class CommentViewModel
     {
         public string CommentId { get; set; }
-        public DateTime CommentTime { get; set; }
+        public string CommentTime { get; set; }
         public string AuthorName { get; set; }
         public string Content { get; set; }
         public double Stars { get; set; }

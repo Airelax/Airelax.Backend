@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Airelax.Domain.DomainObject;
-using Lazcat.Infrastructure.Map.Responses;
+using Airelax.Infrastructure.Map.Responses;
 
 namespace Airelax.Domain.Houses.Specifications
 {
