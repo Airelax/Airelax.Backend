@@ -2,7 +2,7 @@
 @using Airelax.Defines
 @inject IOptions<PhotoUploadSetting> _photoUploadSetting
 @{
-    Layout = "~/Views/Shared/_Layout _memberInfo_bs5.cshtml";
+    Layout = "~/Views/Shared/_LayoutMemberInfo.cshtml";
 }
 <div class="container-xl">
     <nav>
@@ -19,7 +19,7 @@
     <div class="card">
         <div class="card-header">個人相片</div>
         <div class="pic">
-            <img src="~/dist/img/memberInfo/portrait.png" alt="">
+            <img src="@ViewBag.Cover" alt="">
             <div class="lds-spinner">
                 <div></div>
                 <div></div>

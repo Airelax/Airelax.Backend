@@ -17,7 +17,7 @@
                 </div>
                 <div class="col-2 col-md-12">
                     <div>
-                        <img class="portrait" src="~/images/memberInfo/portrait.png">
+                        <img class="portrait" src="@Model.MemberImg">
                     </div>
                     <a asp-controller="MemberInfo" asp-action="EditPhoto" asp-route-memberId="@Model.MemberId">更新照片</a>
                     <div>
@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div class="row writingAboutMe collapse" id="aboutCollapse">
-                <partial name="~/Views/Shared/MemberInfo/_AboutCollapsePartial.cshtml" />
+                <partial name="~/Views/Shared/MemberInfo/_AboutCollapsePartial.cshtml"/>
             </div>
             <div class="row checked">
                 <h3>
@@ -60,11 +60,11 @@
                     已確認
                 </h3>
                 <div class="col col-md-12">
-                    <img src="~/images/memberInfo/hook.svg" />
+                    <img src="~/images/memberInfo/hook.svg"/>
                     <span>電子郵件</span>
                 </div>
                 <div class="col col-md-12">
-                    <img src="~/images/memberInfo/hook.svg" />
+                    <img src="~/images/memberInfo/hook.svg"/>
                     <span>電話號碼</span>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                     <span>@Model.MemberName</span>
                     的房源
                 </h3>
-                <partial name="~/Views/Shared/MemberInfo/_HousesSourseSwiperPartial.cshtml" />
+                <partial name="~/Views/Shared/MemberInfo/_HousesSourseSwiperPartial.cshtml"/>
             </div>
         </div>
         <div class="d-none d-md-block col-md-6">
@@ -102,14 +102,14 @@
                 </div>
             </div>
             <div class="row mdWritingAboutMe collapse" id="mdAboutCollapse">
-                <partial name="~/Views/Shared/MemberInfo/_AboutMdCollapsePartial.cshtml" />
+                <partial name="~/Views/Shared/MemberInfo/_AboutMdCollapsePartial.cshtml"/>
             </div>
             <div class="row houseSource">
                 <h3>
                     <span>@Model.MemberName</span>
                     的房源
                 </h3>
-                <partial name="~/Views/Shared/MemberInfo/_HousesSourseSwiperPartial.cshtml" />
+                <partial name="~/Views/Shared/MemberInfo/_HousesSourseSwiperPartial.cshtml"/>
             </div>
         </div>
     </div>
@@ -253,4 +253,3 @@
     <!-- swiper initialize -->
     <script src="~/js/memberInfo/swiper.js"></script>
 }
-
