@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Airelax.Infrastructure.Map.Responses;
 
 namespace Airelax.Application.Houses.Dtos.Response
 {

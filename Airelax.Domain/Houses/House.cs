@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Airelax.Domain.Comments;
 using Airelax.Domain.DomainObject;
@@ -8,11 +7,24 @@ using Airelax.Domain.Houses.Price;
 using Airelax.Domain.Members;
 using Lazcat.Infrastructure.Common;
 
-
 namespace Airelax.Domain.Houses
 {
     public class House : AggregateRoot<string>
     {
+        public House(string ownerId)
+        {
+            OwnerId = ownerId;
+            Id = GuidHelper.CreateId(prefix: "H");
+            Title = "未命名房源";
+            Status = HouseStatus.CancelPublish;
+            CreateState = CreateState.Building;
+            CustomerNumber = 1;
+            CreateTime = DateTime.Now;
+            IsDeleted = false;
+            ProvideFacilities = new List<Facility>();
+            NotProvideFacilities = new List<Facility>();
+        }
+
         public string Title { get; set; }
         public HouseStatus Status { get; set; }
         public CreateState CreateState { get; set; }
@@ -40,19 +52,5 @@ namespace Airelax.Domain.Houses
         public ICollection<Comment> Comments { get; set; }
 
         #endregion
-
-        public House(string ownerId)
-        {
-            OwnerId = ownerId;
-            Id = GuidHelper.CreateId(prefix: "H");
-            Title = "未命名房源";
-            Status = HouseStatus.CancelPublish;
-            CreateState = CreateState.Building;
-            CustomerNumber = 1;
-            CreateTime = DateTime.Now;
-            IsDeleted = false;
-            ProvideFacilities = new List<Facility>();
-            NotProvideFacilities = new List<Facility>();
-        }
     }
 }

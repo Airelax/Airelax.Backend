@@ -30,7 +30,7 @@ namespace Airelax.EntityFramework.Repositories
                 .Where(x => x.IsDeleted == false)
                 .FirstOrDefault(x => x.Id == id);
         }
-        
+
         public List<SpaceBed> GetSpace(string id)
         {
             var spaceBeds = from h in _context.Houses
@@ -42,11 +42,11 @@ namespace Airelax.EntityFramework.Repositories
                     Space = s,
                     BedroomDetail = b
                 };
-            
+
             var space = spaceBeds?.ToList();
             return space;
         }
-        
+
 
         public void SaveChange()
         {

@@ -2,10 +2,6 @@
 {
     public class Coordinate
     {
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-
-
         public Coordinate()
         {
         }
@@ -15,5 +11,8 @@
             Latitude = latitude;
             Longitude = longitude;
         }
+
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }

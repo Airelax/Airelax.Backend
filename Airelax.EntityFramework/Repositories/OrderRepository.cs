@@ -9,10 +9,12 @@ namespace Airelax.EntityFramework.Repositories
     public class OrderRepository : IOrderRepository
     {
         private readonly AirelaxContext _context;
+
         public OrderRepository(AirelaxContext context)
         {
             _context = context;
         }
+
         //public Order GetOrder(string houseId)
         //{
         //    //串Orders/OrderDetail/OrderPriceDetail/Payment
@@ -26,6 +28,7 @@ namespace Airelax.EntityFramework.Repositories
         {
             _context.Orders.Add(order);
         }
+
         public void SaveChanges()
         {
             _context.SaveChanges();

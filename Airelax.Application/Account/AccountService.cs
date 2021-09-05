@@ -1,23 +1,19 @@
-﻿using Airelax.Application.Account.Dtos.Request;
+﻿using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Web;
+using Airelax.Application.Account.Dtos.Request;
+using Airelax.Application.Account.Dtos.Response;
 using Airelax.Application.Helpers;
 using Airelax.Domain.Members;
 using Airelax.Domain.Members.Defines;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using Microsoft.AspNetCore.Mvc;
-using Lazcat.Infrastructure.DependencyInjection;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using Airelax.Application.Account.Dtos.Response;
 using Airelax.Domain.RepositoryInterface;
+using Lazcat.Infrastructure.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
-namespace Airelax
+namespace Airelax.Application.Account
 {
     [DependencyInjection(typeof(IAccountService))]
     public class AccountService : IAccountService
@@ -34,22 +30,23 @@ namespace Airelax
 
         public string RegisterAccount(RegisterInput input)
         {
-            Member member = _accountRepo.GetMemByEmail(HttpUtility.HtmlEncode(input.Email));
+            var member = _accountRepo.GetMemByEmail(HttpUtility.HtmlEncode(input.Email));
 
+            var email = HttpUtility.HtmlEncode(input.Email);
+            var loginType = LoginType.Email;
             if (member == null) //未被註冊的email
             {
-                string name = HttpUtility.HtmlEncode(input.LastName) + HttpUtility.HtmlEncode(input.FirstName);
-                DateTime birthday = input.Birthday;
-                string email = HttpUtility.HtmlEncode(input.Email);
-                string password = Cryptography.Hash(HttpUtility.HtmlEncode(input.Password), out string Salt);
-                LoginType logintype = LoginType.Email;
+                var name = HttpUtility.HtmlEncode(input.LastName) + HttpUtility.HtmlEncode(input.FirstName);
+                var birthday = input.Birthday;
+                var password = Cryptography.Hash(HttpUtility.HtmlEncode(input.Password), out var Salt);
 
 
-                Member mem = new Member()
+                var mem = new Member
                 {
                     Name = name,
                     Birthday = birthday,
                     Email = email,
+                    // todo default cover
                     Cover = "acvavevasabhetscv"
                 };
 
@@ -63,24 +60,22 @@ namespace Airelax
 
                 //string memId = _accountRepo.GetIdByEmail(email);
 
-                MemberLoginInfo meminfo = new MemberLoginInfo(mem.Id)
+                var memberLogInfo = new MemberLoginInfo(mem.Id)
                 {
                     Account = email,
                     Password = password,
-                    LoginType = logintype,
+                    LoginType = loginType,
                     Token = CreateToken(mem)
                 };
 
-                _accountRepo.AddMemInfo(meminfo);
+                _accountRepo.AddMemInfo(memberLogInfo);
                 _accountRepo.SaveChange();
 
 
-                return ("註冊成功!");
+                return "註冊成功!";
             }
-            else
-            {
-                return ("此信箱已被註冊");
-            }
+
+            return "此信箱已被註冊";
         }
 
         public LoginResult LoginAccount(LoginInput input)
@@ -104,29 +99,25 @@ namespace Airelax
 
                     return result;
                 }
-                else
-                {
-                    result.token = "";
-                    result.result = "wrongPassword";
-                    return result;
-                }
-            }
-            else
-            {
+
                 result.token = "";
-                result.result = "signup";
+                result.result = "wrongPassword";
                 return result;
             }
+
+            result.token = "";
+            result.result = "signup";
+            return result;
         }
 
 
         private string CreateToken(Member member)
         {
-            var claims = new List<Claim>()
+            var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, member.Id.ToString()),
-                new Claim(ClaimTypes.Name, member.Name),
-                new Claim(ClaimTypes.UserData, member.Cover ?? "")
+                new(ClaimTypes.NameIdentifier, member.Id),
+                new(ClaimTypes.Name, member.Name),
+                new(ClaimTypes.UserData, member.Cover ?? "")
             };
 
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.Common;
-using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Defines;
@@ -9,14 +8,12 @@ using Airelax.Domain.Members.Defines;
 using Airelax.EntityFramework.DbContexts;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Xunit;
 
 namespace Airelax.Test.EntityFramework
 {
     public class AirelaxDatabaseFixture : IDisposable
     {
-        private static readonly object _lock = new object();
+        private static readonly object _lock = new();
         private static bool _databaseInitialized;
         private readonly DbConnection _connection;
 
@@ -24,6 +21,11 @@ namespace Airelax.Test.EntityFramework
         {
             _connection = CreateDbConnection();
             Seed();
+        }
+
+        public void Dispose()
+        {
+            _connection.Dispose();
         }
 
         public AirelaxContext CreateContext(DbTransaction transaction = null)
@@ -52,7 +54,7 @@ namespace Airelax.Test.EntityFramework
                     context.Database.EnsureDeleted();
                     context.Database.EnsureCreated();
 
-                    var member = new Member()
+                    var member = new Member
                     {
                         Name = "Eric", Birthday = new DateTime(2003, 9, 4), City = "Chiayi", Country = "Taiwan", Email = "aa123456@gamil.com", Gender = Gender.Man,
                         Phone = "0912345678", Town = "布袋", AddressDetail = "海港一路87號", RegisterTime = DateTime.Now, IsEmailVerified = true, IsDeleted = false
@@ -99,11 +101,6 @@ namespace Airelax.Test.EntityFramework
 
                 _databaseInitialized = true;
             }
-        }
-
-        public void Dispose()
-        {
-            _connection.Dispose();
         }
     }
 }

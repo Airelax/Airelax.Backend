@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Airelax.Application.Comments;
+﻿using Airelax.Application.Comments;
 using Airelax.Application.Comments.Dtos.Request;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Airelax.Controllers
 {

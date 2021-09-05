@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace Airelax.Infrastructure.Map.GoogleResponses.GeocodingResponses
 {
-
     public class GeocodingResult
     {
         public List<AddressComponent> address_components { get; set; }

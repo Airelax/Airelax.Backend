@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Airelax.Application.Members.Dtos.Request;
 using Airelax.Application.Members.Dtos.Response;
-using Airelax.Application.Members.Request;
 using Airelax.Domain.Members;
 using Airelax.Domain.Members.Defines;
 using Airelax.Domain.RepositoryInterface;
@@ -30,7 +30,7 @@ namespace Airelax.Application.Members
 
                 return null;
 
-            var memberViewModel = new MemberViewModel()
+            var memberViewModel = new MemberViewModel
             {
                 MemberId = memberId,
                 Name = member.Name,
@@ -55,7 +55,7 @@ namespace Airelax.Application.Members
         {
             var member = await _memberRepository.GetAsync(x => x.Id == memberId);
 
-            if (member == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"Member Id {memberId} does not match any member");
+            if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"Member Id {memberId} does not match any member");
 
             member.Name = input.Name;
             member.Birthday = DateTime.Parse(input.Birthday);
@@ -74,7 +74,7 @@ namespace Airelax.Application.Members
         public async Task<bool> EditLoginAndSecurity(string memberId, [FromBody] LoginAndSecurityInput input)
         {
             var member = await _memberRepository.GetAsync(x => x.Id == memberId);
-            if (member == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"Member Id {memberId} does not match any member");
+            if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"Member Id {memberId} does not match any member");
 
             member.MemberLoginInfo.Password = input.Password;
             //todo 密碼加密， 驗證舊密碼

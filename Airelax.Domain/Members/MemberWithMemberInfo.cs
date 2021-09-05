@@ -3,6 +3,6 @@
     public class MemberWithMemberInfo
     {
         public Member Member { get; set; }
-        public Domain.Members.MemberInfo MemberInfos { get; set; }
+        public MemberInfo MemberInfos { get; set; }
     }
 }

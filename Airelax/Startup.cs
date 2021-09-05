@@ -1,6 +1,7 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Airelax.Application;
@@ -9,10 +10,9 @@ using Airelax.EntityFramework.DbContexts;
 using Airelax.Infrastructure.Map;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
-using Lazcat.Infrastructure.Settings;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,7 +24,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using System.Text;
 
 namespace Airelax
 {
@@ -37,7 +36,7 @@ namespace Airelax
         }
 
         public IConfiguration Configuration { get; }
-        public IHostEnvironment HostEnvironment { get; private set; }
+        public IHostEnvironment HostEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -53,7 +52,7 @@ namespace Airelax
                 connectString = Define.Database.DB_CONNECT_STRING;
             }
             // dotnet ef --startup-project Airelax migrations add $description -p Airelax.EntityFramework
-            // §ó·s¸ê®Æ®w dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework
+            // ï¿½ï¿½sï¿½ï¿½Æ®w dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework
 
             //if use local DB
             services.AddDbContext<AirelaxContext>(opt =>
@@ -161,8 +160,8 @@ namespace Airelax
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

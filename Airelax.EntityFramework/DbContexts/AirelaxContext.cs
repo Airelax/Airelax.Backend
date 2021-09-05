@@ -1,5 +1,4 @@
-﻿using System;
-using Airelax.Domain.Comments;
+﻿using Airelax.Domain.Comments;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Price;
 using Airelax.Domain.Members;
@@ -10,6 +9,10 @@ namespace Airelax.EntityFramework.DbContexts
 {
     public class AirelaxContext : DbContext
     {
+        public AirelaxContext(DbContextOptions<AirelaxContext> opt) : base(opt)
+        {
+        }
+
         public DbSet<House> Houses { get; set; }
         public DbSet<HouseCategory> HouseCategories { get; set; }
         public DbSet<HouseLocation> HouseLocations { get; set; }
@@ -34,11 +37,6 @@ namespace Airelax.EntityFramework.DbContexts
 
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Star> Stars { get; set; }
-
-
-        public AirelaxContext(DbContextOptions<AirelaxContext> opt) : base(opt)
-        {
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -84,7 +82,7 @@ namespace Airelax.EntityFramework.DbContexts
                     builder.Property(x => x.ProvideFacilities).HasJsonConversion();
                     builder.Property(x => x.NotProvideFacilities).HasJsonConversion();
 
-                    builder.HasOne<Member>(x => x.Member).WithMany(x => x.Houses).HasForeignKey(x => x.OwnerId);
+                    builder.HasOne(x => x.Member).WithMany(x => x.Houses).HasForeignKey(x => x.OwnerId);
                 });
         }
 
@@ -293,8 +291,8 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetEntityKey<Order, string>();
                 builder.SetEnumDbMapping(x => x.State);
 
-                builder.HasOne<Member>(x => x.Member).WithMany(x => x.Orders).HasForeignKey(x => x.CustomerId).IsRequired();
-                builder.HasOne<House>(x => x.House).WithMany().OnDelete(DeleteBehavior.Restrict).HasForeignKey(x => x.HouseId).IsRequired();
+                builder.HasOne(x => x.Member).WithMany(x => x.Orders).HasForeignKey(x => x.CustomerId).IsRequired();
+                builder.HasOne(x => x.House).WithMany().OnDelete(DeleteBehavior.Restrict).HasForeignKey(x => x.HouseId).IsRequired();
             });
         }
 

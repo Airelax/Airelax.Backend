@@ -1,13 +1,6 @@
-﻿using Airelax.EntityFramework.DbContexts;
-using Lazcat.Infrastructure.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Airelax.Application.Orders;
+﻿using Airelax.Application.Orders;
 using Airelax.Application.Orders.Request;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Airelax.Controllers
 {
@@ -20,6 +13,7 @@ namespace Airelax.Controllers
         {
             _orderService = orderService;
         }
+
         [HttpPost]
         public bool CreateOrder([FromBody] OrdersInput input)
         {

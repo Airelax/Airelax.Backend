@@ -7,6 +7,7 @@
         public int HouseState { get; set; }
         public CommentViewModel[] Comments { get; set; }
     }
+
     public class CommentViewModel
     {
         public string CommentId { get; set; }

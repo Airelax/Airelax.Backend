@@ -13,6 +13,5 @@ namespace Airelax.Application.Members.Dtos.Response
         public string Country { get; set; }
         public int ZipCode { get; set; }
         public string AddressDetail { get; set; }
-
     }
 }

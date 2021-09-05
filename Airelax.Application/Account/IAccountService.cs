@@ -1,14 +1,11 @@
 ﻿using Airelax.Application.Account.Dtos.Request;
 using Airelax.Application.Account.Dtos.Response;
-using Airelax.Domain.Members;
 
-namespace Airelax
+namespace Airelax.Application.Account
 {
     public interface IAccountService
     {
         string RegisterAccount(RegisterInput input);
         LoginResult LoginAccount(LoginInput input);
-
-
     }
 }

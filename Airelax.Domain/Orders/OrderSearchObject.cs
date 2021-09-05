@@ -1,9 +1,6 @@
-﻿using Airelax.Domain.Comments;
+﻿using System.Collections.Generic;
+using Airelax.Domain.Comments;
 using Airelax.Domain.Houses.Price;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Airelax
 {

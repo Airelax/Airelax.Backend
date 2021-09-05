@@ -3,6 +3,5 @@
     public class UpdateWishListInput : CreateWishListInput
     {
         public int WishId { get; set; }
-
     }
 }

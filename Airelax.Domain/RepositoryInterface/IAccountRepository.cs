@@ -1,14 +1,14 @@
 ﻿using Airelax.Domain.Members;
 
-namespace Airelax
+namespace Airelax.Domain.RepositoryInterface
 {
     public interface IAccountRepository
     {
         MemberLoginInfo GetMemberInfoByAccount(string account);
-      
+
         Member GetMemByEmail(string email);
         Member GetMemByAccount(string account);
-        
+
         void SaveChange();
         void Update(Member mem);
         void Update(MemberLoginInfo memInfo);

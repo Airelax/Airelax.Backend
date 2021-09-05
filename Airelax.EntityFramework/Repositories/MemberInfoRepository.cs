@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Airelax.Application.MemberInfos.Response;
 using Airelax.Controllers;
 using Airelax.Domain.Members;
 using Airelax.Domain.RepositoryInterface;

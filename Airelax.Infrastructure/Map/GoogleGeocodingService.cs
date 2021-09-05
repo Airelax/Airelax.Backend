@@ -19,10 +19,10 @@ namespace Airelax.Infrastructure.Map
     [DependencyInjection(typeof(IGeocodingService))]
     public class GoogleGeocodingService : IGeocodingService
     {
+        private const int Timeout = 5000;
+        private readonly GoogleMapApiSetting _googleMapApiSetting;
         private readonly ILogger<GoogleGeocodingService> _logger;
         private HttpClient _httpClient;
-        private readonly GoogleMapApiSetting _googleMapApiSetting;
-        private const int Timeout = 5000;
 
         public GoogleGeocodingService(HttpClient httpClient, IOptions<GoogleMapApiSetting> options, ILogger<GoogleGeocodingService> logger)
         {
@@ -59,17 +59,17 @@ namespace Airelax.Infrastructure.Map
         {
             var geometry = geocodingResponse.results.First()?.geometry;
             if (geometry == null) throw ExceptionBuilder.Build(HttpStatusCode.InternalServerError, "cannot not get map data");
-            return new GeocodingInfo()
+            return new GeocodingInfo
             {
-                Bounds = new CoordinateRange()
+                Bounds = new CoordinateRange
                 {
                     SouthWest = new Coordinate(geometry.bounds.southwest.lat, geometry.bounds.southwest.lng),
-                    Northeast = new Coordinate(geometry.bounds.northeast.lat, geometry.bounds.northeast.lng),
+                    Northeast = new Coordinate(geometry.bounds.northeast.lat, geometry.bounds.northeast.lng)
                 },
-                Viewport = new CoordinateRange()
+                Viewport = new CoordinateRange
                 {
                     SouthWest = new Coordinate(geometry.viewport.southwest.lat, geometry.viewport.southwest.lng),
-                    Northeast = new Coordinate(geometry.viewport.northeast.lat, geometry.viewport.northeast.lng),
+                    Northeast = new Coordinate(geometry.viewport.northeast.lat, geometry.viewport.northeast.lng)
                 },
                 Location = new Coordinate(geometry.location.lat, geometry.location.lng)
             };

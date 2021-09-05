@@ -5,15 +5,15 @@ namespace Airelax.Domain.Orders
 {
     public class Payment : Entity<string>
     {
-        public PayState PayState { get; set; }
-        public PayType PayType { get; set; }
-        public decimal? Refund { get; set; }
-
         public Payment(string id)
         {
             Id = id;
             PayState = PayState.Unpaid;
             PayType = PayType.NotPay;
         }
+
+        public PayState PayState { get; set; }
+        public PayType PayType { get; set; }
+        public decimal? Refund { get; set; }
     }
 }

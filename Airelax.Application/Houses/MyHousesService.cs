@@ -24,9 +24,9 @@ namespace Airelax.Application.Houses
             var houses = _myHousesRepository.GetHousesByOwnerId(ownerId);
 
             if (houses.IsNullOrEmpty())
-                return new List<MyHouseViewModel>()
+                return new List<MyHouseViewModel>
                 {
-                    new MyHouseViewModel
+                    new()
                     {
                         Title = "傑哥的房子",
                         HouseStatus = HouseStatus.Publish,
@@ -35,7 +35,7 @@ namespace Airelax.Application.Houses
                         Location = "竹北，新竹",
                         LastReservationTime = DateTime.Now.ToString("yyyy-MM-dd")
                     },
-                    new MyHouseViewModel
+                    new()
                     {
                         Title = "傑哥的房子",
                         HouseStatus = HouseStatus.Publish,
@@ -44,7 +44,7 @@ namespace Airelax.Application.Houses
                         Location = "竹北，新竹",
                         LastReservationTime = DateTime.Now.ToString("yyyy-MM-dd")
                     },
-                    new MyHouseViewModel
+                    new()
                     {
                         Title = "我房間的標題超級無敵超窩窩窩窩窩窩喔窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩",
                         HouseStatus = HouseStatus.Publish,
@@ -53,7 +53,7 @@ namespace Airelax.Application.Houses
                         Location = "竹北，新竹",
                         LastReservationTime = DateTime.Now.ToString("yyyy-MM-dd")
                     },
-                    new MyHouseViewModel
+                    new()
                     {
                         Title = "傑哥的房子",
                         HouseStatus = HouseStatus.Publish,
@@ -64,7 +64,7 @@ namespace Airelax.Application.Houses
                     }
                 };
 
-            var myHouseViewModel = houses.Select(x => new MyHouseViewModel()
+            var myHouseViewModel = houses.Select(x => new MyHouseViewModel
             {
                 HouseId = x.Id,
                 Title = x.Title,

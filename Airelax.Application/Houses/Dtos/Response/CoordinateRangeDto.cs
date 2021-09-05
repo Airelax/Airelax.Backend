@@ -1,6 +1,4 @@
-﻿using Airelax.Infrastructure.Map.Responses;
-
-namespace Airelax.Application.Houses.Dtos.Response
+﻿namespace Airelax.Application.Houses.Dtos.Response
 {
     public class CoordinateRangeDto
     {

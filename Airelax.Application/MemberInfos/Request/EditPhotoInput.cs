@@ -4,7 +4,6 @@ namespace Airelax.Application.MemberInfos.Request
 {
     public class EditPhotoInput
     {
-        [Required]
-        public string PhotoUrl { get; set; }
+        [Required] public string PhotoUrl { get; set; }
     }
 }

@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Airelax.Domain.DomainObject;
 using Airelax.Domain.Members;
 using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
-using Lazcat.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Airelax.EntityFramework.Repositories
@@ -36,7 +34,7 @@ namespace Airelax.EntityFramework.Repositories
                 select new {Member = m, MemberInfo = memberInfo, MemberLoginInfo = memberLogInfo}).FirstOrDefaultAsync();
 
             if (memberIncludeAll?.Member == null) return null;
-            
+
             var member = memberIncludeAll.Member;
             var wishLists = await _repository.GetAll<int, WishList>().Where(x => x.MemberId == member.Id).ToListAsync();
             wishLists ??= new List<WishList>();

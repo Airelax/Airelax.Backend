@@ -21,8 +21,8 @@ namespace Airelax.Application.Houses
     [DependencyInjection(typeof(IManageHouseService))]
     public class ManageHouseService : IManageHouseService
     {
-        private readonly IManageHouseRepository _manageHouseRepository;
         private readonly IHouseRepository _houseRepository;
+        private readonly IManageHouseRepository _manageHouseRepository;
 
         public ManageHouseService(IManageHouseRepository manageHouseRepository, IHouseRepository houseRepository)
         {
@@ -31,26 +31,26 @@ namespace Airelax.Application.Houses
         }
 
         public async Task<ManageHouseDto> GetManageHouseInfo(string id)
-        { 
-            var house =await _houseRepository.GetAsync(x => x.Id == id);
+        {
+            var house = await _houseRepository.GetAsync(x => x.Id == id);
             var space = _manageHouseRepository.GetSpace(id);
 
-            var manage = new ManageHouseDto()
+            var manage = new ManageHouseDto
             {
                 Id = id,
                 Title = house.Title,
-                
-                Description = new DescriptionDto()
+
+                Description = new DescriptionDto
                 {
                     HouseDescription = house.HouseDescription.Description,
                     SpaceDescription = house.HouseDescription.SpaceDescription,
                     GuestPermission = house.HouseDescription.GuestPermission,
                     Others = house.HouseDescription.Others
                 },
-                Status = (int)house.Status,
-                ProvideFacilities = house.ProvideFacilities.Select(s => (int)s).ToList(),
-                NotProvideFacilities = house.NotProvideFacilities.Select(s => (int)s).ToList(),
-                Address = new AddressDto()
+                Status = (int) house.Status,
+                ProvideFacilities = house.ProvideFacilities.Select(s => (int) s).ToList(),
+                NotProvideFacilities = house.NotProvideFacilities.Select(s => (int) s).ToList(),
+                Address = new AddressDto
                 {
                     City = house.HouseLocation?.City,
                     Country = house.HouseLocation?.Country,
@@ -60,11 +60,11 @@ namespace Airelax.Application.Houses
                     LocationDescription = house.HouseLocation?.LocationDescription,
                     TrafficDescription = house.HouseLocation?.TrafficDescription
                 },
-                HouseCategory = new HouseCategoryVM()
+                HouseCategory = new HouseCategoryVM
                 {
-                    Category = (int)house.HouseCategory.Category,
-                    HouseType = (int)house.HouseCategory?.HouseType,
-                    RoomCategory = (int)house.HouseCategory?.RoomCategory
+                    Category = (int) house.HouseCategory.Category,
+                    HouseType = (int) house.HouseCategory?.HouseType,
+                    RoomCategory = (int) house.HouseCategory?.RoomCategory
                 },
                 SpaceBed = space.IsNullOrEmpty()
                     ? null
@@ -78,13 +78,13 @@ namespace Airelax.Application.Houses
                                     Id = s.Space.Id,
                                     HouseId = s.Space.HouseId,
                                     IsShared = s.Space.IsShared,
-                                    SpaceType = (int)s.Space.SpaceType
+                                    SpaceType = (int) s.Space.SpaceType
                                 };
                             if (s.BedroomDetail != null)
-                                spaceBedVm.BedroomDetailVM = new BedroomDetailVM()
+                                spaceBedVm.BedroomDetailVM = new BedroomDetailVM
                                 {
                                     BedCount = s.BedroomDetail.BedCount,
-                                    BedType = (int?)s.BedroomDetail?.BedType,
+                                    BedType = (int?) s.BedroomDetail?.BedType,
                                     HasIndependentBath = s.BedroomDetail.HasIndependentBath,
                                     SpaceId = s.BedroomDetail.SpaceId
                                 };
@@ -92,16 +92,16 @@ namespace Airelax.Application.Houses
                         })),
 
                 CustomerNumber = house.CustomerNumber,
-                Origin = Convert.ToString((int)house.HousePrice.PerNight),
-                SweetPrice = Convert.ToString((int)house.HousePrice.PerWeekNight),
+                Origin = Convert.ToString((int) house.HousePrice.PerNight),
+                SweetPrice = Convert.ToString((int) house.HousePrice.PerWeekNight),
                 ////Discount
                 ////Fee = price.Fee,
-                Cancel = (int)house.Policy.CancelPolicy,
+                Cancel = (int) house.Policy.CancelPolicy,
                 InstanceBooking = house.Policy.CanRealTime,
                 CheckinTime = house.Policy.CheckinTime.ToString("t", DateTimeFormatInfo.InvariantInfo),
                 CheckoutTime = house.Policy.CheckoutTime.ToString("t", DateTimeFormatInfo.InvariantInfo),
-                CashPledge = Convert.ToString((int)house.Policy.CashPledge),
-                HouseRule = new HouseRuleDto()
+                CashPledge = Convert.ToString((int) house.Policy.CashPledge),
+                HouseRule = new HouseRuleDto
                 {
                     AllowChild = house.HouseRule.AllowChild,
                     AllowBaby = house.HouseRule.AllowBaby,
@@ -262,13 +262,13 @@ namespace Airelax.Application.Houses
         public HouseSpaceInput CreateSpace(string id, HouseSpaceInput input)
         {
             var house = _manageHouseRepository.Get(id);
-            var space=  new Space(house.Id)
+            var space = new Space(house.Id)
             {
                 HouseId = input.HouseId,
-                SpaceType = (SpaceType)input.SpaceType,
+                SpaceType = (SpaceType) input.SpaceType,
                 IsShared = input.IsShared
             };
-            house.Spaces.Add(space);     
+            house.Spaces.Add(space);
             _manageHouseRepository.Update(house);
             _manageHouseRepository.SaveChange();
             return input;
@@ -277,7 +277,7 @@ namespace Airelax.Application.Houses
         public HouseSpaceInput DeleteSpace(string id, HouseSpaceInput input)
         {
             var house = _manageHouseRepository.Get(id);
-            var deleteObj = house.Spaces.LastOrDefault(x => (int)x.SpaceType == input.SpaceType);
+            var deleteObj = house.Spaces.LastOrDefault(x => (int) x.SpaceType == input.SpaceType);
             house.Spaces.Remove(deleteObj);
             _manageHouseRepository.Update(house);
             _manageHouseRepository.SaveChange();
@@ -287,18 +287,19 @@ namespace Airelax.Application.Houses
         public BedroomDetailInput CreateBedroomDetail(string id, BedroomDetailInput input)
         {
             var house = _manageHouseRepository.Get(id);
-            var updateObj = _manageHouseRepository.GetBedroom().FirstOrDefault(y => y.SpaceId == input.SpaceId && (int)y.BedType == input.BedType);
+            var updateObj = _manageHouseRepository.GetBedroom().FirstOrDefault(y => y.SpaceId == input.SpaceId && (int) y.BedType == input.BedType);
             if (updateObj != null)
             {
                 UpdateBedroomDetail(id, input);
                 return input;
             }
+
             var bedroomDetail = new BedroomDetail(input.SpaceId)
             {
                 SpaceId = input.SpaceId,
-                BedType = (BedType)input.BedType,
-                BedCount = (int)input.BedCount,
-                HasIndependentBath = (bool)input.HasIndependentBath
+                BedType = (BedType) input.BedType,
+                BedCount = (int) input.BedCount,
+                HasIndependentBath = (bool) input.HasIndependentBath
             };
             _manageHouseRepository.CreateBedroom(bedroomDetail);
             _manageHouseRepository.Update(house);
@@ -309,9 +310,9 @@ namespace Airelax.Application.Houses
         public BedroomDetailInput UpdateBedroomDetail(string id, BedroomDetailInput input)
         {
             var house = _manageHouseRepository.Get(id);
-            var updateObj = _manageHouseRepository.GetBedroom().FirstOrDefault(y => y.SpaceId == input.SpaceId && (int)y.BedType == input.BedType);
-            updateObj.BedCount = (int)input.BedCount;
-            updateObj.HasIndependentBath = (bool)input.HasIndependentBath;
+            var updateObj = _manageHouseRepository.GetBedroom().FirstOrDefault(y => y.SpaceId == input.SpaceId && (int) y.BedType == input.BedType);
+            updateObj.BedCount = (int) input.BedCount;
+            updateObj.HasIndependentBath = (bool) input.HasIndependentBath;
             _manageHouseRepository.Update(house);
             _manageHouseRepository.SaveChange();
             return input;
@@ -327,7 +328,7 @@ namespace Airelax.Application.Houses
             }).ToList();
             await _houseRepository.UpdateAsync(house);
             await _houseRepository.SaveChangesAsync();
-            return new UploadHouseImagesViewModel() {Images = input.Images};
+            return new UploadHouseImagesViewModel {Images = input.Images};
         }
     }
 }

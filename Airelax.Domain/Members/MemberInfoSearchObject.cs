@@ -1,6 +1,6 @@
-﻿using Airelax.Domain.Comments;
+﻿using System;
+using Airelax.Domain.Comments;
 using Airelax.Domain.Houses.Defines;
-using System;
 
 namespace Airelax.Controllers
 {

@@ -9,26 +9,26 @@ using Airelax.Domain.DomainObject;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Defines;
 using Airelax.Domain.Houses.Defines.Spaces;
+using Airelax.Domain.Houses.Price;
 using Airelax.Domain.Houses.Specifications;
 using Airelax.Domain.RepositoryInterface;
-using Lazcat.Infrastructure.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using Lazcat.Infrastructure.ExceptionHandlers;
-using Airelax.Domain.Houses.Price;
 using Airelax.Infrastructure.Map.Abstractions;
 using Airelax.Infrastructure.Map.Responses;
 using AutoMapper;
+using Lazcat.Infrastructure.DependencyInjection;
+using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Airelax.Application.Houses
 {
     [DependencyInjection(typeof(IHouseAppService))]
     public class HouseAppService : IHouseAppService
     {
-        private readonly IHouseRepository _houseRepository;
-        private readonly IMemberRepository _memberRepository;
         private readonly IGeocodingService _geocodingService;
+        private readonly IHouseRepository _houseRepository;
         private readonly IMapper _mapper;
+        private readonly IMemberRepository _memberRepository;
 
 
         public HouseAppService(IHouseRepository houseRepository, IMemberRepository memberRepository, IGeocodingService geocodingService, IMapper mapper)
@@ -44,15 +44,15 @@ namespace Airelax.Application.Houses
             Check.CheckNull(input);
             //todo
             //var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.Location);
-            var geocodingInfo = new GeocodingInfo()
+            var geocodingInfo = new GeocodingInfo
             {
-                Bounds = new CoordinateRange()
+                Bounds = new CoordinateRange
                 {
                     Northeast = new Coordinate(25.2103038, 121.6659421),
                     SouthWest = new Coordinate(24.9605084, 121.4570603)
                 },
                 Location = new Coordinate(25.0329636, 121.5654268),
-                Viewport = new CoordinateRange()
+                Viewport = new CoordinateRange
                 {
                     Northeast = new Coordinate(25.2103038, 121.6659421),
                     SouthWest = new Coordinate(24.9605084, 121.4570603)
@@ -61,11 +61,11 @@ namespace Airelax.Application.Houses
 
             if (geocodingInfo == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "找不到地址");
 
-            var searchHousesResponse = new SearchHousesResponse()
+            var searchHousesResponse = new SearchHousesResponse
             {
-                LocationInfo = new LocationInfoDto()
+                LocationInfo = new LocationInfoDto
                 {
-                    Center = _mapper.Map<Coordinate, CoordinateDto>(geocodingInfo.Location),
+                    Center = _mapper.Map<Coordinate, CoordinateDto>(geocodingInfo.Location)
                 }
             };
 
@@ -96,8 +96,8 @@ namespace Airelax.Application.Houses
             var house = await _houseRepository.GetAsync(x => x.Id == id);
             if (house == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"House Id : {id} does not match any house");
             var member = await _memberRepository.GetAsync(x => x.Id == house.OwnerId);
-            if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"House exist but member has been deleted");
-            var houseDto = new HouseDto()
+            if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "House exist but member has been deleted");
+            var houseDto = new HouseDto
             {
                 Id = house.Id,
                 Title = house.Title,
@@ -107,17 +107,11 @@ namespace Airelax.Application.Houses
                 BedroomDetail = ConvertToBedroomDetailDtos(house),
                 Description = ConvertToDescriptionDto(house.HouseDescription),
                 Facility = ConvertToFacilityDto(house),
-                Honor = new List<HonorDto>()
-                {
-                    //todo
-                },
-                Comments = new List<CommentDto>
-                {
-                    //todo
-                },
+                Honor = new List<HonorDto>(),
+                Comments = new List<CommentDto>(),
                 HouseRule = ConvertToHouseRuleDto(house.HouseRule, house.Policy),
                 LocationDto = ConvertToLocationDto(house.HouseLocation),
-                Owner = new OwnerDto()
+                Owner = new OwnerDto
                 {
                     Name = member.Name,
                     Id = member.Id,
@@ -126,14 +120,8 @@ namespace Airelax.Application.Houses
                     IsVerified = member.IsEmailVerified,
                     Cover = member.Cover
                 },
-                Rank = new RankDto()
-                {
-                    //todo
-                },
-                WishList = new WishListDto()
-                {
-                    //todo
-                },
+                Rank = new RankDto(),
+                WishList = new WishListDto(),
                 Price = ConvertToPriceDto(house.HousePrice)
             };
             return houseDto;
@@ -161,10 +149,7 @@ namespace Airelax.Application.Houses
                 {
                     Number = x.Comments?.Count ?? 0
                 };
-                if (!x.Comments.IsNullOrEmpty())
-                {
-                    simpleComment.Stars = Math.Round(x.Comments?.Average(c => c.Star?.Total ?? 0) ?? 0, 1);
-                }
+                if (!x.Comments.IsNullOrEmpty()) simpleComment.Stars = Math.Round(x.Comments?.Average(c => c.Star?.Total ?? 0) ?? 0, 1);
 
                 var simpleHouse = new SearchHouse
                 {
@@ -198,7 +183,7 @@ namespace Airelax.Application.Houses
                     Picture = x.Pictures?.Select(p => p.Image) ?? new List<string>(),
                     Price = ConvertToPriceDto(x.Price),
                     Space = ConvertToSimpleSpaceDto(x),
-                    Title = x.Title,
+                    Title = x.Title
                 };
                 SetWishWist(x, simpleHouseDto);
 
@@ -210,21 +195,19 @@ namespace Airelax.Application.Houses
         {
             var wishList = x.WishList?.FirstOrDefault(w => w.Houses.Contains(x.Id));
             if (wishList != null)
-            {
-                simpleHouseDto.WishList = new WishListDto()
+                simpleHouseDto.WishList = new WishListDto
                 {
                     Cover = wishList.Cover,
                     Houses = wishList.Houses,
                     Name = wishList.Name
                 };
-            }
         }
 
         private static SimpleSpaceDto ConvertToSimpleSpaceDto(SearchHouse house)
         {
-            var simpleSpaceDto = new SimpleSpaceDto()
+            var simpleSpaceDto = new SimpleSpaceDto
             {
-                CustomerNumber = house.CustomerNumber,
+                CustomerNumber = house.CustomerNumber
             };
 
             if (house.Space.IsNullOrEmpty()) return simpleSpaceDto;
@@ -241,12 +224,12 @@ namespace Airelax.Application.Houses
         {
             var facilitiesList = facilities?.ToList();
             if (facilitiesList.IsNullOrEmpty()) return new SimpleFacilityDto();
-            return new SimpleFacilityDto()
+            return new SimpleFacilityDto
             {
                 AirConditioner = facilitiesList.Any(f => f == Facility.AirConditioner),
                 Kitchen = facilitiesList.Any(f => f == Facility.Kitchen),
                 WashingMachine = facilitiesList.Any(f => f == Facility.WashMachine),
-                Wifi = facilitiesList.Any(f => f == Facility.Wifi),
+                Wifi = facilitiesList.Any(f => f == Facility.Wifi)
             };
         }
 
@@ -261,10 +244,10 @@ namespace Airelax.Application.Houses
 
         private static PriceDto ConvertToPriceDto(HousePrice housePrice)
         {
-            var price = new PriceDto()
+            var price = new PriceDto
             {
                 Discount = new DiscountDto(),
-                Fee = new FeeDto(),
+                Fee = new FeeDto()
             };
             if (housePrice == null) return price;
 
@@ -324,7 +307,7 @@ namespace Airelax.Application.Houses
         {
             return houseHouseDescription == null
                 ? new DescriptionDto()
-                : new DescriptionDto()
+                : new DescriptionDto
                 {
                     HouseDescription = houseHouseDescription.Description,
                     GuestPermission = houseHouseDescription.GuestPermission,
@@ -335,7 +318,7 @@ namespace Airelax.Application.Houses
 
         private static IEnumerable<BedroomDetailDto> ConvertToBedroomDetailDtos(House house)
         {
-            return house.Spaces?.SelectMany(x => x.BedroomDetails).Select(x => new BedroomDetailDto()
+            return house.Spaces?.SelectMany(x => x.BedroomDetails).Select(x => new BedroomDetailDto
             {
                 BedCount = x.BedCount,
                 BedType = x.BedType.ToString()
@@ -344,26 +327,24 @@ namespace Airelax.Application.Houses
 
         private static FacilityDto ConvertToFacilityDto(House house)
         {
-            return new FacilityDto()
+            return new()
             {
                 Provide = house.ProvideFacilities?.Select(x => (int) x),
                 NotProvide = house.NotProvideFacilities?.Select(x => (int) x)
             };
         }
+
         private static IEnumerable<DateTime> GetDateRange(DateTime start, DateTime end)
         {
             var dateRange = new List<DateTime>();
-            for (var dt = start; dt < end; dt = dt.AddDays(1))
-            {
-                dateRange.Add(dt);
-            }
+            for (var dt = start; dt < end; dt = dt.AddDays(1)) dateRange.Add(dt);
 
             return dateRange;
         }
 
         private static SimpleSpaceDto ConvertToSpaceDto(House house)
         {
-            var spaceDto = new SimpleSpaceDto() {CustomerNumber = house.CustomerNumber};
+            var spaceDto = new SimpleSpaceDto {CustomerNumber = house.CustomerNumber};
             var houseSpaces = house.Spaces;
             if (houseSpaces == null) return spaceDto;
 

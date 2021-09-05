@@ -7,8 +7,8 @@ namespace Airelax.Application.Orders.Request
     {
         //Order
         public string CustomerId { get; set; }
-        [Required]
-        public string HouseId { get; set; }
+
+        [Required] public string HouseId { get; set; }
 
         //OrderDetail
         public DateTime StartDate { get; set; }

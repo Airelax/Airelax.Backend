@@ -1,23 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Airelax.Application.Account;
 using Airelax.Application.Account.Dtos.Request;
 using Airelax.Domain.Members.Defines;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Airelax.Controllers
 {
-    
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
-       
+
         public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
-            
         }
 
         //註冊
@@ -33,14 +32,13 @@ namespace Airelax.Controllers
         {
             if (ModelState.IsValid)
             {
-                string message=_accountService.RegisterAccount(input);
+                var message = _accountService.RegisterAccount(input);
                 return Content(message);
             }
-            else
-            {
-                return View(input);
-            }
+
+            return View(input);
         }
+
         //登入
         [HttpGet]
         public IActionResult Login()
@@ -53,7 +51,7 @@ namespace Airelax.Controllers
         public IActionResult Login(LoginInput input)
         {
             if (!ModelState.IsValid) return View(input);
-            var loginResult =_accountService.LoginAccount(input);
+            var loginResult = _accountService.LoginAccount(input);
             switch (loginResult.result)
             {
                 case "success":
@@ -64,7 +62,6 @@ namespace Airelax.Controllers
                 {
                     var login = new RegisterInput
                     {
-
                         Birthday = DateTime.Now,
                         Email = input.Account,
 
@@ -81,8 +78,8 @@ namespace Airelax.Controllers
         // google facebook line
         public IActionResult ThirdParty(string provider, string returnUrl = null)
         {
-            var redirectUrl = Url.Action("DefaultResponse", controller: "Account", values: new { returnUrl });
-            return new ChallengeResult(provider, new AuthenticationProperties { RedirectUri = redirectUrl ?? "/" });
+            var redirectUrl = Url.Action("DefaultResponse", "Account", new {returnUrl});
+            return new ChallengeResult(provider, new AuthenticationProperties {RedirectUri = redirectUrl ?? "/"});
         }
 
         public async Task<IActionResult> DefaultResponse()
@@ -107,5 +104,4 @@ namespace Airelax.Controllers
             return RedirectToAction("Logout");
         }
     }
-
 }

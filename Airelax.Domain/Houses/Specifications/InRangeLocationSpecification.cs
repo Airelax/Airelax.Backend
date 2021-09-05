@@ -7,8 +7,8 @@ namespace Airelax.Domain.Houses.Specifications
 {
     public class InRangeLocationSpecification : Specification<House>
     {
-        private readonly Coordinate _southwest;
         private readonly Coordinate _northeast;
+        private readonly Coordinate _southwest;
 
 
         public InRangeLocationSpecification(Coordinate southwest, Coordinate northeast)

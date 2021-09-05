@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Airelax.EntityFramework.Repositories
 {
     [DependencyInjection(typeof(IGenericRepository<,>))]
-    public class EFGenericRepository<TId, TEntity>: IGenericRepository<TId, TEntity> where TEntity : Entity<TId>
+    public class EFGenericRepository<TId, TEntity> : IGenericRepository<TId, TEntity> where TEntity : Entity<TId>
     {
         private readonly AirelaxContext _context;
 
@@ -19,6 +19,7 @@ namespace Airelax.EntityFramework.Repositories
         {
             _context = context;
         }
+
         public IQueryable<TEntity> GetAll()
         {
             return _context.Set<TEntity>();

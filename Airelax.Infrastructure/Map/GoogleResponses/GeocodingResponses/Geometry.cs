@@ -2,7 +2,6 @@
 
 namespace Airelax.Infrastructure.Map.GoogleResponses.GeocodingResponses
 {
-
     public class Geometry
     {
         public GoogleCoordinateRange bounds { get; set; }

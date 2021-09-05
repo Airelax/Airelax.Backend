@@ -1,14 +1,13 @@
-﻿using Airelax.Application.Houses;
+﻿using System.Threading.Tasks;
+using Airelax.Application.Houses;
 using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Application.Houses.Dtos.Response;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Airelax.Controllers
 {
     [ApiController]
-    [Route(template: "api/[controller]")]
+    [Route("api/[controller]")]
     public class HousesController : Controller
     {
         private readonly IHouseAppService _houseAppService;

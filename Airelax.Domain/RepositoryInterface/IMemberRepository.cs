@@ -2,8 +2,7 @@
 
 namespace Airelax.Domain.RepositoryInterface
 {
-    public interface IMemberRepository: IGenericRepository<string, Member>
+    public interface IMemberRepository : IGenericRepository<string, Member>
     {
-        
     }
 }

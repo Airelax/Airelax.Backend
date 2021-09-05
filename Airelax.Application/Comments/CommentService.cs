@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Airelax.Application.Comments.Dtos.Request;
 using Airelax.Application.Comments.Dtos.Response;
 using Airelax.Domain.Comments;
@@ -20,17 +21,18 @@ namespace Airelax.Application.Comments
         {
             _commentsRepository = commentsRepository;
         }
+
         public IEnumerable<HouseCommentViewModel> GetHouseComments(string memberId)
         {
             var comments = _commentsRepository.Get(memberId);
 
             if (comments == null || !comments.Any()) return null;
-            var commentViewModels = comments.Select(com => new HouseCommentViewModel()
+            var commentViewModels = comments.Select(com => new HouseCommentViewModel
             {
                 HouseId = com.Key,
                 HouseName = com.First().HouseName,
-                HouseState = (int)com.First().HouseStatus,
-                Comments = com.Select(c => new CommentViewModel()
+                HouseState = (int) com.First().HouseStatus,
+                Comments = com.Select(c => new CommentViewModel
                 {
                     CommentId = c.Comment.Id,
                     CommentTime = c.Comment.CommentTime.ToString("yyyy/MM"),
@@ -42,11 +44,7 @@ namespace Airelax.Application.Comments
 
             return commentViewModels;
         }
-        private void CheckCustomerIdAndHouseId(Order CustomerIdAndHouseId)
-        {
-            if (CustomerIdAndHouseId == null)
-                throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"doesnt match HouseId or OrderId ");
-        }
+
         public void CreateComment(CreateCommentInput input)
         {
             var CustomerIdAndHouseId = _commentsRepository.GetCustomerIdAndHouseIdByOrder(input.OrderId);
@@ -62,14 +60,19 @@ namespace Airelax.Application.Comments
                 OrderId = input.OrderId,
                 Content = input.Content,
                 CommentTime = DateTime.Now,
-                LastModifyTime = DateTime.Now,
-
+                LastModifyTime = DateTime.Now
             };
 
             comment.Star = new Star(comment.Id, input.CleanScore, input.CommunicationScore, input.ExperienceScore, input.CheapScore, input.LocationScore, input.AccuracyScore);
 
             _commentsRepository.Add(comment);
             _commentsRepository.SaveChanges();
+        }
+
+        private void CheckCustomerIdAndHouseId(Order CustomerIdAndHouseId)
+        {
+            if (CustomerIdAndHouseId == null)
+                throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "doesnt match HouseId or OrderId ");
         }
     }
 }

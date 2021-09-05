@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Airelax.Application.MemberInfos;
 using Airelax.Application.MemberInfos.Request;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Airelax.Controllers
 {
@@ -22,10 +22,8 @@ namespace Airelax.Controllers
             var memberInfoViewModel = _memberInfoService.GetMemberInfoViewModel(memberId);
 
             if (memberInfoViewModel == null)
-            {
                 //todo 錯誤畫面
                 return Content("錯誤畫面");
-            }
 
             return View(memberInfoViewModel);
         }

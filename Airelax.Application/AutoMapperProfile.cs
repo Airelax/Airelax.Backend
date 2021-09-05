@@ -1,9 +1,4 @@
-﻿using System;
-using Airelax.Application.Houses.Dtos.Response;
-using Airelax.Domain.Comments;
-using Airelax.Domain.Houses;
-using Airelax.Domain.Houses.Price;
-using Airelax.Domain.Members;
+﻿using Airelax.Application.Houses.Dtos.Response;
 using Airelax.Infrastructure.Map.Responses;
 using AutoMapper;
 

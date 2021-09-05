@@ -1,12 +1,10 @@
-﻿using Airelax.Domain.Members;
+﻿using System.Linq;
+using Airelax.Domain.Members;
+using Airelax.Domain.RepositoryInterface;
 using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Airelax
+namespace Airelax.EntityFramework.Repositories
 {
     [DependencyInjection(typeof(IAccountRepository))]
     public class AccountRepository : IAccountRepository
@@ -17,20 +15,20 @@ namespace Airelax
         {
             _ctx = airelaxContext;
         }
-        
+
         public MemberLoginInfo GetMemberInfoByAccount(string account)
         {
-            return _ctx.MemberLoginInfos.SingleOrDefault((m) => m.Account == account);
+            return _ctx.MemberLoginInfos.SingleOrDefault(m => m.Account == account);
         }
 
         public Member GetMemByAccount(string account)
         {
-            return _ctx.Members.SingleOrDefault((m) => m.Email == account);
+            return _ctx.Members.SingleOrDefault(m => m.Email == account);
         }
 
         public Member GetMemByEmail(string email)
         {
-            return _ctx.Members.SingleOrDefault((m) => m.Email == email);
+            return _ctx.Members.SingleOrDefault(m => m.Email == email);
         }
 
         public void Update(Member mem)
@@ -60,7 +58,7 @@ namespace Airelax
 
         public void UpdateToken(string id, string token)
         {
-            var memberLoginInfo = _ctx.MemberLoginInfos.SingleOrDefault((m) => m.Id == id);
+            var memberLoginInfo = _ctx.MemberLoginInfos.SingleOrDefault(m => m.Id == id);
             memberLoginInfo.Token = token;
             SaveChange();
         }

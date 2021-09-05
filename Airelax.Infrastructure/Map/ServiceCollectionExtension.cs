@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-
 namespace Airelax.Infrastructure.Map
 {
     public static class ServiceCollectionExtension

@@ -1,6 +1,5 @@
 ﻿using System;
 using Lazcat.Infrastructure.Reflection;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Airelax.Controllers

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Airelax.Application.MemberInfos.Request;
 using Airelax.Application.MemberInfos.Response;
@@ -27,7 +28,7 @@ namespace Airelax.Application.MemberInfos
             if (info.IsNullOrEmpty()) return null;
 
             var groupInfo = info.GroupBy(x => x.HouseId);
-            var memberInfoViewModel = new MemberInfoViewModel()
+            var memberInfoViewModel = new MemberInfoViewModel
             {
                 MemberId = memberId,
                 About = info.First().About,
@@ -59,7 +60,7 @@ namespace Airelax.Application.MemberInfos
 
             if (member?.MemberInfos == null)
             {
-                var memberInfo = new Domain.Members.MemberInfo(memberId)
+                var memberInfo = new MemberInfo(memberId)
                 {
                     About = input.About,
                     Location = input.Location,
@@ -93,7 +94,7 @@ namespace Airelax.Application.MemberInfos
             var member = _memberInfoRepository.GetMemberWithMemberInfo(memberId);
 
             if (member?.Member == null)
-                throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest
+                throw ExceptionBuilder.Build(HttpStatusCode.BadRequest
                     , $"Member Id:{memberId} does not match any member"); //400
             return member;
         }

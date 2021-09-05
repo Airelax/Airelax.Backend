@@ -65,11 +65,31 @@
         <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
         <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
         <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\LICENSE" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\android-chrome-192x192.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\android-chrome-512x512.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\apple-touch-icon-120x120.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\apple-touch-icon-152x152.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\apple-touch-icon-180x180.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\apple-touch-icon-60x60.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\apple-touch-icon-76x76.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\apple-touch-icon.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\favicon-16x16.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\favicon-32x32.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\msapplication-icon-144x144.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\mstile-150x150.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\safari-pinned-tab.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\css\app.44ded788.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\css\site.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\LICENSE.md" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Views\Home" />
-      <Folder Include="wwwroot\dist\scss\" />
+      <Folder Include="wwwroot\lib" />
     </ItemGroup>
 
     <ItemGroup>

@@ -8,7 +8,5 @@
             public const string IMAGE_TYPE = "image";
             public const string MAX_NVARCHAR = "nvarchar(max)";
         }
-        
-        
     }
 }

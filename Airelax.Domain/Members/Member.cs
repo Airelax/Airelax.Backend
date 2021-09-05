@@ -10,6 +10,16 @@ namespace Airelax.Domain.Members
 {
     public class Member : AggregateRoot<string>
     {
+        public Member()
+        {
+            Id = GuidHelper.CreateId(prefix: "M");
+            IsDeleted = false;
+            RegisterTime = DateTime.Now;
+            IsPhoneVerified = false;
+            IsEmailVerified = false;
+            Gender = Gender.Other;
+        }
+
         public string Name { get; set; }
         public Gender Gender { get; set; }
         public DateTime Birthday { get; set; }
@@ -31,16 +41,6 @@ namespace Airelax.Domain.Members
         public EmergencyContact EmergencyContact { get; set; }
         public ICollection<WishList> WishLists { get; set; }
         public ICollection<Order> Orders { get; set; }
-
-        public Member()
-        {
-            Id = GuidHelper.CreateId(prefix: "M");
-            IsDeleted = false;
-            RegisterTime = DateTime.Now;
-            IsPhoneVerified = false;
-            IsEmailVerified = false;
-            Gender = Gender.Other;
-        }
 
         // public void VerifyPhone()
         // {

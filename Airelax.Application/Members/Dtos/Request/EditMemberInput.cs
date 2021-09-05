@@ -9,6 +9,5 @@
         public string Zipcode { get; set; }
         public string AddressDetail { get; set; }
         public string Phone { get; set; }
-
     }
 }

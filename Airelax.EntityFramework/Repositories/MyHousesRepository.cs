@@ -12,6 +12,7 @@ namespace Airelax.EntityFramework.Repositories
     public class MyHousesRepository : IMyHousesRepository
     {
         private readonly AirelaxContext _context;
+
         public MyHousesRepository(AirelaxContext context)
         {
             _context = context;
@@ -20,13 +21,11 @@ namespace Airelax.EntityFramework.Repositories
         public List<House> GetHousesByOwnerId(string ownerId)
         {
             return _context.Houses.Include(x => x.HouseLocation)
-                           .Include(x => x.Policy)
-                           .Include(x => x.ReservationRule)
-                           .Include(x => x.Photos)
-                           .Where(x => x.OwnerId == ownerId)// && !x.IsDeleted)
-                           .ToList();
-
+                .Include(x => x.Policy)
+                .Include(x => x.ReservationRule)
+                .Include(x => x.Photos)
+                .Where(x => x.OwnerId == ownerId) // && !x.IsDeleted)
+                .ToList();
         }
-
     }
 }

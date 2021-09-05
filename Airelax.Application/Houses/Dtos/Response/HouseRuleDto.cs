@@ -1,5 +1,3 @@
-
-
 namespace Airelax.Application.Houses.Dtos.Response
 {
     public class HouseRuleDto
