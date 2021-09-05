@@ -1,13 +1,12 @@
-﻿using Airelax.Domain.Comments;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Airelax.Domain.Comments;
 using Airelax.Domain.Orders;
+using Airelax.Domain.RepositoryInterface;
 using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Airelax
+namespace Airelax.EntityFramework.Repositories
 {
     [DependencyInjection(typeof(ICommentsRepository))]
     public class CommentsRepository : ICommentsRepository
@@ -33,16 +32,16 @@ namespace Airelax
 
             return commentsGroup;
         }
-        public Order GetCustomerIdAndHouseIdByOrder(string OrderId)
+        public Order GetCustomerIdAndHouseIdByOrder(string orderId)
         {
             var CustomerIdAndHouseId = _context.Orders
-                                     .FirstOrDefault(o => o.Id == OrderId);
+                                     .FirstOrDefault(o => o.Id == orderId);
             return CustomerIdAndHouseId;
         }
-        public string GetMemberIdByHouse(string OrderId)
+        public string GetMemberIdByHouse(string orderId)
         {
             var OwnerId = _context.Houses
-                        .FirstOrDefault(h => h.Id == GetCustomerIdAndHouseIdByOrder(OrderId).HouseId).OwnerId;
+                        .FirstOrDefault(h => h.Id == GetCustomerIdAndHouseIdByOrder(orderId).HouseId).OwnerId;
             return OwnerId;
         }
         public void Add(Comment comment)

@@ -1,10 +1,6 @@
-﻿using Airelax.Domain.Members;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Airelax
+namespace Airelax.Application.WishLists.Dtos.Response
 {
     public class WishListViewModel
     {

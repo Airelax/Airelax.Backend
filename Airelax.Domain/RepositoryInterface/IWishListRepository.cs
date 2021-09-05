@@ -1,7 +1,7 @@
 ﻿using Airelax.Domain.Houses;
 using Airelax.Domain.Members;
 
-namespace Airelax
+namespace Airelax.Domain.RepositoryInterface
 {
     public interface IWishListRepository
     {

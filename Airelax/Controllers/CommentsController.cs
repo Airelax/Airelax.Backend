@@ -1,12 +1,6 @@
-﻿using Airelax.Domain.Comments;
-using Airelax.Domain.Orders;
-using Airelax.EntityFramework.DbContexts;
-using Lazcat.Infrastructure.ExceptionHandlers;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using Airelax.Application.Comments;
+using Airelax.Application.Comments.Dtos.Request;
 
 namespace Airelax.Controllers
 {

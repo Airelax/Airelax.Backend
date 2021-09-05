@@ -1,16 +1,12 @@
-﻿using Airelax.Domain.Houses;
+﻿using System.Linq;
+using Airelax.Domain.Houses;
 using Airelax.Domain.Members;
+using Airelax.Domain.RepositoryInterface;
 using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.DependencyInjection;
-using Lazcat.Infrastructure.ExceptionHandlers;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Airelax
+namespace Airelax.EntityFramework.Repositories
 {
     [DependencyInjection(typeof(IWishListRepository))]
     public class WishListRepository : IWishListRepository

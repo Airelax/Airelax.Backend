@@ -1,12 +1,4 @@
-﻿using Airelax.Domain.Comments;
-using Airelax.Domain.DomainObject;
-using Lazcat.Infrastructure.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Airelax
+﻿namespace Airelax.Application.Comments.Dtos.Response
 {
     public class HouseCommentViewModel
     {

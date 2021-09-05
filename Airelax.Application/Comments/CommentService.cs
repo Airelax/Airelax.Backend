@@ -1,13 +1,15 @@
-﻿using Airelax.Domain.Comments;
-using Airelax.Domain.Orders;
-using Lazcat.Infrastructure.DependencyInjection;
-using Lazcat.Infrastructure.ExceptionHandlers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Airelax.Application.Comments.Dtos.Request;
+using Airelax.Application.Comments.Dtos.Response;
+using Airelax.Domain.Comments;
+using Airelax.Domain.Orders;
+using Airelax.Domain.RepositoryInterface;
+using Lazcat.Infrastructure.DependencyInjection;
+using Lazcat.Infrastructure.ExceptionHandlers;
 
-namespace Airelax
+namespace Airelax.Application.Comments
 {
     [DependencyInjection(typeof(ICommentService))]
     public class CommentService : ICommentService

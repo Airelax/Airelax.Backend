@@ -1,13 +1,8 @@
-﻿using Airelax.Domain.Houses;
-using Airelax.Domain.Members;
-using Airelax.EntityFramework.DbContexts;
-using Lazcat.Infrastructure.ExceptionHandlers;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Airelax.Application.WishLists;
+using Airelax.Application.WishLists.Dtos.Request;
+using Airelax.Application.WishLists.Dtos.Response;
 
 namespace Airelax.Controllers
 {

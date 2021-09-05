@@ -1,13 +1,13 @@
-﻿using Airelax.Domain.Houses;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Airelax.Application.WishLists.Dtos.Response;
+using Airelax.Domain.Houses;
 using Airelax.Domain.Members;
+using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Airelax
+namespace Airelax.Application.WishLists
 {
     [DependencyInjection(typeof(IWishListService))]
     public class WishListService : IWishListService

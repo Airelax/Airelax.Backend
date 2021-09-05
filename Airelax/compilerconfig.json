@@ -6,20 +6,21 @@
   {
     "outputFile": "wwwroot/scss/Personal info.css",
     "inputFile": "wwwroot/scss/Personal info.scss"
-    {
-      "outputFile": "wwwroot/Assets/scss/SHOP-68.css",
-      "inputFile": "wwwroot/Assets/scss/SHOP-68.scss"
-    },
-    {
-      "outputFile": "wwwroot/Assets/scss/UploadPicture.css",
-      "inputFile": "wwwroot/Assets/scss/UploadPicture.scss"
-    },
-    {
-      "outputFile": "wwwroot/Assets/scss/swiper.css",
-      "inputFile": "wwwroot/Assets/scss/swiper.scss"
-    },
-    {
-      "outputFile": "wwwroot/dist/scss/SHOP-68.css",
-      "inputFile": "wwwroot/dist/scss/SHOP-68.scss"
-    }
+  },
+  {
+    "outputFile": "wwwroot/Assets/scss/SHOP-68.css",
+    "inputFile": "wwwroot/Assets/scss/SHOP-68.scss"
+  },
+  {
+    "outputFile": "wwwroot/Assets/scss/UploadPicture.css",
+    "inputFile": "wwwroot/Assets/scss/UploadPicture.scss"
+  },
+  {
+    "outputFile": "wwwroot/Assets/scss/swiper.css",
+    "inputFile": "wwwroot/Assets/scss/swiper.scss"
+  },
+  {
+    "outputFile": "wwwroot/dist/scss/SHOP-68.css",
+    "inputFile": "wwwroot/dist/scss/SHOP-68.scss"
+  }
 ]
