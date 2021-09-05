@@ -6,6 +6,7 @@ using Airelax.Application.Account.Dtos.Request;
 using Airelax.Domain.Members.Defines;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Airelax.Controllers
@@ -52,10 +53,13 @@ namespace Airelax.Controllers
         {
             if (!ModelState.IsValid) return View(input);
             var loginResult = _accountService.LoginAccount(input);
-            switch (loginResult.result)
+            switch (loginResult.Result)
             {
                 case "success":
-                    return Content("登入成功");
+                {
+                    Response.Cookies.Append("yee_mother_fucker", loginResult.Token, new CookieOptions() {HttpOnly = true, SameSite = SameSiteMode.Strict});
+                    return Redirect("/");
+                }
                 case "wrongPassword":
                     return Content("密碼錯誤");
                 case "signup":

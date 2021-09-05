@@ -52,7 +52,7 @@ namespace Airelax
                 connectString = Define.Database.DB_CONNECT_STRING;
             }
             // dotnet ef --startup-project Airelax migrations add $description -p Airelax.EntityFramework
-            // ��s��Ʈw dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework
+            // 更新資料庫 dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework
 
             //if use local DB
             services.AddDbContext<AirelaxContext>(opt =>
@@ -129,7 +129,7 @@ namespace Airelax
                     };
                 });
             services.AddControllersWithViews();
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddCors(opt => { opt.AddPolicy("dev", builder => builder.WithOrigins("http://localhost:8080")); });
         }
 

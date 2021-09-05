@@ -3,11 +3,13 @@ using Airelax.Application.Houses;
 using Airelax.Application.Houses.Dtos.Request.ManageHouse;
 using Airelax.Application.ManageHouses.Request;
 using Airelax.Application.ManageHouses.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Airelax.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     public class ManageHouseController : Controller
     {
         private readonly IManageHouseService _manageHouseService;

@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using Airelax.Application.Account.Dtos.Request;
 using Airelax.Application.Account.Dtos.Response;
@@ -10,6 +11,7 @@ using Airelax.Domain.Members;
 using Airelax.Domain.Members.Defines;
 using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -20,13 +22,24 @@ namespace Airelax.Application.Account
     {
         private readonly IAccountRepository _accountRepo;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMemberRepository _memberRepository;
 
-        public AccountService(IAccountRepository accountRepo, IConfiguration configuration)
+        public AccountService(IAccountRepository accountRepo, IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IMemberRepository memberRepository)
         {
             _accountRepo = accountRepo;
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
+            _memberRepository = memberRepository;
         }
 
+        public async Task<Member> GetMember()
+        {
+            var memberId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.ToString();
+            if (memberId == null) return null;
+            var member = await _memberRepository.GetAsync(x => x.Id == memberId);
+            return member;
+        }
 
         public string RegisterAccount(RegisterInput input)
         {
@@ -38,7 +51,7 @@ namespace Airelax.Application.Account
             {
                 var name = HttpUtility.HtmlEncode(input.LastName) + HttpUtility.HtmlEncode(input.FirstName);
                 var birthday = input.Birthday;
-                var password = Cryptography.Hash(HttpUtility.HtmlEncode(input.Password), out var Salt);
+                var password = CryptographyHelper.Hash(HttpUtility.HtmlEncode(input.Password), out var Salt);
 
 
                 var mem = new Member
@@ -51,14 +64,10 @@ namespace Airelax.Application.Account
                 };
 
                 //Member mem = _regService.memObj(input);
-
-
                 //尚未產出Id
                 _accountRepo.AddMem(mem);
+
                 //以產出Id
-
-
-                //string memId = _accountRepo.GetIdByEmail(email);
 
                 var memberLogInfo = new MemberLoginInfo(mem.Id)
                 {
@@ -87,29 +96,28 @@ namespace Airelax.Application.Account
 
             if (mem != null)
             {
-                var isPasswordPass = Cryptography.VerifyHash(HttpUtility.HtmlEncode(input.Password), memberInfo.Password);
+                var isPasswordPass = CryptographyHelper.VerifyHash(HttpUtility.HtmlEncode(input.Password), memberInfo.Password);
 
                 if (isPasswordPass)
                 {
                     var token = CreateToken(mem);
                     _accountRepo.UpdateToken(memberInfo.Id, token);
 
-                    result.token = token;
-                    result.result = "success";
+                    result.Token = token;
+                    result.Result = "success";
 
                     return result;
                 }
 
-                result.token = "";
-                result.result = "wrongPassword";
+                result.Token = "";
+                result.Result = "wrongPassword";
                 return result;
             }
 
-            result.token = "";
-            result.result = "signup";
+            result.Token = "";
+            result.Result = "signup";
             return result;
         }
-
 
         private string CreateToken(Member member)
         {
@@ -119,7 +127,6 @@ namespace Airelax.Application.Account
                 new(ClaimTypes.Name, member.Name),
                 new(ClaimTypes.UserData, member.Cover ?? "")
             };
-
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);

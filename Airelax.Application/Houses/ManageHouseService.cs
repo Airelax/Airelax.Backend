@@ -15,6 +15,7 @@ using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Airelax.Application.Houses
 {

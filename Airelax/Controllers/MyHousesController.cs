@@ -1,4 +1,5 @@
 ﻿using Airelax.Application.Houses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Airelax.Controllers
@@ -15,6 +16,7 @@ namespace Airelax.Controllers
 
         [HttpGet]
         [Route("{ownerId}")]
+        [Authorize]
         public IActionResult MyHousesDetail(string ownerId)
         {
             var myhousesViewModel = _myHousesService.GetMyHouseViewModel(ownerId);
