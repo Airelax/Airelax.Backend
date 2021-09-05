@@ -29,11 +29,11 @@ namespace Airelax.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Register(RegisterInput input)
+        public async Task<IActionResult> Register(RegisterInput input)
         {
             if (ModelState.IsValid)
             {
-                var message = _accountService.RegisterAccount(input);
+                var message = await _accountService.RegisterAccount(input);
                 return Content(message);
             }
 
@@ -55,14 +55,14 @@ namespace Airelax.Controllers
             var loginResult = _accountService.LoginAccount(input);
             switch (loginResult.Result)
             {
-                case "success":
+                case AccountStatus.Success:
                 {
                     Response.Cookies.Append("yee_mother_fucker", loginResult.Token, new CookieOptions() {HttpOnly = true, SameSite = SameSiteMode.Strict});
                     return Redirect("/");
                 }
-                case "wrongPassword":
+                case AccountStatus.WrongPassword:
                     return Content("密碼錯誤");
-                case "signup":
+                case AccountStatus.Signup:
                 {
                     var login = new RegisterInput
                     {

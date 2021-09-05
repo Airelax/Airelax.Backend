@@ -20,14 +20,12 @@ namespace Airelax.Application.Account
     [DependencyInjection(typeof(IAccountService))]
     public class AccountService : IAccountService
     {
-        private readonly IAccountRepository _accountRepo;
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMemberRepository _memberRepository;
 
-        public AccountService(IAccountRepository accountRepo, IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IMemberRepository memberRepository)
+        public AccountService( IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IMemberRepository memberRepository)
         {
-            _accountRepo = accountRepo;
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
             _memberRepository = memberRepository;
@@ -41,81 +39,67 @@ namespace Airelax.Application.Account
             return member;
         }
 
-        public string RegisterAccount(RegisterInput input)
+        public async Task<string> RegisterAccount(RegisterInput input)
         {
-            var member = _accountRepo.GetMemByEmail(HttpUtility.HtmlEncode(input.Email));
+            var member = await _memberRepository.GetMemberByAccountAsync(input.Email);
 
-            var email = HttpUtility.HtmlEncode(input.Email);
             var loginType = LoginType.Email;
-            if (member == null) //未被註冊的email
+            if (member != null) return "此信箱已被註冊";
+            var name = input.LastName + input.FirstName;
+            var password = CryptographyHelper.Hash(input.Password, out _);
+            //尚未產出Id
+            var mem = new Member
             {
-                var name = HttpUtility.HtmlEncode(input.LastName) + HttpUtility.HtmlEncode(input.FirstName);
-                var birthday = input.Birthday;
-                var password = CryptographyHelper.Hash(HttpUtility.HtmlEncode(input.Password), out var Salt);
+                Name = name,
+                Birthday = input.Birthday,
+                Email = input.Email,
+                // todo default cover
+                Cover = "acvavevasabhetscv"
+            };
 
-
-                var mem = new Member
-                {
-                    Name = name,
-                    Birthday = birthday,
-                    Email = email,
-                    // todo default cover
-                    Cover = "acvavevasabhetscv"
-                };
-
-                //Member mem = _regService.memObj(input);
-                //尚未產出Id
-                _accountRepo.AddMem(mem);
-
-                //以產出Id
-
-                var memberLogInfo = new MemberLoginInfo(mem.Id)
-                {
-                    Account = email,
-                    Password = password,
-                    LoginType = loginType,
-                    Token = CreateToken(mem)
-                };
-
-                _accountRepo.AddMemInfo(memberLogInfo);
-                _accountRepo.SaveChange();
-
-
-                return "註冊成功!";
-            }
-
-            return "此信箱已被註冊";
+            //以產出Id
+            var memberLogInfo = new MemberLoginInfo(mem.Id)
+            {
+                Account = input.Email,
+                Password = password,
+                LoginType = loginType,
+                Token = CreateToken(mem)
+            };
+            mem.MemberLoginInfo = memberLogInfo;
+            await _memberRepository.CreateAsync(mem);
+            await _memberRepository.SaveChangesAsync();
+            return "註冊成功!";
         }
 
         public LoginResult LoginAccount(LoginInput input)
         {
-            var account = HttpUtility.HtmlEncode(input.Account);
-            var memberInfo = _accountRepo.GetMemberInfoByAccount(account);
-            var mem = _accountRepo.GetMemByAccount(account);
+            var account = (input.Account);
+            var mem = _memberRepository.GetMemberByAccountAsync(account).Result;
             var result = new LoginResult();
 
             if (mem != null)
             {
-                var isPasswordPass = CryptographyHelper.VerifyHash(HttpUtility.HtmlEncode(input.Password), memberInfo.Password);
+                var isPasswordPass = CryptographyHelper.VerifyHash(HttpUtility.HtmlEncode(input.Password), mem.MemberLoginInfo.Password);
 
                 if (isPasswordPass)
                 {
                     var token = CreateToken(mem);
-                    _accountRepo.UpdateToken(memberInfo.Id, token);
+                    mem.MemberLoginInfo.Token = token;
+                    _memberRepository.UpdateAsync(mem).Wait();
 
                     result.Token = token;
-                    result.Result = "success";
+                    result.Result = AccountStatus.Success;
 
                     return result;
                 }
 
                 result.Token = "";
-                result.Result = "wrongPassword";
+                result.Result = AccountStatus.WrongPassword;
                 return result;
             }
 
             result.Token = "";
-            result.Result = "signup";
+            result.Result = AccountStatus.Signup;
             return result;
         }
 

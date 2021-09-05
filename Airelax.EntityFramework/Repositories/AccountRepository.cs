@@ -10,15 +10,17 @@ namespace Airelax.EntityFramework.Repositories
     public class AccountRepository : IAccountRepository
     {
         private readonly AirelaxContext _ctx;
+        private readonly IRepository _repository;
 
-        public AccountRepository(AirelaxContext airelaxContext)
+        public AccountRepository(AirelaxContext airelaxContext, IRepository repository)
         {
             _ctx = airelaxContext;
+            _repository = repository;
         }
 
         public MemberLoginInfo GetMemberInfoByAccount(string account)
         {
-            return _ctx.MemberLoginInfos.SingleOrDefault(m => m.Account == account);
+            return _repository.GetAll<string,MemberLoginInfo>().SingleOrDefault(m => m.Account == account);
         }
 
         public Member GetMemByAccount(string account)

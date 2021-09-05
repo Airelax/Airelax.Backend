@@ -7,7 +7,7 @@ namespace Airelax.Application.Account
 {
     public interface IAccountService
     {
-        string RegisterAccount(RegisterInput input);
+        Task<string> RegisterAccount(RegisterInput input);
         LoginResult LoginAccount(LoginInput input);
         Task<Member> GetMember();
     }
