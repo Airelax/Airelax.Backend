@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Airelax.Application.Houses.Dtos.Request.ManageHouse;
+using Airelax.Application.Houses.Dtos.Response;
 using Airelax.Application.ManageHouses.Request;
 using Airelax.Application.ManageHouses.Response;
 
@@ -27,5 +29,6 @@ namespace Airelax.Application.Houses
         BedroomDetailInput CreateBedroomDetail(string id, BedroomDetailInput input);
         BedroomDetailInput UpdateBedroomDetail(string id, BedroomDetailInput input);
         Task<UploadHouseImagesViewModel> UploadHouseImages(string id, UploadHouseImagesInput input);
+        IEnumerable<MyHouseViewModel> GetMyHouseViewModel(string ownerId);
     }
 }

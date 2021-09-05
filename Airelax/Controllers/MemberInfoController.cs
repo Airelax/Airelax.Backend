@@ -31,10 +31,10 @@ namespace Airelax.Controllers
 
         [HttpPut]
         [Route("{memberId}")]
-        public Task<UpdateMemberInfoInput> UpdateMemberInfo(string memberId, [FromBody] UpdateMemberInfoInput input)
+        public async Task<UpdateMemberInfoInput> UpdateMemberInfo(string memberId, [FromBody] UpdateMemberInfoInput input)
         {
-            var aboutMe = _memberInfoService.UpdateMemberInfo(memberId, input);
-            return Task.FromResult(aboutMe);
+            var aboutMe = await _memberInfoService.UpdateMemberInfo(memberId, input);
+            return aboutMe;
         }
 
         [HttpGet]

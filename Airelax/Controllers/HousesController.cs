@@ -30,5 +30,7 @@ namespace Airelax.Controllers
         {
             return await _houseAppService.Search(input);
         }
+        
+        
     }
 }

@@ -23,7 +23,7 @@ namespace Airelax.EntityFramework.Repositories
 
         public IQueryable<House> GetAll()
         {
-            return _repository.GetAll<string, House>().Where(x => x.IsDeleted == false);
+            return GetHouseIncludeAll().Where(x => x.IsDeleted == false);
         }
 
         public async Task<House> GetAsync(Expression<Func<House, bool>> exp)

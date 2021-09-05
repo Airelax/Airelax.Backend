@@ -19,7 +19,7 @@ namespace Airelax.Application.WishLists
         private readonly IMemberRepository _memberRepository;
         private readonly IAccountService _accountService;
 
-        public WishListService( IHouseRepository houseRepository, IMemberRepository memberRepository, IAccountService accountService)
+        public WishListService(IHouseRepository houseRepository, IMemberRepository memberRepository, IAccountService accountService)
         {
             _houseRepository = houseRepository;
             _memberRepository = memberRepository;
@@ -56,7 +56,7 @@ namespace Airelax.Application.WishLists
             CheckWishListId(wishList);
             wishList.Houses.Add(input.HouseId);
             wishList.Houses = wishList.Houses.Distinct().ToList();
-            
+
             _memberRepository.UpdateAsync(member).Wait();
             _memberRepository.SaveChangesAsync().Wait();
         }
@@ -68,7 +68,7 @@ namespace Airelax.Application.WishLists
             var wishList = member.WishLists.FirstOrDefault(x => x.Id == wishId);
             CheckWishListId(wishList);
             member.WishLists.Remove(wishList);
-            
+
             _memberRepository.UpdateAsync(member).Wait();
             _memberRepository.SaveChangesAsync().Wait();
         }

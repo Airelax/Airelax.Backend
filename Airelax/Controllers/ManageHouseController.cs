@@ -20,6 +20,14 @@ namespace Airelax.Controllers
         }
 
         [HttpGet]
+        [Route("{ownerId}/all")]
+        public IActionResult MyHousesDetail(string ownerId)
+        {
+            var myHousesViewModel = _manageHouseService.GetMyHouseViewModel(ownerId);
+            return View(myHousesViewModel);
+        }
+
+        [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> IndexAsync(string id)
         {
