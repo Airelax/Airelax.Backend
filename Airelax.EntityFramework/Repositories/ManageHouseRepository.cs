@@ -7,6 +7,7 @@ using Airelax.Domain.Houses;
 using Microsoft.EntityFrameworkCore;
 using Lazcat.Infrastructure.DependencyInjection;
 using Airelax.Application.Houses.Dtos.Response;
+using Airelax.Application.ManageHouses.Response;
 using Lazcat.Infrastructure.Extensions;
 using Newtonsoft.Json;
 

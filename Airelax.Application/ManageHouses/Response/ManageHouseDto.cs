@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Airelax.Domain.Houses;
-using Airelax.Domain.Houses.Defines;
-using Airelax.Domain.Houses.Defines.Spaces;
+﻿using System.Collections.Generic;
+using Airelax.Application.Houses.Dtos.Response;
 
-namespace Airelax.Application.Houses.Dtos.Response
+namespace Airelax.Application.ManageHouses.Response
 {
     public class ManageHouseDto
     {
@@ -31,12 +25,6 @@ namespace Airelax.Application.Houses.Dtos.Response
         public string CashPledge { get; set; }
         public HouseRuleDto HouseRule { get; set; }
         public string SpaceBed { get; set; }
-    }
-
-    public class SpaceBed
-    {
-        public Space Space { get; set; }
-        public BedroomDetail BedroomDetail { get; set; }
     }
 
     public class SpaceBedVM

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Airelax.Application.Houses.Dtos.Response;
 using Airelax.Domain.Houses;
 using Microsoft.EntityFrameworkCore;
 
