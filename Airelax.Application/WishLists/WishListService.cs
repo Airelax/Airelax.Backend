@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Airelax.Application.Account;
+using Airelax.Application.WishLists.Dtos.Request;
 using Airelax.Application.WishLists.Dtos.Response;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Members;
@@ -13,58 +15,68 @@ namespace Airelax.Application.WishLists
     [DependencyInjection(typeof(IWishListService))]
     public class WishListService : IWishListService
     {
-        private readonly IWishListRepository _wishListRepository;
+        private readonly IHouseRepository _houseRepository;
+        private readonly IMemberRepository _memberRepository;
+        private readonly IAccountService _accountService;
 
-        public WishListService(IWishListRepository wishListRepository)
+        public WishListService( IHouseRepository houseRepository, IMemberRepository memberRepository, IAccountService accountService)
         {
-            _wishListRepository = wishListRepository;
+            _houseRepository = houseRepository;
+            _memberRepository = memberRepository;
+            _accountService = accountService;
         }
 
-        public void CreateWishList(string memberId, string WishName, string HouseId)
+        public void CreateWishList(CreateWishListInput input)
         {
-            var member = _wishListRepository.GetMember(memberId);
-            CheckMember(member, memberId);
-            CheckWishListName(member, WishName);
-            var wishListHouse = _wishListRepository.GetHouses(HouseId);
-            CheckHouse(wishListHouse);
+            var member = _accountService.GetMember().Result;
+            CheckMember(member, member.Id);
+            CheckWishListName(member, input.WishName);
+            var house = _houseRepository.GetAsync(x => x.Id == input.HouseId).Result;
+            CheckHouse(house);
 
             var wishList = new WishList(member.Id)
             {
-                Name = WishName,
-                Houses = new List<string> {wishListHouse.Id},
-                Cover = wishListHouse.Photos?.Select(x => x.Image).FirstOrDefault()
+                Name = input.WishName,
+                Houses = new List<string> {house.Id},
+                Cover = house.Photos?.Select(x => x.Image).FirstOrDefault()
             };
-            _wishListRepository.Add(wishList);
-            _wishListRepository.SaveChanges();
+            member.WishLists.Add(wishList);
+
+            _memberRepository.CreateAsync(member).Wait();
+            _memberRepository.SaveChangesAsync().Wait();
         }
 
-        public void UpdateWishList(string memberId, string HouseId, int WishId)
+        public void UpdateWishList(UpdateWishListInput input)
         {
-            var member = _wishListRepository.GetMember(memberId);
-            CheckMember(member, memberId);
-            var wishListHouse = _wishListRepository.GetHouses(HouseId);
-            CheckHouse(wishListHouse);
-            var wishList = _wishListRepository.GetWishList(WishId);
+            var member = _accountService.GetMember().Result;
+            CheckMember(member, member.Id);
+            var house = _houseRepository.GetAsync(x => x.Id == input.HouseId).Result;
+            CheckHouse(house);
+            var wishList = member.WishLists.FirstOrDefault(x => x.Id == input.WishId);
             CheckWishListId(wishList);
-
-            wishList.Houses.Add(HouseId);
+            wishList.Houses.Add(input.HouseId);
             wishList.Houses = wishList.Houses.Distinct().ToList();
-            _wishListRepository.SaveChanges();
+            
+            _memberRepository.UpdateAsync(member).Wait();
+            _memberRepository.SaveChangesAsync().Wait();
         }
 
-        public void DeleteWishList(int WishId)
+        public void DeleteWishList(int wishId)
         {
-            var wishList = _wishListRepository.GetWishList(WishId);
+            var member = _accountService.GetMember().Result;
+            CheckMember(member, member.Id);
+            var wishList = member.WishLists.FirstOrDefault(x => x.Id == wishId);
             CheckWishListId(wishList);
-
-            _wishListRepository.Remove(wishList);
-            _wishListRepository.SaveChanges();
+            member.WishLists.Remove(wishList);
+            
+            _memberRepository.UpdateAsync(member).Wait();
+            _memberRepository.SaveChangesAsync().Wait();
         }
 
         public IEnumerable<WishListViewModel> GetWishList(string memberId)
         {
-            var member = _wishListRepository.GetMember(memberId);
-            CheckMember(member, memberId);
+            var member = _accountService.GetMember().Result;
+            CheckMember(member, member.Id);
 
             var wishListsViewModel = member.WishLists.Select(m => new WishListViewModel
             {
@@ -86,8 +98,6 @@ namespace Airelax.Application.WishLists
         {
             if (member.WishLists.Any(w => w.Name == wishListName)) //有會員的情況,心願單-每個指定會員-找每個名字==帶入名字時
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "WishLists.Name cannot be repeated ");
-            //if (member.WishLists.SelectMany(m => m.Houses).Any(m => m == input.HouseId)) //有會員的情況,心願單-每個指定會員-找每個房源Id==帶入Id時
-            //    throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"memberId: {memberId} doesnt match member ");
         }
 
         private void CheckHouse(House house)

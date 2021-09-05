@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Airelax.Application.Account;
 using Airelax.Application.MemberInfos.Request;
 using Airelax.Application.MemberInfos.Response;
 using Airelax.Domain.Members;
@@ -16,10 +17,12 @@ namespace Airelax.Application.MemberInfos
     public class MemberInfoService : IMemberInfoService
     {
         private readonly IMemberRepository _memberRepository;
+        private readonly IAccountService _accountService;
 
-        public MemberInfoService(IMemberRepository memberRepository)
+        public MemberInfoService(IMemberRepository memberRepository, IAccountService accountService)
         {
             _memberRepository = memberRepository;
+            _accountService = accountService;
         }
 
         public MemberInfoViewModel GetMemberInfoViewModel(string memberId)
@@ -56,7 +59,7 @@ namespace Airelax.Application.MemberInfos
 
         public async Task<UpdateMemberInfoInput> UpdateMemberInfo(string memberId, UpdateMemberInfoInput input)
         {
-            var member = await GetMember(memberId);
+            var member = await _accountService.GetMember();
 
             var memberInfo = new MemberInfo(memberId)
             {

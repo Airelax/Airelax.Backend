@@ -19,14 +19,14 @@ namespace Airelax.Controllers
         [HttpPost]
         public bool Create(string memberId, [FromBody] CreateWishListInput input)
         {
-            _wishListService.CreateWishList(memberId, input.WishName, input.HouseId);
+            _wishListService.CreateWishList(input);
             return true;
         }
 
         [HttpPut]
         public bool Update(string memberId, [FromBody] UpdateWishListInput input)
         {
-            _wishListService.UpdateWishList(memberId, input.HouseId, input.WishId);
+            _wishListService.UpdateWishList(input);
             return true;
         }
 
