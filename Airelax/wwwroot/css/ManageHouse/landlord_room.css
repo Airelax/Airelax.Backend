@@ -1,0 +1,131 @@
+.search_room input {
+  border: none;
+  width: 93%;
+}
+.search_room form {
+  border: 1px solid #acaaaa;
+  border-radius: 20px;
+  width: 100%;
+  padding: 4px;
+  padding-left: 12px;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.list-group input[type=checkbox] {
+  width: 15px;
+  height: 15px;
+  border: 1px solid #a8a8a8;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.list-group img {
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  width: 60px;
+}
+
+#sortBy {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.offcanvas-body {
+  padding: 16px 0;
+}
+.offcanvas-body .sort_by a {
+  border: none;
+  font-size: 14px;
+}
+
+.room_list {
+  border: none;
+  background-color: transparent !important;
+}
+
+td {
+  line-height: 3.6;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 767px) {
+  .add,
+.option,
+.ds {
+    display: none;
+  }
+
+  .offcanvas {
+    border-radius: 10px 10px 0 0;
+    height: 75%;
+  }
+  .offcanvas .header {
+    display: flex;
+    justify-content: space-between;
+  }
+  .offcanvas .header button {
+    font-size: 12px;
+  }
+
+  .addRoom_ph {
+    font-size: 14px;
+  }
+
+  .fir {
+    font-size: 12px;
+    font-weight: bold;
+  }
+  .fir label {
+    padding-top: 2px;
+    padding-left: 24px;
+  }
+  .fir label:hover {
+    color: #222222;
+  }
+  .fir .status:hover,
+.fir .location:hover,
+.fir .modidied:hover {
+    color: #222222;
+  }
+
+  td {
+    display: none;
+  }
+}
+@media screen and (min-width: 768px) {
+  .add_ph,
+.fir_ph {
+    display: none;
+  }
+
+  .add {
+    border: 1px solid #222222;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .add button {
+    font-size: 14px;
+  }
+  .add button i {
+    font-weight: bolder;
+    font-size: 12px;
+  }
+
+  .option .btn_r {
+    border: 1px solid #b3b2b2;
+    border-radius: 20px;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
+    padding: 4px 13px 4px 15px;
+  }
+  .option .btn_r:hover {
+    border-color: #222222;
+  }
+  .option .dropdown-menu {
+    box-shadow: 3px 3px 4px 3px #cccccc;
+  }
+}/*# sourceMappingURL=landlord_room.css.map */
