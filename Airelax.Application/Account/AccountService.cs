@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Airelax.Application.Account.Dtos.Response;
+using Airelax.Domain.RepositoryInterface;
 using Microsoft.Extensions.Configuration;
 
 namespace Airelax
