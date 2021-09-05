@@ -179,7 +179,6 @@ export default {
         this.$store.state.toddler -= 1;
     },
     search() {
-      console.log(111);
       this.$router.push({
         path: "search",
         query: {

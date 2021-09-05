@@ -1,5 +1,8 @@
-﻿using Airelax.Application.Houses.Dtos.Request.ManageHouse;
+﻿using System.Threading.Tasks;
+using Airelax.Application.Houses.Dtos.Request.ManageHouse;
 using Airelax.Application.Houses.Dtos.Response;
+using Airelax.Application.ManageHouses.Request;
+using Airelax.Application.ManageHouses.Response;
 
 namespace Airelax
 {
@@ -24,5 +27,6 @@ namespace Airelax
         HouseSpaceInput DeleteSpace(string id, HouseSpaceInput input);
         BedroomDetailInput CreateBedroomDetail(string id, BedroomDetailInput input);
         BedroomDetailInput UpdateBedroomDetail(string id, BedroomDetailInput input);
+        Task<UploadHouseImagesViewModel> UploadHouseImages(string id, UploadHouseImagesInput input);
     }
 }

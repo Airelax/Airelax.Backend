@@ -22,16 +22,16 @@ namespace Airelax.EntityFramework.DbContexts
         public DbSet<BedroomDetail> BedroomDetails { get; set; }
         public DbSet<HousePrice> HousePrices { get; set; }
 
-
         public DbSet<Member> Members { get; set; }
         public DbSet<MemberInfo> MemberInfos { get; set; }
         public DbSet<MemberLoginInfo> MemberLoginInfos { get; set; }
-
         public DbSet<WishList> WishLists { get; set; }
+
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<OrderPriceDetail> OrderPriceDetails { get; set; }
         public DbSet<Payment> Payments { get; set; }
+
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Star> Stars { get; set; }
 
@@ -53,15 +53,18 @@ namespace Airelax.EntityFramework.DbContexts
             ConfigSpace(modelBuilder);
             ConfigBedroomDetail(modelBuilder);
             ConfigHousePrice(modelBuilder);
+
             ConfigMember(modelBuilder);
             ConfigMemberLogInfo(modelBuilder);
             ConfigMemberInfo(modelBuilder);
             ConfigEmergencyContact(modelBuilder);
             ConfigWishList(modelBuilder);
+
             ConfigOrder(modelBuilder);
             ConfigOrderDetail(modelBuilder);
             ConfigPriceDetail(modelBuilder);
             ConfigPayment(modelBuilder);
+
             ConfigComment(modelBuilder);
             ConfigStar(modelBuilder);
         }
@@ -122,8 +125,8 @@ namespace Airelax.EntityFramework.DbContexts
         {
             modelBuilder.Entity<Photo>(builder =>
             {
-                builder.SetEntityKey<Photo, int>();
-                builder.Property(x => x.Image).HasColumnType(Define.SqlServer.IMAGE_TYPE).IsRequired();
+                builder.HasKey(x => x.Id);
+                builder.Property(x => x.Image).IsRequired().HasMaxLength(200);
                 builder.HasOne<House>().WithMany(x => x.Photos).HasForeignKey(x => x.HouseId).IsRequired();
                 builder.HasOne<Space>().WithMany().OnDelete(DeleteBehavior.ClientSetNull).HasForeignKey(x => x.SpaceId);
             });
@@ -221,7 +224,8 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetPropMaxLength(x => x.Town, 50);
                 builder.SetPropMaxLength(x => x.AddressDetail, 50);
                 builder.SetPropMaxLength(x => x.Phone, 50);
-                builder.Property(x => x.RegisterTime).IsRequired().HasDefaultValue(DateTime.Now);
+                builder.SetPropMaxLength(x => x.Cover, 200);
+                builder.Property(x => x.RegisterTime).IsRequired();
             });
         }
 
@@ -232,11 +236,11 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetEntityKey<MemberLoginInfo, string>();
                 builder.SetEnumDbMapping(x => x.LoginType).IsRequired();
                 builder.SetPropMaxLength(x => x.Account, 50).IsRequired();
-                builder.SetPropMaxLength(x => x.Token, 300);
-                builder.SetPropMaxLength(x => x.Password, 300);
-                builder.SetPropMaxLength(x => x.RefreshToken, 300);
-                builder.SetPropMaxLength(x => x.ThirdPartyToken, 300);
-                builder.SetPropMaxLength(x => x.ThirdPartyRefreshToken, 300);
+                builder.SetPropMaxLength(x => x.Token, 2000);
+                builder.SetPropMaxLength(x => x.Password, 1000);
+                builder.SetPropMaxLength(x => x.RefreshToken, 2000);
+                builder.SetPropMaxLength(x => x.ThirdPartyToken, 2000);
+                builder.SetPropMaxLength(x => x.ThirdPartyRefreshToken, 2000);
 
                 builder.HasOne<Member>().WithOne(x => x.MemberLoginInfo).HasForeignKey<MemberLoginInfo>(x => x.Id);
             });
@@ -270,9 +274,9 @@ namespace Airelax.EntityFramework.DbContexts
         {
             modelBuilder.Entity<WishList>(builder =>
             {
-                builder.SetEntityKey<WishList, int>();
+                builder.HasKey(x => x.Id);
                 builder.SetPropMaxLength(x => x.Name, 50);
-                builder.Property(x => x.Cover).HasColumnType(Define.SqlServer.IMAGE_TYPE);
+                builder.SetPropMaxLength(x => x.Cover, 200);
                 builder.Property(x => x.Houses).HasJsonConversion();
                 builder.HasOne<Member>().WithMany(x => x.WishLists).HasForeignKey(x => x.MemberId);
             });

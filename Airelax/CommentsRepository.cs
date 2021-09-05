@@ -1,4 +1,6 @@
-﻿using Airelax.EntityFramework.DbContexts;
+﻿using Airelax.Domain.Comments;
+using Airelax.Domain.Orders;
+using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -30,6 +32,26 @@ namespace Airelax
 
 
             return commentsGroup;
+        }
+        public Order GetCustomerIdAndHouseIdByOrder(string OrderId)
+        {
+            var CustomerIdAndHouseId = _context.Orders
+                                     .FirstOrDefault(o => o.Id == OrderId);
+            return CustomerIdAndHouseId;
+        }
+        public string GetMemberIdByHouse(string OrderId)
+        {
+            var OwnerId = _context.Houses
+                        .FirstOrDefault(h => h.Id == GetCustomerIdAndHouseIdByOrder(OrderId).HouseId).OwnerId;
+            return OwnerId;
+        }
+        public void Add(Comment comment)
+        {
+            _context.Comments.Add(comment);
+        }
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
         }
     }
 }
