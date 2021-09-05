@@ -2,10 +2,10 @@
   <div class="row top content">
     <div class="col-md-6 col-12 position-relative houses">
       <div class="back" v-if="$store.state.fullWidth < 768">
-        <a href="#"><img src="@/assets/image/Room/icon/back.svg" /></a>
+        <a href="/"><img src="@/assets/image/Room/icon/back.svg" /></a>
         <div class="date">
-          {{ StartDate }}9月1號 - {{ EndDate }}9月2號 ·
-          {{ TravelerCount }}2位房客
+          {{ $store.state.date.start }} - {{ $store.state.date.end }} ·
+          {{ $store.getters.TotalCustomer }}位房客
           <span class="between">|</span>
           <a
             href="#"
@@ -19,8 +19,8 @@
       <div class="px-4 pt-md-3">
         <div class="text-start m-md-4 pt-3">
           <p>
-            {{ RoomCount }}300多間住宿 · {{ StartDate }}9月1號 -
-            {{ EndDate }}9月2號 · {{ TravelerCount }}2位房客
+            {{ RoomCount }}300多間住宿 · {{ $store.state.date.start }} -
+            {{ $store.state.date.end }} · {{ $store.getters.TotalCustomer }}位房客
           </p>
           <h4>{{ City }}台北,{{ Distinct }}中和區</h4>
           <div class="d-none d-md-block">
@@ -1010,8 +1010,10 @@ import axios from "axios";
 import ResultRoom from "../components/Search/ResultRoom";
 import BrowsingRecord from "../components/Search/BrowsingRecord";
 import Map from "../components/Map/SearchMap.vue";
+import settingJson from "../components/Settings/setting"
 export default {
   created() {
+    //todo
     axios
       .get(`/api/houses/search?location=${this.$route.query.location}`, {
         headers: {
@@ -1021,11 +1023,16 @@ export default {
       .then((res) => {
         const data = res.data;
         this.rooms = data.houses;
+        this.getPicture();
+        //Todo-Vuex-初始
+        this.$store.state.room = {};
+        console.log(res.data.houses)
         this.location = data.locationInfo;
         this.get = true;
       });
   },
   mounted() {
+    window.scrollTo(0, 0);
     const vm = this;
     window.addEventListener("scroll", function () {
       let top = document.documentElement.scrollTop;
@@ -1040,6 +1047,7 @@ export default {
   components: { ResultRoom, BrowsingRecord, Map },
   data() {
     return {
+      setting: settingJson,
       rooms: Array,
       nightCount: 3,
       get: false,
@@ -1177,7 +1185,27 @@ export default {
         { title: "衛浴", count: 0 },
       ];
     },
-    save() {},
+    getRandomNumber(min,max){
+      return Math.floor(Math.random() * (max-min+1))+min;
+    },
+    getRandomList(min,max,num){
+      var list = [];
+      while (list.length != num) {
+        var randomNumber = Math.floor(Math.random() * (max-min+1))+min;
+        if (!list.some((x) => {return x == randomNumber;})
+        ) { list.push(randomNumber);}
+      }
+      return list;
+    },
+    //Todo-先給隨機Picture資料
+    getPicture(){
+      this.rooms.forEach(item=>{
+        if(item.picture.length !== 0) return ;
+        this.getRandomList(0,this.setting.pictures.length-1,this.getRandomNumber(5,this.setting.pictures.length-1)).forEach(x=>{
+        item.picture.push(this.setting.pictures[x]);
+      })
+      });
+    },
   },
 };
 </script>
@@ -1284,7 +1312,7 @@ export default {
   }
   .top {
     margin-right: 0 !important;
-    margin-top: 120px;
+    margin-top: 90px;
   }
   .Result {
     .col-12 {

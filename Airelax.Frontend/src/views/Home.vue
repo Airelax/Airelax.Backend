@@ -13,68 +13,68 @@
           <div class="yuan-container">
             <div class="yuan-row">
               <div class="around-div">
-                <a href="#">
+                <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around.png" />
                   <div class="item mx-lg-2">
-                    <span>台北</span><span>00分鐘車程</span>
+                    <span>台北</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
               <div class="around-div">
-                <a href="#">
+                <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around2.png" />
                   <div class="item mx-lg-2">
-                    <span>台南</span><span>00分鐘車程</span>
+                    <span>台南</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
               <div class="around-div">
-                <a href="#">
+                <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around3.png" />
                   <div class="item mx-lg-2">
-                    <span>高雄</span><span>00分鐘車程</span>
+                    <span>高雄</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
               <div class="around-div">
-                <a href="#">
+                <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around4.png" />
                   <div class="item mx-lg-2">
-                    <span>桃園</span><span>00分鐘車程</span>
+                    <span>桃園</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
             </div>
             <div class="yuan-row">
               <div class="around-div">
-                <a href="#">
+                <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around5.png" />
                   <div class="item mx-lg-2">
-                    <span>新北市</span><span>00分鐘車程</span>
+                    <span>新北市</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
               <div class="around-div">
-                <a href="#">
+                <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around6.png" />
                   <div class="item mx-lg-2">
-                    <span>花蓮</span><span>00分鐘車程</span>
+                    <span>花蓮</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
               <div class="around-div">
-                <a href="#">
+                <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around7.png" />
                   <div class="item mx-lg-2">
-                    <span>台東市</span><span>00分鐘車程</span>
+                    <span>台東市</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
               <div class="around-div">
-                <a href="#">
+                <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around8.png" />
                   <div class="item mx-lg-2">
-                    <span>恆春</span><span>00分鐘車程</span>
+                    <span>恆春</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
@@ -153,7 +153,7 @@
         <div class="item">
           <h2>開始出租吧</h2>
           分享你的空間，賺取額外收入，開拓新機會。
-          <button class="goTo">了解詳情</button>
+          <router-link to="/become-host"  style="text-decoration: none;"><button class="goTo">了解詳情</button></router-link>
         </div>
       </div>
     </div>
@@ -166,47 +166,19 @@ export default {
         SearchBar
     },
     methods:{
-      change(){
-        let mix = document.querySelector('.mix');
-        let minSearch = document.querySelector('.min_search');
-        let register = document.getElementById('register');
-        if (top!==null && mix !== null && minSearch !== null){
-            mix.classList.add('homeStyle');
-            minSearch.classList.add('d-none');
-            register.classList.add('toggle');
-            window.addEventListener("scroll", function() {
-                let top = document.documentElement.scrollTop; 
-                minSearch.classList.remove('d-none');
-                if(top>100){
-                  mix.classList.remove('homeStyle');
-                  minSearch.classList.remove('d-none');
-                  register.classList.remove('toggle');
-                }
-                else{
-                  mix.classList.add('homeStyle');
-                  minSearch.classList.add('d-none');
-                  register.classList.add('toggle');
-                }
-          });
-        }
-      }
-    },
-    computed:{
-      getWidth(){
-        return this.$store.state.fullWidth;
-      }
-    },
-    watch:{
-      getWidth(){
-        this.change();
-      }
-    },
-    mounted(){
-        const vm = this;
-        vm.change();
-        window.addEventListener("scroll",function(){
-          vm.change();
-        })
+      SearchLocation(e){
+        console.log(e.target)
+        this.$store.state.destination = e.target.querySelector('span').innerText;
+        this.$router.push({
+          path: "search",
+          query: {
+            location: this.$store.state.destination,
+          },
+        });
+      },
+      getRandomNumber(min,max){
+        return Math.floor(Math.random() * (max-min+1))+min;
+      },
     }
 }
 </script>
@@ -293,6 +265,7 @@ body::-webkit-scrollbar {
   cursor: pointer;
   text-align: center;
   line-height: 0 !important;
+  text-decoration: none !important;
 }
 .body {
   padding: 15vw 7.5vw;
@@ -436,6 +409,12 @@ body::-webkit-scrollbar {
 .rent .item .goTo {
   margin: 4.6875vw auto 0;
   display: block;
+}
+.around-div{
+  .item,
+  img{
+    pointer-events: none;
+  }
 }
 
 @media screen and (min-width: 768px) {

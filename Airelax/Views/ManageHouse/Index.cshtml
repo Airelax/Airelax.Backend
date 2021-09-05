@@ -1554,10 +1554,12 @@
                         if (rm.getAttribute('spaceid') == x.SpaceVM.Id || rm.getAttribute('spaceid') == undefined) {
                             rm.setAttribute('spaceid', x.SpaceVM.Id);
                             if (x.SpaceVM.IsShared) rm.querySelector('.form-check:first-child input').checked = true;
-                            if (x.BedroomDetailVM.HasIndependentBath) rm.querySelector('.form-check:nth-child(2) input').checked = true;
-                            rm.querySelectorAll('.list').forEach((list,listIndex) => {
-                                if (listIndex + 1 == x.BedroomDetailVM.BedType) list.querySelector('.btn span').innerText = x.BedroomDetailVM.BedCount;
-                            });
+                            if (x.BedroomDetailVM !== null) {
+                                if (x.BedroomDetailVM.HasIndependentBath) rm.querySelector('.form-check:nth-child(2) input').checked = true;
+                                rm.querySelectorAll('.list').forEach((list, listIndex) => {
+                                    if (listIndex + 1 == x.BedroomDetailVM.BedType) list.querySelector('.btn span').innerText = x.BedroomDetailVM.BedCount;
+                                });
+                            }
                         }
                     });
                 }
@@ -1886,7 +1888,7 @@
                div.addEventListener('click',e => deleteImage(e, image));
            });
         })();
-        
+
         //刪除相片
         function deleteImage(e, photoUrl) {
           e.target.parentNode.removeChild(e.target);

@@ -8,7 +8,7 @@ namespace Airelax
 {
     public interface IManageHouseService
     {
-        ManageHouseDto GetManageHouseInfo(string id);
+        Task<ManageHouseDto> GetManageHouseInfo(string id);
         HouseAddressInput UpdateAddress(string id, HouseAddressInput input);
         HouseTitleInput UpdateTitle(string id, HouseTitleInput input);
         CancelPolicyInput UpdateCancel(string id, CancelPolicyInput input);

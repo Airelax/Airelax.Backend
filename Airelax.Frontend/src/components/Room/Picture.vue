@@ -7,12 +7,14 @@
             <div class="count">1/{{pic.length}}</div>
         </div>
         <div class="main-lg" v-if="fullWidth > 768" @click="isCanvasShow=true" data-bs-toggle="offcanvas" data-bs-target="#BottomPic" aria-controls="Bottom">
-            <div class="picture">
-                <img :src="pic[0]">
-            </div>
-            <div class="side">
-                <div v-for="(item,i) in fiveBlock" :key="i" :class="{pic:true}">
-                    <img :src="item">
+            <div class="row d-flex justify-content-between">
+                <div class="picture col-6">
+                    <img :src="pic[0]">
+                </div>
+                <div class="side col-6">
+                    <div v-for="(item,i) in fiveBlock" :key="i" :class="{pic:true}">
+                        <img :src="item">
+                    </div>
                 </div>
             </div>
             <div class="md-show"><img src="@/assets/image/Room/icon/nine-dots.svg">顯示全部照片</div>
@@ -85,6 +87,7 @@ export default {
         width: 50%;
         position: relative;
         cursor: pointer;
+        height: 20vh;
         &:before {
             content: '';
             width: 100%;
@@ -119,8 +122,6 @@ export default {
     .main-lg{
         border-radius: 18px;
         overflow: hidden;
-        display: flex;
-        justify-content: space-between;
         position: relative;
         .picture{
             position: relative;
@@ -142,6 +143,7 @@ export default {
             }
             img{
                 width: 100%;
+                height: 100%;
                 object-fit: cover;
                 vertical-align: bottom;
             }
@@ -155,18 +157,13 @@ export default {
                 width: 49.5%;
                 cursor: pointer;
                 position: relative;
-                &:nth-child(1),
-                &:nth-child(2)
-                {
-                    margin-bottom: .1rem;
-                }
-                &:nth-child(3),
-                &:nth-child(4)
-                {
-                    margin-top: .1rem;
-                }
+                height: 24.5vh;
+                align-content: flex-start;
                 img{
                   width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  vertical-align: bottom;
                 }
                 &:before {
                     content: '';

@@ -31,17 +31,17 @@ namespace Airelax
             _manageHouseRepository = manageHouseRepository;
             _houseRepository = houseRepository;
         }
-       
-        public ManageHouseDto GetManageHouseInfo(string id)
-        {
-            var house = _houseRepository.GetAsync(x => x.Id == id).Result;
+
+        public async Task<ManageHouseDto> GetManageHouseInfo(string id)
+        { 
+            var house =await _houseRepository.GetAsync(x => x.Id == id);
             var space = _manageHouseRepository.GetSpace(id);
 
-            ManageHouseDto manage = new ManageHouseDto()
+            var manage = new ManageHouseDto()
             {
                 Id = id,
                 Title = house.Title,
-                Pictures = house.Photos?.Select(x => x.Image) ?? new List<string>(),
+                
                 Description = new DescriptionDto()
                 {
                     HouseDescription = house.HouseDescription.Description,
@@ -113,6 +113,7 @@ namespace Airelax
                     Other = house.HouseRule.Other
                 }
             };
+            manage.Pictures = house.Photos?.Select(x => x.Image) ?? new List<string>();
             return manage;
         }
 

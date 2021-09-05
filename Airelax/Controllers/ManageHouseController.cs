@@ -18,11 +18,10 @@ namespace Airelax.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("{id}")]
-        public IActionResult Index(string id)
+        public async Task<IActionResult> IndexAsync(string id)
         {
-            var manageInfo = _manageHouseService.GetManageHouseInfo(id);
+            var manageInfo = await _manageHouseService.GetManageHouseInfo(id);
             //todo error
             if (manageInfo == null) return Content("Error");
             return View(manageInfo);

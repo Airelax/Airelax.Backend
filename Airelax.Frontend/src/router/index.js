@@ -5,6 +5,9 @@ const routes = [
         path: '/',
         name: 'Home',
         component: () => import('../views/Home.vue'),
+        meta: {
+            homeLayout: true,
+        },
     },
     {
         path: '/search',
@@ -12,12 +15,12 @@ const routes = [
         component: () => import('../views/Search.vue')
     },
     {
-        path: '/room',
+        path: '/room/:houseId',
         name: 'Room',
         component: () => import('../views/Room.vue')
     },
     {
-        path: '/subscribe',
+        path: '/subscribe/:houseId',
         name: 'Subscribe',
         component: () => import('../views/Subscribe.vue')
     },

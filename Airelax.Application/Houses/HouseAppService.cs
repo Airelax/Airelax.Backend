@@ -123,7 +123,8 @@ namespace Airelax.Application.Houses
                     Id = member.Id,
                     RegisterTime = member.RegisterTime,
                     About = member.MemberInfo.About,
-                    IsVerified = member.IsEmailVerified
+                    IsVerified = member.IsEmailVerified,
+                    Cover = member.Cover
                 },
                 Rank = new RankDto()
                 {
@@ -269,17 +270,17 @@ namespace Airelax.Application.Houses
 
             price.Origin = decimal.Round(housePrice.PerNight);
             price.SweetPrice = housePrice.PerWeekNight == null ? price.Origin : decimal.Round(housePrice.PerWeekNight.Value);
-            if (price.Discount != null)
-            {
-                price.Discount.Month = housePrice.Discount.Month;
-                price.Discount.Week = housePrice.Discount.Week;
-            }
+            //if (price.Discount != null)
+            //{
+            //    price.Discount.Month = housePrice.Discount.Month;
+            //    price.Discount.Week = housePrice.Discount.Week;
+            //}
 
             if (price.Fee == null) return price;
 
-            price.Fee.CleanFee = decimal.Round(housePrice.Fee.CleanFee);
-            price.Fee.ServiceFee = decimal.Round(housePrice.Fee.ServiceFee);
-            price.Fee.TaxFee = decimal.Round(housePrice.Fee.TaxFee);
+            //price.Fee.CleanFee = decimal.Round(housePrice.Fee.CleanFee);
+            //price.Fee.ServiceFee = decimal.Round(housePrice.Fee.ServiceFee);
+            //price.Fee.TaxFee = decimal.Round(housePrice.Fee.TaxFee);
 
             return price;
         }
@@ -308,6 +309,7 @@ namespace Airelax.Application.Houses
                 houseRuleDto.AllowBaby = houseHouseRule.AllowBaby;
                 houseRuleDto.AllowParty = houseHouseRule.AllowParty;
                 houseRuleDto.AllowPet = houseHouseRule.AllowParty;
+                houseRuleDto.Other = houseHouseRule.Other;
             }
 
             if (policy == null) return houseRuleDto;
@@ -348,7 +350,6 @@ namespace Airelax.Application.Houses
                 NotProvide = house.NotProvideFacilities?.Select(x => (int) x)
             };
         }
-
         private static IEnumerable<DateTime> GetDateRange(DateTime start, DateTime end)
         {
             var dateRange = new List<DateTime>();

@@ -1,5 +1,5 @@
 <template>
-    <div class="location">
+    <div class="location" id="location">
         <h2>住宿地點</h2>
         <div class="map">
             <div class="google-map">
@@ -7,7 +7,7 @@
             </div>
             <p>預訂確認後會提供確切位置。</p>
         </div>
-        <span>{{detail.Town}}、{{detail.City}}、{{detail.country}}</span>
+        <span>{{detail.town}}、{{detail.city}}、{{detail.country}}</span>
     </div>
 </template>
 
