@@ -31,9 +31,9 @@ namespace Airelax.Controllers
 
         [HttpPut]
         [Route("{memberId}")]
-        public Task<MemberInfoInput> UpdateMemberInfo(string memberId, [FromBody] MemberInfoInput input)
+        public Task<UpdateMemberInfoInput> UpdateMemberInfo(string memberId, [FromBody] UpdateMemberInfoInput input)
         {
-            var aboutMe = _memberInfoService.GetAboutMe(memberId, input);
+            var aboutMe = _memberInfoService.UpdateMemberInfo(memberId, input);
             return Task.FromResult(aboutMe);
         }
 

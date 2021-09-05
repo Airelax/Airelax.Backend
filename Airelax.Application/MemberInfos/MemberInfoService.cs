@@ -15,16 +15,16 @@ namespace Airelax.Application.MemberInfos
     [DependencyInjection(typeof(IMemberInfoService))]
     public class MemberInfoService : IMemberInfoService
     {
-        private readonly IMemberInfoRepository _memberInfoRepository;
+        private readonly IMemberRepository _memberRepository;
 
-        public MemberInfoService(IMemberInfoRepository memberInfoRepository)
+        public MemberInfoService(IMemberRepository memberRepository)
         {
-            _memberInfoRepository = memberInfoRepository;
+            _memberRepository = memberRepository;
         }
 
         public MemberInfoViewModel GetMemberInfoViewModel(string memberId)
         {
-            var info = _memberInfoRepository.GetMemberInfoSearchObject(memberId);
+            var info = _memberRepository.GetMemberInfoSearchObject(memberId);
             if (info.IsNullOrEmpty()) return null;
 
             var groupInfo = info.GroupBy(x => x.HouseId);
@@ -54,48 +54,42 @@ namespace Airelax.Application.MemberInfos
             return memberInfoViewModel;
         }
 
-        public MemberInfoInput GetAboutMe(string memberId, [FromBody] MemberInfoInput input)
+        public async Task<UpdateMemberInfoInput> UpdateMemberInfo(string memberId, UpdateMemberInfoInput input)
         {
-            var member = GetMemberWithMemberInfo(memberId);
+            var member = await GetMember(memberId);
 
-            if (member?.MemberInfos == null)
+            var memberInfo = new MemberInfo(memberId)
             {
-                var memberInfo = new MemberInfo(memberId)
-                {
-                    About = input.About,
-                    Location = input.Location,
-                    WorkTime = input.WorkTime
-                };
-                _memberInfoRepository.Add(memberInfo);
-            }
-            else
-            {
-                member.MemberInfos.About = input.About;
-                member.MemberInfos.Location = input.Location;
-                member.MemberInfos.WorkTime = input.WorkTime;
-                _memberInfoRepository.Update(member.MemberInfos);
-            }
+                About = input.About,
+                Location = input.Location,
+                WorkTime = input.WorkTime
+            };
 
-            _memberInfoRepository.SaveChanges();
+            member.MemberInfo = memberInfo;
+
+            await UpdateMember(member);
             return input;
         }
 
         public async Task<string> UpdateCover(string memberId, EditPhotoInput input)
         {
-            var memberWithMemberInfo = GetMemberWithMemberInfo(memberId);
-            memberWithMemberInfo.Member.Cover = input.PhotoUrl;
-            await _memberInfoRepository.Update(memberWithMemberInfo.Member);
-            await _memberInfoRepository.SaveChangeAsync();
-            return memberWithMemberInfo.Member.Cover;
+            var member = await GetMember(memberId);
+            member.Cover = input.PhotoUrl;
+            await UpdateMember(member);
+            return member.Cover;
         }
 
-        private MemberWithMemberInfo GetMemberWithMemberInfo(string memberId)
+        private async Task UpdateMember(Member member)
         {
-            var member = _memberInfoRepository.GetMemberWithMemberInfo(memberId);
+            await _memberRepository.UpdateAsync(member);
+            await _memberRepository.SaveChangesAsync();
+        }
 
-            if (member?.Member == null)
-                throw ExceptionBuilder.Build(HttpStatusCode.BadRequest
-                    , $"Member Id:{memberId} does not match any member"); //400
+        private async Task<Member> GetMember(string memberId)
+        {
+            var member = await _memberRepository.GetAsync(x => x.Id == memberId);
+            if (member == null)
+                throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"Member Id:{memberId} does not match any member");
             return member;
         }
     }

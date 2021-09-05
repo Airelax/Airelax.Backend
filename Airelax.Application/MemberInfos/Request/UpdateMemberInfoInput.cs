@@ -3,7 +3,7 @@
     /// <summary>
     ///     從前端進來後端的class
     /// </summary>
-    public class MemberInfoInput
+    public class UpdateMemberInfoInput
     {
         /// <summary>
         ///     前端來的關於我
