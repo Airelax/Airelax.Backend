@@ -18,7 +18,7 @@
             <svg
               viewBox="0 0 32 32"
               xmlns="http://www.w3.org/2000/svg"
-              role="presentation"
+              
               focusable="false"
               class="add"
             >
@@ -31,7 +31,7 @@
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 32 32"
-              role="presentation"
+              
               focusable="false"
               class="copy"
             >

@@ -4,29 +4,58 @@ let priceSection = document.querySelector('.price-section');
 let policySection = document.querySelector('.policy-rule-section');
 let contentDiv = document.querySelectorAll('.content');
 let instanceBooking = [
-    { name: "instance", title: "即時預訂功能已開啟", detail: "符合所有條件的房客可以即時預訂房源，其他房客則須傳送預訂申請。若你對預訂有任何疑慮，可取消且免受處罰。" },
-    { name: "instance", title: "即時預訂功能已關閉", detail: "所有房客都必須傳送預訂申請" }
+    {name: "instance", title: "即時預訂功能已開啟", detail: "符合所有條件的房客可以即時預訂房源，其他房客則須傳送預訂申請。若你對預訂有任何疑慮，可取消且免受處罰。"},
+    {name: "instance", title: "即時預訂功能已關閉", detail: "所有房客都必須傳送預訂申請"}
 ];
 let unBooking = [
-    { name: "unBooking", title: "彈性", detail: "在入住日1天前取消預訂，可獲得全額退款" },
-    { name: "unBooking", title: "彈性或不可退款", detail: "除了彈性退訂政策外，您還可以提供不可退款選項：房客雖然會少付10%的費用，不過無論何時對方取消預訂，您都能保留全數收款。" },
-    { name: "unBooking", title: "中等", detail: "在入住日5天前取消預訂，可獲得全額退款" },
-    { name: "unBooking", title: "中等或不可退款", detail: "除了中等退訂政策外，您還可以提供不可退款選項：房客雖然會少付10%的費用，不過無論何時對方取消預訂，您都能保留全數收款。" },
-    { name: "unBooking", title: "稍嚴", detail: "最晚在入住前 30 天取消可拿回全額退款。如果在入住前 30 天預訂，並在預訂後 48 小時內且入住前至少 14 天取消，即可拿回全額退款。在此之後，最晚在入住前 7 天取消可拿回 50% 退款。在這之後取消則不予退款。" },
-    { name: "unBooking", title: "較嚴格或不可退款", detail: "除了《較嚴格退訂政策》外，你也可以提供不可退款選項：房客雖然會少付 10% 費用，但若取消預訂，你就能保留全數收款。" },
-    { name: "unBooking", title: "嚴格", detail: "針對14天之後的預訂，若房客在預訂後48小時內取消，可以獲得全額退款。提早入住日期7天前取消預訂，可獲得50%退款。旅程開始前7天內取消，則無法退款。" },
-    { name: "unBooking", title: "嚴格或不可退款", detail: "除了嚴格退訂政策外，您還可以提供不可退款選項：房客雖然會少付10%的費用，不過萬一對方取消預訂，您就能保留全數收款。" },
+    {name: "unBooking", title: "彈性", detail: "在入住日1天前取消預訂，可獲得全額退款"},
+    {name: "unBooking", title: "彈性或不可退款", detail: "除了彈性退訂政策外，您還可以提供不可退款選項：房客雖然會少付10%的費用，不過無論何時對方取消預訂，您都能保留全數收款。"},
+    {name: "unBooking", title: "中等", detail: "在入住日5天前取消預訂，可獲得全額退款"},
+    {name: "unBooking", title: "中等或不可退款", detail: "除了中等退訂政策外，您還可以提供不可退款選項：房客雖然會少付10%的費用，不過無論何時對方取消預訂，您都能保留全數收款。"},
+    {
+        name: "unBooking",
+        title: "稍嚴",
+        detail: "最晚在入住前 30 天取消可拿回全額退款。如果在入住前 30 天預訂，並在預訂後 48 小時內且入住前至少 14 天取消，即可拿回全額退款。在此之後，最晚在入住前 7 天取消可拿回 50% 退款。在這之後取消則不予退款。"
+    },
+    {name: "unBooking", title: "較嚴格或不可退款", detail: "除了《較嚴格退訂政策》外，你也可以提供不可退款選項：房客雖然會少付 10% 費用，但若取消預訂，你就能保留全數收款。"},
+    {
+        name: "unBooking",
+        title: "嚴格",
+        detail: "針對14天之後的預訂，若房客在預訂後48小時內取消，可以獲得全額退款。提早入住日期7天前取消預訂，可獲得50%退款。旅程開始前7天內取消，則無法退款。"
+    },
+    {name: "unBooking", title: "嚴格或不可退款", detail: "除了嚴格退訂政策外，您還可以提供不可退款選項：房客雖然會少付10%的費用，不過萬一對方取消預訂，您就能保留全數收款。"},
 ];
 let status = [
-    { name: "unBooking", title: "已發布", detail: "房客可以在搜尋結果中找到你的房源，且可以提出預訂申請或預訂日曆上開放的日期。", icon: '<img src="/icon/Published.svg">' },
-    { name: "unBooking", title: "已休眠", detail: "在特定日期前，房客無法預訂或在搜尋結果中找到此房源。", icon: '<img src="/icon/sleep.svg">' },
-    { name: "unBooking", title: "取消發布", detail: "房客無法預訂或在搜尋結果中找到此房源。", icon: '<img src="/icon/UnPublished.svg">' },
-    { name: "unBooking", title: "下架", detail: "將你的房源從 Airbnb 永久下架。", icon: '<img src="/icon/RemovePublish.svg">' },
+    {
+        name: "unBooking",
+        title: "已發布",
+        detail: "房客可以在搜尋結果中找到你的房源，且可以提出預訂申請或預訂日曆上開放的日期。",
+        icon: '<img src="/icon/Published.svg" alt="publish">'
+    },
+    {
+        name: "unBooking",
+        title: "已休眠",
+        detail: "在特定日期前，房客無法預訂或在搜尋結果中找到此房源。",
+        icon: '<img src="/icon/sleep.svg" alt="sleep">' +
+            ''
+    },
+    {
+        name: "unBooking",
+        title: "取消發布",
+        detail: "房客無法預訂或在搜尋結果中找到此房源。",
+        icon: '<img src="/icon/UnPublished.svg" alt="unPublish">'
+    },
+    {
+        name: "unBooking",
+        title: "下架",
+        detail: "將你的房源從 Airbnb 永久下架。",
+        icon: '<img src="/icon/RemovePublish.svg" alt="removePublish">'
+    },
 ];
 let description = [
-    { title: "房源空間", detail: "提供房源與房型的概述，讓房客對房源有初步的了解。" },
-    { title: "房客使用權限", detail: "讓房客知道在附近街區行動的方法，以及停車情況。" },
-    { title: "其他注意事項", detail: "提供沒有在其他部分列明，而你希望潛在房客在預訂前知道的特殊事項。" }
+    {title: "房源空間", detail: "提供房源與房型的概述，讓房客對房源有初步的了解。"},
+    {title: "房客使用權限", detail: "讓房客知道在附近街區行動的方法，以及停車情況。"},
+    {title: "其他注意事項", detail: "提供沒有在其他部分列明，而你希望潛在房客在預訂前知道的特殊事項。"}
 ];
 let address = ["街道", "公寓、套房門牌號碼（選填）", "城市", "州", "郵遞區號"];
 let typeSelect = [
@@ -96,13 +125,11 @@ barBtn.forEach(item => {
             detailSection.classList.remove('d-none');
             e.target.classList.add('active');
             lastBar = detailSection;
-        }
-        else if (e.target.getAttribute('id') === 'priceBtn') {
+        } else if (e.target.getAttribute('id') === 'priceBtn') {
             priceSection.classList.remove('d-none');
             e.target.classList.add('active');
             lastBar = priceSection;
-        }
-        else {
+        } else {
             policySection.classList.remove('d-none');
             e.target.classList.add('active');
             lastBar = policySection;
@@ -127,7 +154,9 @@ commonBtn.forEach(btn => {
         //避免重複出現一樣的模組
         let allComponent = getParentNode(this, 2).querySelectorAll('common-component');
         if (allComponent !== undefined) {
-            allComponent.forEach(x => { x.parentNode.removeChild(x) });
+            allComponent.forEach(x => {
+                x.parentNode.removeChild(x)
+            });
         }
 
         //按編輯時隱藏內容
@@ -270,8 +299,7 @@ commonBtn.forEach(btn => {
         if (this.getAttribute('price') !== null) {
             if (this.getAttribute('percent') !== null) {
                 component.shadowRoot.querySelector('.com-price span').style.display = 'block';
-            }
-            else {
+            } else {
                 component.shadowRoot.querySelector('.com-price p').style.display = 'block';
             }
             activeContent.parentNode.style.opacity = '0';
@@ -282,8 +310,7 @@ commonBtn.forEach(btn => {
             input.value = '';
             textarea.value = '';
             inputTime.value = '';
-        }
-        else {
+        } else {
             input.value = content.innerText;
             textarea.value = content.innerText;
             inputTime.value = content.innerText;
@@ -313,8 +340,7 @@ commonBtn.forEach(btn => {
                 input.classList.add('limit');
                 saveBtn.classList.add('disabled');
                 saveBtn.disabled = true;
-            }
-            else {
+            } else {
                 input.classList.remove('limit');
                 saveBtn.classList.remove('disabled');
                 saveBtn.disabled = false;
@@ -338,19 +364,16 @@ commonBtn.forEach(btn => {
                             document.getElementById('showInstance').innerHTML = content.innerHTML;
                     }
                 })
-            }
-            else if (e.target.getAttribute('address') !== null) {
+            } else if (e.target.getAttribute('address') !== null) {
                 up.querySelectorAll('input').forEach(x => {
                     if (x.value !== "")
                         content.innerText += `${x.value},`
                 });
-            }
-            else if (e.target.getAttribute('select') !== null) {
+            } else if (e.target.getAttribute('select') !== null) {
                 up.querySelectorAll('select').forEach(x => {
                     content.innerText += `${x.value},`
                 });
-            }
-            else
+            } else
                 content.innerText = input.value;
 
             destroyNode(event, 'commonCollapse');
@@ -379,11 +402,23 @@ document.querySelector('.facilityBtn').addEventListener('click', () => {
             let yesLabel = document.createElement('label');
             span.innerText = item;
             list.classList.add('modal-list');
-            setAttributes(group, { "class": "btn-group btn-group-justified", "data-toggle": "buttons" });
-            setAttributes(noInput, { "type": "radio", "class": "btn-check", "name": `${index + 1}-${i + 1}`, "id": `no-${index + 1}-${i + 1}`, "autocomplete": "off" });
-            setAttributes(noLabel, { "class": "btn btn-outline-dark editBtn", "for": `no-${index + 1}-${i + 1}` });
-            setAttributes(yesInput, { "type": "radio", "class": "btn-check yesInput", "name": `${index + 1}-${i + 1}`, "id": `yes-${index + 1}-${i + 1}`, "autocomplete": "off" });
-            setAttributes(yesLabel, { "class": "btn btn-outline-dark editBtn", "for": `yes-${index + 1}-${i + 1}` });
+            setAttributes(group, {"class": "btn-group btn-group-justified", "data-toggle": "buttons"});
+            setAttributes(noInput, {
+                "type": "radio",
+                "class": "btn-check",
+                "name": `${index + 1}-${i + 1}`,
+                "id": `no-${index + 1}-${i + 1}`,
+                "autocomplete": "off"
+            });
+            setAttributes(noLabel, {"class": "btn btn-outline-dark editBtn", "for": `no-${index + 1}-${i + 1}`});
+            setAttributes(yesInput, {
+                "type": "radio",
+                "class": "btn-check yesInput",
+                "name": `${index + 1}-${i + 1}`,
+                "id": `yes-${index + 1}-${i + 1}`,
+                "autocomplete": "off"
+            });
+            setAttributes(yesLabel, {"class": "btn btn-outline-dark editBtn", "for": `yes-${index + 1}-${i + 1}`});
             noLabel.innerText = "✕";
             yesLabel.innerText = "✓";
 
@@ -428,8 +463,8 @@ document.querySelector('.spaceBtn').addEventListener('click', () => {
                 let label = document.createElement('label');
                 list.classList.add('form-check');
                 label.innerText = item;
-                setAttributes(input, { "class": "form-check-input", "type": "checkbox", "id": `${x}-${index + 1}` });
-                setAttributes(label, { "class": "form-check-label", "for": `${x}-${index + 1}` });
+                setAttributes(input, {"class": "form-check-input", "type": "checkbox", "id": `${x}-${index + 1}`});
+                setAttributes(label, {"class": "form-check-label", "for": `${x}-${index + 1}`});
 
                 list.appendChild(input);
                 list.appendChild(label);
@@ -509,21 +544,19 @@ contentDiv.forEach(content => {
                     if (mutation.target.getAttribute('class').includes('hide')) {
                         mutation.target.classList.remove('hide');
                         e.target.innerText = "隱藏";
-                    }
-                    else {
+                    } else {
                         mutation.target.classList.add('hide');
                         e.target.innerText = "顯示更多";
                     }
                 })
                 mutation.target.parentNode.appendChild(button)
-            }
-            else {
+            } else {
                 let btn = mutation.target.parentNode.querySelector('button');
                 if (btn !== null) btn.parentNode.removeChild(btn);
             }
         }
     });
-    observer.observe(content, { childList: true });
+    observer.observe(content, {childList: true});
 });
 
 //建立option
@@ -565,7 +598,7 @@ function destroyNode(e, id) {
 class CommonComponent extends HTMLElement {
     constructor() {
         super();
-        var shadow = this.attachShadow({ mode: 'open' });
+        var shadow = this.attachShadow({mode: 'open'});
         var templateElem = document.getElementById('common-component');
         var content = templateElem.content.cloneNode(true);
         shadow.appendChild(content);
@@ -577,6 +610,7 @@ class CommonComponent extends HTMLElement {
         })
     }
 }
+
 window.customElements.define('common-component', CommonComponent);
 
 //房客人數增減
@@ -605,7 +639,9 @@ uploadDiv.addEventListener("drop", function (e) {
 })
 
 // 拖曳監聽(必須)
-uploadDiv.addEventListener("dragover", function (e) { e.preventDefault(); })
+uploadDiv.addEventListener("dragover", function (e) {
+    e.preventDefault();
+})
 
 // 照片上傳監聽
 let fileBtn = document.getElementById('upload_img');
@@ -617,6 +653,7 @@ fileBtn.addEventListener("change", (e) => {
 
 // 照片進來後的處理
 let showPhoto = document.getElementById('showPhoto');
+
 function loadPic(file) {
     let img = new Image();
     let fr = new FileReader(); //建立FileReader物件
@@ -653,7 +690,9 @@ function loadPic(file) {
                 //封面區儲存照片
                 let coverPicture = document.getElementById('coverPicture');
                 document.getElementById('cover-save').addEventListener('click', () => {
-                    coverPicture.querySelectorAll('.delete').forEach(x => { x.parentNode.removeChild(x) });
+                    coverPicture.querySelectorAll('.delete').forEach(x => {
+                        x.parentNode.removeChild(x)
+                    });
                     coverPicture.appendChild(x.cloneNode(true));
                 });
             });
@@ -666,16 +705,23 @@ function loadPic(file) {
 //圖片移動順序
 function enableDragSort(listClass) {
     const sortableLists = document.getElementsByClassName(listClass);
-    Array.prototype.map.call(sortableLists, (list) => { enableDragList(list) });
+    Array.prototype.map.call(sortableLists, (list) => {
+        enableDragList(list)
+    });
 }
+
 function enableDragList(list) {
-    Array.prototype.map.call(list.children, (item) => { enableDragItem(item) });
+    Array.prototype.map.call(list.children, (item) => {
+        enableDragItem(item)
+    });
 }
+
 function enableDragItem(item) {
     item.setAttribute('draggable', true)
     item.ondrag = handleDrag;
     item.ondragend = handleDrop;
 }
+
 function handleDrag(item) {
     const selectedItem = item.target,
         list = selectedItem.parentNode,
@@ -689,6 +735,7 @@ function handleDrag(item) {
         list.insertBefore(selectedItem, swapItem);
     }
 }
+
 function handleDrop(item) {
     item.target.classList.remove('drag-sort-active');
 }
@@ -713,7 +760,9 @@ collapse.forEach(item => {
     item.addEventListener('click', (e) => {
         e.target.classList.add('active');
         e.target.parentNode.querySelector('li:first-child').classList.add('active');
-        collapse.forEach(x => { x.parentNode.querySelector('.collapsed').classList.remove('show') });
+        collapse.forEach(x => {
+            x.parentNode.querySelector('.collapsed').classList.remove('show')
+        });
         li.forEach(x => {
             x.parentNode.classList.remove('active');
         });
@@ -725,7 +774,9 @@ collapse.forEach(item => {
 
 li.forEach(x => {
     x.addEventListener('click', (e) => {
-        li.forEach(x => { x.parentNode.classList.remove('active') });
+        li.forEach(x => {
+            x.parentNode.classList.remove('active')
+        });
         e.target.parentNode.classList.add('active');
     })
 })
@@ -741,16 +792,14 @@ window.addEventListener('scroll', (e) => {
                 if (x.innerText == h2)
                     x.parentNode.classList.add('active');
             });
-        }
-        else if (sTop == 0) {
+        } else if (sTop == 0) {
             li.forEach(x => {
                 x.parentNode.classList.remove('active');
             });
             document.querySelectorAll('.collapsed li:first-child').forEach(x => {
                 x.classList.add('active');
             });
-        }
-        else {
+        } else {
             let h2 = x.querySelector('h2').innerText;
             li.forEach(x => {
                 if (x.innerText == h2)

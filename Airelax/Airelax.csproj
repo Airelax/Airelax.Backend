@@ -88,11 +88,20 @@
         <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
         <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
         <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\LICENSE.md" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\001.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\002.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\003.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\004.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\005.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\006.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\007.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\008.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\009.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\010.svg" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Views\Home" />
-      <Folder Include="wwwroot\lib" />
     </ItemGroup>
 
     <ItemGroup>
