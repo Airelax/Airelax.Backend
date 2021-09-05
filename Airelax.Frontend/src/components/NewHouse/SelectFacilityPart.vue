@@ -2,7 +2,10 @@
   <div class="container">
     <h2>{{ title }}</h2>
     <ul class="row">
-      <SelectFacilities :facilities="facilities"></SelectFacilities>
+      <SelectFacilities
+          :facilities="facilities"
+          @selected="selected">
+      </SelectFacilities>
     </ul>
   </div>
 </template>
@@ -13,6 +16,7 @@ ul {
   padding: 0;
   margin: 0;
 }
+
 h2 {
   font-size: 22px;
   font-weight: 900;
@@ -23,10 +27,17 @@ h2 {
 
 <script>
 import SelectFacilities from "./SelectFacilities.vue";
+
 export default {
   props: ["title", "facilities"],
+
   components: {
     SelectFacilities,
   },
+  methods: {
+    selected: function (facilityMappings) {
+      this.$emit('selected', this.facilities[0].tag, facilityMappings);
+    }
+  }
 };
 </script>

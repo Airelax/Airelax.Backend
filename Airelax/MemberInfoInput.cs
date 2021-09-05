@@ -14,14 +14,15 @@ namespace Airelax
         /// 前端來的關於我
         /// </summary>
         public string About { get; set; }
+
         /// <summary>
         /// 前端來的位置
         /// </summary>
         public string Location { get; set; }
+
         /// <summary>
         /// 前端來的工作時間
         /// </summary>
         public string WorkTime { get; set; }
-
     }
 }

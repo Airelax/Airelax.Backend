@@ -15,15 +15,12 @@ namespace Airelax.EntityFramework.Repositories
     [DependencyInjection(typeof(IHouseRepository))]
     public class HouseRepository : IHouseRepository
     {
-        private readonly AirelaxContext _context;
         private readonly IRepository _repository;
 
-        public HouseRepository(AirelaxContext context, IRepository repository)
+        public HouseRepository(IRepository repository)
         {
-            _context = context;
             _repository = repository;
         }
-
 
         public IQueryable<House> GetAll()
         {
@@ -60,12 +57,12 @@ namespace Airelax.EntityFramework.Repositories
 
         public IQueryable<House> GetSatisfyFromAsync(Specification<House> specification)
         {
-            return _repository.GetAll<string, House>().Where(x => specification.IsSatisfy(x));
+            return GetHouseIncludeAll().Where(specification.ToExpression());
         }
 
         private IIncludableQueryable<House, ReservationRule> GetHouseIncludeAll()
         {
-            return _context.Houses.Include(x => x.Comments)
+            return _repository.GetAll<string, House>().Include(x => x.Comments)
                 .Include(x => x.Photos)
                 .Include(x => x.Policy)
                 .Include(x => x.Spaces)

@@ -1,9 +1,9 @@
 <template>
   <li v-for="houseType in houseTypes" :key="houseType.mapping">
     <HouseType
-      :isActive="houseType.mapping === value"
-      :houseType="houseType"
-      @selected="selected"
+        :isActive="houseType.mapping === value"
+        :houseType="houseType"
+        @selected="selected"
     ></HouseType>
   </li>
 </template>
@@ -18,10 +18,18 @@ li {
 import HouseType from "./HouseType.vue";
 
 export default {
-  data() {
-    return { value: 0 };
+  created() {
+    const houseId = this.$route.params.id;
+    if (houseId) {
+      this.$store.commit('setNewHouseNextAvailable', false);
+      return;
+    }
+    //todo fetch house
+    this.$store.commit('setNewHouseNextAvailable', true);
   },
-
+  data() {
+    return {value: 0};
+  },
   props: {
     houseTypes: {
       type: Object,
@@ -32,8 +40,17 @@ export default {
   },
   methods: {
     selected: function (mapping) {
+      this.$store.commit('setNewHouseNextAvailable', true);
       this.value = mapping;
-      this.$emit("selected", mapping);
+      const req = {
+        method: "PUT",
+        url: `/${this.$route.params.id}/type`,
+        redirectName: `RoomType`,
+        body: {
+          houseType: this.value,
+        }
+      }
+      this.$store.commit('setNewHouseRequest', req);
     },
   },
 };

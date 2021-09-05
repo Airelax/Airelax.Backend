@@ -1,4 +1,4 @@
-  <template>
+<template>
   <Layout :title="'你想出租哪種類型的房源？'">
     <SelectHouseCategory></SelectHouseCategory>
   </Layout>
