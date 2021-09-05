@@ -2,6 +2,7 @@
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Price;
 using Airelax.Domain.Members;
+using Airelax.Domain.Messages;
 using Airelax.Domain.Orders;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,6 +39,8 @@ namespace Airelax.EntityFramework.DbContexts
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Star> Stars { get; set; }
 
+        public DbSet<Message> Messages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             ConfigHouse(modelBuilder);
@@ -65,7 +68,10 @@ namespace Airelax.EntityFramework.DbContexts
 
             ConfigComment(modelBuilder);
             ConfigStar(modelBuilder);
+
+            ConfigMessage(modelBuilder);
         }
+
 
         #region HouseConfig
 
@@ -370,6 +376,21 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.Property(x => x.LocationScore).IsRequired();
                 builder.Ignore(x => x.Total);
                 builder.HasOne<Comment>().WithOne(x => x.Star).HasForeignKey<Star>(x => x.Id);
+            });
+        }
+
+        #endregion
+
+        #region Messages
+
+        private static void ConfigMessage(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Message>(builder =>
+            {
+                builder.SetEntityKey<Message, string>();
+                builder.Property(x => x.MemberOneId).IsRequired();
+                builder.Property(x => x.MemberTwoId).IsRequired();
+                builder.Property(x => x.Contents).HasJsonConversion();
             });
         }
 
