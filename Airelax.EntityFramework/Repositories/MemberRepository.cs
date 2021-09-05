@@ -66,6 +66,5 @@ namespace Airelax.EntityFramework.Repositories
         {
             await _repository.SaveChangesAsync();
         }
-        
     }
 }

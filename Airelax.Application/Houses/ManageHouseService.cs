@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Airelax.Application;
 using Airelax.Application.Houses.Dtos.Request.ManageHouse;
 using Airelax.Application.Houses.Dtos.Response;
 using Airelax.Application.ManageHouses.Request;
@@ -16,9 +15,8 @@ using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
-using Microsoft.AspNetCore.Authorization;
 
-namespace Airelax
+namespace Airelax.Application.Houses
 {
     [DependencyInjection(typeof(IManageHouseService))]
     public class ManageHouseService : IManageHouseService

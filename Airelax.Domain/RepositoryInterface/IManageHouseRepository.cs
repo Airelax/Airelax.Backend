@@ -2,7 +2,7 @@
 using Airelax.Domain.Houses;
 using Microsoft.EntityFrameworkCore;
 
-namespace Airelax
+namespace Airelax.Domain.RepositoryInterface
 {
     public interface IManageHouseRepository
     {

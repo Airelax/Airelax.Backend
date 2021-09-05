@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Airelax.Application.Members;
+using Airelax.Application.Members.Dtos.Request;
 
 namespace Airelax.Controllers
 {

@@ -1,10 +1,6 @@
 ﻿using Airelax.Domain.Houses.Defines;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Airelax
+namespace Airelax.Application.Houses.Dtos.Response
 {
     public class MyHouseViewModel
     {

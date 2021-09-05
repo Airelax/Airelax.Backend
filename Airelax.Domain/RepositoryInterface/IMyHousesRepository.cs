@@ -1,7 +1,7 @@
-﻿using Airelax.Domain.Houses;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Airelax.Domain.Houses;
 
-namespace Airelax
+namespace Airelax.Domain.RepositoryInterface
 {
     public interface IMyHousesRepository
     {

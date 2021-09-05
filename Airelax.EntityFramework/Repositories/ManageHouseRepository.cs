@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Airelax.EntityFramework.DbContexts;
 using Airelax.Domain.Houses;
-using Microsoft.EntityFrameworkCore;
+using Airelax.Domain.RepositoryInterface;
+using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.DependencyInjection;
-using Airelax.Application.Houses.Dtos.Response;
-using Airelax.Application.ManageHouses.Response;
-using Lazcat.Infrastructure.Extensions;
-using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
-namespace Airelax
+namespace Airelax.EntityFramework.Repositories
 {
     [DependencyInjection(typeof(IManageHouseRepository))]
     public class ManageHouseRepository : IManageHouseRepository

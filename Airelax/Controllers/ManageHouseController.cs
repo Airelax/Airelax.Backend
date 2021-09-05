@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Airelax.Application.Houses;
 using Microsoft.AspNetCore.Mvc;
 using Airelax.Application.Houses.Dtos.Request.ManageHouse;
 using Airelax.Application.ManageHouses.Request;

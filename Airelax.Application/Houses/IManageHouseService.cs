@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Airelax.Application.Houses.Dtos.Request.ManageHouse;
-using Airelax.Application.Houses.Dtos.Response;
 using Airelax.Application.ManageHouses.Request;
 using Airelax.Application.ManageHouses.Response;
 
-namespace Airelax
+namespace Airelax.Application.Houses
 {
     public interface IManageHouseService
     {

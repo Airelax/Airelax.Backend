@@ -1,13 +1,12 @@
-﻿using Airelax.Domain.Houses;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Airelax.Domain.Houses;
+using Airelax.Domain.RepositoryInterface;
 using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Airelax
+namespace Airelax.EntityFramework.Repositories
 {
     [DependencyInjection(typeof(IMyHousesRepository))]
     public class MyHousesRepository : IMyHousesRepository

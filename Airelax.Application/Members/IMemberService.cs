@@ -1,9 +1,11 @@
-﻿using Airelax.Application.Members.Request;
+﻿using System.Threading.Tasks;
+using Airelax.Application.Members.Dtos.Request;
+using Airelax.Application.Members.Dtos.Response;
+using Airelax.Application.Members.Request;
 using Airelax.Domain.Members;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
-namespace Airelax
+namespace Airelax.Application.Members
 {
     public interface IMemberService
     {
