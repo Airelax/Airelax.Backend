@@ -1,6 +1,6 @@
 ﻿using Airelax.Domain.Orders;
 
-namespace Airelax
+namespace Airelax.Domain.RepositoryInterface
 {
     public interface IOrderRepository
     {

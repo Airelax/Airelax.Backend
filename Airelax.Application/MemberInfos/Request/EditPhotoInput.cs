@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Airelax.Application.MemberInfo.Request
+namespace Airelax.Application.MemberInfos.Request
 {
     public class EditPhotoInput
     {

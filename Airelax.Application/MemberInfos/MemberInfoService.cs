@@ -1,14 +1,15 @@
-﻿using Airelax.Controllers;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Airelax.Application.MemberInfos.Request;
+using Airelax.Application.MemberInfos.Response;
 using Airelax.Domain.Members;
+using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Threading.Tasks;
-using Airelax.Application.MemberInfo.Request;
 
-namespace Airelax
+namespace Airelax.Application.MemberInfos
 {
     [DependencyInjection(typeof(IMemberInfoService))]
     public class MemberInfoService : IMemberInfoService
@@ -58,7 +59,7 @@ namespace Airelax
 
             if (member?.MemberInfos == null)
             {
-                var memberInfo = new MemberInfo(memberId)
+                var memberInfo = new Domain.Members.MemberInfo(memberId)
                 {
                     About = input.About,
                     Location = input.Location,

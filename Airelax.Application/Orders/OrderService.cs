@@ -1,26 +1,23 @@
-﻿using Airelax.Domain.Orders;
+﻿using Airelax.Application.Orders.Request;
+using Airelax.Domain.Orders;
 using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Airelax
+namespace Airelax.Application.Orders
 {
     [DependencyInjection(typeof(IOrderService))]
     public class OrderService : IOrderService
     {
         private readonly IHouseRepository _houseRepository;
         private readonly IOrderRepository _orderRepository;
+
         public OrderService(IHouseRepository houseRepository, IOrderRepository orderRepository)
         {
             _houseRepository = houseRepository;
             _orderRepository = orderRepository;
         }
 
-        public bool CreateOrder([FromBody] OrdersInput input)
+        public bool CreateOrder(OrdersInput input)
         {
             //取與house有關聯全表
             var house = _houseRepository.GetAsync(x => x.Id == input.HouseId).Result;
@@ -50,6 +47,5 @@ namespace Airelax
             _orderRepository.SaveChanges();
             return true;
         }
-
     }
 }

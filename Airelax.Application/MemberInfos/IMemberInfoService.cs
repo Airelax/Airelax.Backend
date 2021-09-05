@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Airelax.Application.MemberInfo.Request;
+﻿using System.Threading.Tasks;
+using Airelax.Application.MemberInfos.Request;
+using Airelax.Application.MemberInfos.Response;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Airelax
+namespace Airelax.Application.MemberInfos
 {
     public interface IMemberInfoService
     {

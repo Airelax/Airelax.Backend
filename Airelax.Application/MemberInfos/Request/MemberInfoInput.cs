@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Airelax
+﻿namespace Airelax.Application.MemberInfos.Request
 {
     /// <summary>
     /// 從前端進來後端的class

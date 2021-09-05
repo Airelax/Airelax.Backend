@@ -1,17 +1,14 @@
-﻿using Airelax.Domain.Members;
-using Airelax.EntityFramework.DbContexts;
-using Lazcat.Infrastructure.DependencyInjection;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Airelax.Application.MemberInfo.Request;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
+using Airelax.Application.MemberInfos.Response;
 using Airelax.Controllers;
+using Airelax.Domain.Members;
+using Airelax.Domain.RepositoryInterface;
+using Airelax.EntityFramework.DbContexts;
+using Lazcat.Infrastructure.DependencyInjection;
 
-namespace Airelax
+namespace Airelax.EntityFramework.Repositories
 {
     [DependencyInjection(typeof(IMemberInfoRepository))]
     public class MemberInfoRepository : IMemberInfoRepository

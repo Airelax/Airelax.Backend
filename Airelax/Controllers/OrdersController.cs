@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Airelax.Application.Orders;
+using Airelax.Application.Orders.Request;
 
 namespace Airelax.Controllers
 {

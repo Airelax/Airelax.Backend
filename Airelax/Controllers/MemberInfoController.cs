@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Airelax.Application.MemberInfo.Request;
+using Airelax.Application.MemberInfos;
+using Airelax.Application.MemberInfos.Request;
 
 namespace Airelax.Controllers
 {

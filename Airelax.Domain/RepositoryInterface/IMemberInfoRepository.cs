@@ -1,9 +1,9 @@
-﻿using Airelax.Controllers;
-using Airelax.Domain.Members;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Airelax.Controllers;
+using Airelax.Domain.Members;
 
-namespace Airelax
+namespace Airelax.Domain.RepositoryInterface
 {
     public interface IMemberInfoRepository
     {

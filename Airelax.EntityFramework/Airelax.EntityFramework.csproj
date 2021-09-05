@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Airelax.Application\Airelax.Application.csproj" />
         <ProjectReference Include="..\Airelax.Domain\Airelax.Domain.csproj" />
     </ItemGroup>
 
