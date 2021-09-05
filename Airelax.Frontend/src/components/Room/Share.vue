@@ -51,7 +51,7 @@ export default {
 .back{
     display: flex;
     justify-content: space-between;
-    margin: 1.5rem 2rem;
+    margin: 1.5rem 1rem;
     a{
         display: flex;
         align-items: center;

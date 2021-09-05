@@ -63,6 +63,9 @@ export default {
             font-size: 1.2rem;
             color: #fff;
         }
+        .img{
+            margin: unset;
+        }
     }
 }
 </style>

@@ -1,62 +1,44 @@
 <template>
-  <div v-if="data" class="my-container">
+  <div v-if="comment" class="my-container">
     <div class="summary">
-      <CommentSummary :v-if="data" :data="data"></CommentSummary>
+      <CommentSummary :rank="rank" :comment="comment"></CommentSummary>
     </div>
     <div class="sum-char container-fluid">
       <div class="row">
-        <Comment :rank="data.rank"></Comment>
+        <Comments :rank="rank"></Comments>
       </div>
     </div>
     <div class="scrollbar container-fluid">
-      <Message :com="data.comments"></Message>
+      <Messages :com="comment"></Messages>
     </div>
   </div>
   <div class="btn-box">
-    <button class="btn-modal" v-if="data.comments" @click="show" data-bs-toggle="modal" data-bs-target="#myModal">
-      顯示全部{{ data.comments.length }}則評價
+    <button class="btn-modal" v-if="comment" @click="show" data-bs-toggle="modal" data-bs-target="#myModal">
+      顯示全部{{ comment.length }}則評價
     </button>
   </div>
 </template>
 
 <script>
-import Message from "./Comment/Messages.vue";
-import Comment from "./Comment/Comments.vue";
+import Messages from "./Comment/Messages.vue";
+import Comments from "./Comment/Comments.vue";
 import CommentSummary from "./Comment/CommentSummary.vue";
-import axios from "axios";
 export default {
   components: {
-    Message,
-    Comment,
+    Messages,
+    Comments,
     CommentSummary,
-  },
-  data() {
-    return {
-      data: [],
-    };
-  },
-  created: function () {
-    const api = "https://bs-howard.github.io/Homework/fake-room-data.json";
-    axios
-      .get(api)
-      .then((response) => {
-        this.data = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   },
   methods:{
       show(){
           this.$emit('Show',true)
       }
-  }
+  },
+  props:["comment","rank"]
 };
 </script>
 
 <style scoped>
-
-
 .row {
   width: 100%;
 }
@@ -198,6 +180,8 @@ export default {
   .scrollbar {
     display: flex;
     flex-wrap: wrap;
+    height: 25rem;
+    overflow: hidden;
   }
 }
 </style>

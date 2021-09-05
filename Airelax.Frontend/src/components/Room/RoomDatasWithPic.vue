@@ -1,32 +1,8 @@
 <template>
   <div class="cardTemplate">
     <h2>住宿地點</h2>
-
-    <!-- <swiper
-    :slides-per-view="4"
-    :watchSlidesProgress="true"
-    :spaceBetween="0"
-    :loop="false"
-    navigation
-    
-    class="rooms">
-
-      <swiper-slide class="roomCards" v-for="(room, index) in roomDatas" :key="room.index">
-        <div class="card">
-          <img :src="room.picture" class="card-img-top roomPic" alt="..." />
-          <div class="card-body p-0 py-2">
-            <h3 class="card-text1 py-1"><strong>臥室{{ index + 1 }}</strong></h3>
-            <h4 class="card-text2 py-1">{{ room.BedCount }}張{{ room.BedType }}</h4>
-          </div>
-        </div>
-      </swiper-slide>
-
-     
-      
-    </swiper> -->
-
     <swiper
-    :slides-per-view="4"
+    :slides-per-view="3"
     navigation
     @swiper="onSwiper"
     @slideChange="onSlideChange" 
@@ -51,12 +27,11 @@
             </div>
 
             <h3 class="card-text1 py-1"><strong>臥室{{ index + 1 }}</strong></h3>
-            <h4 class="card-text2 py-1">{{ room.bedCount }}張{{ room.bedType }}</h4>
+            <h4 class="card-text2 py-1">{{ room.bedCount }}張{{ room.bedType == "Single" ? "單人床" : "雙人床" }}</h4>
           </div>
         </div>
       </swiper-slide>
     </swiper>
-    
   </div>
 </template>
 

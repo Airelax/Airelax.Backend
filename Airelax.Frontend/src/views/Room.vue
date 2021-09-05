@@ -15,9 +15,9 @@
           <div class="remix">
             <i class="fas fa-star"></i>
             <span class="num">{{ data.rank.star }}</span>
-            <a href="#">({{ data.comments.length }}則評論)</a>
+            <a href="#" @click.prevent="isCommentShow = true" @click="show" data-bs-toggle="modal" data-bs-target="#myModal">({{ data.comments.length }}則評論)</a>
             <span class="dot">·</span>
-            <a href="#"
+            <a href="#location"
               ><span
                 >{{ data.locationDto.town }}、{{ data.locationDto.city }}、{{
                   data.locationDto.country
@@ -42,7 +42,7 @@
                   <p>房東 : {{ data.owner.name }}</p>
                 </div>
               </div>
-              <a class="img">
+              <a class="img" href="#landlord">
                 <img :src="data.owner.cover" style="width: 3rem;"/>
               </a>
             </div>
@@ -54,13 +54,14 @@
               >
             </div>
           </div>
+
           <div class="honor">
             <ul>
               <li v-for="item in data.honor" :key="item.type">
-                <i class="fas fa-home"></i>
+                <img :src="item.img" style="width:1.5rem;">
                 <div class="detail">
-                  <p>type:{{ item.type }} 整套房源</p>
-                  <span>{{ item.description }}</span>
+                  <p>{{item.chinese}}</p>
+                  <span>{{ item.description}}</span>
                 </div>
               </li>
             </ul>
@@ -82,10 +83,13 @@
             <h2>有提供的設備與服務</h2>
             <ul>
               <div class="row">
-                <div class="col-12 col-md-6">
-                  <li v-for="item in data.facility.provide" :key="item">
-                    <i class="fas fa-tv"></i> <span>{{item}}</span>
-                  </li>
+                <div class="col-12 col-md-6 hide">
+                  <div v-for="item in data.facility.provide" :key="item" class="d-flex align-items-center">
+                    <li v-if="checkFacilityItem(item)">
+                        <img :src="getFacilityIcon(item)" style="width:1.5rem;">
+                        <span>{{getFacilityName(item)}}</span>
+                    </li>
+                  </div>
                 </div>
               </div>
             </ul>
@@ -117,7 +121,7 @@
               <div>
                 <i class="fas fa-star"></i>
                 <span class="num">{{ data.rank.star }}</span>
-                <a href="#">({{ data.comments.length }}則評論)</a>
+                <a href="#" @click.prevent="isCommentShow = true" @click="show" data-bs-toggle="modal" data-bs-target="#myModal">({{ data.comments.length }}則評論)</a>
               </div>
             </div>
 
@@ -133,7 +137,7 @@
             >
               查看可訂日期
             </button>
-            <router-link to="/subscribe" v-else><button :class="{'w-100':true,'h-100':fullWidth < 768}">預定</button></router-link>
+            <button v-else @click="goSubscribe">預定</button>
 
             <div
               class="hide-price"
@@ -148,29 +152,33 @@
                       .toFixed(0)
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }}
-                  X N晚
+                  X {{$store.state.nightCount}}晚
                 </p>
                 <span
                   >${{
-                    data.price.origin
+                    (data.price.origin*$store.state.nightCount)
                       .toFixed(0)
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }}</span
                 >
               </div>
               <div class="price-show">
-                <p>服務費</p>
-                <span>$0</span>
+                <p>清潔費</p>
+                <span>${{data.price.fee.cleanFee}}</span>
               </div>
               <div class="price-show">
-                <p>住宿稅和費用</p>
-                <span>$0</span>
+                <p>服務費</p>
+                <span>${{data.price.fee.serviceFee}}</span>
+              </div>
+              <div class="price-show">
+                <p>稅額</p>
+                <span>${{data.price.fee.taxFee}}</span>
               </div>
               <div class="price-total">
                 <p>總價</p>
                 <span
                   >${{
-                    data.price.origin
+                    (data.price.origin*$store.state.nightCount+data.price.fee.cleanFee+data.price.fee.serviceFee+data.price.fee.taxFee)
                       .toFixed(0)
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }}</span
@@ -183,25 +191,25 @@
 
       <!-- sticky -->
 
-      <Comment @Show="CommentShow"></Comment>
+      <Comment @Show="CommentShow" :comment="data.comments" :rank="data.rank"></Comment>
 
       <Location :detail="data.locationDto" v-if="fullWidth > 768"></Location>
 
-      <div class="row landlord-section">
+      <div class="row landlord-section" id="landlord">
         <div class="col-12 col-md-6">
           <div class="landlord">
             <div class="detail">
               <div class="txt">
                 <p>房東 : {{ data.owner.name }}</p>
-                <span>加入時間 : {{ data.owner.registerTime }}</span>
+                <span>加入時間 : {{ data.owner.registerTime.split('T')[0] }}</span>
               </div>
-              <a class="img">
-                <img src="https://picsum.photos/50/50/?random=1" />
+              <a class="img" :href="'https://localhost:5001/MemberInfo/'+data.owner.id">
+                <img :src="data.owner.cover" style="width: 3rem;"/>
               </a>
             </div>
             <div class="mix">
               <p>
-                <i class="fas fa-star"></i> {{ data.comments.length }}則評論
+                <i class="fas fa-star"></i> {{data.owner.totalComments}}則評論
               </p>
               <p><i class="fas fa-user-shield"></i>身分已驗證</p>
             </div>
@@ -243,7 +251,7 @@
               <h2>《房屋守則》</h2>
               <span
                 >入住時間 : 下午{{
-                  data.houseRule.checkinTime.split("-")[0]
+                  data.houseRule.checkinTime
                 }}</span
               >
               <HouseRule
@@ -281,7 +289,7 @@
               <Cancel
                 v-if="
                   fullWidth > 768 && Object.keys($store.state.date).length !== 0
-                "
+                " :detail="data.cancelPolicy" :setting="setting"
               ></Cancel>
             </div>
             <div class="arrow">></div>
@@ -322,6 +330,7 @@
               <Facility
                 v-if="isFacilityShow"
                 :detail="data.facility"
+                :facilitySetting="setting"
               ></Facility>
               <Connect
                 v-if="isConnectShow"
@@ -350,9 +359,9 @@
                 v-if="
                   isDatePickerShow &&
                   Object.keys($store.state.date).length !== 0
-                "
+                " :detail="data.cancelPolicy" :setting="setting"
               ></Cancel>
-              <CommentModal v-if="isCommentShow"></CommentModal>
+              <CommentModal v-if="isCommentShow" :comment="data.comments" :rank="data.rank"></CommentModal>
             </div>
             <div
               class="modal-footer d-flex flex-row justify-content-between"
@@ -388,20 +397,9 @@ import Cancel from "../components/Room/Cancel";
 import Comment from "../components/Room/Comment";
 import CommentModal from "../components/Room/ModalComment";
 import Bed from "../components/Room/RoomDatasWithPic";
+import settingJson from "../components/Settings/setting"
 
 export default {
-  // created() {
-  //   axios
-  //     .get(`/api/houses/${this.$route.params.houseId}`, {
-  //       headers: {
-  //         "Access-Control-Allow-Origin": "*",
-  //       },
-  //     })
-  //     .then((res) => {
-  //       this.data = res.data;
-  //       this.get = true;
-  //     });
-  // },
   data() {
     return {
       data: {},
@@ -417,21 +415,43 @@ export default {
       isDatePickerShow: false,
       isCommentShow: false,
       fullWidth: 0,
+      setting: settingJson
     };
   },
   methods: {
-    // getList() {
-    //   const api = "https://bs-howard.github.io/Homework/fake-room-data.json";
-    //   axios
-    //     .get(api)
-    //     .then((response) => {
-    //       this.data = response.data;
-    //       this.get = true;
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // },
+    getRandomNumber(min,max){
+      return Math.floor(Math.random() * (max-min+1))+min;
+    },
+    getRandomList(min,max,num){
+      var list = [];
+      while (list.length != num) {
+        var randomNumber = Math.floor(Math.random() * (max-min+1))+min;
+        if (!list.some((x) => {return x == randomNumber;})
+        ) { list.push(randomNumber);}
+      }
+      return list;
+    },
+    checkFacilityItem(item){
+      let temp = this.setting.facilities.filter(x=>x.mapping == item)
+      if(temp.length == 0) return false
+      else return true
+    },
+    getFacilityIcon(item){
+      let icon = this.setting.facilities.filter(x=>x.mapping == item)
+      if(icon.length != 0 && icon[0].img !=""){
+        return icon[0].img;
+      }
+      else{
+        return require("@/assets/pic/FacilityIcons/HairDryer.svg");
+      }
+    },
+    getFacilityName(item){
+      let icon = this.setting.facilities.filter(x=>x.mapping == item)
+      if(icon.length != 0){
+        return icon[0].chinese;
+      }
+    },
+    //Axios
     getList() {
       axios
       .get(`/api/houses/${this.$route.params.houseId}`, {
@@ -441,8 +461,110 @@ export default {
       })
       .then((res) => {
         this.data = res.data;
+        this.getSpace();
+        this.getRank();
+        this.getHonor();
+        this.getComment();
+        this.getPortrait();
+        this.getPicture();
+        this.getTotalComments();
+        this.getPrice();
+        //Todo-Vuex
+        if(Object.keys(this.$store.state.room).length === 0) this.$store.state.room = this.data;
+        else this.data = this.$store.state.room;
         this.get = true;
         console.log(this.data)
+      });
+    },
+    //Todo-先給隨機Space資料
+    getSpace(){
+      if(this.data.space.bedroom == 0) this.data.space.bedroom = this.getRandomNumber(1,6);
+      if(this.data.space.bed == 0) this.data.space.bed = this.data.space.bedroom * 2;
+      if(this.data.space.bathroom == 0) this.data.space.bathroom = this.getRandomNumber(1,6);
+      //Todo-先給隨機Bedroom資料
+      if(this.data.bedroomDetail.length == 0){
+        let list = [];
+        for(let i = 0; i<this.data.space.bedroom; i++){
+          let bed = ["Single","Double"];
+          let obj = {
+            bedType: bed[this.getRandomNumber(0,1)],
+            bedCount: 2
+          }
+          list.push(obj);
+        }
+        this.data.bedroomDetail = list;
+      }
+    },
+    //Todo-先給隨機Rank資料
+    getRank(){
+      if(this.data.rank.star !== 0) return;
+      Object.keys(this.data.rank).forEach((x)=>{
+        if(x=="star") {
+          this.data.rank[x] = 0
+          return
+        }
+        let num = Math.random() * 5
+        this.data.rank[x] = Number(num).toFixed(1);
+      });
+      let total = 0;
+      Object.keys(this.data.rank).forEach(item=>{
+        total += Number(this.data.rank[item])
+      })
+      this.data.rank["star"] = (total/6).toFixed(1)
+    },
+    //Todo-先給隨機Honor資料
+    getHonor(){
+      if(this.data.honor.length !== 0) return;
+      this.getRandomList(0,this.setting.honor.length-1,4).forEach(x=>{
+        if(this.setting.honor[x].chinese.includes('資深房東')){
+          this.setting.honor[x].description = `${this.data.owner.name}在其他房源獲得了許多則評價。`
+        }
+        this.data.honor.push(this.setting.honor[x]);
+      })
+    },
+    //Todo-先給隨機Portrait資料
+    getPortrait(){
+      if(this.data.owner.cover !== null) return;
+      let num = this.getRandomList(0,this.setting.portraits.length-1,1)[0];
+      this.data.owner.cover = this.setting.portraits[num];
+    },
+    //Todo-先給隨機Comment資料
+    getComment(){
+      if(this.data.comments.length !== 0) return;
+      this.getRandomList(1,30,this.getRandomNumber(1,30)).forEach(x=>{
+        let num = this.getRandomList(0,this.setting.portraits.length-1,1)[0];
+        let obj={
+          "authorId": x,
+          "name": `阿明${x}`,
+          "date": `2021-09-${x.toString().padStart(2,'0')}`,
+          "content": "非常好的一次住宿體驗,回覆消息也都很及時｡",
+          "portrait": `${this.setting.portraits[num]}`
+        }
+        this.data.comments.push(obj);
+      })
+    },
+    //Todo-先給隨機Picture資料
+    getPicture(){
+      if(this.data.pictures.length !== 0) return ;
+      else if(this.$store.state.roomPicture.length !== 0){
+        this.data.pictures = this.$store.state.roomPicture
+      }
+      else{
+        this.getRandomList(0,this.setting.pictures.length-1,this.getRandomNumber(5,this.setting.pictures.length-1)).forEach(x=>{
+          this.data.pictures.push(this.setting.pictures[x]);
+        })
+      }
+    },
+    //Todo-先給隨機TotalComments資料
+    getTotalComments(){
+      if(this.data.owner.totalComments !== 0) return;
+      this.data.owner.totalComments = this.getRandomNumber(100,1000)
+    },
+    //Todo-先給隨機Price資料
+    getPrice(){
+      if(this.data.price.fee.cleanFee !== 0) return;
+      Object.keys(this.data.price.fee).forEach(x=>{
+        this.data.price.fee[x] = Math.round(this.data.price.origin*0.1+this.getRandomNumber(1,this.data.price.origin/5));
       });
     },
     invisible() {
@@ -460,6 +582,11 @@ export default {
     CommentShow(val) {
       this.isCommentShow = val;
     },
+    goSubscribe(){
+      this.$router.push({
+        path: `/subscribe/${this.data.id}`,
+      });
+    }
   },
   watch: {
     fullWidth(val) {
@@ -514,6 +641,7 @@ export default {
       font-weight: 700;
       margin: 1rem 0;
       line-height: 2rem;
+      word-break: break-all;
     }
     .remix {
       font-size: 0.9rem;
@@ -577,11 +705,12 @@ export default {
       .detail {
         margin-left: 1rem;
         p {
-          margin-bottom: 0.5rem;
           font-size: 1.1rem;
           font-weight: 700;
         }
         span {
+          display: block;
+          margin-top: .5rem;
           color: #717171;
           font-size: 0.9rem;
         }
@@ -605,13 +734,21 @@ export default {
   .facility {
     padding: 1.5rem 0;
     border-bottom: 1px solid rgb(209, 206, 206);
+    .hide{
+      height: 18rem;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
     h2 {
       font-size: 1.5rem;
       font-weight: 900;
     }
     li {
-      margin: 2rem 0;
+      display: flex;
+      align-items: center;
+      margin: 1rem 0;
       span {
+        display: block;
         margin-left: 0.7rem;
       }
     }

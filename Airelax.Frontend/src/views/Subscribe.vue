@@ -55,26 +55,45 @@ export default {
   },
   created() {
     axios
-      .get(
-        "https://raw.githubusercontent.com/Airelax/Airelax.Frontend/SHOP-67/fake-room-data.json"
-      )
+      .get(`/api/houses/${this.$route.params.houseId}`, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
       .then((res) => {
-        this.room = res.data;
+        // this.room = res.data;
+        console.log(res.data)
+        //Todo-Vuex
+        this.room = this.$store.state.room;
+        console.log(this.room)
         this.get = true;
       });
   },
   data() {
     return {
       room: Object,
-      nightCount: 3,
+      nightCount: this.$store.state.nightCount,
       get: false,
       fullWidth: 0,
     };
+  },
+  provide(){
+    return {
+      data: this.$store.state.room
+    }
+  },
+  computed:{
+    night(){
+      return this.$store.state.nightCount
+    }
   },
   watch: {
     fullWidth(val) {
       this.fullWidth = val;
     },
+    night(val){
+      this.nightCount = val
+    }
   },
   mounted() {
     window.scrollTo(0, 0);

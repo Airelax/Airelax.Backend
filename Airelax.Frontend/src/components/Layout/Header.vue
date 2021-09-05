@@ -9,7 +9,7 @@
 				</div>
 			<div class="d-flex align-items-center">
 				<!-- Todo-根據有無登入顯示不同button -->
-				<router-link to="/new-house"><button type="button" id="register">成為房東 / 體驗達人</button></router-link>
+				<router-link to="/become-host"><button type="button" id="register">成為房東 / 體驗達人</button></router-link>
 				<Member></Member>
 			</div>
 		</div>
@@ -39,6 +39,12 @@ export default {
 			vm.isShow = true;
 			let minSearch = document.querySelector('.min_search');
 			minSearch.classList.add('d-none');
+			let banner = document.getElementById('banner');
+			banner.style.display = 'block'
+			banner.addEventListener('click',()=>{
+				vm.isShow = false;
+				minSearch.classList.remove('d-none');
+			});
 			window.addEventListener('scroll',()=>{
 				vm.isShow = false;
 				minSearch.classList.remove('d-none');

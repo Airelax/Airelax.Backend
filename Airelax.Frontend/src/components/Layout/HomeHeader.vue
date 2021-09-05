@@ -9,7 +9,7 @@
 				</div>
 			<div class="d-flex align-items-center">
 				<!-- Todo-根據有無登入顯示不同button -->
-				<router-link to="/new-house"><button type="button" id="registerHome">成為房東 / 體驗達人</button></router-link>
+				<router-link to="/become-host"><button type="button" id="registerHome">成為房東 / 體驗達人</button></router-link>
 				<Member></Member>
 			</div>
 		</div>

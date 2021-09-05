@@ -1878,18 +1878,6 @@
         let photoArray = JSON.parse('@(Html.Raw(Json.Serialize(Model.Pictures)))');
         const showPhoto = document.getElementById('showPhoto');
         const cover = document.querySelector('.showPic');
-<<<<<<< HEAD
-        //cover.setAttribute('style',`background-Image:url("${photoArray[0]}");`);
-        //(function (){
-        //   photoArray.forEach(image=>{
-        //       const div = document.createElement('div');
-        //       div.classList.add('delete');
-        //       div.style.backgroundImage = `url(${image})`
-        //       showPhoto.appendChild(div);
-        //       div.addEventListener('click',e => deleteImage(e, image));
-        //   });
-        //})();
-=======
         cover.setAttribute('style',`background-image:url(${photoArray[0]});`);
         (function (){
            photoArray.forEach(image=>{
@@ -1900,8 +1888,7 @@
                div.addEventListener('click',e => deleteImage(e, image));
            });
         })();
->>>>>>> SHOP-41
-        
+
         //刪除相片
         function deleteImage(e, photoUrl) {
           e.target.parentNode.removeChild(e.target);

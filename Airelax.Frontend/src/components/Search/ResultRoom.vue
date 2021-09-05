@@ -1,5 +1,5 @@
 <template>
-  <div class="row eachRoom me-0 p-0" v-for="room in rooms" :key="room.id" @click="SearchRoom(room.id)">
+  <div class="row eachRoom me-0 p-0" v-for="room in rooms" :key="room.id" style="cursor: pointer;">
     <div class="col-12 col-md-5">
       <div class="label d-flex position-relative">
         <div class="perfect me-auto">超讚房東</div>
@@ -21,7 +21,7 @@
       <CreateWish></CreateWish>
       <Wish></Wish>
       <div>
-        <RoomSwiper :roomPicture="room.picture"></RoomSwiper>
+        <RoomSwiper :roomPicture="room.picture" style="cursor: default;"></RoomSwiper>
       </div>
     </div>
     <div
@@ -35,7 +35,7 @@
       "
     >
       <div class="row">
-        <div class="col col-md-10">
+        <div class="col col-md-10" @click="SearchRoom(room)">
           <div class="comment d-inline-flex d-md-none my-1">
             <Star></Star>
             <span class="starScore" id="starScore">
@@ -51,8 +51,8 @@
           <div class="mdTypeAddress d-none d-md-block">
             位於{{ room.address }}的{{ room.houseType }}
           </div>
-          <div class="title my-1">
-            {{ room.Title }}
+          <div class="title my-1" style="font-size:1.3rem;">
+            {{ room.title }}
           </div>
         </div>
         <div class="col-md-2 d-none d-md-block text-md-end">
@@ -73,19 +73,19 @@
           ></Heart>
         </div>
       </div>
-      <div class="row d-none d-md-block">
+      <div class="row d-none d-md-block" @click="SearchRoom(room)">
         <div class="space">
-          <span v-if="room.simpleSpace.customerNumber" class="customer">
-            {{ room.simpleSpace.customerNumber }}位．</span
+          <span v-if="room.space.customerNumber" class="customer">
+            {{ room.space.customerNumber }}位．</span
           >
-          <span v-if="room.simpleSpace.bedroom" class="bedRoom">
-            {{ room.simpleSpace.bedroom }}間臥室．</span
+          <span v-if="room.space.bedroom" class="bedRoom">
+            {{ room.space.bedroom }}間臥室．</span
           >
-          <span v-if="room.simpleSpace.bed" class="bed">
-            {{ room.simpleSpace.bed }}張床．</span
+          <span v-if="room.space.bed" class="bed">
+            {{ room.space.bed }}張床．</span
           >
-          <span v-if="room.simpleSpace.bathroom" class="bathRoom">
-            {{ room.simpleSpace.bathroom }}間衛浴
+          <span v-if="room.space.bathroom" class="bathRoom">
+            {{ room.space.bathroom }}間衛浴
           </span>
         </div>
         <div class="facility">
@@ -96,7 +96,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="originAndSweet text-md-end my-1">
+        <div class="originAndSweet text-md-end my-1" @click="SearchRoom(room)">
           <span class="origin">
             $ {{ convertToLocaleString(room.price.origin) }}
           </span>
@@ -108,7 +108,7 @@
           / 晚
         </div>
         <div class="total d-md-flex">
-          <div class="mdComment d-none d-md-inline-flex align-items-center">
+          <div class="mdComment d-none d-md-inline-flex align-items-center" @click="SearchRoom(room)">
             <Star></Star>
             <span class="starScore fw-bold" id="starScore">
               {{ room.comment.star }}
@@ -180,9 +180,11 @@ export default {
     nightCount: { type: Number },
   },
   methods: {
-    SearchRoom(id){
+    SearchRoom(room){
+      //Todo-Vuex
+      this.$store.state.roomPicture = room.picture
       this.$router.push({
-        path: `/room/${id}`,
+        path: `/room/${room.id}`,
       });
     },
     convertToLocaleString(price) {

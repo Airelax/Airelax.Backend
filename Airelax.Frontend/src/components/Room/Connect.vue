@@ -5,18 +5,22 @@
             <span>通常會在 1 小時內回覆</span>
         </div>
         <div class="img">
-            <img src="https://picsum.photos/50/50/?random=1">
+            <img :src="detail.cover" style="width: 3rem;"/>
         </div>
     </div>
     <div class="content">
         <h2 class="question">旅客常見問題</h2>
         <h2>前往那裡</h2>
         <ul>
-            <li>此房源的入住時間從下午{{rule.checkinTime.split('-')[0]}}開始，退房時間為上午{{rule.checkinTime.split('-')[1]}}。</li>
+            <li>此房源的入住時間從下午{{rule.checkinTime}}開始，退房時間為上午{{rule.checkoutTime}}。</li>
         </ul>
         <h2>房源詳情與守則</h2>
         <ul>
-            <li>禁止吸煙. 不允許舉辦聚會和活動. 不允許攜帶寵物.</li>
+            <li v-if="!rule.allowBaby || !rule.allowChild">不適合兒童和嬰幼兒</li>
+            <li v-if="rule.allowPet">允許攜帶寵物</li>
+            <li v-if="!rule.allowPet">不允許攜帶寵物</li>
+            <li v-if="!rule.allowParty">不允許舉辦聚會和活動</li>
+            <li v-if="!rule.allowSmoke">禁止吸煙</li>
         </ul>
         <h2>價格和可訂狀態</h2>
         <ul>
@@ -72,7 +76,7 @@ export default {
     ul{
         list-style-type: disc;
         li{
-            margin: 0 1.5rem;
+            margin: 1rem 1.5rem;
             font-size: 1.1rem;
             line-height: 1.5rem;
         }

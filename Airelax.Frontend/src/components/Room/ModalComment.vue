@@ -2,16 +2,16 @@
   <div class="container-fluid">
     <div class="row">
       <div class="summary col-12 col-lg-4 d-flex">
-        <CommentSummary :data="data"></CommentSummary>
+        <CommentSummary :rank="rank" :comment="comment"></CommentSummary>
       </div>
       <div class="search col-12 col-lg-8 ">
         <div class="icon"></div>
-        <input type="text" placeholder="搜尋評價" />
+        <input type="text" placeholder="搜尋評價" v-model.number="search"/>
       </div>
       <div class="row ranks col-12 col-lg-4">
         <div
           class="rank col-12 col-md-6 col-lg-12"
-          v-for="(item, key, index) in data.rank"
+          v-for="(item, key, index) in rank"
           :key="index"
           v-show="key !== 'star'"
         >
@@ -24,11 +24,11 @@
       <div class="row messages col-12 col-lg-8 ps-md-5">
         <div class="row">
           <div
-            v-for="comment in data.comments"
-            :key="comment.id"
+            v-for="com in searchData"
+            :key="com.id"
             class="message"
           >
-            <Message :msg="comment"></Message>
+            <Message :msg="com" :search="search"></Message>
           </div>
         </div>
       </div>
@@ -120,7 +120,6 @@ import CommentSummary from "./Comment/CommentSummary";
 import setting from "./Comment/msgSetting";
 import Rank from "./Comment/Rank.vue";
 import Message from "./Comment/Message.vue";
-import axios from "axios";
 export default {
   components: {
     CommentSummary,
@@ -129,20 +128,20 @@ export default {
   },
   data() {
     return {
-      setting: setting.chineseTranslation,
-      data: [],
+      search: '',
+      setting: setting.chineseTranslation
     };
   },
-  created: function () {
-    const api = "https://bs-howard.github.io/Homework/fake-room-data.json";
-    axios
-      .get(api)
-      .then((response) => {
-        this.data = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
+  props:["rank","comment"],
+  computed: {
+      searchData: function() {
+          var search = this.search;
+          if (search) {
+              let regWord = new RegExp(search, 'gi')
+              return this.comment.filter(item => item.content.match(regWord) || item.name.match(regWord) || item.date.match(regWord))
+          }
+          return this.comment;
+      }
+  }
 };
 </script>

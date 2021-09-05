@@ -44,7 +44,7 @@ export default {
         margin-bottom: .5rem;
         cursor: pointer;
         position: relative;
-        height: 12rem;
+        height: 10rem;
         img{
             width: 100%;
             height: 100%;
@@ -70,6 +70,9 @@ export default {
     .main{
         overflow: hidden;
         padding: 0 20rem;
+        .pic{
+            height: 20rem;
+        }
     }
 }
 </style>

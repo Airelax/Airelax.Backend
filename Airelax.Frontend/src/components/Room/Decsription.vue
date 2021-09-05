@@ -3,12 +3,18 @@
         <div class="txt">
             <h2>空間介紹</h2>
             <p>{{detail.houseDescription}}</p>
-            <h3>房源空間</h3>
-            <p>{{detail.spaceDescription}}</p>
-            <h3>房客使用權限</h3>
-            <p>{{detail.guestPermission}}</p>
-            <h3>其他注意事項</h3>
-            <p>{{detail.others}}</p>
+            <div v-if="detail.spaceDescription != null">
+                <h3>房源空間</h3>
+                <p>{{detail.spaceDescription}}</p>
+            </div>
+            <div v-if="detail.guestPermission != null">
+                <h3>房客使用權限</h3>
+                <p>{{detail.guestPermission}}</p>
+            </div>
+            <div v-if="detail.others != null">
+                <h3>其他注意事項</h3>
+                <p>{{detail.others}}</p>
+            </div>
         </div>
     </div>
 </template>

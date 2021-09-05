@@ -16,7 +16,7 @@
                 <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around.png" />
                   <div class="item mx-lg-2">
-                    <span>台北</span><span>00分鐘車程</span>
+                    <span>台北</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
@@ -24,7 +24,7 @@
                 <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around2.png" />
                   <div class="item mx-lg-2">
-                    <span>台南</span><span>00分鐘車程</span>
+                    <span>台南</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
@@ -32,7 +32,7 @@
                 <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around3.png" />
                   <div class="item mx-lg-2">
-                    <span>高雄</span><span>00分鐘車程</span>
+                    <span>高雄</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
@@ -40,7 +40,7 @@
                 <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around4.png" />
                   <div class="item mx-lg-2">
-                    <span>桃園</span><span>00分鐘車程</span>
+                    <span>桃園</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
@@ -50,7 +50,7 @@
                 <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around5.png" />
                   <div class="item mx-lg-2">
-                    <span>新北市</span><span>00分鐘車程</span>
+                    <span>新北市</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
@@ -58,7 +58,7 @@
                 <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around6.png" />
                   <div class="item mx-lg-2">
-                    <span>花蓮</span><span>00分鐘車程</span>
+                    <span>花蓮</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
@@ -66,7 +66,7 @@
                 <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around7.png" />
                   <div class="item mx-lg-2">
-                    <span>台東市</span><span>00分鐘車程</span>
+                    <span>台東市</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
@@ -74,7 +74,7 @@
                 <a href="#" @click.prevent="SearchLocation">
                   <img src="../assets/image/Home/around8.png" />
                   <div class="item mx-lg-2">
-                    <span>恆春</span><span>00分鐘車程</span>
+                    <span>恆春</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
                   </div>
                 </a>
               </div>
@@ -153,7 +153,7 @@
         <div class="item">
           <h2>開始出租吧</h2>
           分享你的空間，賺取額外收入，開拓新機會。
-          <router-link to="/new-house"  style="text-decoration: none;"><button class="goTo">了解詳情</button></router-link>
+          <router-link to="/become-host"  style="text-decoration: none;"><button class="goTo">了解詳情</button></router-link>
         </div>
       </div>
     </div>
@@ -175,7 +175,10 @@ export default {
             location: this.$store.state.destination,
           },
         });
-      }
+      },
+      getRandomNumber(min,max){
+        return Math.floor(Math.random() * (max-min+1))+min;
+      },
     }
 }
 </script>

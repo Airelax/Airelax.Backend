@@ -309,6 +309,7 @@ namespace Airelax.Application.Houses
                 houseRuleDto.AllowBaby = houseHouseRule.AllowBaby;
                 houseRuleDto.AllowParty = houseHouseRule.AllowParty;
                 houseRuleDto.AllowPet = houseHouseRule.AllowParty;
+                houseRuleDto.Other = houseHouseRule.Other;
             }
 
             if (policy == null) return houseRuleDto;

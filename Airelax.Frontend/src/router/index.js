@@ -20,7 +20,7 @@ const routes = [
         component: () => import('../views/Room.vue')
     },
     {
-        path: '/subscribe',
+        path: '/subscribe/:houseId',
         name: 'Subscribe',
         component: () => import('../views/Subscribe.vue')
     },
