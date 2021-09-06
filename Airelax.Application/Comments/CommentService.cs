@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
+using Airelax.Application.Account;
 using Airelax.Application.Comments.Dtos.Request;
 using Airelax.Application.Comments.Dtos.Response;
+using Airelax.Application.Houses.Dtos.Response;
 using Airelax.Domain.Comments;
 using Airelax.Domain.Orders;
 using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
+using Lazcat.Infrastructure.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Airelax.Application.Comments
 {
@@ -16,17 +21,21 @@ namespace Airelax.Application.Comments
     public class CommentService : ICommentService
     {
         private readonly ICommentsRepository _commentsRepository;
+        private readonly IAccountService _accountService;
 
-        public CommentService(ICommentsRepository commentsRepository)
+        public CommentService(ICommentsRepository commentsRepository, IAccountService accountService)
         {
             _commentsRepository = commentsRepository;
+            _accountService = accountService;
         }
 
-        public IEnumerable<HouseCommentViewModel> GetHouseComments(string memberId)
+        public IEnumerable<HouseCommentViewModel> GetHouseComments()
         {
-            var comments = _commentsRepository.Get(memberId);
+            var memberId = _accountService.GetAuthMemberId();
+            
+            var comments = _commentsRepository.Get(memberId)?.ToList();
 
-            if (comments == null || !comments.Any()) return null;
+            if (comments == null || !comments.Any()) return new List<HouseCommentViewModel>();
             var commentViewModels = comments.Select(com => new HouseCommentViewModel
             {
                 HouseId = com.Key,
@@ -37,7 +46,7 @@ namespace Airelax.Application.Comments
                     CommentId = c.Comment.Id,
                     CommentTime = c.Comment.CommentTime.ToString("yyyy/MM"),
                     Content = c.Comment.Content,
-                    AuthorName = c.Members,
+                    AuthorName = c.AuthorName,
                     Stars = c.Stars.Total
                 }).ToArray()
             });
@@ -47,16 +56,16 @@ namespace Airelax.Application.Comments
 
         public void CreateComment(CreateCommentInput input)
         {
-            var CustomerIdAndHouseId = _commentsRepository.GetCustomerIdAndHouseIdByOrder(input.OrderId);
-            CheckCustomerIdAndHouseId(CustomerIdAndHouseId);
+            var customerIdAndHouseId = _commentsRepository.GetCustomerIdAndHouseIdByOrder(input.OrderId);
+            CheckCustomerIdAndHouseId(customerIdAndHouseId);
 
-            var OwnerId = _commentsRepository.GetMemberIdByHouse(input.OrderId);
+            var ownerId = _commentsRepository.GetMemberIdByHouse(input.OrderId);
 
-            var comment = new Comment(CustomerIdAndHouseId.CustomerId, CustomerIdAndHouseId.HouseId, OwnerId, input.OrderId, input.Content)
+            var comment = new Comment(customerIdAndHouseId.CustomerId, customerIdAndHouseId.HouseId, ownerId, input.OrderId, input.Content)
             {
-                AuthorId = CustomerIdAndHouseId.CustomerId,
-                HouseId = CustomerIdAndHouseId.HouseId,
-                ReceiverId = OwnerId,
+                AuthorId = customerIdAndHouseId.CustomerId,
+                HouseId = customerIdAndHouseId.HouseId,
+                ReceiverId = ownerId,
                 OrderId = input.OrderId,
                 Content = input.Content,
                 CommentTime = DateTime.Now,
@@ -68,10 +77,11 @@ namespace Airelax.Application.Comments
             _commentsRepository.Add(comment);
             _commentsRepository.SaveChanges();
         }
+        
 
-        private void CheckCustomerIdAndHouseId(Order CustomerIdAndHouseId)
+        private void CheckCustomerIdAndHouseId(Order customerIdAndHouseId)
         {
-            if (CustomerIdAndHouseId == null)
+            if (customerIdAndHouseId == null)
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "doesnt match HouseId or OrderId ");
         }
     }

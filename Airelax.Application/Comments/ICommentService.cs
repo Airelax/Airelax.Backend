@@ -7,6 +7,6 @@ namespace Airelax.Application.Comments
     public interface ICommentService
     {
         void CreateComment(CreateCommentInput input);
-        IEnumerable<HouseCommentViewModel> GetHouseComments(string memberId);
+        IEnumerable<HouseCommentViewModel> GetHouseComments();
     }
 }
