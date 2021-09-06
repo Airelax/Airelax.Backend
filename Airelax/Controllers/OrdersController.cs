@@ -18,8 +18,7 @@ namespace Airelax.Controllers
         public bool CreateOrder([FromBody] OrdersInput input)
         {
             var order = _orderService.CreateOrder(input);
-            if (!ModelState.IsValid) return false;
-            return order;
+            return ModelState.IsValid && order;
         }
     }
 }

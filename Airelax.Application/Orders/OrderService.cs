@@ -1,4 +1,6 @@
-﻿using Airelax.Application.Orders.Request;
+﻿using System.Linq;
+using Airelax.Application.Helpers;
+using Airelax.Application.Orders.Request;
 using Airelax.Domain.Orders;
 using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
@@ -25,6 +27,11 @@ namespace Airelax.Application.Orders
             //取與order有關聯全表
             if (house == null) return false;
 
+            var dateRange = DateTimeHelper.GetDateRange(input.StartDate, input.EndDate).ToList();
+            if (house.ReservationDates.Intersect(dateRange).Any()) return false;
+            house.ReservationDates.AddRange(dateRange);
+
+
             var order = new Order(input.CustomerId, house.Id);
             //轉換
             //HousePrice裡面的計算總價丟進OrderPriceDetail裡面的總價
@@ -43,6 +50,7 @@ namespace Airelax.Application.Orders
                 PricePerNight = house.HousePrice.CalculateTotalPrice(input.StartDate, input.EndDate)
             };
 
+            _houseRepository.UpdateAsync(house);
             _orderRepository.Add(order);
             _orderRepository.SaveChanges();
             return true;

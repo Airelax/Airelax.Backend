@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Airelax.Application.Helpers;
 using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Application.Houses.Dtos.Response;
+using Airelax.Domain.Comments;
 using Airelax.Domain.DomainObject;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Defines;
@@ -28,15 +30,22 @@ namespace Airelax.Application.Houses
         private readonly IGeocodingService _geocodingService;
         private readonly IHouseRepository _houseRepository;
         private readonly IMapper _mapper;
+        private readonly ICommentsRepository _commentsRepository;
         private readonly IMemberRepository _memberRepository;
+        public const int PAGE_COUNT = 30;
 
-
-        public HouseAppService(IHouseRepository houseRepository, IMemberRepository memberRepository, IGeocodingService geocodingService, IMapper mapper)
+        public HouseAppService(
+            IHouseRepository houseRepository,
+            IMemberRepository memberRepository,
+            IGeocodingService geocodingService,
+            IMapper mapper,
+            ICommentsRepository commentsRepository)
         {
             _houseRepository = houseRepository;
             _memberRepository = memberRepository;
             _geocodingService = geocodingService;
             _mapper = mapper;
+            _commentsRepository = commentsRepository;
         }
 
         public async Task<SearchHousesResponse> Search(SearchInput input)
@@ -73,21 +82,23 @@ namespace Airelax.Application.Houses
 
             var sNow = DateTime.Now;
             Console.WriteLine(sNow);
-            var houses = await _houseRepository.GetSatisfyFromAsync(specification)
-                .OrderByDescending(x => x.CreateTime)
-                .Skip((input.Page - 1) * 30).Take(30)
-                .ToListAsync();
+            var housesTask = GetHousesAsync(specification, input.Page);
+            var totalTask = _houseRepository.GetSatisfyFromAsync(specification).CountAsync();
 
             var dateTime = DateTime.Now;
             Console.WriteLine(dateTime);
             Console.WriteLine("cost" + (dateTime - sNow));
 
+            var houses = await housesTask;
             if (houses.IsNullOrEmpty())
                 return searchHousesResponse;
 
             var results = GetSearchHouses(houses);
             var simpleHouseDtos = ConvertToSimpleHouseDtos(results);
             searchHousesResponse.Houses = simpleHouseDtos;
+
+            var total = await totalTask;
+            searchHousesResponse.Total = total;
             return searchHousesResponse;
         }
 
@@ -97,6 +108,8 @@ namespace Airelax.Application.Houses
             if (house == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"House Id : {id} does not match any house");
             var member = await _memberRepository.GetAsync(x => x.Id == house.OwnerId);
             if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "House exist but member has been deleted");
+            var houseComments = (await _commentsRepository.GetAll().Where(x => x.HouseId == house.Id)?.ToListAsync()).GroupBy(x => x.HouseId).FirstOrDefault()?.ToList();
+
             var houseDto = new HouseDto
             {
                 Id = house.Id,
@@ -108,7 +121,7 @@ namespace Airelax.Application.Houses
                 Description = ConvertToDescriptionDto(house.HouseDescription),
                 Facility = ConvertToFacilityDto(house),
                 Honor = new List<HonorDto>(),
-                Comments = new List<CommentDto>(),
+                Comments = ConvertToCommentDtos(houseComments),
                 HouseRule = ConvertToHouseRuleDto(house.HouseRule, house.Policy),
                 LocationDto = ConvertToLocationDto(house.HouseLocation),
                 Owner = new OwnerDto
@@ -120,11 +133,48 @@ namespace Airelax.Application.Houses
                     IsVerified = member.IsEmailVerified,
                     Cover = member.Cover
                 },
-                Rank = new RankDto(),
+                Rank = ConvertToRankDto(houseComments),
                 WishList = new WishListDto(),
                 Price = ConvertToPriceDto(house.HousePrice)
             };
             return houseDto;
+        }
+
+        private Task<List<House>> GetHousesAsync(Specification<House> specification, int page)
+        {
+            return _houseRepository.GetSatisfyFromAsync(specification)
+                .OrderByDescending(x => x.CreateTime)
+                .Skip((page - 1) * PAGE_COUNT).Take(PAGE_COUNT)
+                .ToListAsync();
+        }
+
+        private static RankDto ConvertToRankDto(IReadOnlyCollection<HouseCommentObject> houseComments)
+        {
+            return houseComments.IsNullOrEmpty()
+                ? new RankDto()
+                : new RankDto()
+                {
+                    Star = houseComments.Average(x => x.Stars.Total),
+                    AccuracyScore = houseComments.Average(x => x.Stars.AccuracyScore),
+                    CheapPriceScore = houseComments.Average(x => x.Stars.CheapScore),
+                    CleanScore = houseComments.Average(x => x.Stars.CleanScore),
+                    CommunicationScore = houseComments.Average(x => x.Stars.CleanScore),
+                    ExperienceScore = houseComments.Average(x => x.Stars.ExperienceScore),
+                    LocationScore = houseComments.Average(x => x.Stars.LocationScore)
+                };
+        }
+
+        private static IEnumerable<CommentDto> ConvertToCommentDtos(IReadOnlyCollection<HouseCommentObject> houseComments)
+        {
+            return houseComments.IsNullOrEmpty()
+                ? new List<CommentDto>()
+                : houseComments.Select(c => new CommentDto()
+                {
+                    AuthorId = c.AuthorId,
+                    Content = c.Comment.Content,
+                    Date = c.Comment.CommentTime.ToString("yyyy-MM-dd"),
+                    Name = c.AuthorName
+                });
         }
 
         private static Specification<House> GetSpecification(SearchInput input, GeocodingInfo geocodingInfo)
@@ -134,7 +184,7 @@ namespace Airelax.Application.Houses
             specification = specification.And(customerNumberSpecification);
 
             if (!input.Checkin.HasValue || !input.Checkout.HasValue) return specification;
-            var dateRange = GetDateRange(input.Checkin.Value, input.Checkout.Value);
+            var dateRange = DateTimeHelper.GetDateRange(input.Checkin.Value, input.Checkout.Value);
             var availableDateSpecification = new AvailableDateSpecification(dateRange);
             specification = specification.And(availableDateSpecification);
 
@@ -261,10 +311,9 @@ namespace Airelax.Application.Houses
 
             if (price.Fee == null) return price;
 
-            //price.Fee.CleanFee = decimal.Round(housePrice.Fee.CleanFee);
-            //price.Fee.ServiceFee = decimal.Round(housePrice.Fee.ServiceFee);
-            //price.Fee.TaxFee = decimal.Round(housePrice.Fee.TaxFee);
-
+            price.Fee.CleanFee = decimal.Round(housePrice.Fee.CleanFee);
+            price.Fee.ServiceFee = decimal.Round(housePrice.Fee.ServiceFee);
+            price.Fee.TaxFee = decimal.Round(housePrice.Fee.TaxFee);
             return price;
         }
 
@@ -334,13 +383,6 @@ namespace Airelax.Application.Houses
             };
         }
 
-        private static IEnumerable<DateTime> GetDateRange(DateTime start, DateTime end)
-        {
-            var dateRange = new List<DateTime>();
-            for (var dt = start; dt < end; dt = dt.AddDays(1)) dateRange.Add(dt);
-
-            return dateRange;
-        }
 
         private static SimpleSpaceDto ConvertToSpaceDto(House house)
         {
