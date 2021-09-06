@@ -113,7 +113,7 @@ namespace Airelax.Application.Houses
             {
                 Id = house.Id,
                 Title = house.Title,
-                CancelPolicy = (int) house.Policy.CancelPolicy,
+                CancelPolicy = (int)house.Policy.CancelPolicy,
                 Pictures = house.Photos?.Select(x => x.Image) ?? new List<string>(),
                 Space = ConvertToSpaceDto(house),
                 BedroomDetail = ConvertToBedroomDetailDtos(house),
@@ -308,7 +308,7 @@ namespace Airelax.Application.Houses
             //    price.Discount.Week = housePrice.Discount.Week;
             //}
 
-            if (price.Fee == null) return price;
+            if (housePrice.Fee == null) return price;
 
             price.Fee.CleanFee = decimal.Round(housePrice.Fee.CleanFee);
             price.Fee.ServiceFee = decimal.Round(housePrice.Fee.ServiceFee);
@@ -377,15 +377,15 @@ namespace Airelax.Application.Houses
         {
             return new()
             {
-                Provide = house.ProvideFacilities?.Select(x => (int) x),
-                NotProvide = house.NotProvideFacilities?.Select(x => (int) x)
+                Provide = house.ProvideFacilities?.Select(x => (int)x),
+                NotProvide = house.NotProvideFacilities?.Select(x => (int)x)
             };
         }
 
 
         private static SimpleSpaceDto ConvertToSpaceDto(House house)
         {
-            var spaceDto = new SimpleSpaceDto {CustomerNumber = house.CustomerNumber};
+            var spaceDto = new SimpleSpaceDto { CustomerNumber = house.CustomerNumber };
             var houseSpaces = house.Spaces;
             if (houseSpaces == null) return spaceDto;
 
