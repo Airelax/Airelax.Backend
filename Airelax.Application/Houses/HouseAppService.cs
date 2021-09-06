@@ -82,14 +82,14 @@ namespace Airelax.Application.Houses
 
             var sNow = DateTime.Now;
             Console.WriteLine(sNow);
-            var housesTask = GetHousesAsync(specification, input.Page);
-            var totalTask = _houseRepository.GetSatisfyFromAsync(specification).CountAsync();
+            var houses = await GetHousesAsync(specification, input.Page);
+            var total = await _houseRepository.GetSatisfyFromAsync(specification).CountAsync();
 
             var dateTime = DateTime.Now;
             Console.WriteLine(dateTime);
             Console.WriteLine("cost" + (dateTime - sNow));
 
-            var houses = await housesTask;
+
             if (houses.IsNullOrEmpty())
                 return searchHousesResponse;
 
@@ -97,7 +97,6 @@ namespace Airelax.Application.Houses
             var simpleHouseDtos = ConvertToSimpleHouseDtos(results);
             searchHousesResponse.Houses = simpleHouseDtos;
 
-            var total = await totalTask;
             searchHousesResponse.Total = total;
             return searchHousesResponse;
         }

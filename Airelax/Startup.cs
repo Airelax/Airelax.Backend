@@ -53,7 +53,7 @@ namespace Airelax
                     x =>
                     {
                         x.MigrationsAssembly(Define.Database.ENTITY_FRAMEWORK);
-                        x.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
+                        x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                     })
             );
 
@@ -89,7 +89,6 @@ namespace Airelax
 
             services.AddControllersWithViews();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddCors(opt => { opt.AddPolicy("dev", builder => builder.WithOrigins("http://localhost:8080")); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -110,7 +109,11 @@ namespace Airelax
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseCors("dev");
+            if (env.IsDevelopment())
+            {
+                app.UseCors("dev");
+            }
+
             app.UseMiddleware<RequestHeaderMiddleware>();
 
 
