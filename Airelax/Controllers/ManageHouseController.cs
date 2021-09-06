@@ -32,7 +32,6 @@ namespace Airelax.Controllers
         public async Task<IActionResult> IndexAsync(string id)
         {
             var manageInfo = await _manageHouseService.GetManageHouseInfo(id);
-            //todo error
             if (manageInfo == null) return RedirectToAction("Index", "Error");
             return View(manageInfo);
         }

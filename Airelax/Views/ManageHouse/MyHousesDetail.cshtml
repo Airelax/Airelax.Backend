@@ -218,7 +218,7 @@
                     </label>
                 </div>
                 <img src="~/images/ManageHouse/21.jpg" alt="" id="roomPic">
-                <span class="fw-bold"></span>
+                <div class="fw-bold" id="title"></div>
             </a>
         </th>
         <td id="status"></td>
@@ -231,35 +231,21 @@
 
 @section Scripts {
     <script>
-    const houses = @Html.Raw(Json.Serialize(@Model));
+    const houses = @Html.Raw(Json.Serialize(Model));
     const house = document.querySelector("#house");
-    //const title = house.content.querySelector('span');
-    //title.innerText = "台北小房間";
-
-    //const status = house.content.querySelector('#status');
-    //status.innerText = '建立中';
-
-    //const location_ = house.content.querySelector('#location_');
-    //location_.innerText = '台灣';
-
-    //const lastMos = house.content.querySelector('#lastMos');
-    //lastMos.innerText = '8月12日';
-
-    
-    //const tbody = document.querySelector('tbody');
-    //const clone = document.importNode(house.content, true);
-    //tbody.appendChild(clone);
+    const manageHouseUrl = '/managehouse'
+   
 
     houses.forEach(function (item)
     {
         let cloneContent = house.content.cloneNode(true);
-        cloneContent.querySelector('span').innerText = item.title;
+        cloneContent.querySelector('a').href = manageHouseUrl+`/${item.houseId}`;
+        cloneContent.querySelector('#title').innerText = item.title;
         cloneContent.querySelector('#status').innerText = houseStatus(item.createState);
         cloneContent.querySelector('#location_').innerText = item.location;
         cloneContent.querySelector('#lastMos').innerText = item.lastReservationTime;
        
         document.querySelector('tbody').append(cloneContent);
-     
 
     })
 

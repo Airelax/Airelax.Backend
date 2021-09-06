@@ -26,8 +26,7 @@ namespace Airelax.Controllers
             var memberInfoViewModel = _memberInfoService.GetMemberInfoViewModel(memberId);
 
             if (memberInfoViewModel == null)
-                //todo 錯誤畫面
-                return Content("錯誤畫面");
+                return RedirectToAction("Index", "Error");
 
             return View(memberInfoViewModel);
         }
@@ -50,7 +49,7 @@ namespace Airelax.Controllers
 
         [HttpPut]
         [Route("edit-photo")]
-        public async Task<string> EditPhoto( [FromBody] EditPhotoInput input)
+        public async Task<string> EditPhoto([FromBody] EditPhotoInput input)
         {
             return await _memberInfoService.UpdateCover(input);
         }

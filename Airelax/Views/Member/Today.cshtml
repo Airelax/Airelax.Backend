@@ -1,9 +1,11 @@
 ﻿@{
     ViewBag.Title = "title";
-    Layout = "_Layout";
+    Layout = "_LayoutNoContainer";
 }
 
-<partial name="_MemberNavPartial"></partial>
+@section header{
+    <partial name="_MemberNavPartial"></partial>
+}
 
 <div class="banner px-4 py-5">
     <div class="row row-cols-1 row-cols-md-2 ">

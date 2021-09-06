@@ -1,8 +1,14 @@
-﻿@using Airelax.Application.Houses.Dtos.Response
-@using Airelax.Defines
+﻿@using Airelax.Defines
 @using Microsoft.Extensions.Options
 @model Airelax.Application.ManageHouses.Response.ManageHouseDto
 @inject IOptions<PhotoUploadSetting> _photoUploadSetting
+@{
+    Layout = "_Layout";
+}
+
+@section header{
+    @await Html.PartialAsync("_MemberNavPartial")
+}
 
 <div class="main">
 <div class="title-div">

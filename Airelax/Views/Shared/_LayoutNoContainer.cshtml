@@ -15,17 +15,11 @@
 
 </head>
 <body>
-
 <header>
-    @await RenderSectionAsync("header", false)
+    @await RenderSectionAsync("header", required: false)
 </header>
 
-<div class="container">
-    <main role="main" class="pb2">
-        @RenderBody()
-    </main>
-</div>
-
+@RenderBody()
 
 <script src="https://kit.fontawesome.com/3524cb55bc.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
