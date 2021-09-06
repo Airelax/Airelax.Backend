@@ -1,7 +1,6 @@
-﻿using Airelax.Domain.Comments;
-using Airelax.Domain.Houses.Defines;
+﻿using Airelax.Domain.Houses.Defines;
 
-namespace Airelax
+namespace Airelax.Domain.Comments
 {
     public class HouseCommentObject
     {
@@ -9,7 +8,8 @@ namespace Airelax
         public string HouseId { get; set; }
         public string HouseName { get; set; }
         public HouseStatus HouseStatus { get; set; }
-        public string Members { get; set; }
+        public string AuthorName { get; set; }
         public Star Stars { get; set; }
+        public string AuthorId { get; set; }
     }
 }

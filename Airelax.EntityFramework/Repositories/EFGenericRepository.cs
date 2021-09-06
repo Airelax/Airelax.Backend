@@ -38,11 +38,13 @@ namespace Airelax.EntityFramework.Repositories
         public async Task UpdateAsync(TEntity item)
         {
             _context.Set<TEntity>().Update(item);
+            await Task.CompletedTask;
         }
 
         public async Task DeleteAsync(TEntity item)
         {
             _context.Set<TEntity>().Remove(item);
+            await Task.CompletedTask;
         }
 
         public async Task SaveChangesAsync()

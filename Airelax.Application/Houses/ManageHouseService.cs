@@ -31,51 +31,13 @@ namespace Airelax.Application.Houses
             _manageHouseRepository = manageHouseRepository;
             _houseRepository = houseRepository;
         }
-        
-         public IEnumerable<MyHouseViewModel> GetMyHouseViewModel(string ownerId)
+
+        public IEnumerable<MyHouseViewModel> GetMyHouseViewModel(string ownerId)
         {
             var houses = _houseRepository.GetAll().Where(x => x.OwnerId == ownerId);
 
             if (houses.IsNullOrEmpty())
-                return new List<MyHouseViewModel>
-                {
-                    new()
-                    {
-                        Title = "傑哥的房子",
-                        HouseStatus = HouseStatus.Publish,
-                        CreateState = CreateState.Building,
-                        CanRealTime = false,
-                        Location = "竹北，新竹",
-                        LastReservationTime = DateTime.Now.ToString("yyyy-MM-dd")
-                    },
-                    new()
-                    {
-                        Title = "傑哥的房子",
-                        HouseStatus = HouseStatus.Publish,
-                        CreateState = CreateState.Building,
-                        CanRealTime = false,
-                        Location = "竹北，新竹",
-                        LastReservationTime = DateTime.Now.ToString("yyyy-MM-dd")
-                    },
-                    new()
-                    {
-                        Title = "我房間的標題超級無敵超窩窩窩窩窩窩喔窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩窩",
-                        HouseStatus = HouseStatus.Publish,
-                        CreateState = CreateState.Completed,
-                        CanRealTime = false,
-                        Location = "竹北，新竹",
-                        LastReservationTime = DateTime.Now.ToString("yyyy-MM-dd")
-                    },
-                    new()
-                    {
-                        Title = "傑哥的房子",
-                        HouseStatus = HouseStatus.Publish,
-                        CreateState = CreateState.Building,
-                        CanRealTime = false,
-                        Location = "竹北，新竹",
-                        LastReservationTime = DateTime.Now.ToString("yyyy-MM-dd")
-                    }
-                };
+                return new List<MyHouseViewModel>();
 
             var myHouseViewModel = houses.Select(x => new MyHouseViewModel
             {
@@ -94,20 +56,21 @@ namespace Airelax.Application.Houses
         public async Task<ManageHouseDto> GetManageHouseInfo(string id)
         {
             var house = await _houseRepository.GetAsync(x => x.Id == id);
+            if (house == null) return null;
             var space = _manageHouseRepository.GetSpace(id);
 
             var manage = new ManageHouseDto
             {
                 Id = id,
                 Title = house.Title,
-
-                Description = new DescriptionDto
-                {
-                    HouseDescription = house.HouseDescription.Description,
-                    SpaceDescription = house.HouseDescription.SpaceDescription,
-                    GuestPermission = house.HouseDescription.GuestPermission,
-                    Others = house.HouseDescription.Others
-                },
+                Description =
+                    new DescriptionDto
+                    {
+                        HouseDescription = house.HouseDescription.Description,
+                        SpaceDescription = house.HouseDescription.SpaceDescription,
+                        GuestPermission = house.HouseDescription.GuestPermission,
+                        Others = house.HouseDescription.Others
+                    },
                 Status = (int) house.Status,
                 ProvideFacilities = house.ProvideFacilities.Select(s => (int) s).ToList(),
                 NotProvideFacilities = house.NotProvideFacilities.Select(s => (int) s).ToList(),
@@ -123,9 +86,7 @@ namespace Airelax.Application.Houses
                 },
                 HouseCategory = new HouseCategoryVM
                 {
-                    Category = (int) house.HouseCategory.Category,
-                    HouseType = (int) house.HouseCategory?.HouseType,
-                    RoomCategory = (int) house.HouseCategory?.RoomCategory
+                    Category = (int) house.HouseCategory.Category, HouseType = (int) house.HouseCategory?.HouseType, RoomCategory = (int) house.HouseCategory?.RoomCategory
                 },
                 SpaceBed = space.IsNullOrEmpty()
                     ? null
@@ -134,13 +95,7 @@ namespace Airelax.Application.Houses
                         {
                             var spaceBedVm = new SpaceBedVM();
                             if (s.Space != null)
-                                spaceBedVm.SpaceVM = new SpaceVM
-                                {
-                                    Id = s.Space.Id,
-                                    HouseId = s.Space.HouseId,
-                                    IsShared = s.Space.IsShared,
-                                    SpaceType = (int) s.Space.SpaceType
-                                };
+                                spaceBedVm.SpaceVM = new SpaceVM {Id = s.Space.Id, HouseId = s.Space.HouseId, IsShared = s.Space.IsShared, SpaceType = (int) s.Space.SpaceType};
                             if (s.BedroomDetail != null)
                                 spaceBedVm.BedroomDetailVM = new BedroomDetailVM
                                 {
@@ -151,7 +106,6 @@ namespace Airelax.Application.Houses
                                 };
                             return spaceBedVm;
                         })),
-
                 CustomerNumber = house.CustomerNumber,
                 Origin = Convert.ToString((int) house.HousePrice.PerNight),
                 SweetPrice = Convert.ToString((int) house.HousePrice.PerWeekNight),
@@ -170,9 +124,9 @@ namespace Airelax.Application.Houses
                     AllowSmoke = house.HouseRule.AllowSmoke,
                     AllowParty = house.HouseRule.AllowParty,
                     Other = house.HouseRule.Other
-                }
+                },
+                Pictures = house.Photos?.Select(x => x.Image) ?? new List<string>()
             };
-            manage.Pictures = house.Photos?.Select(x => x.Image) ?? new List<string>();
             return manage;
         }
 

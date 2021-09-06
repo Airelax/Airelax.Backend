@@ -56,7 +56,7 @@ namespace Airelax.EntityFramework.Repositories
 
         public IQueryable<House> GetSatisfyFromAsync(Specification<House> specification)
         {
-            return GetHouseIncludeAll().Where(specification.ToExpression());
+            return GetHouseIncludeAll().Where(specification.ToExpression()).Where(x => !x.IsDeleted);
         }
 
         private IIncludableQueryable<House, ReservationRule> GetHouseIncludeAll()

@@ -7,8 +7,8 @@ namespace Airelax.Application.MemberInfos
 {
     public interface IMemberInfoService
     {
-        Task<UpdateMemberInfoInput> UpdateMemberInfo(string memberId, [FromBody] UpdateMemberInfoInput input);
-        MemberInfoViewModel GetMemberInfoViewModel(string memberId);
-        Task<string> UpdateCover(string memberId, EditPhotoInput input);
+        Task<UpdateMemberInfoInput> UpdateMemberInfo([FromBody] UpdateMemberInfoInput input);
+        MemberInfoViewModel GetMemberInfoViewModel(string memberId = null);
+        Task<string> UpdateCover(EditPhotoInput input);
     }
 }

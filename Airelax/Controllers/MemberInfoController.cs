@@ -1,11 +1,14 @@
 ﻿using System.Threading.Tasks;
 using Airelax.Application.MemberInfos;
 using Airelax.Application.MemberInfos.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 
 namespace Airelax.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     public class MemberInfoController : Controller
     {
         private readonly IMemberInfoService _memberInfoService;
@@ -16,7 +19,8 @@ namespace Airelax.Controllers
         }
 
         [HttpGet]
-        [Route("{memberId}")]
+        [Route("~")]
+        [Route("{memberId?}")]
         public IActionResult Index(string memberId)
         {
             var memberInfoViewModel = _memberInfoService.GetMemberInfoViewModel(memberId);
@@ -33,23 +37,22 @@ namespace Airelax.Controllers
         [Route("{memberId}")]
         public async Task<UpdateMemberInfoInput> UpdateMemberInfo(string memberId, [FromBody] UpdateMemberInfoInput input)
         {
-            var aboutMe = await _memberInfoService.UpdateMemberInfo(memberId, input);
+            var aboutMe = await _memberInfoService.UpdateMemberInfo(input);
             return aboutMe;
         }
 
         [HttpGet]
-        [Route("{memberId}/edit-photo")]
-        public IActionResult EditPhoto(string memberId)
+        [Route("edit-photo")]
+        public IActionResult EditPhoto()
         {
-            ViewBag.MemberId = memberId;
             return View();
         }
 
         [HttpPut]
-        [Route("{memberId}/edit-photo")]
-        public async Task<string> EditPhoto(string memberId, [FromBody] EditPhotoInput input)
+        [Route("edit-photo")]
+        public async Task<string> EditPhoto( [FromBody] EditPhotoInput input)
         {
-            return await _memberInfoService.UpdateCover(memberId, input);
+            return await _memberInfoService.UpdateCover(input);
         }
     }
 }

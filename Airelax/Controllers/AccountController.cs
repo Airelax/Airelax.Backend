@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Airelax.Application.Account;
 using Airelax.Application.Account.Dtos.Request;
+using Airelax.Defines;
 using Airelax.Domain.Members.Defines;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -49,7 +50,7 @@ namespace Airelax.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(LoginInput input)
+        public IActionResult Login(LoginInput input, string redirectUrl = "/")
         {
             if (!ModelState.IsValid) return View(input);
             var loginResult = _accountService.LoginAccount(input);
@@ -57,18 +58,18 @@ namespace Airelax.Controllers
             {
                 case AccountStatus.Success:
                 {
-                    Response.Cookies.Append("yee_mother_fucker", loginResult.Token, new CookieOptions() {HttpOnly = true, SameSite = SameSiteMode.Strict});
-                    return Redirect("/");
+                    Response.Cookies.Append(Defines.Define.Authorization.JWT_COOKIE_KEY,
+                        loginResult.Token, new CookieOptions() {SameSite = SameSiteMode.Strict});
+                    return Redirect(redirectUrl);
                 }
                 case AccountStatus.WrongPassword:
-                    return Content("密碼錯誤");
+                    return View(input);
                 case AccountStatus.Signup:
                 {
                     var login = new RegisterInput
                     {
                         Birthday = DateTime.Now,
                         Email = input.Account,
-
                         LoginType = LoginType.Email
                     };
                     return View("Register", login);
@@ -77,7 +78,6 @@ namespace Airelax.Controllers
                     return View(input);
             }
         }
-
 
         // google facebook line
         public IActionResult ThirdParty(string provider, string returnUrl = null)
@@ -104,8 +104,9 @@ namespace Airelax.Controllers
 
         public async Task<IActionResult> Logout()
         {
+            HttpContext.Response.Cookies.Delete(Define.Authorization.JWT_COOKIE_KEY);
             await HttpContext.SignOutAsync();
-            return RedirectToAction("Logout");
+            return RedirectToAction("index", "Vue");
         }
     }
 }

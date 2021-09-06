@@ -40,6 +40,8 @@ namespace Airelax.Application.MemberInfos.Response
 
         public IEnumerable<MemberInfoHouseDto> HouseSource { get; set; }
 
+
+        public bool IsOwner { get; set; }
         //todo 楚原評價
     }
 }

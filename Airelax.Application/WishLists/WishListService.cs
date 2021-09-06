@@ -9,10 +9,12 @@ using Airelax.Domain.Members;
 using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Airelax.Application.WishLists
 {
     [DependencyInjection(typeof(IWishListService))]
+    [Authorize]
     public class WishListService : IWishListService
     {
         private readonly IHouseRepository _houseRepository;
@@ -53,6 +55,7 @@ namespace Airelax.Application.WishLists
             var house = _houseRepository.GetAsync(x => x.Id == input.HouseId).Result;
             CheckHouse(house);
             var wishList = member.WishLists.FirstOrDefault(x => x.Id == input.WishId);
+            if (wishList == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "not match wishList");
             CheckWishListId(wishList);
             wishList.Houses.Add(input.HouseId);
             wishList.Houses = wishList.Houses.Distinct().ToList();
@@ -94,19 +97,19 @@ namespace Airelax.Application.WishLists
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"memberId: {memberId} doesnt match member ");
         }
 
-        private void CheckWishListName(Member member, string wishListName)
+        private static void CheckWishListName(Member member, string wishListName)
         {
             if (member.WishLists.Any(w => w.Name == wishListName)) //有會員的情況,心願單-每個指定會員-找每個名字==帶入名字時
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "WishLists.Name cannot be repeated ");
         }
 
-        private void CheckHouse(House house)
+        private static void CheckHouse(House house)
         {
             if (house == null) //判斷沒有房源
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "doesnt match HouseId ");
         }
 
-        private void CheckWishListId(WishList wishList)
+        private static void CheckWishListId(WishList wishList)
         {
             if (wishList == null)
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "doesnt match WishListId ");

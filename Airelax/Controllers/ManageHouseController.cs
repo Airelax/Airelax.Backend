@@ -33,7 +33,7 @@ namespace Airelax.Controllers
         {
             var manageInfo = await _manageHouseService.GetManageHouseInfo(id);
             //todo error
-            if (manageInfo == null) return Content("Error");
+            if (manageInfo == null) return RedirectToAction("Index", "Error");
             return View(manageInfo);
         }
 
@@ -47,7 +47,7 @@ namespace Airelax.Controllers
 
         [HttpPut]
         [Route("{id}/Title")]
-        public IActionResult UpdateTitle(string id, [FromBody] HouseTitleInput input)
+        public IActionResult UpdateTitle(string id, HouseTitleInput input)
         {
             var title = _manageHouseService.UpdateTitle(id, input);
             return Ok(title);

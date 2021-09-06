@@ -8,9 +8,8 @@ namespace Airelax.Application.Members
 {
     public interface IMemberService
     {
-        Task<bool> EditMember(string memberId, [FromBody] EditMemberInput input);
-        MemberViewModel GetMemberViewModel(string memberId);
-        Member JudgeMember(string memberId);
-        Task<bool> EditLoginAndSecurity(string memberId, [FromBody] LoginAndSecurityInput input);
+        Task<bool> EditMember([FromBody] EditMemberInput input);
+        MemberViewModel GetMemberViewModel();
+        Task<bool> EditLoginAndSecurity([FromBody] LoginAndSecurityInput input);
     }
 }

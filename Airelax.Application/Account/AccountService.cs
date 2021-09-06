@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -11,6 +12,8 @@ using Airelax.Domain.Members;
 using Airelax.Domain.Members.Defines;
 using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -24,7 +27,9 @@ namespace Airelax.Application.Account
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMemberRepository _memberRepository;
 
-        public AccountService( IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IMemberRepository memberRepository)
+        public AccountService(IConfiguration configuration,
+            IHttpContextAccessor httpContextAccessor,
+            IMemberRepository memberRepository)
         {
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
@@ -33,10 +38,16 @@ namespace Airelax.Application.Account
 
         public async Task<Member> GetMember()
         {
-            var memberId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.ToString();
+            var memberId = GetAuthMemberId();
             if (memberId == null) return null;
             var member = await _memberRepository.GetAsync(x => x.Id == memberId);
             return member;
+        }
+
+        public string GetAuthMemberId()
+        {
+            var memberId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return memberId;
         }
 
         public async Task<string> RegisterAccount(RegisterInput input)
@@ -75,7 +86,7 @@ namespace Airelax.Application.Account
         {
             var account = (input.Account);
             var mem = _memberRepository.GetMemberByAccountAsync(account).Result;
-            var result = new LoginResult();
+            var result = new LoginResult() {Token = string.Empty};
 
             if (mem != null)
             {
@@ -86,24 +97,33 @@ namespace Airelax.Application.Account
                     var token = CreateToken(mem);
                     mem.MemberLoginInfo.Token = token;
                     _memberRepository.UpdateAsync(mem).Wait();
-
+                    SetCookieLogIn(mem).Wait();
                     result.Token = token;
                     result.Result = AccountStatus.Success;
 
                     return result;
                 }
 
-                result.Token = "";
                 result.Result = AccountStatus.WrongPassword;
                 return result;
             }
 
-            result.Token = "";
             result.Result = AccountStatus.Signup;
             return result;
         }
 
         private string CreateToken(Member member)
+        {
+            var claims = GetClaims(member);
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var token = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddYears(1), signingCredentials: creds);
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            return jwt;
+        }
+
+        private static IEnumerable<Claim> GetClaims(Member member)
         {
             var claims = new List<Claim>
             {
@@ -111,12 +131,17 @@ namespace Airelax.Application.Account
                 new(ClaimTypes.Name, member.Name),
                 new(ClaimTypes.UserData, member.Cover ?? "")
             };
+            return claims;
+        }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var token = new JwtSecurityToken(claims: claims, signingCredentials: creds);
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-            return jwt;
+        private async Task SetCookieLogIn(Member member)
+        {
+            var claims = GetClaims(member);
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            await _httpContextAccessor.HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity), new AuthenticationProperties()
+            {
+                IsPersistent = true
+            });
         }
     }
 }

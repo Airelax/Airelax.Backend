@@ -12,5 +12,6 @@ namespace Airelax.Domain.RepositoryInterface
         Order GetCustomerIdAndHouseIdByOrder(string orderId);
         string GetMemberIdByHouse(string orderId);
         void SaveChanges();
+        IQueryable<HouseCommentObject> GetAll();
     }
 }

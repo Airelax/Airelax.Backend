@@ -27,6 +27,14 @@ namespace Airelax.Application.MemberInfos
 
         public MemberInfoViewModel GetMemberInfoViewModel(string memberId)
         {
+            var authMemberId = _accountService.GetAuthMemberId();
+            var isOwner = memberId == authMemberId;
+            if (memberId.IsNullOrEmpty())
+            {
+                memberId = authMemberId;
+                isOwner = true;
+            }
+
             var info = _memberRepository.GetMemberInfoSearchObject(memberId);
             if (info.IsNullOrEmpty()) return null;
 
@@ -51,17 +59,18 @@ namespace Airelax.Application.MemberInfos
                     RoomTitle = x.HouseTitle,
                     StarScore = x.StarTotal?.Total,
                     Cover = x.HousePhoto
-                })
+                }),
+                IsOwner = isOwner
             };
 
             return memberInfoViewModel;
         }
 
-        public async Task<UpdateMemberInfoInput> UpdateMemberInfo(string memberId, UpdateMemberInfoInput input)
+        public async Task<UpdateMemberInfoInput> UpdateMemberInfo(UpdateMemberInfoInput input)
         {
             var member = await _accountService.GetMember();
 
-            var memberInfo = new MemberInfo(memberId)
+            var memberInfo = new MemberInfo(member.Id)
             {
                 About = input.About,
                 Location = input.Location,
@@ -74,9 +83,9 @@ namespace Airelax.Application.MemberInfos
             return input;
         }
 
-        public async Task<string> UpdateCover(string memberId, EditPhotoInput input)
+        public async Task<string> UpdateCover( EditPhotoInput input)
         {
-            var member = await GetMember(memberId);
+            var member = await _accountService.GetMember();
             member.Cover = input.PhotoUrl;
             await UpdateMember(member);
             return member.Cover;
@@ -86,14 +95,6 @@ namespace Airelax.Application.MemberInfos
         {
             await _memberRepository.UpdateAsync(member);
             await _memberRepository.SaveChangesAsync();
-        }
-
-        private async Task<Member> GetMember(string memberId)
-        {
-            var member = await _memberRepository.GetAsync(x => x.Id == memberId);
-            if (member == null)
-                throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"Member Id:{memberId} does not match any member");
-            return member;
         }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Airelax.Controllers
 {
-    [Route("api/[controller]/{memberId}")]
+    [Route("api/[controller]")]
     public class WishListsController : Controller
     {
         private readonly IWishListService _wishListService;
@@ -17,14 +17,14 @@ namespace Airelax.Controllers
         }
 
         [HttpPost]
-        public bool Create(string memberId, [FromBody] CreateWishListInput input)
+        public bool Create( [FromBody] CreateWishListInput input)
         {
             _wishListService.CreateWishList(input);
             return true;
         }
 
         [HttpPut]
-        public bool Update(string memberId, [FromBody] UpdateWishListInput input)
+        public bool Update([FromBody] UpdateWishListInput input)
         {
             _wishListService.UpdateWishList(input);
             return true;

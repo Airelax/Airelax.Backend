@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using Airelax.Application.Account;
+using Airelax.Application.Helpers;
 using Airelax.Application.Members.Dtos.Request;
 using Airelax.Application.Members.Dtos.Response;
 using Airelax.Domain.Members;
@@ -16,23 +18,24 @@ namespace Airelax.Application.Members
     public class MemberService : IMemberService
     {
         private readonly IMemberRepository _memberRepository;
+        private readonly IAccountService _accountService;
 
-        public MemberService(IMemberRepository memberRepository)
+        public MemberService(IMemberRepository memberRepository, IAccountService accountService)
         {
             _memberRepository = memberRepository;
+            _accountService = accountService;
         }
 
-        public MemberViewModel GetMemberViewModel(string memberId)
+        public MemberViewModel GetMemberViewModel()
         {
-            var member = _memberRepository.GetAsync(x => x.Id == memberId).Result;
+            var member = _accountService.GetMember().Result;
 
             if (member == null)
-
                 return null;
 
             var memberViewModel = new MemberViewModel
             {
-                MemberId = memberId,
+                MemberId = member.Id,
                 Name = member.Name,
                 Gender = member.Gender,
                 Birthday = member.Birthday.ToString("yyyy-MM-dd"),
@@ -44,18 +47,11 @@ namespace Airelax.Application.Members
             return memberViewModel;
         }
 
-        public Member JudgeMember(string memberId)
+        public async Task<bool> EditMember(EditMemberInput input)
         {
-            var member = _memberRepository.GetAsync(x => x.Id == memberId).Result;
+            var member = await _accountService.GetMember();
 
-            return member;
-        }
-
-        public async Task<bool> EditMember(string memberId, [FromBody] EditMemberInput input)
-        {
-            var member = await _memberRepository.GetAsync(x => x.Id == memberId);
-
-            if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"Member Id {memberId} does not match any member");
+            if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.InternalServerError, "auth member not exist");
 
             member.Name = input.Name;
             member.Birthday = DateTime.Parse(input.Birthday);
@@ -64,20 +60,22 @@ namespace Airelax.Application.Members
             member.Country = input.Country;
             member.AddressDetail = input.AddressDetail;
 
-
             await _memberRepository.UpdateAsync(member);
             await _memberRepository.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<bool> EditLoginAndSecurity(string memberId, [FromBody] LoginAndSecurityInput input)
+        public async Task<bool> EditLoginAndSecurity(LoginAndSecurityInput input)
         {
-            var member = await _memberRepository.GetAsync(x => x.Id == memberId);
-            if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"Member Id {memberId} does not match any member");
+            var member = await _accountService.GetMember();
+            if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.InternalServerError, "auth member not exist");
 
-            member.MemberLoginInfo.Password = input.Password;
-            //todo 密碼加密， 驗證舊密碼
+            var isPasswordCorrect = CryptographyHelper.VerifyHash(input.OldPassword, member.MemberLoginInfo.Password);
+            if (!isPasswordCorrect) throw ExceptionBuilder.Build(HttpStatusCode.Forbidden, "password error");
+
+            var newPassword = CryptographyHelper.Hash(input.Password, out _);
+            member.MemberLoginInfo.Password = newPassword;
 
             await _memberRepository.UpdateAsync(member);
             await _memberRepository.SaveChangesAsync();

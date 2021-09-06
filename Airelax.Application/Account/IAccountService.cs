@@ -10,5 +10,6 @@ namespace Airelax.Application.Account
         Task<string> RegisterAccount(RegisterInput input);
         LoginResult LoginAccount(LoginInput input);
         Task<Member> GetMember();
+        string GetAuthMemberId();
     }
 }

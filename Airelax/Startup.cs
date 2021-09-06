@@ -1,19 +1,12 @@
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Claims;
 using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Airelax.Application;
 using Airelax.Defines;
 using Airelax.EntityFramework.DbContexts;
 using Airelax.Infrastructure.Map;
+using Airelax.Middlewares;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -70,64 +63,30 @@ namespace Airelax
             services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddGoogleGeoService(Configuration);
             services.Configure<PhotoUploadSetting>(Configuration.GetSection(nameof(PhotoUploadSetting)));
-            //line - login
-            services.AddAuthentication(options =>
+
+            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //     .AddCookie(options =>
+            //     {
+            //         options.LoginPath = "/Account/Login";
+            //         options.LogoutPath = "/";
+            //     })
+            //    
+
+            services.AddAuthentication(opt => { opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; }).AddCookie(opt =>
+            {
+                opt.LoginPath = "/Account/Login";
+                opt.LogoutPath = "/";
+            }).AddJwtBearer(option =>
+            {
+                option.TokenValidationParameters = new TokenValidationParameters
                 {
-                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                })
-                .AddCookie(options => { options.LoginPath = "/Account/Login"; })
-                .AddJwtBearer(option =>
-                {
-                    option.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                })
-                .AddOAuth("Line", "Line", options =>
-                {
-                    options.ClientId = "1656361877";
-                    options.ClientSecret = "384ac2d24675db0c2185b84ec3db16f2";
-                    options.AuthorizationEndpoint = "https://access.line.me/oauth2/v2.1/authorize";
-                    options.TokenEndpoint = "https://api.line.me/oauth2/v2.1/token";
-                    options.UserInformationEndpoint = "https://api.line.me/v2/profile";
-                    options.CallbackPath = new PathString("/signin-line");
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
-                    options.Scope.Add("profile");
-                    options.Scope.Add("openid");
-
-                    options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "userId");
-                    options.ClaimActions.MapJsonKey(ClaimTypes.Name, "displayName", "string");
-
-                    options.Events = new OAuthEvents
-                    {
-                        OnCreatingTicket = async context =>
-                        {
-                            var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
-                            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
-                            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                            var response = await context.Backchannel.SendAsync(request, context.HttpContext.RequestAborted);
-                            response.EnsureSuccessStatusCode();
-
-                            var json = await response.Content.ReadAsStringAsync();
-                            var user = JsonDocument.Parse(json);
-
-                            context.RunClaimActions(user.RootElement);
-                        },
-                        OnRemoteFailure = context =>
-                        {
-                            context.HandleResponse();
-                            context.Response.Redirect("/Account/Error?message=" + context.Failure.Message);
-                            return Task.FromResult(0);
-                        }
-                    };
-                });
             services.AddControllersWithViews();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddCors(opt => { opt.AddPolicy("dev", builder => builder.WithOrigins("http://localhost:8080")); });
@@ -143,7 +102,6 @@ namespace Airelax
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Airelax v1"));
             }
 
-
             //app.UseHttpsRedirection();
             app.UseSerilogRequestLogging();
             app.UseExceptionHandler(builder => builder.Run(async context => await ExceptionHandler.HandleError(context)));
@@ -153,6 +111,8 @@ namespace Airelax
 
             app.UseRouting();
             app.UseCors("dev");
+            app.UseMiddleware<RequestHeaderMiddleware>();
+
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -161,7 +121,7 @@ namespace Airelax
             {
                 endpoints.MapControllerRoute(
                     "default",
-                    "{controller=Home}/{action=Index}/{id?}");
+                    "{controller=Error}/{action=Index}/{id?}");
             });
         }
     }

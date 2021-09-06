@@ -814,7 +814,7 @@
 </template>
 
 @section ManageJS {
-
+    <script></script>
     <script>
         let barBtn = document.querySelectorAll('.barBtn');
         let detailSection = document.querySelector('.detail-section');
@@ -1397,7 +1397,8 @@
                 method: method,
                 url: `/ManageHouse/@Html.Raw(Model.Id)/${type}`,
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    
                 },
                 data: JSON.stringify(request),
             }).then(function (res) {
@@ -1949,7 +1950,8 @@
                     Images: photoArray
                     }),
                     headers: {
-                        'content-type': 'application/json'
+                        'content-type': 'application/json',
+                        'Authorization': ''
                     },
                 })
                 .then(response=>response.json())

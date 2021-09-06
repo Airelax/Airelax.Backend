@@ -10,16 +10,22 @@
                 <div class="col-9 d-md-none">
                     <h2>嗨!我是 @Model.MemberName </h2>
                     <p>加入時間:@Model.RegisterTime</p>
-                    <div class="aboutBtn" type="button" data-bs-toggle="collapse" data-bs-target="#aboutCollapse"
-                         aria-expanded="false" aria-controls="aboutCollapse">
-                        編輯個人資料
-                    </div>
+                    @if (@Model.IsOwner)
+                    {
+                        <div class="aboutBtn" type="button" data-bs-toggle="collapse" data-bs-target="#aboutCollapse"
+                             aria-expanded="false" aria-controls="aboutCollapse">
+                            編輯個人資料
+                        </div>
+                    }
                 </div>
                 <div class="col-2 col-md-12">
                     <div>
                         <img class="portrait" src="@Model.MemberImg">
                     </div>
-                    <a asp-controller="MemberInfo" asp-action="EditPhoto" asp-route-memberId="@Model.MemberId">更新照片</a>
+                    @if (@Model.IsOwner)
+                    {
+                        <a asp-controller="MemberInfo" asp-action="EditPhoto">更新照片</a>
+                    }
                     <div>
                         <img class="honor" src="~/images/memberInfo/honor.svg" alt="">
                     </div>
@@ -80,10 +86,13 @@
             <div class="row mdHeadInfo">
                 <h2>嗨！我是 @Model.MemberName</h2>
                 <p>加入時間：@Model.RegisterTime</p>
-                <div class="mdAboutBtn" type="button" data-bs-toggle="collapse" data-bs-target="#mdAboutCollapse"
-                     aria-expanded="true" aria-controls="mdAboutCollapse">
-                    編輯個人資料
-                </div>
+                @if (@Model.IsOwner)
+                {
+                    <div class="mdAboutBtn" type="button" data-bs-toggle="collapse" data-bs-target="#mdAboutCollapse"
+                         aria-expanded="true" aria-controls="mdAboutCollapse">
+                        編輯個人資料
+                    </div>
+                }
             </div>
             <div class="row writtenAboutMe">
                 <div class="writtenAbout">
@@ -223,7 +232,7 @@
                 headers: {
                     'Content-Type':'application/json'
                 },
-                data: JSON.stringify(MemberInfoInput),
+                data: MemberInfoInput,
             })
                 .then(function (res) {
                     console.log(res.status);
