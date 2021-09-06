@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Airelax.Application.Account;
 using Airelax.Application.Account.Dtos.Request;
+using Airelax.Application.Account.Dtos.Response;
 using Airelax.Defines;
 using Airelax.Domain.Members.Defines;
 using Microsoft.AspNetCore.Authentication;
@@ -35,7 +36,11 @@ namespace Airelax.Controllers
             if (ModelState.IsValid)
             {
                 var message = await _accountService.RegisterAccount(input);
-                return Content(message);
+                if (message != "此信箱已被註冊")
+                {
+                    SetJwt(message);
+                    return Redirect(input.ReturnUrl);
+                }
             }
 
             return View(input);
@@ -43,14 +48,15 @@ namespace Airelax.Controllers
 
         //登入
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login([FromQuery] string returnUrl = "/")
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(LoginInput input, string redirectUrl = "/")
+        public IActionResult Login(LoginInput input)
         {
             if (!ModelState.IsValid) return View(input);
             var loginResult = _accountService.LoginAccount(input);
@@ -58,21 +64,21 @@ namespace Airelax.Controllers
             {
                 case AccountStatus.Success:
                 {
-                    Response.Cookies.Append(Defines.Define.Authorization.JWT_COOKIE_KEY,
-                        loginResult.Token, new CookieOptions() {SameSite = SameSiteMode.Strict});
-                    return Redirect(redirectUrl);
+                    SetJwt(loginResult.Token);
+                    return Redirect(input.ReturnUrl);
                 }
                 case AccountStatus.WrongPassword:
                     return View(input);
                 case AccountStatus.Signup:
                 {
-                    var login = new RegisterInput
+                    var registerInput = new RegisterInput
                     {
                         Birthday = DateTime.Now,
                         Email = input.Account,
-                        LoginType = LoginType.Email
+                        LoginType = LoginType.Email,
+                        ReturnUrl = input.ReturnUrl
                     };
-                    return View("Register", login);
+                    return View("Register", registerInput);
                 }
                 default:
                     return View(input);
@@ -80,6 +86,7 @@ namespace Airelax.Controllers
         }
 
         // google facebook line
+
         public IActionResult ThirdParty(string provider, string returnUrl = null)
         {
             var redirectUrl = Url.Action("DefaultResponse", "Account", new {returnUrl});
@@ -107,6 +114,12 @@ namespace Airelax.Controllers
             HttpContext.Response.Cookies.Delete(Define.Authorization.JWT_COOKIE_KEY);
             await HttpContext.SignOutAsync();
             return RedirectToAction("index", "Vue");
+        }
+
+        private void SetJwt(string token)
+        {
+            Response.Cookies.Append(Defines.Define.Authorization.JWT_COOKIE_KEY,
+                token, new CookieOptions() {SameSite = SameSiteMode.Strict});
         }
     }
 }

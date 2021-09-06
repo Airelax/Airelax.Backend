@@ -30,5 +30,7 @@ namespace Airelax.Application.Account.Dtos.Request
         [Display(Name = "密碼")]
         //[StringLength(12,MinimumLength =8)]
         public string Password { get; set; }
+
+        public string ReturnUrl { get; set; }
     }
 }

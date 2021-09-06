@@ -54,7 +54,7 @@ namespace Airelax.Application.Members
             if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.InternalServerError, "auth member not exist");
 
             member.Name = input.Name;
-            member.Birthday = DateTime.Parse(input.Birthday);
+            member.Birthday = input.Birthday;
             member.Gender = (Gender) input.Gender;
             member.Phone = input.Phone;
             member.Country = input.Country;

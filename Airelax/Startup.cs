@@ -43,6 +43,8 @@ namespace Airelax
             else
             {
                 connectString = Define.Database.DB_CONNECT_STRING;
+                //todo remove product
+                //connectString = Define.Database.LOCAL_CONNECT_STRING;
             }
             // dotnet ef --startup-project Airelax migrations add $description -p Airelax.EntityFramework
             // 更新資料庫 dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework

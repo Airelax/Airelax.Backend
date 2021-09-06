@@ -102,7 +102,9 @@
 
     <ItemGroup>
       <Folder Include="Views\Home" />
-      <Folder Include="wwwroot\images\Members" />
+      <Folder Include="wwwroot\css\Today" />
+      <Folder Include="wwwroot\images\Members\Nav" />
+      <Folder Include="wwwroot\images\Members\Today" />
     </ItemGroup>
 
     <ItemGroup>

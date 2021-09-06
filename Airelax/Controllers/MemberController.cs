@@ -38,6 +38,13 @@ namespace Airelax.Controllers
             return View();
         }
 
+        [HttpGet]
+        [Route("today")]
+        public IActionResult Today()
+        {
+            return View();
+        }
+
         [HttpPut]
         [Route("detail")]
         public async Task<bool> UpdateMember([FromBody] EditMemberInput input)

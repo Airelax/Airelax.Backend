@@ -79,7 +79,7 @@
         <div class="mt-4">
             <div class="fw-bold mb-3">出生日期</div>
             <div>
-                <div id="birthDate">未提供</div>
+                <div id="birthDate">@Model.Birthday</div>
             </div>
         </div>
         <hr>
@@ -226,7 +226,9 @@
     <script>
     const sendNameBtn = document.getElementById("sendNameBtn");
     const nameInput = document.getElementById("nameInput");
-    let memberInput = { Name: "",Gender:0,Birthday:"", Country: "", Zipcode: "", AddressDetail: "", Phone: "" };
+    
+    
+    let memberInput = { Name: "",Gender:0,Birthday:"@Html.Raw(Model.Birthday)", Country: "", Zipcode: "", AddressDetail: "", Phone: "" };
         sendNameBtn.addEventListener("click", () => {
             memberInput.Name = nameInput.value;
             console.log(JSON.stringify(memberInput));
@@ -236,11 +238,11 @@
     function putToBack () {
         axios({
         method: 'Put',
-        url: `/Member/@Html.Raw(Model.MemberId)/detail`,
+        url: `/Member/detail`,
         headers: {
         'Content-Type': 'application/json'
         },
-            data: JSON.stringify(memberInput),
+            data: memberInput,
         })
         .then(function (res) {
         console.log(res.data)

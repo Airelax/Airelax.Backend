@@ -59,7 +59,7 @@ namespace Airelax.Application.Account
             var name = input.LastName + input.FirstName;
             var password = CryptographyHelper.Hash(input.Password, out _);
             //尚未產出Id
-            var mem = new Member
+            var newMember = new Member
             {
                 Name = name,
                 Birthday = input.Birthday,
@@ -69,17 +69,18 @@ namespace Airelax.Application.Account
             };
 
             //以產出Id
-            var memberLogInfo = new MemberLoginInfo(mem.Id)
+            var memberLogInfo = new MemberLoginInfo(newMember.Id)
             {
                 Account = input.Email,
                 Password = password,
                 LoginType = loginType,
-                Token = CreateToken(mem)
+                Token = CreateToken(newMember)
             };
-            mem.MemberLoginInfo = memberLogInfo;
-            await _memberRepository.CreateAsync(mem);
+            newMember.MemberLoginInfo = memberLogInfo;
+            await _memberRepository.CreateAsync(newMember);
             await _memberRepository.SaveChangesAsync();
-            return "註冊成功!";
+            await SetCookieLogIn(newMember);
+            return memberLogInfo.Token;
         }
 
         public LoginResult LoginAccount(LoginInput input)

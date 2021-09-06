@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Airelax.Application.Account;
 using Airelax.Application.Houses.Dtos.Request.ManageHouse;
 using Airelax.Application.Houses.Dtos.Response;
 using Airelax.Application.ManageHouses.Request;
@@ -24,17 +25,20 @@ namespace Airelax.Application.Houses
     public class ManageHouseService : IManageHouseService
     {
         private readonly IHouseRepository _houseRepository;
+        private readonly IAccountService _accountService;
         private readonly IManageHouseRepository _manageHouseRepository;
 
-        public ManageHouseService(IManageHouseRepository manageHouseRepository, IHouseRepository houseRepository)
+        public ManageHouseService(IManageHouseRepository manageHouseRepository, IHouseRepository houseRepository, IAccountService accountService)
         {
             _manageHouseRepository = manageHouseRepository;
             _houseRepository = houseRepository;
+            _accountService = accountService;
         }
 
-        public IEnumerable<MyHouseViewModel> GetMyHouseViewModel(string ownerId)
+        public IEnumerable<MyHouseViewModel> GetMyHouseViewModel()
         {
-            var houses = _houseRepository.GetAll().Where(x => x.OwnerId == ownerId);
+            var memberId = _accountService.GetAuthMemberId();
+            var houses = _houseRepository.GetAll().Where(x => x.OwnerId == memberId);
 
             if (houses.IsNullOrEmpty())
                 return new List<MyHouseViewModel>();

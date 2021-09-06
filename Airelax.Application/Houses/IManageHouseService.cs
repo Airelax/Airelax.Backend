@@ -29,6 +29,6 @@ namespace Airelax.Application.Houses
         BedroomDetailInput CreateBedroomDetail(string id, BedroomDetailInput input);
         BedroomDetailInput UpdateBedroomDetail(string id, BedroomDetailInput input);
         Task<UploadHouseImagesViewModel> UploadHouseImages(string id, UploadHouseImagesInput input);
-        IEnumerable<MyHouseViewModel> GetMyHouseViewModel(string ownerId);
+        IEnumerable<MyHouseViewModel> GetMyHouseViewModel();
     }
 }

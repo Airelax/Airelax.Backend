@@ -20,10 +20,10 @@ namespace Airelax.Controllers
         }
 
         [HttpGet]
-        [Route("{ownerId}/all")]
-        public IActionResult MyHousesDetail(string ownerId)
+        [Route("all")]
+        public IActionResult MyHousesDetail()
         {
-            var myHousesViewModel = _manageHouseService.GetMyHouseViewModel(ownerId);
+            var myHousesViewModel = _manageHouseService.GetMyHouseViewModel();
             return View(myHousesViewModel);
         }
 
