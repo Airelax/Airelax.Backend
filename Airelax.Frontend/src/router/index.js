@@ -17,6 +17,11 @@ const routes = [
     component: () => import('../views/Room.vue')
   },
   {
+    path: '/message',
+    name: 'Message',
+    component: () => import('../views/Information.vue')
+  },
+  {
     path: '/subscribe',
     name: 'Subscribe',
     component: () => import('../views/Subscribe.vue')
