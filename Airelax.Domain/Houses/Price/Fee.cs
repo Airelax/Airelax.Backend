@@ -2,7 +2,7 @@
 
 namespace Airelax.Domain.Houses.Price
 {
-    public record Fee: ValueObject
+    public record Fee : ValueObject
     {
         public decimal CleanFee { get; set; }
         public decimal ServiceFee { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Price;
@@ -12,8 +13,8 @@ namespace Airelax.Application.Houses
     [DependencyInjection(typeof(INewHouseService))]
     public class NewHouseService : INewHouseService
     {
-        private readonly IRepository _repository;
         private readonly IHouseRepository _houseRepository;
+        private readonly IRepository _repository;
 
         public NewHouseService(IRepository repository, IHouseRepository houseRepository)
         {
@@ -24,10 +25,11 @@ namespace Airelax.Application.Houses
         public async Task<string> CreateAsync(CreateHouseInput input)
         {
             var owner = await _repository.GetAsync<string, Member>(x => x.Id == input.MemberId);
-            if (owner == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"member id: {input.MemberId} is not exist");
-            var house = new House(input.MemberId);
+            if (owner == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"member id: {input.MemberId} is not exist");
+            var house = new House(owner.Id);
             house.HouseCategory = new HouseCategory(house.Id) {Category = input.Category};
-            await UpdateHouse(house);
+            await _houseRepository.CreateAsync(house);
+            await _houseRepository.SaveChangesAsync();
             return house.Id;
         }
 
@@ -47,7 +49,7 @@ namespace Airelax.Application.Houses
             return true;
         }
 
-        public async Task<bool> UpdateHouseCategory(string id, UpdateHouseCategoryInput input)
+        public async Task<bool> UpdateHouseType(string id, UpdateHouseTypeInput input)
         {
             var house = await GetHouse(id);
             house.HouseCategory.HouseType = input.HouseType;
@@ -91,7 +93,7 @@ namespace Airelax.Application.Houses
         private async Task<House> GetHouse(string id)
         {
             var house = await _houseRepository.GetAsync(x => x.Id == id);
-            if (house == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, $"house id: {id} is not exist");
+            if (house == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"house id: {id} is not exist");
             return house;
         }
 

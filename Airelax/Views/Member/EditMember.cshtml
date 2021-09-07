@@ -1,5 +1,4 @@
-﻿
-@model MemberViewModel
+﻿@model Airelax.Application.Members.Dtos.Response.MemberViewModel
 
 @{
     Layout = "~/Views/Shared/_LayoutMember.cshtml";
@@ -7,229 +6,229 @@
 
 
 <div class="container ">
-    <div class="row d-flex justify-content-center">
-        <div class="d-md-none d-lg-none ">
-            <nav class="navbar navbar-light position-fixed bg-white w-100">
-                <div class="container-fluid w-100">
-                    <a class="navbar-brand fs-3" href="#"><i class="fas fa-angle-left"></i></a>
-                </div>
-            </nav>
+<div class="row d-flex justify-content-center">
+<div class="d-md-none d-lg-none ">
+    <nav class="navbar navbar-light position-fixed bg-white w-100">
+        <div class="container-fluid w-100">
+            <a class="navbar-brand fs-3" href="#">
+                <i class="fas fa-angle-left"></i>
+            </a>
         </div>
-        <div class="row">
-            <div class="col my-4 mx-3 pt-5 ">
-                <div class="mb-3 fw-bold p_Lo">
-                    <a href="#" class="text-decoration-none text-dark">帳號<i class="fas fa-angle-right mx-3"></i></a>
-                    <span>個人資料</span>
+    </nav>
+</div>
+<div class="row">
+    <div class="col my-4 mx-3 pt-5 ">
+        <div class="mb-3 fw-bold p_Lo">
+            <a href="/member" class="text-decoration-none text-dark">帳號<i class="fas fa-angle-right mx-3"></i></a>
+            <span>個人資料</span>
+        </div>
+    </div>
+    <h4 class="fw-bolder px-4  c_Lo">個人資料</h4>
+    <div class="col-sm col-md-7 ph_area px-4">
+        <div class="mt-4">
+            <div class="d-flex justify-content-between">
+                <div class="fw-bold">法定名稱</div>
+                <button class="btn fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#nameBtn"
+                        aria-expanded="false" style="color:#008489;" aria-controls="collapseExample">
+                    編輯
+                </button>
+            </div>
+            <div>
+                <div id="nameID">@Model.Name</div>
+                <div class="collapse" id="nameBtn">
+                    <div class="card card-body" style="border: none;">
+                        <div>這是你旅行證件（駕照或護照）上所記載的姓名。</div>
+                        <div class="row">
+                            <div class="col-6  mt-3">
+                                <div class="mb-2">
+                                    姓名
+                                </div>
+                                <input id="nameInput" type="text" class="form-control" aria-label="Text input with checkbox">
+                            </div>
+                        </div>
+                        <button id="sendNameBtn" type="submit" class="btn mt-4 Send">儲存</button>
+                    </div>
                 </div>
             </div>
-            <h4 class="fw-bolder px-4  c_Lo">個人資料</h4>
-            <div class="col-sm col-md-7 ph_area px-4">
-                <div class="mt-4">
-                    <div class="d-flex justify-content-between">
-                        <div class="fw-bold">法定名稱</div>
-                        <button class="btn fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#nameBtn"
-                                aria-expanded="false" style="color:#008489;" aria-controls="collapseExample">
-                            編輯
-                        </button>
-                    </div>
-                    <div>
-                        <div id="nameID">@Model.Name</div>
-                        <div class="collapse" id="nameBtn">
-                            <div class="card card-body" style="border: none;">
-                                <div>這是你旅行證件（駕照或護照）上所記載的姓名。</div>
-                                <div class="row">
-                                    <div class="col-6  mt-3">
-                                        <div class="mb-2">
-                                            姓名
-                                        </div>
-                                        <input id="nameInput" type="text" class="form-control" aria-label="Text input with checkbox">
-                                    </div>
-                                </div>
-                                <button id="sendNameBtn" type="submit" class="btn mt-4 Send">儲存</button>
-                            </div>
-                        </div>
+        </div>
+        <hr>
+        <div class="mt-4">
+            <div class="d-flex justify-content-between">
+                <div class="fw-bold">性別</div>
+                <button class="btn fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#genderBtn"
+                        aria-expanded="false" style="color:#008489;" aria-controls="collapseExample">
+                    編輯
+                </button>
+            </div>
+            <div>
+                <div id="gender">@Model.Gender</div>
+                <div class="collapse" id="genderBtn">
+                    <div class="card card-body" style="border: none;">
+                        <select class="form-select w-50" aria-label="Default select example">
+                            <option selected>選擇</option>
+                            <option value="1">男性</option>
+                            <option value="2">女性</option>
+                            <option value="3">其他</option>
+                        </select>
+                        <button id="sendGenderBtn" type="submit" class="btn mt-4 Send">儲存</button>
                     </div>
                 </div>
-                <hr>
-                <div class="mt-4">
-                    <div class="d-flex justify-content-between">
-                        <div class="fw-bold">性別</div>
-                        <button class="btn fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#genderBtn"
-                                aria-expanded="false" style="color:#008489;" aria-controls="collapseExample">
-                            編輯
-                        </button>
-                    </div>
-                    <div>
-                        <div id="gender">@Model.Gender</div>
-                        <div class="collapse" id="genderBtn">
-                            <div class="card card-body" style="border: none;">
-                                <select class="form-select w-50" aria-label="Default select example">
-                                    <option selected>選擇</option>
-                                    <option value="1">男性</option>
-                                    <option value="2">女性</option>
-                                    <option value="3">其他</option>
-                                </select>
-                                <button id="sendGenderBtn" type="submit" class="btn mt-4 Send">儲存</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="mt-4">
-                    <div class="fw-bold mb-3">出生日期</div>
-                    <div>
-                        <div id="birthDate">未提供</div>
-                    </div>
-                </div>
-                <hr>
-                <div class="mt-4">
-                    <div class="d-flex justify-content-between">
-                        <div class="fw-bold">電子郵件地址</div>
-                        <button class="btn fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#mailBtn"
-                                aria-expanded="false" style="color:#008489;" aria-controls="collapseExample">
-                            編輯
-                        </button>
-                    </div>
-                    <div>
+            </div>
+        </div>
+        <hr>
+        <div class="mt-4">
+            <div class="fw-bold mb-3">出生日期</div>
+            <div>
+                <div id="birthDate">@Model.Birthday</div>
+            </div>
+        </div>
+        <hr>
+        <div class="mt-4">
+            <div class="d-flex justify-content-between">
+                <div class="fw-bold">電子郵件地址</div>
+                <button class="btn fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#mailBtn"
+                        aria-expanded="false" style="color:#008489;" aria-controls="collapseExample">
+                    編輯
+                </button>
+            </div>
+            <div>
 
-                        <div id="email">@(string.IsNullOrEmpty(Model.Email)? "未提供":Model.Email)</div>
-                        <div class="collapse" id="mailBtn">
-                            <div class="card card-body" style="border: none;">
-                                <div>使用你隨時可存取的電子郵件地址。</div>
-                                <div class="row">
-                                    <div class="col-6 mt-3">
-                                        <input type="email" class="form-control" aria-label="Text input with checkbox">
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn mt-4 Send">儲存</button>
+                <div id="email">@(string.IsNullOrEmpty(Model.Email) ? "未提供" : Model.Email)</div>
+                <div class="collapse" id="mailBtn">
+                    <div class="card card-body" style="border: none;">
+                        <div>使用你隨時可存取的電子郵件地址。</div>
+                        <div class="row">
+                            <div class="col-6 mt-3">
+                                <input type="email" class="form-control" aria-label="Text input with checkbox">
                             </div>
                         </div>
+                        <button type="submit" class="btn mt-4 Send">儲存</button>
                     </div>
                 </div>
-                <hr>
-                <div class="mt-4">
-                    <div class="d-flex justify-content-between">
-                        <div class="fw-bold">電話號碼</div>
-                        <button class="btn fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#phoneBtn"
-                                aria-expanded="false" style="color:#008489;" aria-controls="collapseExample">
-                            編輯
-                        </button>
-                    </div>
-                    <div>
-                        <div id="phoneNum">@Model.Phone</div>
-                        <div class="collapse" id="phoneBtn">
-                            <div class="card card-body" style="border: none;">
-                                <div>用於通知、提醒和協助你登入</div>
-                                <div class="row">
-                                    <div class="col-6 mt-3">
-                                        <div id="phoneNum"></div>
-                                    </div>
-                                </div>
-                                <button id="sendPhoneBtn" class="fw-bold newPhoneNum" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#newPhoneNumBtn" aria-expanded="false" style="color:#008489;"
-                                        aria-controls="collapseExample">
-                                    儲存
-                                </button>
-                            </div>
-                        </div>
-                        <div class="collapse" id="newPhoneNumBtn">
-                            <div class="card card-body" style="border: none;">
-                                <div class="fw-5">確定要新增嗎？</div>
-                                <div>若您新增其他電話號碼，日後將無法再使用電話號碼登入。</div>
-                            </div>
-                            <button class="fw-bold Send rounded-3" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#keyNewPhoneNumBtn" aria-expanded="false" aria-controls="collapseExample">
-                                繼續
-                            </button>
-                            <button class="fw-bold newPhoneNum" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#newPhoneNumBtn" aria-expanded="false" style="color:#008489;"
-                                    aria-controls="collapseExample">
-                                取消
-                            </button>
-                        </div>
-                        <div class="collapse" id="keyNewPhoneNumBtn">
-                            <div class="card card-body" style="border: none;">
-                                <div class="fw-5">輸入一組新的電話號碼</div>
-                            </div>
-                            <div class="input-group mb-3 ">
-                                <span class="input-group-text" id="inputGroup-sizing-default">+886</span>
-                                <input type="tel" class="form-control" aria-label="Sizing example input"
-                                       aria-describedby="inputGroup-sizing-default">
-                            </div>
-                            <button class="fw-bold Send rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#enter"
-                                    aria-expanded="false" aria-controls="collapseExample">
-                                驗證
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="mt-4">
-                    <div class="d-flex justify-content-between">
-                        <div class="fw-bold">地址</div>
-                        <button class="btn fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#addressBtn"
-                                aria-expanded="false" style="color:#008489;" aria-controls="collapseExample">
-                            編輯
-                        </button>
-                    </div>
-                    <div>
-                        <div id="address">@(Model.ZipCode+Model.Country+Model.AddressDetail)</div>
-                        <div class="collapse" id="addressBtn">
-                            <div class="card card-body" style="border: none;">
-                                <div>使用永久地址接收郵件。</div>
-                                <div class="col-6 mt-3">
-                                    <div>國家／地區</div>
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option selected>請選擇</option>
-                                        <option value="1">台灣</option>
-                                    </select>
-                                </div>
-                                <div class="mt-3 col-6">
-                                    <div>郵遞區號</div>
-                                    <input type="number" class="form-control" aria-label="Text input with checkbox"
-                                           onkeyup="value=value.replace(/[^\d]/g,'') " placeholder="3碼郵遞區號">
-                                </div>
-                                <div class="mt-3">
-                                    <div>街道地址</div>
-                                    <input type="text" class="form-control" aria-label="Text input with checkbox"
-                                           placeholder="縣市 / 街道+號碼">
-                                </div>
-                                <button id ="sendAddressBtn" type="submit" class="btn mt-4 Send">儲存</button>
-                            </div> 
-                        </div>
-                    </div>
-                </div>
-                <hr>
             </div>
-            <div class="col-md-4 details">
-                <div class="col  mx-4">
-                    <div class="card card shadow p-3 mb-3 bg-body rounded">
-                        <div class="card-body" style="border: none;">
-                            <img src="~/dist/img/member/010.svg" style="height: 32px;" class="mb-2" />
-                            <h5 class="card-title fw-bold" style="font-size: 18px;">哪些詳細資訊可以編輯？</h5>
-                            <p class="card-text" style="font-size: 16px;">
-                                Airelax
-                                用於驗證你身分的詳細資訊無法更改。你可以編輯聯絡資訊和部分個人資料，但我們可能會在你下次預訂或建立房源／體驗時要求你驗證身分。
-                            </p>
-                            <hr>
-                            <img src="~/dist/img/member/001.svg" style="height: 38px;" class="mb-2" />
-                            <h5 class="card-title fw-bold" style="font-size: 18px;">哪些資訊會提供給其他人？</h5>
-                            <p class="card-text" style="font-size: 16px;">Airelax只會在預訂確認後，才會提供聯絡資訊給房東和房客。</p>
+        </div>
+        <hr>
+        <div class="mt-4">
+            <div class="d-flex justify-content-between">
+                <div class="fw-bold">電話號碼</div>
+                <button class="btn fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#phoneBtn"
+                        aria-expanded="false" style="color:#008489;" aria-controls="collapseExample">
+                    編輯
+                </button>
+            </div>
+            <div>
+                <div id="phoneNum">@Model.Phone</div>
+                <div class="collapse" id="phoneBtn">
+                    <div class="card card-body" style="border: none;">
+                        <div>用於通知、提醒和協助你登入</div>
+                        <div class="row">
+                            <div class="col-6 mt-3">
+                                <div id="phoneNum"></div>
+                            </div>
                         </div>
+                        <button id="sendPhoneBtn" class="fw-bold newPhoneNum" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#newPhoneNumBtn" aria-expanded="false" style="color:#008489;"
+                                aria-controls="collapseExample">
+                            儲存
+                        </button>
                     </div>
+                </div>
+                <div class="collapse" id="newPhoneNumBtn">
+                    <div class="card card-body" style="border: none;">
+                        <div class="fw-5">確定要新增嗎？</div>
+                        <div>若您新增其他電話號碼，日後將無法再使用電話號碼登入。</div>
+                    </div>
+                    <button class="fw-bold Send rounded-3" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#keyNewPhoneNumBtn" aria-expanded="false" aria-controls="collapseExample">
+                        繼續
+                    </button>
+                    <button class="fw-bold newPhoneNum" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#newPhoneNumBtn" aria-expanded="false" style="color:#008489;"
+                            aria-controls="collapseExample">
+                        取消
+                    </button>
+                </div>
+                <div class="collapse" id="keyNewPhoneNumBtn">
+                    <div class="card card-body" style="border: none;">
+                        <div class="fw-5">輸入一組新的電話號碼</div>
+                    </div>
+                    <div class="input-group mb-3 ">
+                        <span class="input-group-text" id="inputGroup-sizing-default">+886</span>
+                        <input type="tel" class="form-control" aria-label="Sizing example input"
+                               aria-describedby="inputGroup-sizing-default">
+                    </div>
+                    <button class="fw-bold Send rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#enter"
+                            aria-expanded="false" aria-controls="collapseExample">
+                        驗證
+                    </button>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="mt-4">
+            <div class="d-flex justify-content-between">
+                <div class="fw-bold">地址</div>
+                <button class="btn fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#addressBtn"
+                        aria-expanded="false" style="color:#008489;" aria-controls="collapseExample">
+                    編輯
+                </button>
+            </div>
+            <div>
+                <div id="address">@(Model.ZipCode + Model.Country + Model.AddressDetail)</div>
+                <div class="collapse" id="addressBtn">
+                    <div class="card card-body" style="border: none;">
+                        <div>使用永久地址接收郵件。</div>
+                        <div class="col-6 mt-3">
+                            <div>國家／地區</div>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>請選擇</option>
+                                <option value="1">台灣</option>
+                            </select>
+                        </div>
+                        <div class="mt-3">
+                            <div>街道地址</div>
+                            <input type="text" class="form-control" aria-label="Text input with checkbox"
+                                   placeholder="縣市 / 街道+號碼">
+                        </div>
+                        <button id="sendAddressBtn" type="submit" class="btn mt-4 Send">儲存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <div class="col-md-4 details">
+        <div class="col  mx-4">
+            <div class="card card shadow p-3 mb-3 bg-body rounded">
+                <div class="card-body" style="border: none;">
+                    <img src="~/dist/img/member/010.svg" style="height: 32px;" class="mb-2"/>
+                    <h5 class="card-title fw-bold" style="font-size: 18px;">哪些詳細資訊可以編輯？</h5>
+                    <p class="card-text" style="font-size: 16px;">
+                        Airelax
+                        用於驗證你身分的詳細資訊無法更改。你可以編輯聯絡資訊和部分個人資料，但我們可能會在你下次預訂或建立房源／體驗時要求你驗證身分。
+                    </p>
+                    <hr>
+                    <img src="~/dist/img/member/001.svg" style="height: 38px;" class="mb-2"/>
+                    <h5 class="card-title fw-bold" style="font-size: 18px;">哪些資訊會提供給其他人？</h5>
+                    <p class="card-text" style="font-size: 16px;">Airelax只會在預訂確認後，才會提供聯絡資訊給房東和房客。</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
+</div>
 
 @section topCSS{
-    <link href="~/scss/Personal info.min.css" rel="stylesheet" /> }
+    <link href="~/scss/Personal info.min.css" rel="stylesheet"/> }
+
 @section endJS{
     <script>
     const sendNameBtn = document.getElementById("sendNameBtn");
     const nameInput = document.getElementById("nameInput");
-    let memberInput = { Name: "",Gender:0,Birthday:"", Country: "", Zipcode: "", AddressDetail: "", Phone: "" };
+    
+    
+    let memberInput = { Name: "",Gender:0,Birthday:"@Html.Raw(Model.Birthday)", Country: "", Zipcode: "", AddressDetail: "", Phone: "" };
         sendNameBtn.addEventListener("click", () => {
             memberInput.Name = nameInput.value;
             console.log(JSON.stringify(memberInput));
@@ -239,11 +238,11 @@
     function putToBack () {
         axios({
         method: 'Put',
-        url: `/Member/@Html.Raw(Model.MemberId)/detail`,
+        url: `/Member/detail`,
         headers: {
         'Content-Type': 'application/json'
         },
-            data: JSON.stringify(memberInput),
+            data: memberInput,
         })
         .then(function (res) {
         console.log(res.data)

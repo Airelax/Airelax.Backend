@@ -1,10 +1,4 @@
-﻿using Airelax.Domain.Houses;
-using Airelax.Domain.Houses.Defines;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Airelax.Domain.Houses.Defines;
 
 namespace Airelax.Application.Houses.Dtos.Request
 {
@@ -14,4 +8,3 @@ namespace Airelax.Application.Houses.Dtos.Request
         public string MemberId { get; set; }
     }
 }
-

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Specifications;
-using Lazcat.Infrastructure.Map.Responses;
+using Airelax.Infrastructure.Map.Responses;
 using Shouldly;
 using Xunit;
 
@@ -17,7 +17,7 @@ namespace Airelax.Test.Houses
             _house = new House("123")
             {
                 CustomerNumber = 6,
-                ReservationDates = new List<DateTime>()
+                ReservationDates = new List<DateTime>
                 {
                     new(2021, 8, 1),
                     new(2021, 8, 2),
@@ -25,8 +25,8 @@ namespace Airelax.Test.Houses
                     new(2021, 9, 15),
                     new(2021, 9, 30),
                     new(2022, 3, 15),
-                    new(2022, 7, 20),
-                },
+                    new(2022, 7, 20)
+                }
             };
 
             _house.HouseLocation = new HouseLocation(_house.Id)
@@ -68,7 +68,7 @@ namespace Airelax.Test.Houses
                         new(2021, 8, 1),
                         new(2021, 8, 2),
                         new(2021, 8, 4),
-                        new(2021, 8, 5),
+                        new(2021, 8, 5)
                     }),
                     false
                 },
@@ -77,7 +77,7 @@ namespace Airelax.Test.Houses
                     new AvailableDateSpecification(new List<DateTime>
                     {
                         new(2021, 7, 1),
-                        new(2021, 7, 2),
+                        new(2021, 7, 2)
                     }),
                     true
                 },
@@ -86,10 +86,10 @@ namespace Airelax.Test.Houses
                     new AvailableDateSpecification(new List<DateTime>
                     {
                         new(2022, 3, 15),
-                        new(2022, 3, 16),
+                        new(2022, 3, 16)
                     }),
                     false
-                },
+                }
             };
         }
 
@@ -116,7 +116,7 @@ namespace Airelax.Test.Houses
                 {
                     new InRangeLocationSpecification(new Coordinate(23, 120), new Coordinate(24, 122)),
                     true
-                },
+                }
             };
         }
 
@@ -139,7 +139,7 @@ namespace Airelax.Test.Houses
                 new object[]
                 {
                     new MaxCustomerNumberSpecification(2), true
-                },
+                }
             };
         }
     }

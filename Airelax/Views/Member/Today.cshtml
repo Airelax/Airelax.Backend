@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "title";
+    Layout = "_LayoutNoContainer";
+}
+
+@section header{
+    <partial name="_MemberNavPartial"></partial>
+}
+
+<div class="banner px-4 py-5">
+    <div class="row row-cols-1 row-cols-md-2 ">
+        <div class="col">
+            <div class="fw-bold" style="color: #ffffff;font-size: 32px;">今天</div>
+            <p class="pt-4 pb-2" style="color: #ffffff;">你很快就能成為房東了！請為房源頁面新增最後幾項詳情。</p>
+        </div>
+        <div class="col d-flex justify-content-md-end justify-content-sm-start">
+            <button type="button" class="btn btn-light fw-bold" style="height: fit-content;">完成房源發布</button>
+        </div>
+    </div>
+</div>
+
+<div class="container ">
+    <div class="row">
+        <div class="mx-2">
+            <div class="mt-lg-5 mt-4">
+                <div class="fw-bold fs-4 mb-2">你的預訂</div>
+                <div style="color: #717171;">房客即將到來。<br>預訂完成後，便會在此顯示。</div>
+            </div>
+            <div class="pic">
+                <img src="~/images/Members/Today/21cd29ad57-8934-4075-9d5c-6578863fb1dd.webp" alt="" class="w-100"
+                     style="border-radius: 15px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="options_ph p-2 mb-2" style="background-color: black;">
+    <div class="container">
+        <div class="text-white fs-4 fw-bold fw-normal my-4">出租祕訣與最新消息</div>
+        <a href="" class="text-decoration-none">
+            <div class="card mb-3 w-100 " style="max-width: 767px;background-color: #272727; border-radius: 20px;">
+                <div class="row">
+                    <div class="col-4 ">
+                        <img src="~/images/Members/Today/57d04174-24ab-4a42-a1d7-989d5b1dda47.jpg" alt=""
+                             style="width: 6rem;height: 6rem; border-radius:20px 0 0 20px; ">
+                    </div>
+                    <div class="col-8 ">
+                        <div class="card-body pt-4">
+                            <h6 class="card-title text-white fw-bold">如何讓房源脫穎而出</h6>
+                            <p class="card-text text-white" style="font-size: 12px;">影片</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="" class="text-decoration-none">
+            <div class="card mb-3 w-100 " style="max-width: 767px;background-color: #272727; border-radius: 20px;">
+                <div class="row">
+                    <div class="col-4 ">
+                        <img src="~/images/Members/Today/451f156e-cc93-41be-ad1f-569c3bb350ca.jpg" alt=""
+                             style="width: 6rem;height: 6rem; border-radius:20px 0 0 20px; ">
+                    </div>
+                    <div class="col-8 ">
+                        <div class="card-body pt-4">
+                            <h6 class="card-title text-white fw-bold">如何拍出優質的房源相片</h6>
+                            <p class="card-text text-white" style="font-size: 12px;">影片</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="" class="text-decoration-none">
+            <div class="card mb-3 w-100 " style="max-width: 767px;background-color: #272727; border-radius: 20px;">
+                <div class="row">
+                    <div class="col-4 ">
+                        <img src="~/images/Members/Today/3c930824-3462-40c4-afc2-19d5ef019594.jpg" alt=""
+                             style="width: 6rem;height: 6rem; border-radius:20px 0 0 20px; ">
+                    </div>
+                    <div class="col-8 ">
+                        <div class="card-body pt-4">
+                            <h6 class="card-title text-white fw-bold">設定訂價策略</h6>
+                            <p class="card-text text-white" style="font-size: 12px;">文章</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="options p-2 pb-5" style="background-color: black;">
+    <div class="container ">
+        <div class="text-white fs-4 fw-bold fw-normal my-4">出租祕訣與最新消息</div>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            <div class="col">
+                <a href="#" class="text-decoration-none">
+                    <div class="card h-100" style="background-color: #272727;">
+                        <img src="~/images/Members/Today/451f156e-cc93-41be-ad1f-569c3bb350ca.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <p class="card-text text-white mb-1" style="font-size: 12px;">影片</p>
+                            <h5 class="card-title text-white fs-6 fw-bold">如何讓房源脫穎而出</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="#" class="text-decoration-none">
+                    <div class="card h-100" style="background-color: #272727;">
+                        <img src="~/images/Members/Today/57d04174-24ab-4a42-a1d7-989d5b1dda47.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <p class="card-text text-white mb-1" style="font-size: 12px;">文章</p>
+                            <h5 class="card-title text-white fs-6 fw-bold">修飾潤色房源描述</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="#" class="text-decoration-none">
+                    <div class="card h-100" style="background-color: #272727;">
+                        <img src="~/images/Members/Today/c8c24577-9079-4af8-b64b-200feb855d33.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <p class="card-text text-white mb-1" style="font-size: 12px;">文章</p>
+                            <h5 class="card-title text-white fs-6 fw-bold">設定訂價策略</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col ">
+                <a href="#" class="text-decoration-none">
+                    <div class="card h-100" style="background-color: #272727;">
+                        <img src="~/images/Members/Today/3c930824-3462-40c4-afc2-19d5ef019594.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <p class="card-text text-white mb-1" style="font-size: 12px;">文章</p>
+                            <h5 class="card-title text-white fs-6 fw-bold">建立《在地指南》，分享當地攻略</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section topCSS
+{
+    <link rel="stylesheet" href="~/css/memberNav.css">
+    <link rel="stylesheet" href="~/css/Today/today.css">
+}

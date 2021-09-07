@@ -77,8 +77,8 @@
         aria-label="Close"
       ></button>
       <h5 class="offcanvas-title" id="duringLabel" v-if="getDuring">
-        {{ convertLocale($store.state.date.start) }} -
-        {{ convertLocale($store.state.date.end) }}
+        {{ $store.state.date.start}} -
+        {{ $store.state.date.end }}
       </h5>
     </div>
     <div class="offcanvas-body small">
@@ -169,13 +169,7 @@
               class="col-2 me-auto"
               v-if="$store.state.date.end && $store.state.date.start"
             >
-              {{
-                ($store.state.date.end - $store.state.date.start) /
-                1000 /
-                24 /
-                60 /
-                60
-              }}晚 {{}}
+              {{$store.state.nightCount}}晚
             </div>
           </div>
           <div class="date">
@@ -324,9 +318,6 @@ export default {
     showDuring(start, end) {
       if (start && end) this.getDuring = true;
       else this.getDuring = false;
-    },
-    convertLocale(date) {
-      return date.toLocaleDateString();
     },
   },
   props: {

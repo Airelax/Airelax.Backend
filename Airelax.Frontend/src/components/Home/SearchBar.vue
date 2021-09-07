@@ -12,6 +12,7 @@
               placeholder="你想去哪裡 ?"
               autocomplete="off"
               v-model="$store.state.destination"
+              @keydown.enter.prevent="search()"
             />
           </label>
         </div>
@@ -179,11 +180,11 @@ export default {
         this.$store.state.toddler -= 1;
     },
     search() {
-      console.log(111);
+      console.log(this.$store.state.destination)
       this.$router.push({
         path: "search",
         query: {
-          location: this.$store.state.destination,
+          location: this.$store.state.destination
         },
       });
     },

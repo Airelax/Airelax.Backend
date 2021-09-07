@@ -4,13 +4,13 @@
       <img :src="room.pictures[0]" />
     </div>
     <div class="col-9">
-      <div class="typeAddress">在{{ room.Location.Town }}的{整套公寓}</div>
+      <div class="typeAddress">在{{ room.locationDto.town }}的整套出租住所</div>
       <div class="title">
         {{ room.title }}
       </div>
       <div class="space">
-        <span>{{ room.Space.Bed }}張床 · </span>
-        <span>{{ room.Space.Bathroom }}間衛浴</span>
+        <span>{{ room.space.bed }}張床 · </span>
+        <span>{{ room.space.bathroom }}間衛浴</span>
       </div>
       <div class="comment">
         <Star></Star>

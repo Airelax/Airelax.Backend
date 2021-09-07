@@ -9,6 +9,19 @@ namespace Airelax.Domain.Orders
 {
     public class Order : AggregateRoot<string>
     {
+        public Order(string customerId, string houseId)
+        {
+            Id = GuidHelper.CreateId(prefix: "O");
+            CustomerId = customerId;
+            HouseId = houseId;
+            OrderDate = DateTime.Now;
+            State = OrderState.Established;
+            OrderDetail = new OrderDetail(Id);
+            Payment = new Payment(Id);
+            OrderPriceDetail = new OrderPriceDetail(Id);
+            LastModifyTime = DateTime.Now;
+        }
+
         public string CustomerId { get; set; }
         public string HouseId { get; set; }
         public DateTime OrderDate { get; set; }
@@ -20,14 +33,5 @@ namespace Airelax.Domain.Orders
         public OrderDetail OrderDetail { get; set; }
         public Payment Payment { get; set; }
         public OrderPriceDetail OrderPriceDetail { get; set; }
-
-        public Order(string customerId, string houseId)
-        {
-            Id = GuidHelper.CreateId(prefix: "O");
-            CustomerId = customerId;
-            HouseId = houseId;
-            OrderDate = DateTime.Now;
-            State = OrderState.Established;
-        }
     }
 }

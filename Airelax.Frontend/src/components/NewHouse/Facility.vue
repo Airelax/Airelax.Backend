@@ -1,7 +1,7 @@
 <template>
-  <button @click="choose">
+  <button @click="choose" :class="{ active: isActive }">
     <div class="item">
-      <div class="icon"><img :src="facility.img" alt="" /></div>
+      <div class="icon"><img :src="facility.img" alt=""/></div>
       <div class="name">
         {{ facility.chinese }}
       </div>
@@ -62,7 +62,15 @@ img {
 
 <script>
 export default {
-  props: ["facility"],
+  props: {
+    facility: {type: Object},
+    isActive: {type: Boolean},
+  },
+  methods: {
+    choose: function () {
+      this.$emit("selected", this.facility.mapping);
+    }
+  }
 };
 </script>
 

@@ -1,14 +1,15 @@
 <template>
     <div class="mix">
         <div class="menu">
-			<a href="#" class="logo"><img src="../../assets/image/Home/logo.png" alt="logo"></a>
+			<router-link to="/" class="logo"><img src="../../assets/image/Home/logo.png" alt="logo"></router-link >
 				<div class="min_search" @click="show">
 					<button type="button" class="form-control " style="box-shadow:3px 3px 12px #cccccc;">開始搜尋
 						<div class="iconSlt"><i class="fa fa-search"></i></div>
 					</button>
 				</div>
 			<div class="d-flex align-items-center">
-				<button type="button" id="register">成為房東 / 體驗達人</button>
+				<!-- Todo-根據有無登入顯示不同button -->
+				<router-link to="/become-host"><button type="button" id="register">成為房東 / 體驗達人</button></router-link>
 				<Member></Member>
 			</div>
 		</div>
@@ -38,6 +39,12 @@ export default {
 			vm.isShow = true;
 			let minSearch = document.querySelector('.min_search');
 			minSearch.classList.add('d-none');
+			let banner = document.getElementById('banner');
+			banner.style.display = 'block'
+			banner.addEventListener('click',()=>{
+				vm.isShow = false;
+				minSearch.classList.remove('d-none');
+			});
 			window.addEventListener('scroll',()=>{
 				vm.isShow = false;
 				minSearch.classList.remove('d-none');

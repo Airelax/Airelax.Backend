@@ -2,8 +2,7 @@
   <div class="date">
       <div class="txt">
         <h2>選擇入住日期</h2>
-        <p v-if="!$store.state.date">新增旅行日期，查看確切價格</p>
-        <p v-if="$store.state.date">{{$store.state.date.start}} ~ {{$store.state.date.end}}</p>
+        <p>{{$store.state.date.start}} ~ {{$store.state.date.end}}</p>
       </div>
       <div class="picker">
           <v-date-picker id="datepicker" v-model="$store.state.date" color="pink" is-range :model-config="modelConfig" :columns="$screens({ default: 1, md: 2 })" :rows="$screens({ default: 1})" :min-date="new Date()"/>

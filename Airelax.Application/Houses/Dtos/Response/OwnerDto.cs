@@ -10,5 +10,6 @@ namespace Airelax.Application.Houses.Dtos.Response
         public int TotalComments { get; set; }
         public bool IsVerified { get; set; }
         public string About { get; set; }
+        public string Cover { get; set; }
     }
 }

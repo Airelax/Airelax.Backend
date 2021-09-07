@@ -5,10 +5,19 @@ namespace Airelax.Controllers
     public class VueController : Controller
     {
         [HttpGet("/")]
-        [HttpGet("/search")]
         [HttpGet("/room")]
+        [HttpGet("/new-house")]
+        [HttpGet("/become-host")]
+        [HttpGet("/become-host/new-house")]
+        // [HttpGet("/become-host/{houseId?}/new-house")]
         // GET
         public IActionResult Index()
+        {
+            return File("/index.html", "text/html");
+        }
+
+        [HttpGet("/search")]
+        public IActionResult Search(dynamic parameters)
         {
             return File("/index.html", "text/html");
         }

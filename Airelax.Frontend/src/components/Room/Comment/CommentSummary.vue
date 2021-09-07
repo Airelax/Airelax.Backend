@@ -2,8 +2,8 @@
   <div class="title">
     <i class="fas fa-star"></i>
     <h2>
-      <div v-if="data.rank">
-        {{ data.rank.star }}．{{ data.comments.length }}則評價
+      <div v-if="comment">
+        {{ rank.star }}．{{ comment.length }}則評價
       </div>
     </h2>
   </div>
@@ -30,6 +30,6 @@
 
 <script>
 export default {
-  props: ["data"],
+  props: ["comment","rank"],
 };
 </script>

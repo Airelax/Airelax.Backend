@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Airelax.Domain.DomainObject;
 using Airelax.Domain.Houses;
 using Airelax.Domain.RepositoryInterface;
-using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -15,19 +14,16 @@ namespace Airelax.EntityFramework.Repositories
     [DependencyInjection(typeof(IHouseRepository))]
     public class HouseRepository : IHouseRepository
     {
-        private readonly AirelaxContext _context;
         private readonly IRepository _repository;
 
-        public HouseRepository(AirelaxContext context, IRepository repository)
+        public HouseRepository(IRepository repository)
         {
-            _context = context;
             _repository = repository;
         }
 
-
         public IQueryable<House> GetAll()
         {
-            return _repository.GetAll<string, House>().Where(x => x.IsDeleted == false);
+            return GetHouseIncludeAll().Where(x => x.IsDeleted == false);
         }
 
         public async Task<House> GetAsync(Expression<Func<House, bool>> exp)
@@ -60,12 +56,12 @@ namespace Airelax.EntityFramework.Repositories
 
         public IQueryable<House> GetSatisfyFromAsync(Specification<House> specification)
         {
-            return _repository.GetAll<string, House>().Where(x => specification.IsSatisfy(x));
+            return GetHouseIncludeAll().Where(specification.ToExpression()).Where(x => !x.IsDeleted);
         }
 
         private IIncludableQueryable<House, ReservationRule> GetHouseIncludeAll()
         {
-            return _context.Houses.Include(x => x.Comments)
+            return _repository.GetAll<string, House>().Include(x => x.Comments)
                 .Include(x => x.Photos)
                 .Include(x => x.Policy)
                 .Include(x => x.Spaces)

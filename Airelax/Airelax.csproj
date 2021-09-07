@@ -5,26 +5,31 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <AssemblyVersion>1.0.0</AssemblyVersion>
         <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss:fffZ"))</SourceRevisionId>
-      <UserSecretsId>1fc5f8ca-45f4-494c-8a57-53e5cbbd9230</UserSecretsId>
-  </PropertyGroup>
+        <UserSecretsId>1fc5f8ca-45f4-494c-8a57-53e5cbbd9230</UserSecretsId>
+    </PropertyGroup>
 
     <ItemGroup>
-      <Content Remove="compilerconfig.json" />
-      <Compile Remove="wwwroot\image\**" />
-      <Content Remove="wwwroot\image\**" />
-      <EmbeddedResource Remove="wwwroot\image\**" />
-      <None Remove="wwwroot\image\**" />
+        <Content Remove="compilerconfig.json" />
+        <Compile Remove="wwwroot\image\**" />
+        <Content Remove="wwwroot\image\**" />
+        <EmbeddedResource Remove="wwwroot\image\**" />
+        <None Remove="wwwroot\image\**" />
+        <Content Update="appsettings.Development.json">
+          <DependentUpon>appsettings.json</DependentUpon>
+        </Content>
+        <None Update="compilerconfig.json.defaults">
+          <DependentUpon>compilerconfig.json</DependentUpon>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+        <PackageReference Include="Lazcat.Infrastructure" Version="1.0.9" />
         <PackageReference Include="BCrypt.Net" Version="0.1.0" />
-        <PackageReference Include="Lazcat.Infrastructure" Version="1.0.7" />
-        <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.8">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Serilog.AspNetCore" Version="4.1.1-dev-00229" />
@@ -33,46 +38,103 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Airelax.Application\Airelax.Application.csproj" />
-      <ProjectReference Include="..\Airelax.Domain\Airelax.Domain.csproj" />
-      <ProjectReference Include="..\Airelax.EntityFramework\Airelax.EntityFramework.csproj" />
+        <ProjectReference Include="..\Airelax.Application\Airelax.Application.csproj" />
+        <ProjectReference Include="..\Airelax.Domain\Airelax.Domain.csproj" />
+        <ProjectReference Include="..\Airelax.EntityFramework\Airelax.EntityFramework.csproj" />
+        <ProjectReference Include="..\Airelax.Infrastructure\Airelax.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="Pages\Home\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="wwwroot\scss\UploadPicture.min.css" />
+        <_ContentIncludedByDefault Remove="Pages\Home\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="wwwroot\scss\UploadPicture.min.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\LICENSE" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\android-chrome-192x192.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\android-chrome-512x512.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\apple-touch-icon-120x120.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\apple-touch-icon-152x152.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\apple-touch-icon-180x180.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\apple-touch-icon-60x60.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\apple-touch-icon-76x76.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\apple-touch-icon.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\favicon-16x16.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\favicon-32x32.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\msapplication-icon-144x144.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\mstile-150x150.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\icons\safari-pinned-tab.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\css\app.44ded788.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\css\site.css" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\LICENSE.md" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\001.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\002.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\003.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\004.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\005.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\006.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\007.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\008.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\009.svg" />
+        <_ContentIncludedByDefault Remove="wwwroot\dist\img\member\010.svg" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Views\Home" />
+      <Folder Include="wwwroot\css\Today" />
+      <Folder Include="wwwroot\images\Members\Nav" />
+      <Folder Include="wwwroot\images\Members\Today" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="wwwroot\css\Manage.css" />
-      <None Include="wwwroot\css\Reset.css" />
-      <None Include="wwwroot\js\Manage.js" />
-      <None Include="compilerconfig.json" />
-      <None Include="wwwroot\images\bag.svg" />
-      <None Include="wwwroot\images\bestLandLord.svg" />
-      <None Include="wwwroot\images\checked.svg" />
-      <None Include="wwwroot\images\home.svg" />
-      <None Include="wwwroot\images\honor.svg" />
-      <None Include="wwwroot\images\hook.svg" />
-      <None Include="wwwroot\images\portrait.png" />
-      <None Include="wwwroot\images\star.svg" />
-      <None Include="wwwroot\images\starFilling.svg" />
-      <None Include="wwwroot\js\popover.js" />
-      <None Include="wwwroot\js\SHOP-68.js" />
-      <None Include="wwwroot\js\swiper.js" />
-      <None Include="wwwroot\css\reset.css" />
-      <None Include="wwwroot\scss\SHOP-68.css" />
-      <None Include="wwwroot\scss\SHOP-68.css.map" />
-      <None Include="wwwroot\scss\SHOP-68.scss" />
-      <None Include="wwwroot\scss\swiper.css" />
-      <None Include="wwwroot\scss\swiper.css.map" />
-      <None Include="wwwroot\scss\swiper.scss" />
-      <None Include="wwwroot\scss\UploadPicture.scss" />
-      <None Include="wwwroot\css\swiper-bundle.css" />
+        <None Include="wwwroot\css\Manage.css" />
+        <None Include="wwwroot\css\Reset.css" />
+        <None Include="wwwroot\js\Manage.js" />
+        <None Include="compilerconfig.json" />
+        <None Include="wwwroot\images\bag.svg" />
+        <None Include="wwwroot\images\bestLandLord.svg" />
+        <None Include="wwwroot\images\checked.svg" />
+        <None Include="wwwroot\images\home.svg" />
+        <None Include="wwwroot\images\honor.svg" />
+        <None Include="wwwroot\images\hook.svg" />
+        <None Include="wwwroot\images\portrait.png" />
+        <None Include="wwwroot\images\star.svg" />
+        <None Include="wwwroot\images\starFilling.svg" />
+        <None Include="wwwroot\js\popover.js" />
+        <None Include="wwwroot\js\SHOP-68.js" />
+        <None Include="wwwroot\js\swiper.js" />
+        <None Include="wwwroot\css\reset.css" />
+        <None Include="wwwroot\scss\SHOP-68.css" />
+        <None Include="wwwroot\scss\SHOP-68.css.map" />
+        <None Include="wwwroot\scss\SHOP-68.scss" />
+        <None Include="wwwroot\scss\swiper.css" />
+        <None Include="wwwroot\scss\swiper.css.map" />
+        <None Include="wwwroot\scss\swiper.scss" />
+        <None Include="wwwroot\scss\UploadPicture.scss" />
+        <None Include="wwwroot\css\swiper-bundle.css" />
     </ItemGroup>
+
+    <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

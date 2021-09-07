@@ -1,0 +1,46 @@
+﻿* {
+  color: #484848;
+}
+
+.navbar {
+  box-shadow: 0 2px 4px rgb(0, 0, 0, .12) !important;
+}
+
+.nav_ph {
+  small {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  li {
+    list-style-type: none;
+
+    a {
+      font-size: 14px;
+    }
+
+    img {
+      padding-bottom: 5px;
+      padding-right: 5px;
+      width: 30px;
+    }
+  }
+}
+
+.dropdown-menu {
+  padding: 20px 0px;
+  width: 250px;
+  border: none;
+  border-radius: 8px;
+
+  a {
+    font-size: 14px;
+    padding-bottom: 10px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .file {
+    display: none;
+  }
+}

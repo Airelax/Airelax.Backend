@@ -1,13 +1,13 @@
 <template>
   <div class="user">
-    <img src="https://picsum.photos/56/56/?random=1" />
+    <img :src="msg.portrait" style="width: 3rem;"/>
     <div class="item">
-      <span>{{ msg.name }}</span>
-      <span>{{ msg.date }}</span>
+      <span v-html="highlight(msg.name)"></span>
+      <span v-html="highlight(msg.date)"></span>
     </div>
   </div>
   <div class="massage">
-    <p>{{ msg.content }}</p>
+    <p v-html="highlight(msg.content)"></p>
     <div class="allMsg">
       <span><u>顯示更多內容</u></span>
     </div>
@@ -32,12 +32,12 @@
   flex-direction: column;
   text-align: start;
 }
-.item span:nth-child(1) {
+.item > span:nth-child(1) {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: .2rem;
 }
-.item span:nth-child(2) {
+.item > span:nth-child(2) {
   color: #717171;
   font-size: 14px;
   margin-top: .2rem;
@@ -77,10 +77,6 @@
   left: 11px;
 }
 @media screen and (min-width: 768px) {
-  .user img {
-    width: 56px;
-    height: 56px;
-  }
   .item {
     margin: auto 0;
   }
@@ -94,6 +90,13 @@
 
 <script>
 export default {
-  props: ["msg"],
+  props: ["msg","search"],
+  methods: {
+    highlight (text) {
+      if(this.search==undefined) return text;
+      let regWord = new RegExp(this.search, 'gi')
+      return text.replace(regWord, `<span style="background: orange;">${this.search}</span>`)
+    }
+  }
 };
 </script>

@@ -10,10 +10,15 @@
         <h3>您還必須確認</h3>
         <ul>
             <li><img src="@/assets/image/Room/icon/stair.svg">需要走樓梯</li>
-            <li><img src="@/assets/image/Room/icon/card.svg">押金 - 如果您對房源造成損壞，您可能需支付最高$5000的押金</li>
+            <li><img src="@/assets/image/Room/icon/card.svg">押金 - 如果您對房源造成損壞，您可能需支付最高${{detail.cashPledge}}的押金</li>
         </ul>
     </div>
 </template>
+<script>
+export default {
+    props:["detail"]
+}
+</script>
 
 <style lang="scss" scoped>
 .main{
@@ -35,6 +40,9 @@
             img{
                 width: 1.3rem;
                 margin-right: 1rem;
+            }
+            span{
+                line-height: 1.5rem;
             }
         }
     }

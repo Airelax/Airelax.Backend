@@ -1,0 +1,17 @@
+p {
+  font-family: "Source Code Pro", monospace;
+  font-weight: bolder;
+  font-size: 16px;
+  color: #818181;
+}
+
+@media screen and (max-width: 767px) {
+  .pic {
+    display: none;
+  }
+}
+@media screen and (min-width: 768px) {
+  .pic_ph {
+    display: none;
+  }
+}/*# sourceMappingURL=oops.css.map */

@@ -1,6 +1,6 @@
 <template>
     <div class="back">
-        <a href="#" class="backButton"  v-if="fullWidth < 768"><img src="@/assets/image/Room/icon/back.svg">房源 • Airbnb</a>
+        <a href="#" class="backButton"  v-if="fullWidth < 768" @click.prevent="BackToSearch"><img src="@/assets/image/Room/icon/back.svg">房源 • Airbnb</a>
         <div class="function">
             <a href="#" class="share"><img src="@/assets/image/Room/icon/share.svg"><span>分享</span></a>
             <a href="#" v-if="fullWidth < 768" data-bs-target="#wish" data-bs-toggle="offcanvas" aria-controls="offcanvasBottom"><img src="@/assets/image/Room/icon/like.svg"><span>儲存</span></a>
@@ -27,6 +27,16 @@ export default {
           this.fullWidth = val;
       }
   },
+  methods:{
+      BackToSearch(){
+        this.$router.push({
+            path: "/search",
+            query: {
+                location: this.$store.state.destination,
+            },
+        });
+      }
+  },
   mounted() {
       const vm = this;
       this.fullWidth = document.body.clientWidth;
@@ -41,7 +51,7 @@ export default {
 .back{
     display: flex;
     justify-content: space-between;
-    margin: 1.5rem 2rem;
+    margin: 1.5rem 1rem;
     a{
         display: flex;
         align-items: center;

@@ -9,7 +9,7 @@ namespace Airelax.Application.Houses
     public class SearchHouse
     {
         public string Id { get; set; }
-        public IEnumerable<byte[]> Picture { get; set; }
+        public IEnumerable<Photo> Pictures { get; set; }
         public ICollection<WishList> WishList { get; set; }
         public HouseLocation Location { get; set; }
         public HousePrice Price { get; set; }

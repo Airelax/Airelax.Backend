@@ -1,6 +1,7 @@
 <template>
     <div id="banner"></div>
-    <Header v-if="$store.state.fullWidth>768"></Header>
+    <Header v-if="$store.state.fullWidth>768 && !$route.meta.homeLayout"></Header>
+    <HomeHeader v-if="$store.state.fullWidth>768 && $route.meta.homeLayout"></HomeHeader>
     <slot/>
     <Footer></Footer>
     <RwdNavbar v-if="$store.state.fullWidth<768 && isRwdShow"></RwdNavbar>
@@ -9,6 +10,7 @@
 <script>
 import Footer from './Footer';
 import Header from './Header';
+import HomeHeader from './HomeHeader';
 import RwdNavbar from './RwdNavbar';
 export default {
     data(){
@@ -16,7 +18,7 @@ export default {
             isRwdShow: true,
         }
     },
-    components:{Footer, Header, RwdNavbar},
+    components:{Footer, Header, RwdNavbar, HomeHeader},
     mounted(){
         const vm = this;
         window.addEventListener("scroll",function(){

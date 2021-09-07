@@ -1,22 +1,14 @@
-﻿using Airelax.Domain.Members.Defines;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Airelax.Domain.Members.Defines;
 
 namespace Airelax.Application.Account.Dtos.Request
 {
     public class RegisterInput
     {
-        [Required]
-        [Display(Name = "姓氏")]
-        public string LastName { get; set; }
+        [Required] [Display(Name = "姓氏")] public string LastName { get; set; }
 
-        [Required]
-        [Display(Name = "名字")]
-        public string FirstName { get; set; }
+        [Required] [Display(Name = "名字")] public string FirstName { get; set; }
 
         public LoginType LoginType { get; set; }
 
@@ -32,7 +24,6 @@ namespace Airelax.Application.Account.Dtos.Request
         [Display(Name = "出生日期")]
         public DateTime Birthday { get; set; }
 
-        
 
         [Required]
         [DataType(DataType.Password)]
@@ -40,7 +31,6 @@ namespace Airelax.Application.Account.Dtos.Request
         //[StringLength(12,MinimumLength =8)]
         public string Password { get; set; }
 
-        
-
+        public string ReturnUrl { get; set; } = "/";
     }
 }

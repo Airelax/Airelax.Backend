@@ -51,11 +51,11 @@
       </div>
       <div class="row">
         <div class="col-1">
-          <img src="https://picsum.photos/100/100/?random=1" />
+          <img :src="data.owner.cover" />
         </div>
         <div class="col-11">
-          <p class="name">YOS</p>
-          <p class="time">加入時間:2020</p>
+          <p class="name">{{data.owner.name}}</p>
+          <p class="time">加入時間:{{data.owner.registerTime.split('T')[0]}}</p>
         </div>
       </div>
       <textarea
@@ -95,11 +95,11 @@
           </div>
           <div class="row">
             <div class="col-1">
-              <img src="https://picsum.photos/100/100/?random=1" />
+              <img :src="data.owner.cover" />
             </div>
             <div class="col-11">
-              <p class="name">YOS</p>
-              <p class="time">加入時間:2020</p>
+              <p class="name">{{data.owner.name}}</p>
+              <p class="time">加入時間:{{data.owner.registerTime.split('T')[0]}}</p>
             </div>
           </div>
           <textarea
@@ -242,7 +242,8 @@ export default {
   props: {
     fullWidth: {
       type: Number,
-    },
+    }
   },
+  inject:["data"]
 };
 </script>

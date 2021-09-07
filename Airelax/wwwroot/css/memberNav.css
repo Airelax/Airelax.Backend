@@ -1,0 +1,42 @@
+* {
+  color: #484848;
+}
+
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12) !important;
+}
+
+.nav_ph small {
+  font-size: 12px;
+  font-weight: bold;
+}
+.nav_ph li {
+  list-style-type: none;
+}
+.nav_ph li a {
+  font-size: 14px;
+}
+.nav_ph li img {
+  padding-bottom: 5px;
+  padding-right: 5px;
+  width: 30px;
+}
+
+.dropdown-menu {
+  padding: 20px 0px;
+  width: 250px;
+  border: none;
+  border-radius: 8px;
+}
+.dropdown-menu a {
+  font-size: 14px;
+  padding-bottom: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .file {
+    display: none;
+  }
+}
+
+/*# sourceMappingURL=memberNav.css.map */
