@@ -31,6 +31,6 @@ namespace Airelax.Application.Account.Dtos.Request
         //[StringLength(12,MinimumLength =8)]
         public string Password { get; set; }
 
-        public string ReturnUrl { get; set; }
+        public string ReturnUrl { get; set; } = "/";
     }
 }
