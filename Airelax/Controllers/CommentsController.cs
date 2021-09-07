@@ -22,7 +22,7 @@ namespace Airelax.Controllers
             var commentViewModels = _commentService.GetHouseComments();
 
             if (commentViewModels == null)
-                return Redirect("/error");
+                return RedirectToAction("Index", "Error");
 
             return View(commentViewModels);
         }

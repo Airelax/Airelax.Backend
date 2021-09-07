@@ -56,15 +56,15 @@ namespace Airelax.Application.Comments
 
         public void CreateComment(CreateCommentInput input)
         {
-            var customerIdAndHouseId = _commentsRepository.GetCustomerIdAndHouseIdByOrder(input.OrderId);
-            CheckCustomerIdAndHouseId(customerIdAndHouseId);
+            var order = _commentsRepository.GetOrder(input.OrderId);
+            CheckOrder(order);
 
-            var ownerId = _commentsRepository.GetMemberIdByHouse(input.OrderId);
+            var ownerId = order.House.OwnerId;
 
-            var comment = new Comment(customerIdAndHouseId.CustomerId, customerIdAndHouseId.HouseId, ownerId, input.OrderId, input.Content)
+            var comment = new Comment(order.CustomerId, order.HouseId, ownerId, input.OrderId, input.Content)
             {
-                AuthorId = customerIdAndHouseId.CustomerId,
-                HouseId = customerIdAndHouseId.HouseId,
+                AuthorId = order.CustomerId,
+                HouseId = order.HouseId,
                 ReceiverId = ownerId,
                 OrderId = input.OrderId,
                 Content = input.Content,
@@ -79,9 +79,9 @@ namespace Airelax.Application.Comments
         }
         
 
-        private void CheckCustomerIdAndHouseId(Order customerIdAndHouseId)
+        private void CheckOrder(Order order)
         {
-            if (customerIdAndHouseId == null)
+            if (order == null)
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "doesnt match HouseId or OrderId ");
         }
     }

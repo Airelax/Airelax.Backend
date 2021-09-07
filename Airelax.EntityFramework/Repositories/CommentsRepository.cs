@@ -8,6 +8,7 @@ using Airelax.Domain.Orders;
 using Airelax.Domain.RepositoryInterface;
 using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 
 namespace Airelax.EntityFramework.Repositories
 {
@@ -57,18 +58,11 @@ namespace Airelax.EntityFramework.Repositories
             return comments;
         }
 
-        public Order GetCustomerIdAndHouseIdByOrder(string orderId)
+        public Order GetOrder(string orderId)
         {
-            var CustomerIdAndHouseId = _context.Orders
+            var order = _context.Orders.Include(x=>x.House)
                 .FirstOrDefault(o => o.Id == orderId);
-            return CustomerIdAndHouseId;
-        }
-
-        public string GetMemberIdByHouse(string orderId)
-        {
-            var ownerId = _context.Houses
-                .FirstOrDefault(h => h.Id == GetCustomerIdAndHouseIdByOrder(orderId).HouseId).OwnerId;
-            return ownerId;
+            return order;
         }
 
         public void Add(Comment comment)

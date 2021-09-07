@@ -6,7 +6,6 @@ namespace Airelax.Application.Orders.Request
     public class OrdersInput
     {
         //Order
-        public string CustomerId { get; set; }
 
         [Required] public string HouseId { get; set; }
 

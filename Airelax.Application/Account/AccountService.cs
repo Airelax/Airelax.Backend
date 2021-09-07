@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ using Airelax.Domain.Members;
 using Airelax.Domain.Members.Defines;
 using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
+using Lazcat.Infrastructure.ExceptionHandlers;
+using Lazcat.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -47,6 +50,7 @@ namespace Airelax.Application.Account
         public string GetAuthMemberId()
         {
             var memberId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (memberId.IsNullOrEmpty()) throw ExceptionBuilder.Build(HttpStatusCode.Forbidden, "not log in");
             return memberId;
         }
 

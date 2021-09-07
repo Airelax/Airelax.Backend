@@ -1,5 +1,6 @@
 using System.Text;
 using Airelax.Application;
+using Airelax.Application.Houses;
 using Airelax.Defines;
 using Airelax.EntityFramework.DbContexts;
 using Airelax.Infrastructure.Map;

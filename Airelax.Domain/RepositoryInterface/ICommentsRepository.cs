@@ -9,8 +9,7 @@ namespace Airelax.Domain.RepositoryInterface
     {
         void Add(Comment comment);
         IEnumerable<IGrouping<string, HouseCommentObject>> Get(string memberId);
-        Order GetCustomerIdAndHouseIdByOrder(string orderId);
-        string GetMemberIdByHouse(string orderId);
+        Order GetOrder(string orderId);
         void SaveChanges();
         IQueryable<HouseCommentObject> GetAll();
     }

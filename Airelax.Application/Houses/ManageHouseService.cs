@@ -17,7 +17,6 @@ using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Airelax.Application.Houses
 {
@@ -61,6 +60,7 @@ namespace Airelax.Application.Houses
         {
             var house = await _houseRepository.GetAsync(x => x.Id == id);
             if (house == null) return null;
+            CheckAuthorization(house.OwnerId);
             var space = _manageHouseRepository.GetSpace(id);
 
             var manage = new ManageHouseDto
@@ -70,10 +70,10 @@ namespace Airelax.Application.Houses
                 Description =
                     new DescriptionDto
                     {
-                        HouseDescription = house.HouseDescription.Description,
-                        SpaceDescription = house.HouseDescription.SpaceDescription,
-                        GuestPermission = house.HouseDescription.GuestPermission,
-                        Others = house.HouseDescription.Others
+                        HouseDescription = house.HouseDescription?.Description,
+                        SpaceDescription = house.HouseDescription?.SpaceDescription,
+                        GuestPermission = house.HouseDescription?.GuestPermission,
+                        Others = house.HouseDescription?.Others
                     },
                 Status = (int) house.Status,
                 ProvideFacilities = house.ProvideFacilities.Select(s => (int) s).ToList(),
@@ -90,7 +90,7 @@ namespace Airelax.Application.Houses
                 },
                 HouseCategory = new HouseCategoryVM
                 {
-                    Category = (int) house.HouseCategory.Category, HouseType = (int) house.HouseCategory?.HouseType, RoomCategory = (int) house.HouseCategory?.RoomCategory
+                    Category = (int) (house.HouseCategory?.Category ?? 0), HouseType = (int) (house.HouseCategory?.HouseType ?? 0), RoomCategory = (int) (house.HouseCategory?.RoomCategory ?? 0)
                 },
                 SpaceBed = space.IsNullOrEmpty()
                     ? null
@@ -111,15 +111,15 @@ namespace Airelax.Application.Houses
                             return spaceBedVm;
                         })),
                 CustomerNumber = house.CustomerNumber,
-                Origin = Convert.ToString((int) house.HousePrice.PerNight),
-                SweetPrice = Convert.ToString((int) house.HousePrice.PerWeekNight),
+                Origin = Convert.ToString((int) (house.HousePrice?.PerNight ?? 0)),
+                SweetPrice = Convert.ToString((int) (house.HousePrice?.PerWeekNight ?? 0)),
                 ////Discount
                 ////Fee = price.Fee,
-                Cancel = (int) house.Policy.CancelPolicy,
-                InstanceBooking = house.Policy.CanRealTime,
-                CheckinTime = house.Policy.CheckinTime.ToString("t", DateTimeFormatInfo.InvariantInfo),
-                CheckoutTime = house.Policy.CheckoutTime.ToString("t", DateTimeFormatInfo.InvariantInfo),
-                CashPledge = Convert.ToString((int) house.Policy.CashPledge),
+                Cancel = (int) (house.Policy?.CancelPolicy ?? CancelPolicy.StrictOrNotRefund),
+                InstanceBooking = house.Policy?.CanRealTime ?? false,
+                CheckinTime = house.Policy?.CheckinTime.ToString("t", DateTimeFormatInfo.InvariantInfo),
+                CheckoutTime = house.Policy?.CheckoutTime.ToString("t", DateTimeFormatInfo.InvariantInfo),
+                CashPledge = Convert.ToString((int) (house.Policy?.CashPledge ?? 0)),
                 HouseRule = new HouseRuleDto
                 {
                     AllowChild = house.HouseRule.AllowChild,
@@ -136,151 +136,156 @@ namespace Airelax.Application.Houses
 
         public HouseDescriptionInput UpdateDescription(string id, HouseDescriptionInput input)
         {
-            var house = _manageHouseRepository.Get(id);
-            house.HouseDescription.Description = input.Description;
-            house.HouseDescription.SpaceDescription = input.SpaceDescription;
-            house.HouseDescription.GuestPermission = input.GuestPermission;
-            house.HouseDescription.Others = input.Others;
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
+            house.HouseDescription = new HouseDescription(house.Id)
+            {
+                Description = input.Description,
+                SpaceDescription = input.SpaceDescription,
+                GuestPermission = input.GuestPermission,
+                Others = input.Others
+            };
+
+            UpdateHouse(house);
             return input;
         }
 
         public HouseTitleInput UpdateTitle(string id, HouseTitleInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             house.Title = input.Title;
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public CustomerNumberInput UpdateCustomerNumber(string id, CustomerNumberInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             house.CustomerNumber = input.CustomerNumber;
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public HouseStatusInput UpdateStatus(string id, HouseStatusInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             house.Status = input.Status;
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public HouseAddressInput UpdateAddress(string id, HouseAddressInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             house.HouseLocation.Country = input.Country;
             house.HouseLocation.City = input.City;
             house.HouseLocation.Town = input.Town;
             house.HouseLocation.ZipCode = input.ZipCode;
             house.HouseLocation.AddressDetail = input.Address;
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public HouseLocationInupt UpdateLocation(string id, HouseLocationInupt input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             house.HouseLocation.LocationDescription = input.LocationDescription;
             house.HouseLocation.TrafficDescription = input.TrafficDescription;
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public HouseCategoryInput UpdateCategory(string id, HouseCategoryInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             house.HouseCategory.Category = input.Category;
             house.HouseCategory.HouseType = input.HouseType;
             house.HouseCategory.RoomCategory = input.RoomCategory;
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public HousePriceInput UpdatePrice(string id, HousePriceInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             house.HousePrice.PerNight = input.Origin;
             house.HousePrice.PerWeekNight = input.SweetPrice;
             house.Policy.CashPledge = input.CashPledge;
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public CancelPolicyInput UpdateCancel(string id, CancelPolicyInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             house.Policy.CancelPolicy = input.CancelPolicy;
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public RealTimeInput UpdateRealTime(string id, RealTimeInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             house.Policy.CanRealTime = input.CanRealTime;
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public CheckTimeInput UpdateCheckTime(string id, CheckTimeInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             house.Policy.CheckinTime = Convert.ToDateTime(input.CheckinTime);
             house.Policy.CheckoutTime = Convert.ToDateTime(input.CheckoutTime);
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public HouseOtherInput UpdateOthers(string id, HouseOtherInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             house.HouseRule.Other = input.Other;
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public HouseRuleInput UpdateRules(string id, HouseRuleInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             house.HouseRule.AllowChild = input.AllowChild;
             house.HouseRule.AllowBaby = input.AllowBaby;
             house.HouseRule.AllowPet = input.AllowPet;
             house.HouseRule.AllowSmoke = input.AllowSmoke;
             house.HouseRule.AllowParty = input.AllowParty;
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public HouseFacilityInput UpdateFacility(string id, HouseFacilityInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             house.ProvideFacilities = input.ProvideFacilities;
             house.NotProvideFacilities = input.NotProvideFacilities;
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public HouseSpaceInput CreateSpace(string id, HouseSpaceInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             var space = new Space(house.Id)
             {
                 HouseId = input.HouseId,
@@ -288,24 +293,24 @@ namespace Airelax.Application.Houses
                 IsShared = input.IsShared
             };
             house.Spaces.Add(space);
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public HouseSpaceInput DeleteSpace(string id, HouseSpaceInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             var deleteObj = house.Spaces.LastOrDefault(x => (int) x.SpaceType == input.SpaceType);
             house.Spaces.Remove(deleteObj);
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public BedroomDetailInput CreateBedroomDetail(string id, BedroomDetailInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             var updateObj = _manageHouseRepository.GetBedroom().FirstOrDefault(y => y.SpaceId == input.SpaceId && (int) y.BedType == input.BedType);
             if (updateObj != null)
             {
@@ -321,25 +326,25 @@ namespace Airelax.Application.Houses
                 HasIndependentBath = (bool) input.HasIndependentBath
             };
             _manageHouseRepository.CreateBedroom(bedroomDetail);
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public BedroomDetailInput UpdateBedroomDetail(string id, BedroomDetailInput input)
         {
-            var house = _manageHouseRepository.Get(id);
+            var house = GetHouse(id);
+            CheckAuthorization(house.OwnerId);
             var updateObj = _manageHouseRepository.GetBedroom().FirstOrDefault(y => y.SpaceId == input.SpaceId && (int) y.BedType == input.BedType);
             updateObj.BedCount = (int) input.BedCount;
             updateObj.HasIndependentBath = (bool) input.HasIndependentBath;
-            _manageHouseRepository.Update(house);
-            _manageHouseRepository.SaveChange();
+            UpdateHouse(house);
             return input;
         }
 
         public async Task<UploadHouseImagesViewModel> UploadHouseImages(string id, UploadHouseImagesInput input)
         {
             var house = await _houseRepository.GetAsync(x => x.Id == id);
+            CheckAuthorization(house.OwnerId);
             if (house == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"houseId: {id} not match any house");
             house.Photos = input.Images?.Select(x => new Photo(house.Id)
             {
@@ -348,6 +353,25 @@ namespace Airelax.Application.Houses
             await _houseRepository.UpdateAsync(house);
             await _houseRepository.SaveChangesAsync();
             return new UploadHouseImagesViewModel {Images = input.Images};
+        }
+
+        private void UpdateHouse(House house)
+        {
+            _manageHouseRepository.Update(house);
+            _manageHouseRepository.SaveChange();
+        }
+
+        private void CheckAuthorization(string ownerId)
+        {
+            var memberId = _accountService.GetAuthMemberId();
+            if (ownerId != memberId) throw ExceptionBuilder.Build(HttpStatusCode.Forbidden, "");
+        }
+
+        private House GetHouse(string id)
+        {
+            var house = _houseRepository.GetAsync(x => x.Id == id).Result;
+            if (house == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"house: {id} not match any house");
+            return house;
         }
     }
 }

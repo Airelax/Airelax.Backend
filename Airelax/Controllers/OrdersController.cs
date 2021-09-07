@@ -1,10 +1,12 @@
 ﻿using Airelax.Application.Orders;
 using Airelax.Application.Orders.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Airelax.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class OrdersController : Controller
     {
         private readonly IOrderService _orderService;

@@ -18,19 +18,6 @@ namespace Airelax.EntityFramework.Repositories
             _context = context;
         }
 
-        public House Get(string id)
-        {
-            return _context.Houses.Include(x => x.HouseDescription)
-                .Include(x => x.HouseLocation)
-                .Include(x => x.HouseCategory)
-                .Include(x => x.HousePrice)
-                .Include(x => x.HouseRule)
-                .Include(x => x.Policy)
-                .Include(x => x.Spaces)
-                .Where(x => x.IsDeleted == false)
-                .FirstOrDefault(x => x.Id == id);
-        }
-
         public List<SpaceBed> GetSpace(string id)
         {
             var spaceBeds = from h in _context.Houses
@@ -61,12 +48,12 @@ namespace Airelax.EntityFramework.Repositories
 
         public void Update(House house)
         {
-            _context.Update(house);
+            _context.Houses.Update(house);
         }
 
         public void CreateBedroom(BedroomDetail bedroom)
         {
-            _context.Add(bedroom);
+            _context.BedroomDetails.Add(bedroom);
         }
 
         public DbSet<BedroomDetail> GetBedroom()

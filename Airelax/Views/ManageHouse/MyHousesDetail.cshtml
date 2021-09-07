@@ -71,7 +71,7 @@
         </button>
     </div>
     <div class="add">
-        <button type="button" class="btn btn-otline-dark fw-bolder"><i class="bi bi-plus-lg me-2"></i>建立房源</button>
+        <a href="/become-host" type="button" class="btn btn-outline-dark fw-bolder"><i class="bi bi-plus-lg me-2"></i>建立房源</a>
     </div>
 </div>
 <div class="row">
@@ -211,13 +211,15 @@
 <template id="house">
     <tr>
         <th scope="row">
-            <a href="#" class="list-group-item list-group-item-action room_list" aria-current="true">
+            <a href="#" class="list-group-item list-group-item-action room_list d-flex" aria-current="true">
                 <div class="form-check d-inline-block">
                     <input class="form-check-input" type="checkbox" value="" id="listing">
                     <label class="form-check-label" for="listing">
                     </label>
                 </div>
-                <img src="~/images/ManageHouse/21.jpg" alt="" id="roomPic">
+                <div>
+                    <img src="~/images/ManageHouse/21.jpg" alt="" id="roomPic">
+                </div>
                 <div class="fw-bold" id="title"></div>
             </a>
         </th>
