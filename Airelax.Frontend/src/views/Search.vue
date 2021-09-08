@@ -1014,9 +1014,14 @@ import settingJson from "../components/Settings/setting"
 
 export default {
   created() {
+    const query = this.$route.query;
+    let searchApi = `/api/houses/search?location=${this.$route.query.location}`;
+    if (query.checkin && query.checkout) searchApi += `&checkin=${query.checkin}&checkout=${query.checkout}`;
+    searchApi += `&customerNumber=${query.customerNumber ? query.customerNumber : 1}`;
+
     //todo
     axios
-        .get(`/api/houses/search?location=${this.$route.query.location}`, {
+        .get(searchApi, {
           headers: {
             "Access-Control-Allow-Origin": "*",
           },

@@ -88,9 +88,9 @@ const routes = [
             //     component: () => import('../views/NewHouse/SetHousePhoto.vue'),
             // },
             {
-                path: ':id/highlight',
-                name: 'HouseHighlight',
-                component: () => import('../views/NewHouse/ChooseHouseHighlight.vue'),
+                path: ':id/title',
+                name: 'HouseTitle',
+                component: () => import('../views/NewHouse/NamingHouse.vue'),
             },
         ]
     },

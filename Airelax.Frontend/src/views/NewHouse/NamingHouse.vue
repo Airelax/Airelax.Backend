@@ -21,6 +21,16 @@
 import Layout from "../../components/NewHouse/Layout.vue";
 import TextContent from "../../components/NewHouse/TextContent.vue";
 export default {
+  created() {
+    const houseId = this.$route.params.id;
+    if (houseId) {
+      this.$store.commit('setNewHouseNextAvailable', false);
+      return;
+    }
+    
+    //todo fetch house
+    this.$store.commit('setNewHouseNextAvailable', true);
+  },
   data() {
     return {
       img: require("@/assets/pic/rent_page/NameHouse.jpg"),
@@ -30,5 +40,10 @@ export default {
     Layout,
     TextContent,
   },
+  methods:{
+    onTextChanged(message){
+      this.$store.commit('setNewHouseNextAvailable', true);
+    }
+  }
 };
 </script>

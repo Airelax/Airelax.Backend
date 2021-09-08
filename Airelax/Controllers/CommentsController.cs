@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Airelax.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     public class CommentsController : Controller
     {
         private readonly ICommentService _commentService;
@@ -16,7 +17,6 @@ namespace Airelax.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult Index()
         {
             var commentViewModels = _commentService.GetHouseComments();
@@ -28,7 +28,6 @@ namespace Airelax.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public bool Create([FromBody] CreateCommentInput input)
         {
             _commentService.CreateComment(input);

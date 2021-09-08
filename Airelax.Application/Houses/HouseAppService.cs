@@ -78,17 +78,24 @@ namespace Airelax.Application.Houses
                 }
             };
 
+
             var specification = GetSpecification(input, geocodingInfo);
 
             var sNow = DateTime.Now;
             Console.WriteLine(sNow);
-            var houses = await GetHousesAsync(specification, input.Page);
-            var total = await _houseRepository.GetSatisfyFromAsync(specification).CountAsync();
+
+            var houses = await GetHousesSatisfyFromAsync(specification);
+            houses = GetReservableHouses(input, houses) ?? new List<House>();
+
+            var total = houses.Count;
+            houses = GetHousesByPage(input.Page, houses);
+
+            //var houses = await GetHousesAsync(specification, input.Page);
+            //var total = await _houseRepository.GetSatisfyFromAsync(specification).CountAsync();
 
             var dateTime = DateTime.Now;
             Console.WriteLine(dateTime);
             Console.WriteLine("cost" + (dateTime - sNow));
-
 
             if (houses.IsNullOrEmpty())
                 return searchHousesResponse;
@@ -96,9 +103,25 @@ namespace Airelax.Application.Houses
             var results = GetSearchHouses(houses);
             var simpleHouseDtos = ConvertToSimpleHouseDtos(results);
             searchHousesResponse.Houses = simpleHouseDtos;
-
             searchHousesResponse.Total = total;
             return searchHousesResponse;
+        }
+
+        private static List<House> GetHousesByPage(int page, IEnumerable<House> houses)
+        {
+            return houses.Skip((page - 1) * PAGE_COUNT).Take(PAGE_COUNT).ToList();
+        }
+
+        private static List<House> GetReservableHouses(SearchInput input, List<House> houses)
+        {
+            if (input.Checkin.HasValue && input.Checkout.HasValue)
+            {
+                var dateRange = DateTimeHelper.GetDateRange(input.Checkin.Value, input.Checkout.Value);
+                var availableDateSpecification = new AvailableDateSpecification(dateRange);
+                houses = houses.Where(z => availableDateSpecification.IsSatisfy(z)).ToList();
+            }
+
+            return houses;
         }
 
         public async Task<HouseDto> GetHouse(string id)
@@ -113,7 +136,7 @@ namespace Airelax.Application.Houses
             {
                 Id = house.Id,
                 Title = house.Title,
-                CancelPolicy = (int)house.Policy.CancelPolicy,
+                CancelPolicy = (int) house.Policy.CancelPolicy,
                 Pictures = house.Photos?.Select(x => x.Image) ?? new List<string>(),
                 Space = ConvertToSpaceDto(house),
                 BedroomDetail = ConvertToBedroomDetailDtos(house),
@@ -139,12 +162,10 @@ namespace Airelax.Application.Houses
             return houseDto;
         }
 
-        private Task<List<House>> GetHousesAsync(Specification<House> specification, int page)
+        private async Task<List<House>> GetHousesSatisfyFromAsync(Specification<House> specification)
         {
-            return _houseRepository.GetSatisfyFromAsync(specification)
-                .OrderByDescending(x => x.CreateTime)
-                .Skip((page - 1) * PAGE_COUNT).Take(PAGE_COUNT)
-                .ToListAsync();
+            return await _houseRepository.GetSatisfyFromAsync(specification)
+                .OrderByDescending(x => x.CreateTime).ToListAsync();
         }
 
         private static RankDto ConvertToRankDto(IReadOnlyCollection<HouseCommentObject> houseComments)
@@ -182,10 +203,10 @@ namespace Airelax.Application.Houses
             var customerNumberSpecification = new MaxCustomerNumberSpecification(input.CustomerNumber);
             specification = specification.And(customerNumberSpecification);
 
-            if (!input.Checkin.HasValue || !input.Checkout.HasValue) return specification;
-            var dateRange = DateTimeHelper.GetDateRange(input.Checkin.Value, input.Checkout.Value);
-            var availableDateSpecification = new AvailableDateSpecification(dateRange);
-            specification = specification.And(availableDateSpecification);
+            // if (!input.Checkin.HasValue || !input.Checkout.HasValue) return specification;
+            // var dateRange = DateTimeHelper.GetDateRange(input.Checkin.Value, input.Checkout.Value);
+            // var availableDateSpecification = new AvailableDateSpecification(dateRange);
+            // specification = specification.And(availableDateSpecification);
 
             return specification;
         }
@@ -234,7 +255,7 @@ namespace Airelax.Application.Houses
                     Space = ConvertToSimpleSpaceDto(x),
                     Title = x.Title
                 };
-                SetWishWist(x, simpleHouseDto);
+                //SetWishWist(x, simpleHouseDto);
 
                 return simpleHouseDto;
             });
@@ -377,15 +398,15 @@ namespace Airelax.Application.Houses
         {
             return new()
             {
-                Provide = house.ProvideFacilities?.Select(x => (int)x),
-                NotProvide = house.NotProvideFacilities?.Select(x => (int)x)
+                Provide = house.ProvideFacilities?.Select(x => (int) x),
+                NotProvide = house.NotProvideFacilities?.Select(x => (int) x)
             };
         }
 
 
         private static SimpleSpaceDto ConvertToSpaceDto(House house)
         {
-            var spaceDto = new SimpleSpaceDto { CustomerNumber = house.CustomerNumber };
+            var spaceDto = new SimpleSpaceDto {CustomerNumber = house.CustomerNumber};
             var houseSpaces = house.Spaces;
             if (houseSpaces == null) return spaceDto;
 

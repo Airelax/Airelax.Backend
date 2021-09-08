@@ -3,7 +3,7 @@
     <div class="item">
       <h2>{{ title }}</h2>
       <div class="content">
-        <textarea :maxlength="textLimit" rows="10" v-model="message"></textarea>
+        <textarea :maxlength="textLimit" @change="onContentChanged" rows="10" v-model="message"></textarea>
         <div>
           <span>{{ message.length }}</span
           >/<span>{{ textLimit }}</span>
@@ -76,5 +76,10 @@ export default {
       default: 50,
     },
   },
+  methods:{
+    onContentChanged(){
+      this.$emit("onTextChanged", this.message)
+    }
+  }
 };
 </script>
