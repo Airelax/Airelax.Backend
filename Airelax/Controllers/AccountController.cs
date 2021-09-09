@@ -117,8 +117,8 @@ namespace Airelax.Controllers
         }
 
         [HttpPost]
-        [Route("/login/google")]
-        public async Task<IActionResult> GoogleLogIn(GoogleLogIn input)
+        [Route("account/login/google")]
+        public async Task<IActionResult> GoogleLogIn([FromBody]GoogleLogIn input)
         {
             return RedirectToAction("Register");
         }
