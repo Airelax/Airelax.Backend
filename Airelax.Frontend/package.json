@@ -19,7 +19,7 @@
     "v-calendar": "^3.0.0-alpha.5",
     "v3-carousel": "^1.1.1",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0",
+    "vue-router": "^4.0.11",
     "vue3-carousel": "^0.1.24",
     "vuex": "^4.0.0-0"
   },

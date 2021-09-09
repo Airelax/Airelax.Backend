@@ -21,14 +21,14 @@
           type="email"
           class="form-control"
           id="floatingInputValue"
-          value="逮爸"
+          v-model="title"
         />
         <label for="floatingInputValue">心願單名稱</label>
       </form>
       <div class="maxLength"><label for="">最多50字元</label></div>
     </div>
     <div class="offcanvas-footer">
-      <div class="btn">建立</div>
+      <div @click="createWishList" data-bs-dismiss="offcanvas" class="btn">建立</div>
     </div>
   </div>
   <!-- 768px以上 含768px -->
@@ -57,19 +57,48 @@
               type="email"
               class="form-control"
               id="floatingInputValue"
-              value="逮爸"
+              v-model="title"
             />
             <label for="floatingInputValue">心願單名稱</label>
           </form>
           <div class="maxLength"><label for="">最多50字元</label></div>
         </div>
         <div class="footer">
-          <div class="btn">建立</div>
+          <div @click="createWishList" data-bs-dismiss="modal" class="btn">建立</div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import axios from 'axios'
+export default {
+  data(){
+    return {
+      title:'',
+    }
+  },
+  methods:{
+    createWishList:function(){
+      const dataUrl = '/api/WishLists'
+      axios({
+        method:'Post',
+        url : dataUrl,
+        headers: {
+            'Content-Type':'application/json'
+        },
+        data:{wishName:this.title,houseId:this.houseId}
+      }).then(function(res){
+        console.log(res.data)
+      })
+    }
+  },
+  props:{
+    houseId:{type:String}
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 /*共用開頭 */

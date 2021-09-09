@@ -75,18 +75,26 @@
             </div>
             <div class="col-9">建立新的心願單</div>
           </div>
-          <div class="row" v-for="item in 3" :key="item">
+          <div class="row" v-for="item in wishLists" :key="item">
             <!-- 等資料進來，現在放假ˇ資料 -->
             <div class="col-3">
-              <img src="https://picsum.photos/70/70/?random=1" />
+              <img :src="item.cover" :alt="item.name"/>
             </div>
-            <div class="col-9">心願單名字</div>
+            <div class="col-9">{{item.name}}</div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  props:{
+    wishLists:{type:Array}
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .btn-close {

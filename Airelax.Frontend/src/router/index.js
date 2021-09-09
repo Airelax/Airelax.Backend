@@ -25,9 +25,14 @@ const routes = [
         component: () => import('../views/Subscribe.vue')
     },
     {
-        path: '/wishList',
+        path: '/wishLists',
+        name: 'wishLists',
+        component: () => import('../views/WishLists.vue')
+    },
+    {
+        path:'/wishLists/:id',
         name: 'wishList',
-        component: () => import('../views/WishList.vue')
+        component:() => import('../views/WishList.vue')
     },
     {
         path: '/become-host',

@@ -930,8 +930,8 @@
           <div class="my-2 fs-6">顯示「{{}}」的搜尋結果</div>
         </div>
         <div class="RoomType">
-          <div class="col-12" v-if="get">
-            <ResultRoom :rooms="rooms" :nightCount="nightCount"></ResultRoom>
+          <div class="col-12" v-if="get && isWishListGet">
+            <ResultRoom :rooms="rooms" :nightCount="nightCount" :wishLists="wishLists"></ResultRoom>
           </div>
         </div>
         <div class="page d-flex justify-content-center">
@@ -1031,6 +1031,17 @@ export default {
           this.location = data.locationInfo;
           this.get = true;
         });
+      const dataUrl = "/api/wishLists";
+      axios
+      .get(dataUrl)
+      .then((res) => {
+        console.log(res.data);
+        this.wishLists = res.data;
+        this.isWishListGet = true;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
   mounted() {
     window.scrollTo(0, 0);
@@ -1173,6 +1184,8 @@ export default {
 
       tax: "",
       tick: [],
+      wishLists: null,
+      isWishListGet : false
     };
   },
   methods: {

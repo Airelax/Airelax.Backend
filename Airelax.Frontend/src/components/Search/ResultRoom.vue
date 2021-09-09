@@ -1,5 +1,10 @@
 <template>
-  <div class="row eachRoom me-0 p-0" v-for="room in rooms" :key="room.id" style="cursor: pointer;">
+  <div
+    class="row eachRoom me-0 p-0"
+    v-for="room in rooms"
+    :key="room.id"
+    style="cursor: pointer"
+  >
     <div class="col-12 col-md-5">
       <div class="label d-flex position-relative">
         <div class="perfect me-auto">超讚房東</div>
@@ -18,10 +23,13 @@
           "
         ></Heart>
       </div>
-      <CreateWish></CreateWish>
-      <Wish></Wish>
+      <CreateWish :houseId="room.id"></CreateWish>
+      <Wish :wishLists="wishLists"></Wish>
       <div>
-        <RoomSwiper :roomPicture="room.picture" style="cursor: default;"></RoomSwiper>
+        <RoomSwiper
+          :roomPicture="room.picture"
+          style="cursor: default"
+        ></RoomSwiper>
       </div>
     </div>
     <div
@@ -51,7 +59,7 @@
           <div class="mdTypeAddress d-none d-md-block">
             位於{{ room.address }}的{{ room.houseType }}
           </div>
-          <div class="title my-1" style="font-size:1.3rem;">
+          <div class="title my-1" style="font-size: 1.3rem">
             {{ room.title }}
           </div>
         </div>
@@ -101,14 +109,15 @@
             $ {{ convertToLocaleString(room.price.origin) }}
           </span>
           <span class="sweetPrice">
-            $
-            {{ plusServiceFee(room.price) }}
-            TWD
+            $ {{ plusServiceFee(room.price) }} TWD
           </span>
           / 晚
         </div>
         <div class="total d-md-flex">
-          <div class="mdComment d-none d-md-inline-flex align-items-center" @click="SearchRoom(room)">
+          <div
+            class="mdComment d-none d-md-inline-flex align-items-center"
+            @click="SearchRoom(room)"
+          >
             <Star></Star>
             <span class="starScore fw-bold" id="starScore">
               {{ room.comment.star }}
@@ -143,77 +152,79 @@
   </div>
   <PriceDetail :price="priceDetail" :nightCount="nightCount"></PriceDetail>
   <MdPriceDetail :price="priceDetail" :nightCount="nightCount"></MdPriceDetail>
-</template>  
-
+</template>
 
 <style lang="scss" scoped>
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap");
-@import "@/assets/sass/search.scss";
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap');
+  @import '@/assets/sass/search.scss';
 </style>
 
-
 <script>
-import Star from "./Star.vue";
-import RoomSwiper from "./Swiper.vue";
-import PriceDetail from "./PriceDetail.vue";
-import MdPriceDetail from "./MdPriceDetail.vue";
-import Wish from "./Wish.vue";
-import CreateWish from "./CreateWish.vue";
-import Heart from "./Heart.vue";
-export default {
-  components: {
-    Star,
-    RoomSwiper,
-    PriceDetail,
-    MdPriceDetail,
-    Wish,
-    CreateWish,
-    Heart,
-  },
-  data() {
-    return {
-      priceDetail: null,
-    };
-  },
-  props: {
-    rooms: { type: Object },
-    nightCount: { type: Number },
-  },
-  methods: {
-    SearchRoom(room){
-      //Todo-Vuex
-      this.$store.state.roomPicture = room.picture
-      this.$router.push({
-        path: `/room/${room.id}`,
-      });
+  import Star from './Star.vue'
+  import RoomSwiper from './Swiper.vue'
+  import PriceDetail from './PriceDetail.vue'
+  import MdPriceDetail from './MdPriceDetail.vue'
+  import Wish from './Wish.vue'
+  import CreateWish from './CreateWish.vue'
+  import Heart from './Heart.vue'
+  export default {
+    components: {
+      Star,
+      RoomSwiper,
+      PriceDetail,
+      MdPriceDetail,
+      Wish,
+      CreateWish,
+      Heart,
     },
-    convertToLocaleString(price) {
-      return price.toLocaleString();
+    created() {
+      console.log(this.wishLists)
     },
-    plusServiceFee(price) {
-      return Number(
-        price.sweetPrice == null ? price.origin : price.sweetPrice
-      ).toLocaleString();
+    data() {
+      return {
+        priceDetail: null,
+      }
     },
-    getTotal(price, nightCount) {
-      let feeTotal;
-      let sweetPrice =
-        price.sweetPrice == null ? price.origin : price.sweetPrice;
-      let cleanFee = this.getPrice(price.fee.cleanFee);
-      let taxFee = this.getPrice(price.fee.taxFee);
-      let serviceFee = this.getPrice(price.fee.serviceFee);
-      feeTotal = cleanFee + taxFee + serviceFee;
+    props: {
+      rooms: { type: Object },
+      nightCount: { type: Number },
+      wishLists: { type: Array },
+    },
+    methods: {
+      SearchRoom(room) {
+        //Todo-Vuex
+        this.$store.state.roomPicture = room.picture
+        this.$router.push({
+          path: `/room/${room.id}`,
+        })
+      },
+      convertToLocaleString(price) {
+        return price.toLocaleString()
+      },
+      plusServiceFee(price) {
+        return Number(
+          price.sweetPrice == null ? price.origin : price.sweetPrice
+        ).toLocaleString()
+      },
+      getTotal(price, nightCount) {
+        let feeTotal
+        let sweetPrice =
+          price.sweetPrice == null ? price.origin : price.sweetPrice
+        let cleanFee = this.getPrice(price.fee.cleanFee)
+        let taxFee = this.getPrice(price.fee.taxFee)
+        let serviceFee = this.getPrice(price.fee.serviceFee)
+        feeTotal = cleanFee + taxFee + serviceFee
 
-      return Number(sweetPrice) * nightCount + feeTotal;
-    },
-    deliverDataToDetail(price) {
-      this.priceDetail = price;
-    },
+        return Number(sweetPrice) * nightCount + feeTotal
+      },
+      deliverDataToDetail(price) {
+        this.priceDetail = price
+      },
 
-    getPrice(price) {
-      if (typeof price == undefined) return 0;
-      return Number(price);
+      getPrice(price) {
+        if (typeof price == undefined) return 0
+        return Number(price)
+      },
     },
-  },
-};
+  }
 </script>

@@ -1,140 +1,329 @@
 <template>
-  <div class="main">
-    <div class="title">
-      <h2>心願單</h2>
-    </div>
-    <div class="list">
-      <div class="column" v-for="item in wishList" :key="item">
-        <div class="column-wrapper" @click="wishListCheck">
-          <div class="image-container">
-            <div
-              class="image"
-              :style="{backgroundImage:'url('+item.cover+')'}"
-            ></div>
+  <div class="row top content">
+      <div class="col-md-6 col-12 position-relative houses">
+        <div class="back">
+          <a href="/"><img src="@/assets/image/Room/icon/back.svg"/></a>
+          <div class="date">
+            <a
+              href="#"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasBottom"
+              aria-controls="offcanvasBottom"
+            >
+            <img src="@/assets/image/Room/icon/setting.svg"/>
+            </a>
           </div>
-          <p>{{item.name}}</p>
+        </div>
+        <div class="px-4 pt-md-3">
+        </div>
+        <div class="Result">
+          <div class="col-12" v-if="false && get">
+          <BrowsingRecord :rooms="rooms" :nightCount="nightCount">
+          </BrowsingRecord>
+          </div>
         </div>
       </div>
-    </div>
+    <div class="col-6 map"></div>
   </div>
 </template>
 
-<style scoped>
-  .main {
-    margin-top: 120px; /**/
-    padding: 0 24px;
+<script>
+import axios from "axios";
+import BrowsingRecord from "../components/Search/BrowsingRecord";
+export default {
+  created() {
+    axios
+        .get(`/api/WishLists/wishList?wishId=${this.$route.params.id}`, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+        .then((res) => {
+          const data = res.data;
+          this.rooms = data.houses;
+          // this.getPicture();
+          this.$store.state.rooms = {};
+          console.log(res.data)
+          this.get = true;
+        });
+  },
+  // getPicture() {
+  //   this.rooms.forEach(item => {
+  //     if (item.picture.length !== 0) return;
+  //     this.getRandomList(0, this.setting.pictures.length - 1, this.getRandomNumber(5, this.setting.pictures.length - 1)).forEach(x => {
+  //       item.picture.push(this.setting.pictures[x]);
+  //     })
+  //   });
+  // },
+  components: {
+    BrowsingRecord,
+  },
+  data() {
+    return {
+      wishLists: null,
+      isWishListGet : false,
+      rooms : Array,
+      nightCount : 3,
+    };
+  },
+};
+</script>
+
+<style scoped lang="scss">
+.houses.position-relative,
+.map {
+  height: calc(100vh - 100px);
+}
+
+.back {
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: transparent;
+  z-index: 100;
+
+  &.fixed {
+    position: fixed;
   }
-  .title {
-    border-bottom: 1px solid rgb(235, 235, 235);
-    margin-bottom: 24px;
-  }
-  .title h2 {
-    font-size: 32px;
-    font-weight: 600;
-    text-align: start;
-    margin-bottom: 15px;
-    padding: 20px 0 24px;
-  }
-  .column {
-    height: 84px;
-    padding: 10px 0;
-  }
-  .column-wrapper {
+
+  a {
     display: flex;
+  }
+
+  img {
+    width: 1.2rem;
     cursor: pointer;
+    margin: auto;
   }
-  .column-wrapper p {
-    font-size: 18px;
-    font-weight: 600;
-    margin: auto 0;
+
+  .date {
+    display: flex;
+  }
+
+  .between {
+    margin: 0 0.5rem;
+  }
+}
+
+.btn-dark {
+  border-radius: 8px;
+}
+
+.position-relative {
+  padding: 0;
+}
+
+.record {
+  background-color: #f7f7f7;
+}
+
+.text-start {
+  p {
+    font-size: 0.9rem;
+  }
+
+  h4 {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin: 1rem 0;
+  }
+}
+
+.type_place {
+  p {
+    color: rgb(150, 150, 150);
+  }
+}
+
+.onlybtn {
+  .checkbtn {
+    font-size: 30px;
+    margin: 20px 20px -10px 5px;
+    line-height: 10;
+    background-color: #ccc;
+    border-color: #ccc;
+    box-shadow: 3px 3px 5px #fff;
+
+    &:checked {
+      background-color: #717171;
+      border-color: #717171;
+      box-shadow: 3px 3px 5px #cccccc;
+    }
+  }
+
+  .bed {
+    .btn_ {
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: 1px solid #717171;
+      font-size: 25px;
+      font-weight: bolder;
+      color: #717171;
+      margin-right: 20px;
+    }
+
+    .btnAdd {
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: 1px solid #717171;
+      font-size: 15px;
+      font-weight: bolder;
+      color: #717171;
+      margin-left: 20px;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .fake {
+    height: 40rem;
+    object-fit: cover;
+  }
+  .top {
+    margin-right: 0 !important;
+    margin-top: 90px;
+  }
+  .Result {
+    .col-12 {
+      background-color: #f7f7f7;
+    }
+  }
+  .record {
+    padding-left: 2rem;
+  }
+  .position-relative {
+    padding: 0;
     overflow: auto;
+    height: 40rem;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
-  .column-wrapper p::-webkit-scrollbar {
+  .text-start {
+    margin: 0 !important;
+  }
+  .onlybtn {
     display: none;
   }
-  .image-container {
-    margin-right: 16px;
-  }
-  .image {
-    width: 64px;
-    height: 64px;
-    background-size: cover;
-    background-color: yellowgreen;
-    border-radius: 10px;
-  }
-  @media screen and (min-width: 768px) {
-    #footer {
-      display: block;
-    }
-    .list {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-    .main {
-      padding: 0 40px;
-    }
-    .column {
-      width: calc(50% - 10px);
-      min-height: 37.208vw;
-      padding: 0;
-    }
-    .column-wrapper {
-      flex-direction: column;
-    }
-    .column-wrapper p {
-      height: 88px;
-      font-size: 22px;
-      text-align: start;
-      padding: 16px 0 0;
-    }
-    .image-container {
-      margin-right: 0;
-    }
-    .image {
-      width: 100%;
-      height: 22.787vw;
-      border-radius: 20px;
-    }
-  }
-  @media screen and (min-width: 1200px) {
-    .main {
-      padding: 0 80px;
-    }
-    .column {
-      width: calc(33% - 13px);
-      min-height: 21.86vw;
-    }
-    .image {
-      height: 14.53vw;
-    }
-  }
-</style>
 
-<script>
-  import axios from "axios";
-  export default {
-    data() {
-      return {
-        wishList: null,
-      };
-    },
-    created() {
-      const dataUrl = "/api/wishLists/Me9c5c9538b";
-      axios
-        .get(dataUrl)
-        .then((res) => {
-          console.log(res.data);
-          this.wishList = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    methods: {
-      wishListCheck() {
-        alert("未製作");
-      },
-    },
-  };
-</script>
+  .filters {
+    font-size: 14px;
+    line-height: 18px;
+    margin-right: 10px;
+    padding: 10px 20px !important;
+
+    &:hover {
+      border: 1px solid #222222 !important;
+    }
+
+    &:active,
+    &:checked {
+      border: 2px solid #222222 !important;
+    }
+  }
+  .dropdown-menu {
+    border-radius: 16px;
+
+    p {
+      color: #717171;
+      font-size: 14px;
+      padding: 10px 30px;
+    }
+
+    h5 {
+      padding: 15px 0 0 30px;
+    }
+
+    .checkbtn {
+      font-size: 30px;
+      margin: 20px 20px -10px 5px;
+      line-height: 10;
+      background-color: #ccc;
+      border-color: #ccc;
+      box-shadow: 3px 3px 5px #fff;
+
+      &:checked {
+        background-color: #717171;
+        border-color: #717171;
+        box-shadow: 3px 3px 5px #cccccc;
+      }
+    }
+
+    .type_place {
+      padding: 20px 15px 10px 30px;
+
+      h6 {
+        margin-top: 10px;
+        padding-left: 30px;
+      }
+    }
+  }
+  .more {
+    .btn_ {
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: 1px solid #717171;
+      font-size: 25px;
+      font-weight: bolder;
+      color: #717171;
+      margin-right: 20px;
+      margin-bottom: 15px;
+    }
+
+    .btnAdd {
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: 1px solid #717171;
+      font-size: 20px;
+      font-weight: bolder;
+      color: #717171;
+      margin-left: 20px;
+      margin-bottom: 12px;
+    }
+
+    .moreOptions {
+      h5 {
+        font-size: 16px;
+        margin-bottom: 2px;
+        margin-top: 15px;
+      }
+
+      p {
+        margin-bottom: 2px;
+        font-size: 14px;
+        color: #717171;
+      }
+
+      a {
+        font-size: 14px;
+      }
+
+      .checkbtn {
+        font-size: 30px;
+        margin: 20px 20px -10px 5px;
+        line-height: 10;
+        background-color: #ccc;
+        border-color: #ccc;
+        box-shadow: 3px 3px 5px #fff;
+        top: 410px;
+        right: 100px;
+
+        &:checked {
+          background-color: #717171;
+          border-color: #717171;
+          box-shadow: 3px 3px 5px #cccccc;
+        }
+      }
+    }
+  }
+}
+</style>
