@@ -169,6 +169,16 @@
             })
                 .then(function (res) {
                     console.log(res.data);
+                    if (res.data.result === 1) {
+                        const urlSearchParams = new URLSearchParams(window.location.search);
+                        const params = Object.fromEntries(urlSearchParams.entries())
+                        if (params && params.returnUrl)
+                            window.location.href = params.returnUrl
+                        else
+                        window.location.href = '/';
+                    } else if (res.data.result === 4) {
+                        alert('google登入失敗!!');
+                    }
                 })
                 .catch(function (error) {
                     alert(error);
