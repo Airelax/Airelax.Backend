@@ -117,11 +117,12 @@ namespace Airelax.Controllers
         }
 
         [HttpPost]
-        [Route("/login/google")]
-        public async Task<IActionResult> GoogleLogIn(GoogleLogInInput input)
+        [Route("account/login/google")]
+        public async Task<IActionResult> GoogleLogIn([FromBody] GoogleLogInInput input)
         {
             var loginResult = await _accountService.GoogleLogin(input);
-            return RedirectToAction("Register");
+            SetJwt(loginResult.Token);
+            return Ok(loginResult);
         }
 
         private void SetJwt(string token)
@@ -129,5 +130,5 @@ namespace Airelax.Controllers
             Response.Cookies.Append(Defines.Define.Authorization.JWT_COOKIE_KEY,
                 token, new CookieOptions() {SameSite = SameSiteMode.Strict});
         }
-     }
+    }
 }

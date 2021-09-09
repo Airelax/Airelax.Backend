@@ -112,12 +112,10 @@ namespace Airelax.Application.Account
                     return result;
                 }
 
-                result.Result = AccountStatus.WrongPassword;
-                return result;
+                return new LoginResult() {Result = AccountStatus.WrongPassword};
             }
 
-            result.Result = AccountStatus.Signup;
-            return result;
+            return new LoginResult() {Result = AccountStatus.Signup};
         }
 
         public async Task<LoginResult> GoogleLogin(GoogleLogInInput input)
@@ -130,10 +128,44 @@ namespace Airelax.Application.Account
                 };
 
             var member = await _memberRepository.GetMemberByAccountAsync(user.Email, LoginType.Google);
-            return null;
+            if (member != null)
+                return await SetLogIn(member);
+            var newMember = new Member()
+            {
+                Name = user.Name,
+                Birthday = DateTime.Now,
+                Email = user.Email,
+                Cover = user.Picture,
+            };
+            var memberLogInfo = new MemberLoginInfo(newMember.Id)
+            {
+                Account = user.Email,
+                LoginType = LoginType.Google,
+                Token = CreateToken(newMember)
+            };
+
+            newMember.MemberLoginInfo = memberLogInfo;
+            await _memberRepository.CreateAsync(newMember);
+            await _memberRepository.SaveChangesAsync();
+            await SetCookieLogIn(newMember);
+            return new LoginResult()
+            {
+                Result = AccountStatus.Success,
+                Token = newMember.MemberLoginInfo.Token,
+            };
         }
-        
-        
+
+        private async Task<LoginResult> SetLogIn(Member member)
+        {
+            await SetCookieLogIn(member);
+            var token = CreateToken(member);
+            member.MemberLoginInfo.Token = token;
+            await _memberRepository.UpdateAsync(member);
+            var result = new LoginResult {Token = token, Result = AccountStatus.Success};
+            return result;
+        }
+
+
         private string CreateToken(Member member)
         {
             var claims = GetClaims(member);
@@ -165,7 +197,5 @@ namespace Airelax.Application.Account
                 IsPersistent = true
             });
         }
-        
-        
     }
 }

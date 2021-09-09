@@ -41,14 +41,5 @@ namespace Airelax.Domain.Members
         public EmergencyContact EmergencyContact { get; set; }
         public ICollection<WishList> WishLists { get; set; }
         public ICollection<Order> Orders { get; set; }
-
-        // public void VerifyPhone()
-        // {
-        //     IsPhoneVerified = true;
-        // }
-        // public void VerifyEmail()
-        // {
-        //     IsEmailVerified = true;
-        // }
     }
 }
