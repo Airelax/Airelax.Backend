@@ -32,23 +32,31 @@ namespace Airelax.Application.Comments
         public IEnumerable<HouseCommentViewModel> GetHouseComments()
         {
             var memberId = _accountService.GetAuthMemberId();
-            
+
             var comments = _commentsRepository.Get(memberId)?.ToList();
 
             if (comments == null || !comments.Any()) return new List<HouseCommentViewModel>();
-            var commentViewModels = comments.Select(com => new HouseCommentViewModel
+            var commentViewModels = comments.Select(com =>
             {
-                HouseId = com.Key,
-                HouseName = com.First().HouseName,
-                HouseState = (int) com.First().HouseStatus,
-                Comments = com.Select(c => new CommentViewModel
+                var houseCommentViewModel = new HouseCommentViewModel
                 {
-                    CommentId = c.Comment.Id,
-                    CommentTime = c.Comment.CommentTime.ToString("yyyy/MM"),
-                    Content = c.Comment.Content,
-                    AuthorName = c.AuthorName,
-                    Stars = c.Stars.Total
-                }).ToArray()
+                    HouseId = com.Key,
+                    HouseName = com.First().HouseName,
+                    HouseState = (int) com.First().HouseStatus,
+                };
+
+                var tempCommentViewModels = (from commentObject in com
+                    where commentObject.Comment != null
+                    select new CommentViewModel()
+                    {
+                        CommentId = commentObject.Comment.Id,
+                        CommentTime = commentObject.Comment.CommentTime.ToString("yyyy/MM"),
+                        Content = commentObject.Comment.Content,
+                        AuthorName = commentObject.AuthorName,
+                        Stars = commentObject.Stars.Total
+                    }).ToList();
+                houseCommentViewModel.Comments = tempCommentViewModels.ToArray();
+                return houseCommentViewModel;
             });
 
             return commentViewModels;
@@ -77,7 +85,7 @@ namespace Airelax.Application.Comments
             _commentsRepository.Add(comment);
             _commentsRepository.SaveChanges();
         }
-        
+
 
         private void CheckOrder(Order order)
         {

@@ -25,12 +25,12 @@ namespace Airelax.EntityFramework.Repositories
         public IEnumerable<IGrouping<string, HouseCommentObject>> Get(string memberId)
         {
             var comments =
-                (from c in _context.Comments
+                (from h in _context.Houses 
+                    from c in _context.Comments.Where(x => h.Id == x.HouseId).DefaultIfEmpty()
                     from m in _context.Members.Where(x => x.Id == c.ReceiverId).DefaultIfEmpty()
                     from mem in _context.Members.Where(x => c.AuthorId == x.Id).DefaultIfEmpty()
-                    from h in _context.Houses.Where(x => x.Id == c.HouseId).DefaultIfEmpty()
                     from s in _context.Stars.Where(x => x.Id == c.Id).DefaultIfEmpty()
-                    where m.Id == memberId
+                    where h.OwnerId == memberId
                     select new HouseCommentObject {Comment = c, HouseId = h.Id, HouseName = h.Title, HouseStatus = h.Status, AuthorName = mem.Name, Stars = s}).ToList();
             var commentsGroup = comments.GroupBy(x => x.HouseId);
             return commentsGroup;
