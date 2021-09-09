@@ -12,6 +12,7 @@ using Airelax.Application.Helpers;
 using Airelax.Domain.Members;
 using Airelax.Domain.Members.Defines;
 using Airelax.Domain.RepositoryInterface;
+using Airelax.Infrastructure.OAuth;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
@@ -29,14 +30,16 @@ namespace Airelax.Application.Account
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMemberRepository _memberRepository;
+        private readonly IGoogleOauthService _googleOauthService;
 
         public AccountService(IConfiguration configuration,
             IHttpContextAccessor httpContextAccessor,
-            IMemberRepository memberRepository)
+            IMemberRepository memberRepository, IGoogleOauthService googleOauthService)
         {
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
             _memberRepository = memberRepository;
+            _googleOauthService = googleOauthService;
         }
 
         public async Task<Member> GetMember()
@@ -117,6 +120,20 @@ namespace Airelax.Application.Account
             return result;
         }
 
+        public async Task<LoginResult> GoogleLogin(GoogleLogInInput input)
+        {
+            var user = await _googleOauthService.GetGoogleUser(input.Token);
+            if (user == null)
+                return new LoginResult()
+                {
+                    Result = AccountStatus.OauthFailed,
+                };
+
+            var member = await _memberRepository.GetMemberByAccountAsync(user.Email, LoginType.Google);
+            return null;
+        }
+        
+        
         private string CreateToken(Member member)
         {
             var claims = GetClaims(member);
@@ -148,5 +165,7 @@ namespace Airelax.Application.Account
                 IsPersistent = true
             });
         }
+        
+        
     }
 }

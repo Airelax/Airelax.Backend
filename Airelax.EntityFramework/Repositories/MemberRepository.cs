@@ -65,14 +65,14 @@ namespace Airelax.EntityFramework.Repositories
             await _repository.DeleteAsync<string, Member>(item);
         }
 
-        public async Task<Member> GetMemberByAccountAsync(string account)
+        public async Task<Member> GetMemberByAccountAsync(string account, LoginType loginType)
         {
             var member = await _context.Members
                 .Include(x => x.MemberLoginInfo)
                 .Include(x => x.MemberInfo)
                 .Include(x => x.WishLists)
                 .FirstOrDefaultAsync(x => x.MemberLoginInfo.Account == account
-                                          && x.MemberLoginInfo.LoginType == LoginType.Email
+                                          && x.MemberLoginInfo.LoginType == loginType
                                           && !x.IsDeleted);
             // var mem = await (from m in _repository.GetAll<string, Member>()
             //     from ml in _repository.GetAll<string, MemberLoginInfo>().Where(x => x.Id == m.Id)

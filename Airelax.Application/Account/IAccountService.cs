@@ -11,5 +11,6 @@ namespace Airelax.Application.Account
         LoginResult LoginAccount(LoginInput input);
         Task<Member> GetMember();
         string GetAuthMemberId();
+        Task<LoginResult> GoogleLogin(GoogleLogInInput input);
     }
 }

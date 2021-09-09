@@ -4,6 +4,7 @@
     {
         Success = 1,
         WrongPassword,
-        Signup
+        Signup,
+        OauthFailed,
     }
 }

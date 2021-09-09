@@ -118,8 +118,9 @@ namespace Airelax.Controllers
 
         [HttpPost]
         [Route("/login/google")]
-        public async Task<IActionResult> GoogleLogIn(GoogleLogIn input)
+        public async Task<IActionResult> GoogleLogIn(GoogleLogInInput input)
         {
+            var loginResult = await _accountService.GoogleLogin(input);
             return RedirectToAction("Register");
         }
 
@@ -128,10 +129,5 @@ namespace Airelax.Controllers
             Response.Cookies.Append(Defines.Define.Authorization.JWT_COOKIE_KEY,
                 token, new CookieOptions() {SameSite = SameSiteMode.Strict});
         }
-    }
-
-    public class GoogleLogIn
-    {
-        public string Token { get; set; }
-    }
+     }
 }
