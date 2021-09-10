@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Airelax.Application.WishLists.Dtos.Request;
 using Airelax.Application.WishLists.Dtos.Response;
 
@@ -12,6 +13,6 @@ namespace Airelax.Application.WishLists
         void UpdateWishName(UpdateWishListInput input);
         void AddHouse(UpdateWishListInput input);
         void RemoveHouse(UpdateWishListInput input);
-        WishListViewModel GetHousesByWishList(int wishId);
+        Task<IEnumerable<WishListHousesViewModel>> GetHousesByWishList(int wishId);
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Airelax.Application.Account;
+using Airelax.Application.Houses.Dtos.Response;
 using Airelax.Application.WishLists.Dtos.Request;
 using Airelax.Application.WishLists.Dtos.Response;
 using Airelax.Domain.Houses;
@@ -9,7 +11,9 @@ using Airelax.Domain.Members;
 using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
+using Lazcat.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace Airelax.Application.WishLists
 {
@@ -39,7 +43,7 @@ namespace Airelax.Application.WishLists
             var wishList = new WishList(member.Id)
             {
                 Name = input.WishName,
-                Houses = new List<string> { house.Id },
+                Houses = new List<string> {house.Id},
                 Cover = house.Photos?.Select(x => x.Image).FirstOrDefault()
             };
             member.WishLists.Add(wishList);
@@ -117,7 +121,7 @@ namespace Airelax.Application.WishLists
             return wishListsViewModel;
         }
 
-        public WishListViewModel GetHousesByWishList(int wishId)
+        public async Task<IEnumerable<WishListHousesViewModel>> GetHousesByWishList(int wishId)
         {
             var member = _accountService.GetMember().Result;
             CheckMember(member, member.Id);
@@ -125,33 +129,34 @@ namespace Airelax.Application.WishLists
             var wishList = member.WishLists.FirstOrDefault(m => m.Id == wishId);
             CheckWishListId(wishList);
 
-            var wishListsViewModel = new WishListViewModel
+            var houses = await _houseRepository.GetAll().Where(x => wishList.Houses.Contains(x.Id)).ToListAsync();
+
+            if (houses.IsNullOrEmpty()) return new List<WishListHousesViewModel>();
+
+            var wishListHousesViewModels = houses.Select(x =>
             {
-                Id = wishList.Id,
-                Name = wishList.Name,
-                Cover = wishList.Cover,
-                Houses = wishList.Houses
-            };
-
-            //private static SimpleFacilityDto ConvertToSimpleFacilityDto(IEnumerable<Facility> facilities)
-            //{
-            //    var facilitiesList = facilities?.ToList();
-            //    if (facilitiesList.IsNullOrEmpty()) return new SimpleFacilityDto();
-            //    return new SimpleFacilityDto
-            //    {
-            //        AirConditioner = facilitiesList.Any(f => f == Facility.AirConditioner),
-            //        Kitchen = facilitiesList.Any(f => f == Facility.Kitchen),
-            //        WashingMachine = facilitiesList.Any(f => f == Facility.WashMachine),
-            //        Wifi = facilitiesList.Any(f => f == Facility.Wifi)
-            //    };
-            //}
+                var wishListHousesViewModel = new WishListHousesViewModel
+                {
+                    Title = x.Title,
+                    CustomerNumber = x.CustomerNumber,
+                    HouseCategory = x.HouseCategory?.Category.ToString() ?? string.Empty,
+                    Location = x.HouseLocation?.Town ?? string.Empty,
+                    PricePerNight = x.HousePrice?.PerNight,
+                    Comment = new SimpleCommentDto() {TotalComments = x.Comments?.Count},
+                };
 
 
-            return wishListsViewModel;
+                return wishListHousesViewModel;
+            });
+
+
+            return wishListHousesViewModels;
         }
 
         //Check區塊
+
         #region
+
         private void CheckMember(Member member, string memberId)
         {
             if (member == null) //判斷沒有會員
@@ -175,6 +180,7 @@ namespace Airelax.Application.WishLists
             if (wishList == null)
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "doesnt match WishListId ");
         }
+
         #endregion
     }
 }
