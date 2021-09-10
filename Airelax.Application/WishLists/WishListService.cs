@@ -48,20 +48,6 @@ namespace Airelax.Application.WishLists
             _memberRepository.SaveChangesAsync().Wait();
         }
 
-        //public void UpdateWishList(UpdateWishListInput input)
-        //{
-        //    var member = _accountService.GetMember().Result;
-        //    CheckMember(member, member.Id);
-        //    var house = _houseRepository.GetAsync(x => x.Id == input.HouseId).Result;
-        //    CheckHouse(house);
-        //    var wishList = member.WishLists.FirstOrDefault(x => x.Id == input.WishId);
-        //    CheckWishListId(wishList);
-        //    wishList.Houses.Add(input.HouseId);
-        //    wishList.Houses = wishList.Houses.Distinct().ToList();
-
-        //    _memberRepository.UpdateAsync(member).Wait();
-        //    _memberRepository.SaveChangesAsync().Wait();
-        //}
         public void UpdateWishName(UpdateWishListInput input)
         {
             var member = _accountService.GetMember().Result;
@@ -76,27 +62,31 @@ namespace Airelax.Application.WishLists
             _memberRepository.SaveChangesAsync().Wait();
         }
 
-        public void UpdateWishHouses(UpdateWishListInput input)
+        public void AddHouse(UpdateWishListInput input) //點擊房源Id清單api(愛心之後)
+        {
+            ReviseHouse(input, true);
+        }
+
+        public void RemoveHouse(UpdateWishListInput input) //點擊滿愛心(滿->空)
+        {
+            ReviseHouse(input, false);
+        }
+
+        private void ReviseHouse(UpdateWishListInput input, bool isadd)
         {
             var member = _accountService.GetMember().Result;
             CheckMember(member, member.Id);
+            var house = _houseRepository.GetAsync(x => x.Id == input.HouseId).Result;
+            CheckHouse(house);
             var wishList = member.WishLists.FirstOrDefault(x => x.Id == input.WishId);
             CheckWishListId(wishList);
-            var houses = wishList.Houses.FirstOrDefault(x => x == input.HouseId);
-            if (houses != null)
-            {
-                wishList.Houses.Remove(houses);
-
-                _memberRepository.UpdateAsync(member).Wait();
-                _memberRepository.SaveChangesAsync().Wait();
-            }
+            if (isadd == true)
+                wishList.Houses.Add(house.Id);
             else
-            {
-                wishList.Houses.Add(input.HouseId);
+                wishList.Houses.Remove(house.Id);
 
-                _memberRepository.UpdateAsync(member).Wait();
-                _memberRepository.SaveChangesAsync().Wait();
-            }
+            _memberRepository.UpdateAsync(member).Wait();
+            _memberRepository.SaveChangesAsync().Wait();
         }
 
         public void DeleteWishList(int wishId)
@@ -143,9 +133,24 @@ namespace Airelax.Application.WishLists
                 Houses = wishList.Houses
             };
 
+            //private static SimpleFacilityDto ConvertToSimpleFacilityDto(IEnumerable<Facility> facilities)
+            //{
+            //    var facilitiesList = facilities?.ToList();
+            //    if (facilitiesList.IsNullOrEmpty()) return new SimpleFacilityDto();
+            //    return new SimpleFacilityDto
+            //    {
+            //        AirConditioner = facilitiesList.Any(f => f == Facility.AirConditioner),
+            //        Kitchen = facilitiesList.Any(f => f == Facility.Kitchen),
+            //        WashingMachine = facilitiesList.Any(f => f == Facility.WashMachine),
+            //        Wifi = facilitiesList.Any(f => f == Facility.Wifi)
+            //    };
+            //}
+
+
             return wishListsViewModel;
         }
 
+        //Check區塊
         #region
         private void CheckMember(Member member, string memberId)
         {

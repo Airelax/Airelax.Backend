@@ -31,10 +31,17 @@ namespace Airelax.Controllers
         }
 
         [HttpPut]
-        [Route("Houses")]
-        public bool UpdateHouses([FromBody] UpdateWishListInput input)
+        [Route("AddHouse")]
+        public bool AddHouse([FromBody] UpdateWishListInput input)
         {
-            _wishListService.UpdateWishHouses(input);
+            _wishListService.AddHouse(input);
+            return true;
+        }
+        [HttpPut]
+        [Route("RemoveHouse")]
+        public bool RemoveHouse([FromBody] UpdateWishListInput input)
+        {
+            _wishListService.RemoveHouse(input);
             return true;
         }
 
