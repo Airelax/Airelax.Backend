@@ -6,9 +6,7 @@ namespace Airelax.Application.Orders.Request
     public class OrdersInput
     {
         //Order
-
         [Required] public string HouseId { get; set; }
-
         //OrderDetail
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
