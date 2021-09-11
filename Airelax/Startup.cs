@@ -3,6 +3,7 @@ using Airelax.Application;
 using Airelax.Application.Houses;
 using Airelax.Defines;
 using Airelax.EntityFramework.DbContexts;
+using Airelax.Hubs;
 using Airelax.Infrastructure.Map;
 using Airelax.Middlewares;
 using Lazcat.Infrastructure.ExceptionHandlers;
@@ -39,7 +40,7 @@ namespace Airelax
             if (HostEnvironment.IsDevelopment())
             {
                 connectString = Define.Database.LOCAL_CONNECT_STRING;
-                services.AddCors(opt => { opt.AddPolicy("dev", builder => builder.WithOrigins("http://localhost:8080")); });
+                services.AddCors(opt => { opt.AddPolicy("dev", builder => builder.WithOrigins("http://localhost:8080").AllowCredentials().AllowAnyHeader()); });
             }
             else
             {
@@ -92,6 +93,8 @@ namespace Airelax
 
             services.AddControllersWithViews();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            // SignalR
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -128,6 +131,8 @@ namespace Airelax
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller=Error}/{action=Index}/{id?}");
+                // SignalR
+                endpoints.MapHub<ChatHub>("/chathub");
             });
         }
     }

@@ -149,6 +149,7 @@ export default {
       },
     };
   },
+  inject: ["reload"],
   methods: {
     HideBody() {
       if (this.$store.state.fullWidth < 768)
@@ -180,7 +181,15 @@ export default {
         this.$store.state.toddler -= 1;
     },
     search() {
-      console.log(this.$store.state.destination)
+      if(this.$route.meta.searchPage){
+        this.$router.replace({
+          query: {
+            location: this.$store.state.destination
+          }
+        })
+        this.reload();
+        return
+      }
       this.$router.push({
         path: "search",
         query: {

@@ -368,7 +368,7 @@
               v-if="isConnectShow"
             >
               <p>有其他疑問嗎？</p>
-              <button type="button" class="btn btn-primary btn-dark">
+              <button type="button" class="btn btn-primary btn-dark" @click.prevent="createMessage">
                 傳訊息給房東
               </button>
             </div>
@@ -397,7 +397,8 @@ import Cancel from "../components/Room/Cancel";
 import Comment from "../components/Room/Comment";
 import CommentModal from "../components/Room/ModalComment";
 import Bed from "../components/Room/RoomDatasWithPic";
-import settingJson from "../components/Settings/setting"
+import settingJson from "../components/Settings/setting";
+// import {moment} from 'moment';
 
 export default {
   data() {
@@ -419,6 +420,38 @@ export default {
     };
   },
   methods: {
+    createMessage(){
+        let messageContent = document.getElementById('messageContent').value;
+        let mes = {
+          MemberOneId: this.data.owner.id,
+          MemberTwoId: this.data.memberId,
+          Contents:[{
+            SenderId: this.data.memberId,
+            ReceiverId: this.data.owner.id,
+            Content: messageContent,
+            Time: '2021-09-11T00:00:00'
+          }],
+          HouseId: this.data.id,
+          StartDate: this.getDate(this.$store.state.date.start),
+          EndDate: this.getDate(this.$store.state.date.end)
+        }
+        this.useAxios(mes);
+    },
+    useAxios(mes){
+      axios.post(`/api/messages/${this.data.memberId}/create`, mes,{
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+        }}).then(function (res) {
+                console.log(res.data);
+                document.getElementById('messageContent').value="";
+            }).catch(err=>{console.log(err)})
+    },
+    getDate(x){
+      let year = x.slice(0,4)
+      let month = x.slice(5,7)
+      let day = x.slice(8,10)
+      return `${year}-${month}-${day}T00:00:00`;
+    },
     getRandomNumber(min,max){
       return Math.floor(Math.random() * (max-min+1))+min;
     },

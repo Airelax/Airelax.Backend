@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Airelax.Application.Account;
 using Airelax.Application.Helpers;
 using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Application.Houses.Dtos.Response;
@@ -32,12 +33,14 @@ namespace Airelax.Application.Houses
         private readonly IMapper _mapper;
         private readonly ICommentsRepository _commentsRepository;
         private readonly IMemberRepository _memberRepository;
+        private readonly IAccountService _accountService;
         public const int PAGE_COUNT = 30;
 
         public HouseAppService(
             IHouseRepository houseRepository,
             IMemberRepository memberRepository,
             IGeocodingService geocodingService,
+            IAccountService accountService,
             IMapper mapper,
             ICommentsRepository commentsRepository)
         {
@@ -46,6 +49,7 @@ namespace Airelax.Application.Houses
             _geocodingService = geocodingService;
             _mapper = mapper;
             _commentsRepository = commentsRepository;
+            _accountService = accountService;
         }
 
         public async Task<SearchHousesResponse> Search(SearchInput input)
@@ -109,9 +113,13 @@ namespace Airelax.Application.Houses
             if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "House exist but member has been deleted");
             var houseComments = (await _commentsRepository.GetAll().Where(x => x.HouseId == house.Id)?.ToListAsync()).GroupBy(x => x.HouseId).FirstOrDefault()?.ToList();
 
+            var user = _accountService.GetMember().Result;
+            if (user == null) return null;
+
             var houseDto = new HouseDto
             {
                 Id = house.Id,
+                MemberId = user.Id,
                 Title = house.Title,
                 CancelPolicy = (int)house.Policy.CancelPolicy,
                 Pictures = house.Photos?.Select(x => x.Image) ?? new List<string>(),

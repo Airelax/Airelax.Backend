@@ -4,9 +4,9 @@
             <i class="fas fa-user-circle"></i>
             <ul class="list-group">
                 <li class="list-group-item border-0 rounded-top">
-                    <a href="#">
+                    <router-link to="/message/Meb4395a55f">
                         <strong>訊息</strong>
-                    </a>
+                    </router-link>
                 </li>
                 <li class="list-group-item border-0">
                     <a href="#">

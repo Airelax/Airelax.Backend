@@ -26,6 +26,7 @@
         <ul>
             <li>期限內可獲得全額退款</li>
         </ul>
+        <textarea placeholder="請輸入訊息" id="messageContent"></textarea>
     </div>
 </template>
 
@@ -80,6 +81,11 @@ export default {
             font-size: 1.1rem;
             line-height: 1.5rem;
         }
+    }
+    textarea{
+        width: 100%;
+        margin: 0 .1rem;
+        height: 30vh;
     }
 }
 </style>

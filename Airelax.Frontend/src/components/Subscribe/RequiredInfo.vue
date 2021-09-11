@@ -60,11 +60,11 @@
       </div>
       <textarea
         class="form-control"
-        id="exampleFormControlTextarea1"
+        v-model="messageContent"
       ></textarea>
     </div>
     <div class="offcanvas-footer">
-      <div class="btn btn-dark">儲存</div>
+      <button class="btn btn-dark" @click="createMessage">儲存</button>
     </div>
   </div>
   <!-- >=768 -->
@@ -104,11 +104,11 @@
           </div>
           <textarea
             class="form-control"
-            id="exampleFormControlTextarea1"
+            v-model="messageContent"
           ></textarea>
         </div>
         <div class="modal-footer">
-          <div class="btn btn-dark">儲存</div>
+          <button class="btn btn-dark" @click="createMessage">儲存</button>
         </div>
       </div>
     </div>
@@ -238,12 +238,52 @@
 }
 </style>
 <script>
+import axios from "axios";
 export default {
   props: {
     fullWidth: {
       type: Number,
     }
   },
-  inject:["data"]
+  inject:["data"],
+  data(){
+    return{
+      messageContent: ""
+    }
+  },
+  methods:{
+    createMessage(){
+        let mes = {
+          MemberOneId: this.data.owner.id,
+          MemberTwoId: this.data.memberId,
+          Contents:[{
+            SenderId: this.data.memberId,
+            ReceiverId: this.data.owner.id,
+            Content: this.messageContent,
+            Time: '2021-09-11T00:00:00'
+          }],
+          HouseId: this.data.id,
+          StartDate: this.getDate(this.$store.state.date.start),
+          EndDate: this.getDate(this.$store.state.date.end)
+        }
+        this.useAxios(mes);
+    },
+    useAxios(mes){
+      let vm = this;
+      axios.post(`/api/messages/${this.data.memberId}/create`, mes,{
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+        }}).then(function (res) {
+                console.log(res.data);
+                vm.messageContent="";
+            }).catch(err=>{console.log(err)})
+    },
+    getDate(x){
+      let year = x.slice(0,4)
+      let month = x.slice(5,7)
+      let day = x.slice(8,10)
+      return `${year}-${month}-${day}T00:00:00`;
+    }
+  }
 };
 </script>
