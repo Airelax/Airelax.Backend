@@ -8,7 +8,7 @@
       此外，我也同意支付顯示的總金額（含住宿稅和服務費）。
       Airbnb現已在該地區代收彙繳政府徵收的住宿稅。
     </p>
-    <div class="btn">申請預訂</div>
+    <div class="btn" @click="createOrder">申請預訂</div>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -28,8 +28,64 @@
     margin-bottom: 10px;
     border-radius: 15px;
   }
+  .btn:active{
+    background-color: #fff;
+    color:#ff385c;
+    border:1px solid #ededed;
+  }
 }
 </style>
 <script>
-export default {};
+import axios from "axios";
+export default {
+  data() {
+    const isDateEmpty = Object.keys(this.$store.state.date).length === 0;
+    return {
+      OrdersInput: {
+        houseId: this.$route.params.houseId,
+        startDate: isDateEmpty
+          ? null
+          : this.$store.state.date.start
+              .replace(/[年]/, "-")
+              .replace(/[月]/, "-")
+              .replace("日", ""),
+        endDate: isDateEmpty
+          ? null
+          : this.$store.state.date.end
+              .replace(/[年]/, "-")
+              .replace(/[月]/, "-")
+              .replace("日", ""),
+        adult: this.$store.state.adult,
+        child: this.$store.state.child,
+        baby: this.$store.state.toddler,
+      },
+    };
+  },
+
+  mounted() {
+    console.log(this.OrdersInput.startTime);
+    console.log(this.OrdersInput.endTime);
+  },
+  methods: {
+    createOrder() {
+      console.log(this.OrdersInput.json);
+
+      axios("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: this.OrdersInput,
+      })
+        .then(function (response) {
+          if (response.status === 200) {
+            console.log(response);
+          }
+        })
+        .catch(function (error) {
+          alert(error.toString());
+        });
+    },
+  },
+};
 </script>
