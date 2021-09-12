@@ -28,9 +28,9 @@ namespace Airelax.Controllers
         }
 
         [HttpPost]
-        public bool Create([FromBody] CreateCommentInput input)
+        public bool Create([FromBody] CreateOrUpdateCommentInput input)
         {
-            _commentService.CreateComment(input);
+            _commentService.CreateOrUpdateComment(input);
             return true;
         }
     }

@@ -1000,7 +1000,7 @@
       </div>
     </div>
     <div class="col-6 map" v-if="$store.state.fullWidth > 768">
-      <Map v-if="get" :location="location"></Map>
+      <Map v-if="get" :location="location" :houses="rooms"></Map>
     </div>
   </div>
 </template>

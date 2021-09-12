@@ -17,6 +17,7 @@ using Airelax.Domain.RepositoryInterface;
 using Airelax.Infrastructure.Map.Abstractions;
 using Airelax.Infrastructure.Map.Responses;
 using AutoMapper;
+using CloudinaryDotNet.Actions;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
@@ -32,7 +33,7 @@ namespace Airelax.Application.Houses
         private readonly IMapper _mapper;
         private readonly ICommentsRepository _commentsRepository;
         private readonly IMemberRepository _memberRepository;
-        public const int PAGE_COUNT = 30;
+        private const int PageCount = 30;
 
         public HouseAppService(
             IHouseRepository houseRepository,
@@ -78,7 +79,6 @@ namespace Airelax.Application.Houses
                 }
             };
 
-
             var specification = GetSpecification(input, geocodingInfo);
 
             var sNow = DateTime.Now;
@@ -109,7 +109,7 @@ namespace Airelax.Application.Houses
 
         private static List<House> GetHousesByPage(int page, IEnumerable<House> houses)
         {
-            return houses.Skip((page - 1) * PAGE_COUNT).Take(PAGE_COUNT).ToList();
+            return houses.Skip((page - 1) * PageCount).Take(PageCount).ToList();
         }
 
         private static List<House> GetReservableHouses(SearchInput input, List<House> houses)
@@ -232,8 +232,8 @@ namespace Airelax.Application.Houses
                     Category = x.HouseCategory,
                     Facilities = x.ProvideFacilities?.Intersect(Definition.SimpleFacilities),
                     CustomerNumber = x.CustomerNumber,
-                    Space = x.Spaces?.Where(s => s.SpaceType == SpaceType.Bath || s.SpaceType == SpaceType.Bedroom),
-                    Comment = simpleComment
+                    Space = x.Spaces?.Where(s => s.SpaceType is SpaceType.Bath or SpaceType.Bedroom),
+                    Comment = simpleComment,
                 };
                 return simpleHouse;
             });
@@ -246,14 +246,19 @@ namespace Airelax.Application.Houses
                 var simpleHouseDto = new SimpleHouseDto
                 {
                     Id = x.Id,
-                    Address = $"{x.Location.Town ?? string.Empty}",
+                    Address = $"{x.Location?.Town ?? string.Empty}",
                     Comment = ConvertToSimpleCommentDto(x.Comment),
                     Facility = ConvertToSimpleFacilityDto(x.Facilities),
                     HouseType = x.Category?.Category.ToString(),
                     Picture = x.Pictures?.Select(p => p.Image) ?? new List<string>(),
                     Price = ConvertToPriceDto(x.Price),
                     Space = ConvertToSimpleSpaceDto(x),
-                    Title = x.Title
+                    Title = x.Title,
+                    Coordinate = new CoordinateDto
+                    {
+                        Latitude = x.Location?.Latitude ?? 23,
+                        Longitude = x.Location?.Longitude ?? 121
+                    }
                 };
                 //SetWishWist(x, simpleHouseDto);
 

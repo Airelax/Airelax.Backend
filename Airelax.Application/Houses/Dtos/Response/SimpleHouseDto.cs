@@ -14,5 +14,6 @@ namespace Airelax.Application.Houses.Dtos.Response
         public SimpleFacilityDto Facility { get; set; }
         public PriceDto Price { get; set; }
         public SimpleCommentDto Comment { get; set; }
+        public CoordinateDto Coordinate { get; set; }
     }
 }

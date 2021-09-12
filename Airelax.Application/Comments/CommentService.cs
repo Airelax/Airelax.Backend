@@ -62,7 +62,7 @@ namespace Airelax.Application.Comments
             return commentViewModels;
         }
 
-        public void CreateComment(CreateCommentInput input)
+        public void CreateOrUpdateComment(CreateOrUpdateCommentInput input)
         {
             var order = _commentsRepository.GetOrder(input.OrderId);
             CheckOrder(order);
@@ -79,7 +79,6 @@ namespace Airelax.Application.Comments
                 CommentTime = DateTime.Now,
                 LastModifyTime = DateTime.Now
             };
-
             comment.Star = new Star(comment.Id, input.CleanScore, input.CommunicationScore, input.ExperienceScore, input.CheapScore, input.LocationScore, input.AccuracyScore);
 
             _commentsRepository.Add(comment);
@@ -87,7 +86,7 @@ namespace Airelax.Application.Comments
         }
 
 
-        private void CheckOrder(Order order)
+        private static void CheckOrder(Order order)
         {
             if (order == null)
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "doesnt match HouseId or OrderId ");
