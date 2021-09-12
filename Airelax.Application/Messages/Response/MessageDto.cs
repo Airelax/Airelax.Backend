@@ -14,6 +14,8 @@ namespace Airelax.Application.Messages.Response
         public string GusetId { get; set; }
         public string Name { get; set; }
         public string Portrait { get; set; }
+        public int MemberOneStatus { get; set; }
+        public int MemberTwoStatus { get; set; }
         public IEnumerable<string> Pictures { get; set; }
         public decimal Origin { get; set; }
         public PaymentDetail PaymentDetail { get; set; }

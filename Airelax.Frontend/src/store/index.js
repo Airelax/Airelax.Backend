@@ -17,7 +17,9 @@ export default createStore({
         newHouseRequest: {},
         message:{},
         signalCommunications: [],
-        connection: null
+        connection: null,
+        readed: false,
+        readedCount: 0
     },
     mutations: {
         setNewHouseNextAvailable(state, isAvailable) {

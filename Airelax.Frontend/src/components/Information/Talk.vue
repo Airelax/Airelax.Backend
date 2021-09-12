@@ -5,6 +5,7 @@
                 <div class="align-self-end">
                     <p style="font-size:.3rem; text-align:end;">{{splitDate(item.time,0,1)}}-{{splitDate(item.time,0,2)}}</p>
                     <p style="font-size:.3rem; text-align:end;">{{splitTime(item.time,1,0)}}:{{splitTime(item.time,1,1)}}</p>
+                    <p v-if="index < message.communications.length - message.memberTwoStatus" style="font-size:.3rem; text-align:end;">已讀</p>
                 </div>
                 <span>{{item.content}}</span>
                 <div>
@@ -16,6 +17,7 @@
                 <div class="align-self-end">
                     <p style="font-size:.3rem; text-align:end;">{{splitDate(item.time,0,1)}}-{{splitDate(item.time,0,2)}}</p>
                     <p style="font-size:.3rem; text-align:end;">{{splitTime(item.time,1,0)}}:{{splitTime(item.time,1,1)}}</p>
+                    <p v-if="index < message.communications.length - message.memberOneStatus" style="font-size:.3rem; text-align:end;">已讀</p>
                 </div>
                 <span>{{item.content}}</span>
                 <div>

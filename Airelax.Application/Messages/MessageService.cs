@@ -41,10 +41,12 @@ namespace Airelax.Application.Messages
                     Id = item.Id,
                     ConnectString = $"{item.MemberOneId}-{item.MemberTwoId}",
                     MemberId = memberId,
-                    GusetId = memberId == house.OwnerId ? (item.MemberOneId == memberId ? item.MemberTwoId : item.MemberOneId) : memberId,
+                    GusetId = memberId == house.OwnerId ? item.MemberTwoId : item.MemberOneId,
                     Name = member.First().MemberName,
                     Portrait = member.First().Cover,
                     Pictures = house.Photos?.Select(x => x.Image) ?? new List<string>(),
+                    MemberOneStatus = item.MemberOneStatus,
+                    MemberTwoStatus = item.MemberTwoStatus,
                     Landlord = new LandlordDto
                     {
                         Id = house.OwnerId,
@@ -85,6 +87,8 @@ namespace Airelax.Application.Messages
         public bool UpdateContent(string id, MessageInupt input)
         {
             var message = _messageRepository.UpdateMessage(input.senderId, input.receiverId);
+            //重要 signalR有時候會重複寫入資料
+            if(message.Contents.Last().SenderId == input.senderId && message.Contents.Last().ReceiverId == input.receiverId && message.Contents.Last().Time == input.time && message.Contents.Last().Content == input.content) return true;
             message.Contents.Add(new MessageContent()
             {
                 Content = input.content,
@@ -92,6 +96,25 @@ namespace Airelax.Application.Messages
                 ReceiverId = input .receiverId,
                 Time = input.time
             });
+            Update(message);
+            return true;
+        }
+
+        public bool UpdateStatus(string id, UpdateStatusInput input)
+        {
+            var message = _messageRepository.UpdateMessage(input.MemberId, input.OtherId);
+            if (message.MemberOneId == input.MemberId) message.MemberOneStatus = 0;
+            else message.MemberTwoStatus = 0;
+            Update(message);
+            return true;
+        }
+
+        public bool UpdateOnTime(string id, UpdateStatusInput input)
+        
+        {
+            var message = _messageRepository.UpdateMessage(input.MemberId, input.OtherId);
+            if (message.MemberOneId == input.MemberId) message.MemberTwoStatus += 1;
+            else message.MemberOneStatus += 1;
             Update(message);
             return true;
         }
@@ -108,7 +131,9 @@ namespace Airelax.Application.Messages
                     EndDate = input.EndDate,
                     StartDate = input.StartDate,
                     HouseId = input.HouseId,
-                    Contents = input.Contents
+                    Contents = input.Contents,
+                    MemberOneStatus = input.MemberOneStatus,
+                    MemberTwoStatus = input.MemberTwoStatus
                 };
                 _messageRepository.CreateMessage().Add(createItem);
                 _messageRepository.Create(createItem);
@@ -124,6 +149,7 @@ namespace Airelax.Application.Messages
                     time = input.Contents.FirstOrDefault().Time
                 };
                 var mes = _messageRepository.UpdateMessage(updateItem.senderId, updateItem.receiverId);
+                mes.MemberOneStatus += input.MemberOneStatus;
                 mes.Contents.Add(new MessageContent()
                 {
                     Content = updateItem.content,

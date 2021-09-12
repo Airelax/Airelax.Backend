@@ -41,5 +41,21 @@ namespace Airelax.Controllers
             var message = _messageService.CreateContent(memberId, messageInupt);
             return Ok(message);
         }
+
+        [HttpPut]
+        [Route("{memberId}/status")]
+        public IActionResult UpdateStatus(string memberId, UpdateStatusInput statusInupt)
+        {
+            var message = _messageService.UpdateStatus(memberId, statusInupt);
+            return Ok(message);
+        }
+
+        [HttpPut]
+        [Route("{memberId}/ontime")]
+        public IActionResult UpdateOnTime(string memberId, UpdateStatusInput statusInupt)
+        {
+            var message = _messageService.UpdateOnTime(memberId, statusInupt);
+            return Ok(message);
+        }
     }
 }

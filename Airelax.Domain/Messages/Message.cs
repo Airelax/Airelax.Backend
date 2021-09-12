@@ -20,5 +20,7 @@ namespace Airelax.Domain.Messages
         public House House { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public int MemberOneStatus { get; set; }
+        public int MemberTwoStatus { get; set; }
     }
 }

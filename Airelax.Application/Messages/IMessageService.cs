@@ -11,6 +11,8 @@ namespace Airelax.Application.Messages
         Task<List<MessageDto>> GetMessage(string memberId);
         bool UpdateContent(string id, MessageInupt input);
         bool CreateContent(string id, CreateMessageInput input);
+        bool UpdateStatus(string id, UpdateStatusInput input);
+        bool UpdateOnTime(string id, UpdateStatusInput input);
         void Update(Message message);
     }
 }

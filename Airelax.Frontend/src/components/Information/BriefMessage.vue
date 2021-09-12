@@ -14,7 +14,8 @@
                     </div>
                     <div class="col-2 info d-flex flex-column align-items-center">
                         <div class="lastestDate">{{getMessage(item).time.split('T')[0].split('-')[1]}}/{{getMessage(item).time.split('T')[0].split('-')[2]}}</div>
-                        <div class="uncheck">{{item.communications.length}}</div>
+                        <div class="uncheck" v-if="item.memberId == item.landlord.id && item.memberOneStatus != 0">{{item.memberOneStatus}}</div>
+                        <div class="uncheck" v-else-if="item.memberId != item.landlord.id && item.memberTwoStatus != 0">{{item.memberTwoStatus}}</div>
                     </div>
                 </div>
             </a>
@@ -31,7 +32,8 @@
                     </div>
                     <div class="col-2 info d-flex flex-column align-items-center">
                         <div class="lastestDate">{{getMessage(item).time.split('T')[0].split('-')[1]}}/{{getMessage(item).time.split('T')[0].split('-')[2]}}</div>
-                        <div class="uncheck">{{item.communications.length}}</div>
+                        <div class="uncheck" v-if="item.memberId == item.landlord.id && item.memberOneStatus != 0">{{item.memberOneStatus}}</div>
+                        <div class="uncheck" v-else-if="item.memberId != item.landlord.id && item.memberTwoStatus != 0">{{item.memberTwoStatus}}</div>
                     </div>
                 </div>
             </a>
@@ -46,7 +48,7 @@
                 </button>
                 <div class="title">
                     <h2 id="offcanvasRightLabel" v-if="Object.keys(mes).length != 0">[{{getReceiver(mes).nickname}}] {{getReceiver(mes).name}}</h2>
-                    <div>回覆時間：1 小時</div>
+                    <div>回覆時間：1 小時</div>{{count}}
                 </div>
             </div>
             <a href="#" class="row mix d-flex w-100  p-3 align-items-center" @click.prevent="goRoom">
@@ -89,19 +91,19 @@ export default {
             mes:{},
             receiver: "",
             msg: "",
-            // count: 0
+            count: 0
         }
     },
-    // watch:{
-    //     count(val){
-    //         if(val==1){
-    //             console.log("只有一個人")
-    //         }
-    //         else if(val==2){
-    //             console.log("大家都在了")
-    //         }
-    //     }
-    // },
+    watch:{
+        count(val){
+            if(val==1){
+                console.log("只有一個人")
+            }
+            else if(val==2){
+                console.log("大家都在了")
+            }
+        }
+    },
     computed:{
         width(){
             return this.$store.state.fullWidth;
@@ -110,16 +112,78 @@ export default {
     mounted(){
         var vm = this;
         this.$store.state.connection = connection;
+        this.$store.state.readedCount = 0;
+        this.$store.state.readed = false;
         connection.on("ReceiveMessage",function(user,message){
             let com = {
-                senderId: (user==vm.mes.landlord.name?vm.mes.landlord.id:vm.mes.gusetId ),
-                receiverId: (user!=vm.mes.landlord.name?vm.mes.landlord.id:vm.mes.gusetId ),
+                senderId: user==vm.mes.landlord.name?vm.mes.landlord.id:(vm.mes.gusetId == vm.mes.landlord.id?vm.mes.memberId:vm.mes.gusetId),
+                receiverId: user!=vm.mes.landlord.name?vm.mes.landlord.id:(vm.mes.gusetId == vm.mes.landlord.id?vm.mes.memberId:vm.mes.gusetId),
                 content: message,
                 time: moment(new Date()).format('YYYY-MM-DD[T]HH:mm:ss')
             }
+            
+            let ontime = {
+                MemberId: vm.mes.memberId,
+                OtherId: vm.mes.gusetId
+            }
+            console.log("ABC")
             vm.$store.state.signalCommunications.push(com);
-            // connection.invoke("getCount").then(x=>vm.count = x);
-            vm.useAxios(com)
+
+            // axios.put(`/api/messages/${vm.$route.params.memberId}/content`, com,{
+            // headers: {
+            //     "Access-Control-Allow-Origin": "*",
+            // }}).then(function (res) {
+            //         console.log(res.data)
+            //         axios.put(`/api/messages/${vm.$route.params.memberId}/ontime`, ontime,{
+            //             headers: {
+            //                 "Access-Control-Allow-Origin": "*",
+            //             }}).then(function (res) {
+            //                     console.log(res.data)
+            //                     connection.invoke("getCount", vm.mes.connectString).then(x=>{
+            //                         vm.count = x
+            //                         if(vm.count==2){
+            //                             vm.mes.memberTwoStatus = 0;
+            //                             vm.$store.state.readed = true;
+            //                         }
+            //                         else {
+            //                             vm.$store.state.readed = false;
+            //                         }
+            //                     })
+            //         })
+            // })
+
+            axios.put(`/api/messages/${vm.$route.params.memberId}/content`, com,{
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+            }}).then(function (res) {
+                    console.log(res.data)
+                    connection.invoke("getCount", vm.mes.connectString).then(x=>{
+                        vm.count = x
+                        if(vm.count==2){
+                            axios.put(`/api/messages/${vm.$route.params.memberId}/status`, ontime,{
+                            headers: {
+                                "Access-Control-Allow-Origin": "*",
+                            }}).then(function (res) {
+                                    console.log(res.data)
+                            })
+                            vm.mes.memberTwoStatus = 0;
+                            vm.$store.state.readedCount += 1;
+                            vm.$store.state.readed = true;
+                        }
+                        else {
+                            axios.put(`/api/messages/${vm.$route.params.memberId}/ontime`, ontime,{
+                            headers: {
+                                "Access-Control-Allow-Origin": "*",
+                            }}).then(function (res) {
+                                    console.log(res.data)
+                            })
+                            vm.$store.state.readed = false;
+                        }
+                    })
+            })
+
+
+
             vm.scrollToBottom();
         })
     },
@@ -135,55 +199,87 @@ export default {
                     console.log(res.data)
                 }).catch(err=>{console.log(err)})
         },
+        updateStatus(com){
+            axios.put(`/api/messages/${this.$route.params.memberId}/status`, com,{
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+            }}).then(function (res) {
+                    console.log(res.data)
+            }).catch(err=>{console.log(err)})
+        },
+        updateOntime(ontime){
+            axios.put(`/api/messages/${this.$route.params.memberId}/ontime`, ontime,{
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+            }}).then(function (res) {
+                    console.log(res.data)
+            }).catch(err=>{console.log(err)})
+        },
         sengMsg(){
             connection.invoke("SendMessageToGroup",this.mes.connectString, this.mes.memberId == this.mes.landlord.id? this.mes.landlord.name:this.mes.name, this.msg ).catch(function (err) {
                 return console.error(err.toString());
             });
+            connection.invoke("getCount",this.mes.connectString).then(x=>this.count = x);
             this.msg="";
         },
         removeJoin(){
-            // var vm = this;
+            var vm = this;
             connection.invoke("RemoveGroup", this.mes.connectString).catch(function (err) {
                 return console.error(err.toString());
             });
-            // this.$nextTick(()=>{
-            //     connection.invoke("getCount").then(x=>vm.count = x)
-            // });
+            this.$nextTick(()=>{
+                connection.invoke("getCount", this.mes.connectString).then(x=>vm.count = x)
+            });
             connection.off("ReceiveMessage");
             this.reload();
         },
         sendData(item){
             var vm = this;
+
             if(this.width>768 && Object.keys(this.$store.state.message).length != 0) {
                 connection.invoke("RemoveGroup", this.$store.state.message.connectString).catch(function (err) {
                     return console.error(err.toString());
                 });
                 connection.off("ReceiveMessage");
+
+                // connection.on("ReceiveMessage",function(user,message){
+                //     let com = {
+                //         senderId: (user==vm.mes.landlord.name?vm.mes.landlord.id:vm.mes.gusetId ),
+                //         receiverId: (user!=vm.mes.landlord.name?vm.mes.landlord.id:vm.mes.gusetId ),
+                //         content: message,
+                //         time: moment(new Date()).format('YYYY-MM-DD[T]HH:mm:ss')
+                //     }
+                //     vm.$store.state.signalCommunications.push(com);
+                //     vm.useAxios(com)
+                //     vm.scrollToBottom();
+                // })
             }
-            if(this.width>768 && Object.keys(this.$store.state.message).length != 0) {       
-                connection.on("ReceiveMessage",function(user,message){
-                    let com = {
-                        senderId: (user==vm.mes.landlord.name?vm.mes.landlord.id:vm.mes.gusetId ),
-                        receiverId: (user!=vm.mes.landlord.name?vm.mes.landlord.id:vm.mes.gusetId ),
-                        content: message,
-                        time: moment(new Date()).format('YYYY-MM-DD[T]HH:mm:ss')
-                    }
-                    vm.$store.state.signalCommunications.push(com);
-                    vm.useAxios(com)
-                    vm.scrollToBottom();
-                })
-            }
+
             this.mes = item;
             this.$store.state.message = item;
+
             // joinGroup
             this.$nextTick(()=>{
                 connection.invoke("AddGroup", item.connectString).catch(function (err) {
                     return console.error(err.toString());
                 });
             })
-            // this.$nextTick(()=>{
-            //     connection.invoke("getCount").then(x=>vm.count = x)
-            // });
+            this.$nextTick(()=>{
+                connection.invoke("getCount", item.connectString).then(x=>vm.count = x)
+            });
+
+            //已讀
+            let com = {
+                MemberId: item.memberId,
+                OtherId: item.gusetId
+            }
+            if(item.memberId == item.landlord.id){
+                if(item.memberOneStatus != 0) this.updateStatus(com);
+            }
+            else{
+                if(item.memberTwoStatus != 0) this.updateStatus(com);
+            }
+
             if(this.width>768) this.reload();
         },
         getReceiver(item){

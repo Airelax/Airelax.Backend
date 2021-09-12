@@ -16,5 +16,7 @@ namespace Airelax.Application.Messages.Request
         public string HouseId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public int MemberOneStatus { get; set; }
+        public int MemberTwoStatus { get; set; }
     }
 }

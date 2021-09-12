@@ -433,7 +433,9 @@ export default {
           }],
           HouseId: this.data.id,
           StartDate: this.getDate(this.$store.state.date.start),
-          EndDate: this.getDate(this.$store.state.date.end)
+          EndDate: this.getDate(this.$store.state.date.end),
+          MemberOneStatus: 1,
+          MemberTwoStatus: 0
         }
         this.useAxios(mes);
     },

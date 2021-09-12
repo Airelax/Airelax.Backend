@@ -31,7 +31,9 @@ namespace Airelax.EntityFramework.Repositories
                                Id = m.Id,
                                EndDate = m.EndDate,
                                StartDate = m.StartDate,
-                               HouseId = m.HouseId
+                               HouseId = m.HouseId,
+                               MemberOneStatus = m.MemberOneStatus,
+                               MemberTwoStatus = m.MemberTwoStatus
                            };
 
             var message = messages?.ToList();
@@ -50,7 +52,9 @@ namespace Airelax.EntityFramework.Repositories
                                Id = m.Id,
                                EndDate = m.EndDate,
                                StartDate = m.StartDate,
-                               HouseId = m.HouseId
+                               HouseId = m.HouseId,
+                               MemberOneStatus = m.MemberOneStatus,
+                               MemberTwoStatus = m.MemberTwoStatus
                            };
 
             return message?.ToList().FirstOrDefault();
@@ -67,7 +71,9 @@ namespace Airelax.EntityFramework.Repositories
                               Id = m.Id,
                               EndDate = m.EndDate,
                               StartDate = m.StartDate,
-                              HouseId = m.HouseId
+                              HouseId = m.HouseId,
+                              MemberOneStatus = m.MemberOneStatus,
+                              MemberTwoStatus = m.MemberTwoStatus
                           };
 
             return message?.ToList();
