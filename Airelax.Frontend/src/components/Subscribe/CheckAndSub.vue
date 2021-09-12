@@ -28,6 +28,11 @@
     margin-bottom: 10px;
     border-radius: 15px;
   }
+  .btn:active{
+    background-color: #fff;
+    color:#ff385c;
+    border:1px solid #ededed;
+  }
 }
 </style>
 <script>
