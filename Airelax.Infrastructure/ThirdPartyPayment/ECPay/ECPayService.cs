@@ -20,7 +20,7 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
         Task<TokenResponseData> GetToken();
         Task<TransactResponseData> CreateTransaction(string token);
     }
-    
+
     public class ECPayService : IECPayService
     {
         private readonly HttpClient _client;
@@ -33,41 +33,52 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
             _client = client;
         }
 
+        /// <summary>
+        /// 取得畫面token
+        /// </summary>
+        /// <returns></returns>
         public async Task<TokenResponseData> GetToken()
         {
-            var tokenRequest = new Request.ECRequest
+            //初始化綠界要的參數(Data)
+            var data = new TokenRequestData()
+            {
+                MerchantId = _options.Value.MerchantId,
+                RememberCard = RememberCard.No,
+                PaymentUIType = PaymentUIType.PaymentMethodList,
+                ChoosePaymentList = string.Join(',', new[] {(int) ChoosePayment.CreditCardPayAllAtOnce}),
+                OrderInfo = new OrderInfo()
+                {
+                    MerchantTradeDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
+                    MerchantTradeNo = "Airelax00",
+                    TotalAmount = 1000,
+                    ReturnUrl = "https://localhost:5001/api/system/suc",
+                    TradeDesc = "測試用交易",
+                    ItemName = "商品1#商品2#商品3",
+                },
+                ConsumerInfo = new ConsumerInfo()
+                {
+                    Phone = "886912345678",
+                    Name = "金城武",
+                    CountryCode = "158",
+                    Email = "fuck123@gmail.com",
+                    MerchantMemberId = "M123456"
+                },
+                CardInfo = new CardInfo() {OrderResultUrl = "https://localhost:5001/Swagger/index.html"}
+            };
+            //初始化綠界要的參數(Token)
+            var tokenRequest = new ECRequest
             {
                 //todo 
                 MerchantId = _options.Value.MerchantId,
                 RqHeader = new ECRequestHeader() {TimeStamp = DateTimeOffset.Now.ToUnixTimeSeconds(), Revision = _options.Value.Revision},
-                Data = CryptographyHelper.AesEncrypt(JsonConvert.SerializeObject(new TokenRequestData()
-                {
-                    MerchantId = _options.Value.MerchantId,
-                    RememberCard = RememberCard.No,
-                    PaymentUIType = PaymentUIType.PaymentMethodList,
-                    ChoosePaymentList = string.Join(',', new[] {(int) ChoosePayment.CreditCardPayAllAtOnce}),
-                    OrderInfo = new OrderInfo()
-                    {
-                        MerchantTradeDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
-                        MerchantTradeNo = "Airelax123",
-                        TotalAmount = 1000,
-                        ReturnUrl = "https://localhost:5001/api/system/suc",
-                        TradeDesc = "測試用交易",
-                        ItemName = "商品1#商品2#商品3",
-                    },
-                    ConsumerInfo = new ConsumerInfo()
-                    {
-                        Phone = "886912345678",
-                        Name = "金城武",
-                        CountryCode = "158",
-                        Email = "fuck123@gmail.com",
-                        MerchantMemberId = "M123456"
-                    },
-                    CardInfo = new CardInfo() {OrderResultUrl = "https://localhost:5001/Swagger/index.html"}
-                }), _options.Value.AesKey, _options.Value.AesIV, true),
+                // 加密(先序列化成json字串再加密)
+                Data = CryptographyHelper.AesEncrypt(JsonConvert.SerializeObject(data), _options.Value.AesKey, _options.Value.AesIV, true),
             };
-            var responseMessage = await  _client.PostAsJsonAsync(_options.Value.Apis.GetTokenByTrade.Url,tokenRequest);
+            // 發送POST請求到綠界，取得回傳的response
+            var responseMessage = await _client.PostAsJsonAsync(_options.Value.Apis.GetTokenByTrade.Url, tokenRequest);
+            //將回應json轉成回應物件
             var tokenResponse = await responseMessage.Content.ReadFromJsonAsync<TokenResponse>();
+            // 解密回應物件的data
             var tokenResponseData = JsonConvert.DeserializeObject<TokenResponseData>(CryptographyHelper.AesDecrypt(tokenResponse.Data, _options.Value.AesKey, _options.Value.AesIV, true));
             return tokenResponseData;
         }
@@ -76,25 +87,25 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
         {
             var request = new ECRequest()
             {
-                MerchantId = _options.Value.MerchantId, 
+                MerchantId = _options.Value.MerchantId,
                 RqHeader = new ECRequestHeader()
                 {
-                    TimeStamp = DateTimeOffset.Now.ToUnixTimeSeconds(), 
+                    TimeStamp = DateTimeOffset.Now.ToUnixTimeSeconds(),
                     Revision = _options.Value.Revision
                 },
             };
 
             var transactRequestData = new TransactRequestData()
             {
-                MerchantId = _options.Value.MerchantId, 
-                MerchantTradeNo = "Airelax123",
+                MerchantId = _options.Value.MerchantId,
+                MerchantTradeNo = "Airelax001",
                 PayToken = token,
             };
 
             request.Data = CryptographyHelper.AesEncrypt(JsonConvert.SerializeObject(transactRequestData), _options.Value.AesKey, _options.Value.AesIV, true);
             var responseMessage = await _client.PostAsJsonAsync(_options.Value.Apis.Transaction.Url, request);
             var response = await responseMessage.Content.ReadFromJsonAsync<TokenResponse>();
-            var data =  JsonConvert.DeserializeObject<TransactResponseData>(CryptographyHelper.AesDecrypt(response.Data, _options.Value.AesKey, _options.Value.AesIV, true));
+            var data = JsonConvert.DeserializeObject<TransactResponseData>(CryptographyHelper.AesDecrypt(response.Data, _options.Value.AesKey, _options.Value.AesIV, true));
             return data;
         }
     }
