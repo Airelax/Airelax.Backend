@@ -223,7 +223,7 @@
               class="contact"
               data-bs-toggle="modal"
               data-bs-target="#myModal"
-              @click="isConnectShow = true"
+              @click.prevent="connectLandlord"
               >聯絡房東</a
             >
             <div class="security">
@@ -416,17 +416,50 @@ export default {
       isDatePickerShow: false,
       isCommentShow: false,
       fullWidth: 0,
-      setting: settingJson
+      setting: settingJson,
+      memberId: ""
     };
   },
   methods: {
+    connectLandlord(){
+      const token = this.getCookie('yee_mother_fucker');
+      if(!token) 
+          window.location.href = '/account/login';
+      const memberInfo = this.parseJwt(token);
+      this.memberId = memberInfo['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+      this.isConnectShow = true;
+    },
+    parseJwt(token){
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+
+      return JSON.parse(jsonPayload);
+    },
+    getCookie(cname){
+      let name = cname + "=";
+      let decodedCookie = decodeURIComponent(document.cookie);
+      let ca = decodedCookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+          let c = ca[i];
+          while (c.charAt(0) === ' ') {
+              c = c.substring(1);
+          }
+          if (c.indexOf(name) === 0) {
+              return c.substring(name.length, c.length);
+          }
+      }
+      return "";
+    },
     createMessage(){
         let messageContent = document.getElementById('messageContent').value;
         let mes = {
           MemberOneId: this.data.owner.id,
-          MemberTwoId: this.data.memberId,
+          MemberTwoId: this.memberId,
           Contents:[{
-            SenderId: this.data.memberId,
+            SenderId: this.memberId,
             ReceiverId: this.data.owner.id,
             Content: messageContent,
             Time: '2021-09-11T00:00:00'
@@ -440,7 +473,7 @@ export default {
         this.useAxios(mes);
     },
     useAxios(mes){
-      axios.post(`/api/messages/${this.data.memberId}/create`, mes,{
+      axios.post(`/api/messages/${this.memberId}/create`, mes,{
         headers: {
             "Access-Control-Allow-Origin": "*",
         }}).then(function (res) {

@@ -6,7 +6,6 @@ namespace Airelax.Application.Houses.Dtos.Response
     {
         public string Id { get; set; }
         public string Title { get; set; }
-        public string MemberId { get; set; }
         public IEnumerable<string> Pictures { get; set; }
         public int CancelPolicy { get; set; }
         public WishListDto WishList { get; set; }
