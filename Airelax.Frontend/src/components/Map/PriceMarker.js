@@ -16,7 +16,7 @@
             if (this.html) {
                 this.div.innerHTML = this.html;
             }
-            window.google.maps.event.addDomListener(this.div, 'click', event => {
+            window.google.maps.event.addDomListener(this.div, 'click', () => {
                 window.google.maps.event.trigger(this, 'click');
             });
 
