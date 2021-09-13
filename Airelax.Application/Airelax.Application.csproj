@@ -6,7 +6,6 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="10.1.1" />
-        <PackageReference Include="BCrypt.Net" Version="0.1.0" />
         <PackageReference Include="Lazcat.Infrastructure" Version="1.0.9" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" />
         <PackageReference Include="SpanJson" Version="3.1.0" />

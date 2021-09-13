@@ -4,6 +4,7 @@ using Airelax.Application.Houses;
 using Airelax.Defines;
 using Airelax.EntityFramework.DbContexts;
 using Airelax.Infrastructure.Map;
+using Airelax.Infrastructure.ThirdPartyPayment.ECPay;
 using Airelax.Middlewares;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
@@ -65,6 +66,7 @@ namespace Airelax
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Airelax", Version = "v1"}); });
             services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddGoogleGeoService(Configuration);
+            services.AddECPayService(Configuration);
             services.Configure<PhotoUploadSetting>(Configuration.GetSection(nameof(PhotoUploadSetting)));
 
             // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Airelax.Application.Helpers
+namespace Airelax.Infrastructure.Helpers
 {
     public static class DateTimeHelper
     {

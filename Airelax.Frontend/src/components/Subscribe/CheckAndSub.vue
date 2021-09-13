@@ -19,6 +19,7 @@
     line-height: 1.5;
     font-weight: 400;
   }
+
   .btn {
     font-weight: 500;
     color: #fff;
@@ -28,15 +29,17 @@
     margin-bottom: 10px;
     border-radius: 15px;
   }
-  .btn:active{
+
+  .btn:active {
     background-color: #fff;
-    color:#ff385c;
-    border:1px solid #ededed;
+    color: #ff385c;
+    border: 1px solid #ededed;
   }
 }
 </style>
 <script>
 import axios from "axios";
+
 export default {
   data() {
     const isDateEmpty = Object.keys(this.$store.state.date).length === 0;
@@ -44,17 +47,17 @@ export default {
       OrdersInput: {
         houseId: this.$route.params.houseId,
         startDate: isDateEmpty
-          ? null
-          : this.$store.state.date.start
-              .replace(/[年]/, "-")
-              .replace(/[月]/, "-")
-              .replace("日", ""),
+            ? null
+            : this.$store.state.date.start
+                .replace(/[年]/, "-")
+                .replace(/[月]/, "-")
+                .replace("日", ""),
         endDate: isDateEmpty
-          ? null
-          : this.$store.state.date.end
-              .replace(/[年]/, "-")
-              .replace(/[月]/, "-")
-              .replace("日", ""),
+            ? null
+            : this.$store.state.date.end
+                .replace(/[年]/, "-")
+                .replace(/[月]/, "-")
+                .replace("日", ""),
         adult: this.$store.state.adult,
         child: this.$store.state.child,
         baby: this.$store.state.toddler,
@@ -70,21 +73,49 @@ export default {
     createOrder() {
       console.log(this.OrdersInput.json);
 
-      axios("/api/orders", {
+      const params = new URLSearchParams();
+      params.append('MerchantID', '2000132');
+      params.append('MerchantTradeNo', 'air12342431010');
+      params.append('MerchantTradeDate', '2021/09/13 14:11:30');
+      params.append('PaymentType', 'aio');
+      params.append('TotalAmount', '1000');
+      params.append('TradeDesc', 'test');
+      params.append('ItemName', 'test商品10元*1#秘密100元*2');
+      params.append('ChoosePayment', 'All');
+      params.append('ReturnURL', 'http://127.0.0.1:8080');
+      params.append('EncryptType', '1');
+
+
+      axios("https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Access-Control-Allow-Origin": "*"
         },
-        data: this.OrdersInput,
-      })
-        .then(function (response) {
-          if (response.status === 200) {
-            console.log(response);
-          }
-        })
-        .catch(function (error) {
-          alert(error.toString());
-        });
+        params: params
+      }).then(res => {
+        console.log(res);
+
+      }).catch(err => console.log(err));
+
+
+      // axios("/api/orders", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   data: this.OrdersInput,
+      // })
+      //   .then(function (response) {
+      //     if (response.status === 200) {
+      //       console.log(response);
+      //     }
+      //   })
+      //   .catch(function (error) {
+      //     alert(error.toString());
+      //   });
+
+
     },
   },
 };

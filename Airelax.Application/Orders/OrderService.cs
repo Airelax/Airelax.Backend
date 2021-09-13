@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using Airelax.Application.Account;
-using Airelax.Application.Helpers;
 using Airelax.Application.Orders.Request;
 using Airelax.Domain.Orders;
 using Airelax.Domain.RepositoryInterface;
+using Airelax.Infrastructure.Helpers;
 using Lazcat.Infrastructure.DependencyInjection;
 
 namespace Airelax.Application.Orders
