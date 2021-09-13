@@ -27,7 +27,7 @@ export default createStore({
     actions: {},
   getters: {
     TotalCustomer(state){
-      return state.adult + state.child + state.toddler
+      return state.adult + state.child
     }
   }
 })

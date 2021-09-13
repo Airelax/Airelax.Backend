@@ -1,6 +1,6 @@
 ﻿namespace Airelax.Application.Comments.Dtos.Request
 {
-    public class CreateCommentInput
+    public class CreateOrUpdateCommentInput
     {
         public string OrderId { get; set; }
         public string Content { get; set; }

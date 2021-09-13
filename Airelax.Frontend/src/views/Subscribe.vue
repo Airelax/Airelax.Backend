@@ -58,7 +58,7 @@ export default {
       .get(`/api/houses/${this.$route.params.houseId}`, {
         headers: {
           "Access-Control-Allow-Origin": "*",
-        },
+        }
       })
       .then((res) => {
         // this.room = res.data;

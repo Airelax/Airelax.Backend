@@ -971,7 +971,7 @@
       </div>
     </div>
     <div class="col-6 map" v-if="$store.state.fullWidth > 768">
-      <Map v-if="get" :location="location"></Map>
+      <Map v-if="get" :location="location" :houses="rooms"></Map>
     </div>
   </div>
 </template>
@@ -985,24 +985,27 @@ import settingJson from "../components/Settings/setting";
 
 export default {
   created() {
+    const query = this.$route.query;
+    let searchApi = `/api/houses/search?location=${this.$route.query.location}`;
+    if (query.checkin && query.checkout) searchApi += `&checkin=${query.checkin}&checkout=${query.checkout}`;
+    searchApi += `&customerNumber=${query.customerNumber ? query.customerNumber : 1}`;
+
     //todo
-    axios
-      .get(`/api/houses/search?location=${this.$route.query.location}`, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      })
-      .then((res) => {
-        const data = res.data;
-        this.rooms = data.houses;
-        this.pa;
-        this.getPicture();
-        //Todo-Vuex-初始
-        this.$store.state.room = {};
-        console.log(res.data.houses);
-        this.location = data.locationInfo;
-        this.get = true;
-      });
+    axios.get(searchApi, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+        .then((res) => {
+          const data = res.data;
+          this.rooms = data.houses;
+          this.getPicture();
+          //Todo-Vuex-初始
+          this.$store.state.room = {};
+          console.log(res.data.houses)
+          this.location = data.locationInfo;
+          this.get = true;
+        });
   },
   mounted() {
     window.scrollTo(0, 0);

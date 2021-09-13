@@ -5,13 +5,13 @@
         <div class="price-container">
           <span>NT$</span>
           <input
-            type="number"
-            name="price"
-            id=""
-            min="0"
-            max="50000"
-            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-            @keyup="validPrice"
+              type="number"
+              name="price"
+              id=""
+              min="0"
+              max="50000"
+              onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+              @keyup="validPrice"
           />
         </div>
         <span class="per-day">每晚</span>
@@ -47,6 +47,7 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
 span {
   font-size: 36px;
   display: block;
@@ -73,6 +74,7 @@ p {
   text-align: left;
   color: #aaa;
 }
+
 @media screen and (min-width: 768px) {
   .contain {
     .price-container {
@@ -103,6 +105,9 @@ export default {
       const input = e.target.value;
       if (input > 50000) e.target.value = 50000;
       else if (input < 0) e.target.value = 0;
+
+      if(input>0)
+        this.$emit('setPrice', input);
     },
   },
 };
