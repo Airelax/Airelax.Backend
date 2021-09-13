@@ -4,14 +4,16 @@ using Airelax.EntityFramework.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Airelax.EntityFramework.Migrations
 {
     [DbContext(typeof(AirelaxContext))]
-    partial class AirelaxContextModelSnapshot : ModelSnapshot
+    [Migration("20210908120408_meesage-add-houseId-col")]
+    partial class meesageaddhouseIdcol
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -582,9 +584,6 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<string>("Contents")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("HouseId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -593,22 +592,14 @@ namespace Airelax.EntityFramework.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MemberOneStatus")
-                        .HasColumnType("int");
-
                     b.Property<string>("MemberTwoId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MemberTwoStatus")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("HouseId");
+                    b.HasIndex("HouseId")
+                        .IsUnique();
 
                     b.ToTable("Messages");
                 });
@@ -874,8 +865,8 @@ namespace Airelax.EntityFramework.Migrations
             modelBuilder.Entity("Airelax.Domain.Messages.Message", b =>
                 {
                     b.HasOne("Airelax.Domain.Houses.House", "House")
-                        .WithMany()
-                        .HasForeignKey("HouseId")
+                        .WithOne()
+                        .HasForeignKey("Airelax.Domain.Messages.Message", "HouseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

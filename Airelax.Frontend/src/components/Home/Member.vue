@@ -4,10 +4,9 @@
     <i class="fas fa-user-circle"></i>
     <ul class="list-group">
       <li class="list-group-item border-0 rounded-top">
-        <!-- todo router to comment-->
-        <a href="#">
+        <router-link to="/message/Meb4395a55f">
           <strong>訊息</strong>
-        </a>
+        </router-link>
       </li>
       <li class="list-group-item border-0">
         <a href="#">
@@ -25,12 +24,17 @@
         </a>
       </li>
       <li class="list-group-item border-0">
-        <a href="/manageHouse/all">
+        <a href="#">
           <strong>管理房源</strong>
         </a>
       </li>
+      <li class="list-group-item border-0">
+        <a href="#">
+          <strong>舉辦體驗</strong>
+        </a>
+      </li>
       <li class="list-group-item border-0 border-bottom">
-        <a href="/member">
+        <a href="#">
           <strong>帳號</strong>
         </a>
       </li>
@@ -40,7 +44,7 @@
         </a>
       </li>
       <li class="list-group-item border-0 rounded-end">
-        <a href="/account/logout">
+        <a href="#">
           <strong>登出</strong>
         </a>
       </li>

@@ -89,6 +89,7 @@ namespace Airelax.EntityFramework.DbContexts
                     builder.Property(x => x.NotProvideFacilities).HasJsonConversion();
 
                     builder.HasOne(x => x.Member).WithMany(x => x.Houses).HasForeignKey(x => x.OwnerId);
+
                 });
         }
 
@@ -390,7 +391,10 @@ namespace Airelax.EntityFramework.DbContexts
                 builder.SetEntityKey<Message, string>();
                 builder.Property(x => x.MemberOneId).IsRequired();
                 builder.Property(x => x.MemberTwoId).IsRequired();
+                builder.Property(x => x.HouseId).IsRequired();
                 builder.Property(x => x.Contents).HasJsonConversion();
+
+                builder.HasOne(x => x.House).WithMany().HasForeignKey(x => x.HouseId);
             });
         }
 

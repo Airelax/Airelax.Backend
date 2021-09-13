@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Airelax.Application.Account;
 using Airelax.Application.Helpers;
 using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Application.Houses.Dtos.Response;
@@ -131,6 +132,7 @@ namespace Airelax.Application.Houses
             var member = await _memberRepository.GetAsync(x => x.Id == house.OwnerId);
             if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "House exist but member has been deleted");
             var houseComments = (await _commentsRepository.GetAll().Where(x => x.HouseId == house.Id)?.ToListAsync()).GroupBy(x => x.HouseId).FirstOrDefault()?.ToList();
+
 
             var houseDto = new HouseDto
             {

@@ -1,23 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using Airelax.Domain.DomainObject;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Airelax.Domain.Houses;
-using Lazcat.Infrastructure.Common;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Airelax.Domain.Messages;
 
-namespace Airelax.Domain.Messages
+namespace Airelax.Application.Messages.Request
 {
-    public class Message : AggregateRoot<string>
+    public class CreateMessageInput
     {
-        public Message()
-        {
-            Id = GuidHelper.CreateId(prefix:"MSG");
-        }
         public string MemberOneId { get; set; }
         public string MemberTwoId { get; set; }
         public List<MessageContent> Contents { get; set; }
         public string HouseId { get; set; }
-        public House House { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int MemberOneStatus { get; set; }

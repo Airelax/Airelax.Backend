@@ -158,6 +158,7 @@ export default {
       },
     };
   },
+  inject: ["reload"],
   methods: {
     HideBody() {
       if (this.$store.state.fullWidth < 768)
@@ -190,6 +191,19 @@ export default {
     },
     search() {
       const isDateEmpty = Object.keys(this.$store.state.date).length === 0;
+      if (this.$route.meta.searchPage) {
+        this.$router.replace({
+          query: {
+            location: this.$store.state.destination,
+            customerNumber: this.$store.getters.TotalCustomer,
+            checkin: isDateEmpty ? null : this.$store.state.date.start.replace(/[年]/, '-').replace(/[月]/, '-').replace('日', ''),
+            checkout: isDateEmpty ? null : this.$store.state.date.end.replace(/[年]/, '-').replace(/[月]/, '-').replace('日', ''),
+          }
+        })
+        this.reload();
+        return;
+      }
+
       this.$router.push({
         path: "search",
         query: {

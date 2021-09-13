@@ -1,4 +1,4 @@
-import { createStore } from 'vuex'
+import {createStore} from 'vuex'
 
 export default createStore({
     state: {
@@ -9,12 +9,17 @@ export default createStore({
         date: new Date(),
         isBodyShow: true,
         fullWidth: 0,
-      nightCount: 0,
-      room:{},
-      roomPicture:[],
+        nightCount: 0,
+        room: {},
+        roomPicture: [],
         isNewHouseOptionSelected: false,
         isNewHouseNextAvailable: false,
         newHouseRequest: {},
+        message: {},
+        signalCommunications: [],
+        connection: null,
+        readed: false,
+        readedCount: 0
     },
     mutations: {
         setNewHouseNextAvailable(state, isAvailable) {
@@ -25,9 +30,13 @@ export default createStore({
         }
     },
     actions: {},
-  getters: {
-    TotalCustomer(state){
-      return state.adult + state.child
+    getters: {
+        TotalCustomer(state) {
+
+            return state.adult + state.child + state.toddler
+        },
+        TotalPrice(state) {
+            return state.message.paymentDetail.serviceFee + state.message.paymentDetail.cleanFee + state.message.paymentDetail.taxFee
+        }
     }
-  }
 })
