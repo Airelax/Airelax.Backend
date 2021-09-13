@@ -86,7 +86,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import Talk from '../Information/Talk';
 import Signal from '../Information/SignalMessage';
 
@@ -100,20 +99,11 @@ export default {
         }
     },
     methods:{
-        useAxios(com){
-            axios.put(`/api/messages/${this.$route.params.memberId}/content`, com,{
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            }}).then(function (res) {
-                    console.log(res.data)
-                }).catch(err=>{console.log(err)})
-        },
         sengMsg(){
-            this.$store.state.connection.invoke("SendMessageToGroup",this.$store.state.message.connectString, this.$store.state.message.memberId == this.$store.state.message.landlord.id? this.$store.state.message.landlord.name:this.$store.state.message.name, this.msg ).catch(function (err) {
-                return console.error(err.toString());
-            });
-            this.msg="";
-            this.scrollToBottom();
+            var vm = this;
+            vm.$store.state.connection.invoke("SendMessageToGroup",vm.$store.state.message.connectString, JSON.stringify(vm.$store.state.message), vm.msg )
+            vm.scrollToBottom();
+            vm.msg="";
         },
         getReceiver(item){
             if(item.memberId == item.landlord.id){

@@ -15,9 +15,14 @@ namespace Airelax.Hubs
             UserHandler.ConnectedIds.Add(groupName);
         }
 
-        public async Task SendMessageToGroup(string groupName, string username, string message)
+        public async Task AddAllGroup(string groupName)
         {
-            await Clients.Group(groupName).SendAsync("ReceiveMessage", username, message);
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+        }
+
+        public async Task SendMessageToGroup(string groupName, string obj, string message)
+        {
+            await Clients.Group(groupName).SendAsync("ReceiveMessage", obj, message);
         }
 
         public async Task RemoveGroup(string groupName)
@@ -26,12 +31,17 @@ namespace Airelax.Hubs
             UserHandler.ConnectedIds.Remove(groupName);
         }
 
+        public async Task RemoveAllGroup(string groupName)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+        }
+
         public static class UserHandler
         {
             public static List<string> ConnectedIds = new List<string>();
         }
 
-        public int getCount(string groupName)
+        public int GetCount(string groupName)
         {
             return UserHandler.ConnectedIds.Where(x => x == groupName).ToList().Count;
         }

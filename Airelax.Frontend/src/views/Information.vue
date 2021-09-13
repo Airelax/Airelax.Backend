@@ -4,7 +4,7 @@
             <h1 v-if="width<768">收件匣</h1>
             <h1 v-else>訊息</h1>
             <div class="briefmessage">
-                <Brief :messages="messages"></Brief>
+                <Brief :allMsg="messages"></Brief>
             </div>
         </div>
         <div v-if="width>768" class="col-md-9">

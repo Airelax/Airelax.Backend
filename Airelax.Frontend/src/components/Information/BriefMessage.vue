@@ -1,13 +1,14 @@
 <template>
+    <button v-if="width>768" class="btn btn-danger d-none show-message" @click="removeJoin">顯示聊天清單</button>
     <div v-for="item in messages" :key="item.id">
-        <div class="brief" @click="sendData(item)">
+        <div class="brief hide-message" @click="sendData(item)">
             <a v-if="width<768" class="messageBox" data-bs-toggle="offcanvas" href="#offcanvasRight" role="button" aria-controls="offcanvasRight">
                 <div class="row d-flex align-items-center py-2">
                     <div class="col-2">
                         <div class="img"><img :src="getReceiver(item).portrait"></div>
                     </div>
                     <div class="col-8 text">
-                        <div class="name">[{{getReceiver(item).nickname}}] {{getReceiver(item).name}}</div>
+                        <div class="name">[{{getReceiver(item).nickname}}] {{getReceiver(item).name}} {{count}}</div>
                         <div class="message" v-if="getMessage(item).content.length<=12">{{getMessage(item).content}}</div>
                         <div class="message" v-else>{{getMessage(item).content.slice(0,12)}}...</div>
                         <div class="bookingDate">{{item.tourDetail.startDate.split('T')[0]}} 至 {{item.tourDetail.endDate.split('T')[0]}}</div>
@@ -25,7 +26,7 @@
                         <div class="img"><img :src="getReceiver(item).portrait"></div>
                     </div>
                     <div class="col-8 text">
-                        <div class="name">[{{getReceiver(item).nickname}}] {{getReceiver(item).name}}</div>
+                        <div class="name">[{{getReceiver(item).nickname}}] {{getReceiver(item).name}} {{count}}</div>
                         <div class="message" v-if="getMessage(item).content.length<=12">{{getMessage(item).content}}</div>
                         <div class="message" v-else>{{getMessage(item).content.slice(0,12)}}...</div>
                         <div class="bookingDate">{{item.tourDetail.startDate.split('T')[0]}} 至 {{item.tourDetail.endDate.split('T')[0]}}</div>
@@ -48,7 +49,7 @@
                 </button>
                 <div class="title">
                     <h2 id="offcanvasRightLabel" v-if="Object.keys(mes).length != 0">[{{getReceiver(mes).nickname}}] {{getReceiver(mes).name}}</h2>
-                    <div>回覆時間：1 小時</div>{{count}}
+                    <div>回覆時間：1 小時</div>
                 </div>
             </div>
             <a href="#" class="row mix d-flex w-100  p-3 align-items-center" @click.prevent="goRoom">
@@ -84,14 +85,15 @@ connection.start().catch(err=>console.log(err));
 
 export default {
     components:{Talk, Signal},
-    props:['messages'],
+    props:['allMsg'],
     inject: ["reload"],
     data(){
         return{
             mes:{},
             receiver: "",
             msg: "",
-            count: 0
+            count: 0,
+            messages: this.allMsg
         }
     },
     watch:{
@@ -111,86 +113,119 @@ export default {
     },
     mounted(){
         var vm = this;
-        this.$store.state.connection = connection;
-        this.$store.state.readedCount = 0;
-        this.$store.state.readed = false;
-        connection.on("ReceiveMessage",function(user,message){
-            let com = {
-                senderId: user==vm.mes.landlord.name?vm.mes.landlord.id:(vm.mes.gusetId == vm.mes.landlord.id?vm.mes.memberId:vm.mes.gusetId),
-                receiverId: user!=vm.mes.landlord.name?vm.mes.landlord.id:(vm.mes.gusetId == vm.mes.landlord.id?vm.mes.memberId:vm.mes.gusetId),
-                content: message,
-                time: moment(new Date()).format('YYYY-MM-DD[T]HH:mm:ss')
-            }
-            
-            let ontime = {
-                MemberId: vm.mes.memberId,
-                OtherId: vm.mes.gusetId
-            }
-            console.log("ABC")
-            vm.$store.state.signalCommunications.push(com);
-
-            // axios.put(`/api/messages/${vm.$route.params.memberId}/content`, com,{
-            // headers: {
-            //     "Access-Control-Allow-Origin": "*",
-            // }}).then(function (res) {
-            //         console.log(res.data)
-            //         axios.put(`/api/messages/${vm.$route.params.memberId}/ontime`, ontime,{
-            //             headers: {
-            //                 "Access-Control-Allow-Origin": "*",
-            //             }}).then(function (res) {
-            //                     console.log(res.data)
-            //                     connection.invoke("getCount", vm.mes.connectString).then(x=>{
-            //                         vm.count = x
-            //                         if(vm.count==2){
-            //                             vm.mes.memberTwoStatus = 0;
-            //                             vm.$store.state.readed = true;
-            //                         }
-            //                         else {
-            //                             vm.$store.state.readed = false;
-            //                         }
-            //                     })
-            //         })
-            // })
-
-            axios.put(`/api/messages/${vm.$route.params.memberId}/content`, com,{
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            }}).then(function (res) {
-                    console.log(res.data)
-                    connection.invoke("getCount", vm.mes.connectString).then(x=>{
-                        vm.count = x
-                        if(vm.count==2){
-                            axios.put(`/api/messages/${vm.$route.params.memberId}/status`, ontime,{
-                            headers: {
-                                "Access-Control-Allow-Origin": "*",
-                            }}).then(function (res) {
-                                    console.log(res.data)
-                            })
-                            vm.mes.memberTwoStatus = 0;
-                            vm.$store.state.readedCount += 1;
-                            vm.$store.state.readed = true;
-                        }
-                        else {
-                            axios.put(`/api/messages/${vm.$route.params.memberId}/ontime`, ontime,{
-                            headers: {
-                                "Access-Control-Allow-Origin": "*",
-                            }}).then(function (res) {
-                                    console.log(res.data)
-                            })
-                            vm.$store.state.readed = false;
-                        }
-                    })
-            })
-
-
-
-            vm.scrollToBottom();
-        })
+        vm.$store.state.connection = connection;
+        vm.mix();
     },
     updated(){
         this.scrollToBottom();
     },
     methods:{
+        mix(){
+            var vm = this;
+
+            vm.$store.state.readedCount = 0;
+            vm.$store.state.readed = false;
+
+            vm.messages.forEach(x=>{
+                connection.invoke("AddAllGroup", x.connectString);
+            });
+
+            axios.get(`/api/messages/${vm.$route.params.memberId}`, {
+                headers: {"Access-Control-Allow-Origin": "*",}})
+                .then((res) => {
+                    vm.messages = res.data;
+            });
+
+            connection.on("ReceiveMessage",function(objString,message){
+                console.log(message)
+                var objItem = JSON.parse(objString);
+
+                let com = {
+                    senderId: objItem.memberId,
+                    receiverId: objItem.gusetId,
+                    content: message,
+                    time: moment(new Date()).format('YYYY-MM-DD[T]HH:mm:ss')
+                }
+                
+                let ontime = {
+                    MemberId: objItem.memberId,
+                    OtherId: objItem.gusetId
+                }
+                
+                for(let i = 0; i < vm.messages.length; i++){
+                    if(vm.messages[i].gusetId == objItem.memberId){
+                        console.log("收到訊息囉");
+                        if(Object.keys(vm.mes).length != 0 ){
+                            vm.$store.state.signalCommunications.push(com);
+                        }
+                        connection.invoke("GetCount", vm.mes.connectString).then(x=>{
+                            vm.count = x
+                            if(vm.count==2){
+                                vm.mes.memberTwoStatus = 0;
+                                vm.$store.state.readed = true;
+                            }
+                            else{
+                                setTimeout(()=>{
+                                    axios.get(`/api/messages/${vm.$route.params.memberId}`, {
+                                    headers: {"Access-Control-Allow-Origin": "*",}})
+                                    .then((res) => {
+                                        vm.messages = res.data;
+                                    });
+                                },1000);
+                            }
+                        })
+
+                        vm.scrollToBottom();
+                        break;
+                    }
+                    else if (vm.messages[i].memberId == objItem.memberId){
+                        vm.$store.state.signalCommunications.push(com);
+                        axios.put(`/api/messages/${vm.$route.params.memberId}/content`, com,{
+                            headers: {
+                            "Access-Control-Allow-Origin": "*",
+                        }}).then((res)=>{
+                            console.log(res.data)
+                            connection.invoke("GetCount", vm.mes.connectString).then(x=>{
+                                vm.count = x
+                                if(vm.count==2){
+                                    axios.put(`/api/messages/${vm.$route.params.memberId}/status`, ontime,{
+                                    headers: {
+                                        "Access-Control-Allow-Origin": "*",
+                                    }}).then(function (res) {
+                                            console.log(res.data)
+                                            axios.get(`/api/messages/${vm.$route.params.memberId}`, {
+                                                headers: {"Access-Control-Allow-Origin": "*",},
+                                                }).then((res) => {
+                                                    vm.messages = res.data;
+                                            });
+                                    })
+                                    vm.mes.memberTwoStatus = 0;
+                                    vm.$store.state.readedCount += 1;
+                                    vm.$store.state.readed = true;
+                                }
+                                else {
+                                    axios.put(`/api/messages/${vm.$route.params.memberId}/ontime`, ontime,{
+                                    headers: {
+                                        "Access-Control-Allow-Origin": "*",
+                                    }}).then(function (res) {
+                                            console.log(res.data)
+                                            axios.get(`/api/messages/${vm.$route.params.memberId}`, {
+                                                headers: {"Access-Control-Allow-Origin": "*",},
+                                                }).then((res) => {
+                                                    vm.messages = res.data;
+                                            });
+                                    })
+                                    vm.$store.state.readed = false;
+                                }
+                            })
+                        });
+                        
+                        vm.scrollToBottom();
+                        break;
+                    }
+                }
+            })
+        },
         useAxios(com){
             axios.put(`/api/messages/${this.$route.params.memberId}/content`, com,{
             headers: {
@@ -199,8 +234,8 @@ export default {
                     console.log(res.data)
                 }).catch(err=>{console.log(err)})
         },
-        updateStatus(com){
-            axios.put(`/api/messages/${this.$route.params.memberId}/status`, com,{
+        updateStatus(ontime){
+            axios.put(`/api/messages/${this.$route.params.memberId}/status`, ontime,{
             headers: {
                 "Access-Control-Allow-Origin": "*",
             }}).then(function (res) {
@@ -216,56 +251,47 @@ export default {
             }).catch(err=>{console.log(err)})
         },
         sengMsg(){
-            connection.invoke("SendMessageToGroup",this.mes.connectString, this.mes.memberId == this.mes.landlord.id? this.mes.landlord.name:this.mes.name, this.msg ).catch(function (err) {
-                return console.error(err.toString());
-            });
-            connection.invoke("getCount",this.mes.connectString).then(x=>this.count = x);
-            this.msg="";
+            var vm = this;
+            connection.invoke("SendMessageToGroup",vm.mes.connectString, JSON.stringify(vm.mes), vm.msg )
+            vm.msg="";
         },
         removeJoin(){
             var vm = this;
-            connection.invoke("RemoveGroup", this.mes.connectString).catch(function (err) {
-                return console.error(err.toString());
-            });
-            this.$nextTick(()=>{
-                connection.invoke("getCount", this.mes.connectString).then(x=>vm.count = x)
-            });
-            connection.off("ReceiveMessage");
-            this.reload();
+            if (vm.width>768){
+                document.querySelectorAll('.hide-message').forEach(x=>{x.classList.remove('d-none')});
+                document.querySelector('.show-message').classList.add('d-none');
+                vm.$store.state.message = {};
+            }
+            connection.invoke("RemoveGroup", vm.mes.connectString).then(()=>{
+                vm.$store.state.signalCommunications = [];
+                vm.$store.state.readedCount = 0;
+                vm.$store.state.readed = false;
+                vm.count = 0;
+                vm.messages.forEach(x=>{
+                    connection.invoke("AddAllGroup", x.connectString);
+                });
+                axios.get(`/api/messages/${vm.$route.params.memberId}`, {
+                    headers: {"Access-Control-Allow-Origin": "*",}})
+                    .then((res) => {
+                        vm.messages = res.data;
+                });
+            })
         },
         sendData(item){
             var vm = this;
+            
+            vm.mes = item;
+            vm.$store.state.message = item;
 
-            if(this.width>768 && Object.keys(this.$store.state.message).length != 0) {
-                connection.invoke("RemoveGroup", this.$store.state.message.connectString).catch(function (err) {
-                    return console.error(err.toString());
-                });
-                connection.off("ReceiveMessage");
-
-                // connection.on("ReceiveMessage",function(user,message){
-                //     let com = {
-                //         senderId: (user==vm.mes.landlord.name?vm.mes.landlord.id:vm.mes.gusetId ),
-                //         receiverId: (user!=vm.mes.landlord.name?vm.mes.landlord.id:vm.mes.gusetId ),
-                //         content: message,
-                //         time: moment(new Date()).format('YYYY-MM-DD[T]HH:mm:ss')
-                //     }
-                //     vm.$store.state.signalCommunications.push(com);
-                //     vm.useAxios(com)
-                //     vm.scrollToBottom();
-                // })
-            }
-
-            this.mes = item;
-            this.$store.state.message = item;
-
-            // joinGroup
-            this.$nextTick(()=>{
-                connection.invoke("AddGroup", item.connectString).catch(function (err) {
-                    return console.error(err.toString());
-                });
+            vm.messages.forEach(x=>{
+                connection.invoke("RemoveAllGroup", x.connectString);
             })
-            this.$nextTick(()=>{
-                connection.invoke("getCount", item.connectString).then(x=>vm.count = x)
+
+            vm.$nextTick(()=>{
+                vm.$store.state.signalCommunications = [];
+                connection.invoke("AddGroup", item.connectString).then(()=>{
+                    connection.invoke("GetCount", vm.mes.connectString).then(x=>{vm.count = x})
+                })
             });
 
             //已讀
@@ -274,13 +300,16 @@ export default {
                 OtherId: item.gusetId
             }
             if(item.memberId == item.landlord.id){
-                if(item.memberOneStatus != 0) this.updateStatus(com);
+                if(item.memberOneStatus != 0) vm.updateStatus(com);
             }
             else{
-                if(item.memberTwoStatus != 0) this.updateStatus(com);
+                if(item.memberTwoStatus != 0) vm.updateStatus(com);
             }
 
-            if(this.width>768) this.reload();
+            if(vm.width > 768){
+                document.querySelectorAll('.hide-message').forEach(x=>{x.classList.add('d-none')})
+                document.querySelector('.show-message').classList.remove('d-none');
+            }
         },
         getReceiver(item){
             if(item.memberId == item.landlord.id){
