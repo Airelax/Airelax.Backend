@@ -45,5 +45,10 @@ namespace Airelax.Hubs
         {
             return UserHandler.ConnectedIds.Where(x => x == groupName).ToList().Count;
         }
+
+        public async Task OnlineStatus(string groupName, string obj)
+        {
+            await Clients.Group(groupName).SendAsync("ReceiveStatus", obj);
+        }
     }
 }

@@ -3,7 +3,11 @@
         <div class=" message" id="message">
             <div class="d-flex justify-content-between align-items-center top">
                 <div class="title ms-4">
-                    <h2 id="offcanvasRightLabel" v-if="Object.keys($store.state.message).length != 0">[{{getReceiver($store.state.message).nickname}}] {{getReceiver($store.state.message).name}}</h2>
+                    <div class="d-flex">
+                        <h2 id="offcanvasRightLabel" v-if="Object.keys($store.state.message).length != 0">[{{getReceiver($store.state.message).nickname}}] {{getReceiver($store.state.message).name}}</h2>
+                        <span v-if="$store.state.onlineCount==2" class="ms-2"><i class="fas fa-circle text-success"></i> (上線中)</span>
+                        <span v-else class="ms-2"><i class="fas fa-circle text-danger"></i> (未上線)</span>
+                    </div>
                     <div>回覆時間：1 小時</div>
                 </div>
                 <button class="me-4" @click="change" id="btn-detail">隱藏詳情</button>
