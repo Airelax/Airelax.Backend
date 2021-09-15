@@ -1,9 +1,10 @@
 ﻿using Airelax.Application.Orders.Request;
+using Airelax.Application.Orders.Response;
 
 namespace Airelax.Application.Orders
 {
     public interface IOrderService
     {
-        bool CreateOrder(OrdersInput input);
+        CreateOrderResponse CreateOrder(OrdersInput input);
     }
 }

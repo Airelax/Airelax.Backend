@@ -47,21 +47,7 @@ namespace Airelax.Controllers
             return View();
         }
 
-        [HttpGet]
-        [Route("pay")]
-        public async Task<TokenResponseData> Post()
-        {
-            var tokenRequestData = await _ecPayService.GetToken();
-            return tokenRequestData;
-        }
-
-        [HttpPost]
-        [Route("tran")]
-        public async Task<TransactResponseData> MethodName(string token)
-        {
-            var transactResponseData = await _ecPayService.CreateTransaction(token);
-            return transactResponseData;
-        }
+        
         
         [HttpPost]
         [Route("suc")]

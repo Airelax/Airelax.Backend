@@ -17,8 +17,9 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
 {
     public interface IECPayService
     {
-        Task<TokenResponseData> GetToken();
-        Task<TransactResponseData> CreateTransaction(string token);
+        
+        Task<TransactResponseData> CreateTransaction(CreateTransactionInput createTransactionInput);
+        Task<TokenResponseData> GetToken(CreateTokenInput createTokenInput);
     }
 
     public class ECPayService : IECPayService
@@ -37,7 +38,7 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
         /// 取得畫面token
         /// </summary>
         /// <returns></returns>
-        public async Task<TokenResponseData> GetToken()
+        public async Task<TokenResponseData> GetToken(CreateTokenInput createTokenInput)
         {
             //初始化綠界要的參數(Data)
             var data = new TokenRequestData()
@@ -46,77 +47,114 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
                 RememberCard = RememberCard.No,
                 PaymentUIType = PaymentUIType.PaymentMethodList,
                 ChoosePaymentList = string.Join(',', new[] {(int) ChoosePayment.CreditCardPayAllAtOnce}),
-                OrderInfo = new OrderInfo()
+
+                OrderInfo = new OrderInfo() //由外部傳入
                 {
                     MerchantTradeDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
                     //訂單編號不可重複
-                    MerchantTradeNo = "AirelaxTest005",
-                    TotalAmount = 1000,
+                    MerchantTradeNo = createTokenInput.MerchantTradeNo,  //orderId?
+                    TotalAmount = createTokenInput.TotalAmount,  //HousePrices.PerNight* (OrderDetails.EndDate-OrderDetails.StartDate)
                     ReturnUrl = "https://localhost:5001/api/system/suc",
-                    TradeDesc = "測試用交易",
-                    ItemName = "商品1#商品2#商品3",
+                    TradeDesc = createTokenInput.TradeDesc,
+                    ItemName = createTokenInput.ItemName,  //房屋名稱
+                    
                 },
-                ConsumerInfo = new ConsumerInfo()
+
+
+
+                ConsumerInfo = new ConsumerInfo()  //由外部傳入  登入後
                 {
-                    Phone = "886912345678",
-                    Name = "金城武",
-                    CountryCode = "158",
-                    Email = "fuck123@gmail.com",
-                    MerchantMemberId = "M123456"
+                    Phone = createTokenInput.Phone,  //EmergencyContact.Phone?
+                    Name = createTokenInput.Name,         //Members.Name? EmergencyContact.Name?
+                    CountryCode = "158",    //固定158
+                    Email = createTokenInput.Email,  //Members.Email
+                    MerchantMemberId = createTokenInput.MerchantMemberId  //Members.Id
                 },
                 CardInfo = new CardInfo() {OrderResultUrl = "https://localhost:5001/Swagger/index.html"}
             };
+
+
             //初始化綠界要的參數(Token)
             var tokenRequest = new ECRequest
             {
                 //todo 
-                MerchantId = _options.Value.MerchantId,
-                RqHeader = new ECRequestHeader() {TimeStamp = DateTimeOffset.Now.ToUnixTimeSeconds(), Revision = _options.Value.Revision},
+                MerchantId = _options.Value.MerchantId,  //由外部傳入
+                RqHeader = new ECRequestHeader() {
+                                TimeStamp = DateTimeOffset.Now.ToUnixTimeSeconds(), 
+                                Revision = _options.Value.Revision
+                            },
+
                 // 加密(先序列化成json字串再加密)
-                Data = CryptographyHelper.AesEncrypt(JsonConvert.SerializeObject(data), _options.Value.AesKey, _options.Value.AesIV, true),
+                Data = CryptographyHelper.AesEncrypt(JsonConvert.SerializeObject(data), 
+                                                        _options.Value.AesKey, 
+                                                        _options.Value.AesIV, 
+                                                        true
+                                                    ),
             };
             // 發送POST請求到綠界，取得回傳的response
-            var responseMessage = await _client.PostAsJsonAsync(_options.Value.Apis.GetTokenByTrade.Url, tokenRequest);
+            var responseMessage = await _client.PostAsJsonAsync(_options.Value.Apis.GetTokenByTrade.Url, 
+                                                                tokenRequest);
             //將回應json轉成回應物件
             var tokenResponse = await responseMessage.Content.ReadFromJsonAsync<TokenResponse>();
             // 解密回應物件的data
-            var tokenResponseData = JsonConvert.DeserializeObject<TokenResponseData>(CryptographyHelper.AesDecrypt(tokenResponse.Data, _options.Value.AesKey, _options.Value.AesIV, true));
-            return tokenResponseData;  //以此Data內的token進行畫面渲染
+            var tokenResponseData = JsonConvert.DeserializeObject<TokenResponseData>
+                (
+                    CryptographyHelper.AesDecrypt(
+                        tokenResponse.Data,
+                        _options.Value.AesKey,
+                        _options.Value.AesIV, 
+                        true
+                        )
+                );
+            return tokenResponseData;  //以此Data內的token(廠商驗證碼)進行畫面渲染
         }
 
 
-
-        public async Task<TransactResponseData> CreateTransaction(string token)
+        //建立交易
+        public async Task<TransactResponseData> CreateTransaction(CreateTransactionInput createTransactionInput)
         {
 
             var request = new ECRequest()
             {
-                MerchantId = _options.Value.MerchantId,
+                MerchantId = _options.Value.MerchantId, //
                 RqHeader = new ECRequestHeader()
                 {
-                    //時間戳
+                    //時間戳 Unix TimeStamp
                     TimeStamp = DateTimeOffset.Now.ToUnixTimeSeconds(),
                     //版號
                     Revision = _options.Value.Revision
-                    //Data="..."
+                    
                 },
+                //Data="..."
             };
 
             var transactRequestData = new TransactRequestData()
             {
                 MerchantId = _options.Value.MerchantId,
-                MerchantTradeNo = "AirelaxTest005",
-                PayToken = token,
+                MerchantTradeNo = createTransactionInput.MerchantTradeNo,
+                PayToken = createTransactionInput.token,
             };
 
             //先將transactRequestData序列化為JSON再加密
-            request.Data = CryptographyHelper.AesEncrypt(JsonConvert.SerializeObject(transactRequestData), _options.Value.AesKey, _options.Value.AesIV, true);
+            request.Data = CryptographyHelper.AesEncrypt
+                (
+                    JsonConvert.SerializeObject(transactRequestData), 
+                    _options.Value.AesKey, 
+                    _options.Value.AesIV, 
+                    true
+                );
             //發送POST請求到綠界正式建立交易,取得回傳的response  (JSON)
             var responseMessage = await _client.PostAsJsonAsync(_options.Value.Apis.Transaction.Url, request);
             //將回應json轉成回應物件(TokenResponse)
             var response = await responseMessage.Content.ReadFromJsonAsync<TokenResponse>();
             //解密回應物件的data
-            var data = JsonConvert.DeserializeObject<TransactResponseData>(CryptographyHelper.AesDecrypt(response.Data, _options.Value.AesKey, _options.Value.AesIV, true));
+            var data = JsonConvert.DeserializeObject<TransactResponseData>
+                (CryptographyHelper.AesDecrypt(
+                    response.Data, 
+                    _options.Value.AesKey, 
+                    _options.Value.AesIV, 
+                    true)
+                );
             return data;
         }
 
