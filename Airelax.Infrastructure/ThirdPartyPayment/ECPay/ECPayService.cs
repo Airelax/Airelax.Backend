@@ -49,7 +49,8 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
                 OrderInfo = new OrderInfo()
                 {
                     MerchantTradeDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
-                    MerchantTradeNo = "Airelax00",
+                    //訂單編號不可重複
+                    MerchantTradeNo = "AirelaxTest005",
                     TotalAmount = 1000,
                     ReturnUrl = "https://localhost:5001/api/system/suc",
                     TradeDesc = "測試用交易",
@@ -80,10 +81,85 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
             var tokenResponse = await responseMessage.Content.ReadFromJsonAsync<TokenResponse>();
             // 解密回應物件的data
             var tokenResponseData = JsonConvert.DeserializeObject<TokenResponseData>(CryptographyHelper.AesDecrypt(tokenResponse.Data, _options.Value.AesKey, _options.Value.AesIV, true));
-            return tokenResponseData;
+            return tokenResponseData;  //以此Data內的token進行畫面渲染
         }
 
+
+
         public async Task<TransactResponseData> CreateTransaction(string token)
+        {
+
+            var request = new ECRequest()
+            {
+                MerchantId = _options.Value.MerchantId,
+                RqHeader = new ECRequestHeader()
+                {
+                    //時間戳
+                    TimeStamp = DateTimeOffset.Now.ToUnixTimeSeconds(),
+                    //版號
+                    Revision = _options.Value.Revision
+                    //Data="..."
+                },
+            };
+
+            var transactRequestData = new TransactRequestData()
+            {
+                MerchantId = _options.Value.MerchantId,
+                MerchantTradeNo = "AirelaxTest005",
+                PayToken = token,
+            };
+
+            //先將transactRequestData序列化為JSON再加密
+            request.Data = CryptographyHelper.AesEncrypt(JsonConvert.SerializeObject(transactRequestData), _options.Value.AesKey, _options.Value.AesIV, true);
+            //發送POST請求到綠界正式建立交易,取得回傳的response  (JSON)
+            var responseMessage = await _client.PostAsJsonAsync(_options.Value.Apis.Transaction.Url, request);
+            //將回應json轉成回應物件(TokenResponse)
+            var response = await responseMessage.Content.ReadFromJsonAsync<TokenResponse>();
+            //解密回應物件的data
+            var data = JsonConvert.DeserializeObject<TransactResponseData>(CryptographyHelper.AesDecrypt(response.Data, _options.Value.AesKey, _options.Value.AesIV, true));
+            return data;
+        }
+
+        public async Task<TokenRequestData> GetTokenEx()
+        {
+            var data = new TokenRequestData()
+            {
+                MerchantId = _options.Value.MerchantId,
+                RememberCard = RememberCard.No,
+                PaymentUIType = PaymentUIType.PaymentMethodList,
+                ChoosePaymentList = string.Join(',', new[] { (int)ChoosePayment.CreditCardPayAllAtOnce }),
+                OrderInfo = new OrderInfo()
+                {
+                    MerchantTradeDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
+                    MerchantTradeNo = "AirelaxTest003",
+                    TotalAmount = 2000,
+                    ReturnUrl = "https://localhost:5001/api/system/suc",
+                    TradeDesc = "qwdqdc",
+                    ItemName = "wecww"
+                },
+                ConsumerInfo = new ConsumerInfo()
+                {
+                    Phone = "2131445512",
+                    Name = "Rick",
+                    CountryCode = "123",
+                    Email = "123@gmail.com",
+                    MerchantMemberId = "M23455"
+                },
+                CardInfo = new CardInfo() { OrderResultUrl = "https://localhost:5001/Swagger/index.html" }
+            };
+
+            var tokenRequest = new ECRequest
+            {
+                MerchantId = _options.Value.MerchantId,
+                RqHeader = new ECRequestHeader() { TimeStamp = DateTimeOffset.Now.ToUnixTimeSeconds(), Revision = _options.Value.Revision },
+                Data = CryptographyHelper.AesEncrypt(JsonConvert.SerializeObject(data), _options.Value.AesKey, _options.Value.AesIV, true),
+            };
+            var responseMessage = await _client.PostAsJsonAsync(_options.Value.Apis.GetTokenByTrade.Url, tokenRequest);
+            var tokenResponse = await responseMessage.Content.ReadFromJsonAsync<TokenResponse>();
+            var tokenResponseData = JsonConvert.DeserializeObject<TokenRequestData>(CryptographyHelper.AesDecrypt(tokenResponse.Data, _options.Value.AesKey, _options.Value.AesIV, true));
+            return tokenResponseData;
+        }
+        public async Task<TransactResponseData>CreateTransactionEx(string token)
         {
             var request = new ECRequest()
             {
@@ -98,7 +174,7 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
             var transactRequestData = new TransactRequestData()
             {
                 MerchantId = _options.Value.MerchantId,
-                MerchantTradeNo = "Airelax001",
+                MerchantTradeNo = "AirelaxTest003",
                 PayToken = token,
             };
 
