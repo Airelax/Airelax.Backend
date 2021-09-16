@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace Airelax.Controllers
 {
-
     [Route("api/[controller]")]
     [Authorize]
     public class OrdersController : Controller
@@ -28,21 +27,17 @@ namespace Airelax.Controllers
         [HttpPost]
         public CreateOrderResponse CreateOrder([FromBody] OrdersInput input)
         {
-            if (!ModelState.IsValid) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, "");
+            if (!ModelState.IsValid)
+                throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest, "");
             var order = _orderService.CreateOrder(input);
             return order;
         }
 
-
-
         [HttpPost]
         [Route("transaction")]
-        public async Task<bool> Transact(CreateTransactionInput createTransactionInput)//傳入paytoken
+        public async Task<bool> Transact([FromBody] CreateTransactionInput createTransactionInput)
         {
-            var transactResponseData = await _ecPayService.CreateTransaction(createTransactionInput);
-            if (transactResponseData == null) return false;
-            if (transactResponseData.RtnCode == 1) return true;
-            return false;
+            return await _orderService.Transact(createTransactionInput);
         }
     }
 }

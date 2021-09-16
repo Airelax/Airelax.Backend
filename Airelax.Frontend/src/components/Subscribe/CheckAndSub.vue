@@ -8,7 +8,7 @@
       此外，我也同意支付顯示的總金額（含住宿稅和服務費）。
       Airbnb現已在該地區代收彙繳政府徵收的住宿稅。
     </p>
-    <div class="btn" @click="createOrder">申請預訂</div>
+    <a :href="href" class="btn">申請預訂</a>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -38,85 +38,23 @@
 }
 </style>
 <script>
-import axios from "axios";
 
 export default {
-  data() {
-    const isDateEmpty = Object.keys(this.$store.state.date).length === 0;
-    return {
-      OrdersInput: {
-        houseId: this.$route.params.houseId,
-        startDate: isDateEmpty
-            ? null
-            : this.$store.state.date.start
-                .replace(/[年]/, "-")
-                .replace(/[月]/, "-")
-                .replace("日", ""),
-        endDate: isDateEmpty
-            ? null
-            : this.$store.state.date.end
-                .replace(/[年]/, "-")
-                .replace(/[月]/, "-")
-                .replace("日", ""),
-        adult: this.$store.state.adult,
-        child: this.$store.state.child,
-        baby: this.$store.state.toddler,
-      },
-    };
-  },
-
-  mounted() {
-    console.log(this.OrdersInput.startTime);
-    console.log(this.OrdersInput.endTime);
-  },
-  methods: {
-    createOrder() {
-      console.log(this.OrdersInput.json);
-
-      const params = new URLSearchParams();
-      params.append('MerchantID', '2000132');
-      params.append('MerchantTradeNo', 'air12342431010');
-      params.append('MerchantTradeDate', '2021/09/13 14:11:30');
-      params.append('PaymentType', 'aio');
-      params.append('TotalAmount', '1000');
-      params.append('TradeDesc', 'test');
-      params.append('ItemName', 'test商品10元*1#秘密100元*2');
-      params.append('ChoosePayment', 'All');
-      params.append('ReturnURL', 'http://127.0.0.1:8080');
-      params.append('EncryptType', '1');
-
-
-      axios("https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Access-Control-Allow-Origin": "*"
-        },
-        params: params
-      }).then(res => {
-        console.log(res);
-
-      }).catch(err => console.log(err));
-
-
-      // axios("/api/orders", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   data: this.OrdersInput,
-      // })
-      //   .then(function (response) {
-      //     if (response.status === 200) {
-      //       console.log(response);
-      //     }
-      //   })
-      //   .catch(function (error) {
-      //     alert(error.toString());
-      //   });
-
-
+  props: {
+    token: {
+      type: String,
     },
+    orderId: {
+      type: String,
+    }
   },
+  data() {
+    return {
+      href: `http://127.0.0.1:5000/api/system/${this.orderId}/${this.token}`
+    }
+  },
+  mounted() {
+    console.log(this.href);
+  }
 };
 </script>

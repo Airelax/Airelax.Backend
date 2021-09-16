@@ -113,7 +113,6 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
         //建立交易
         public async Task<TransactResponseData> CreateTransaction(CreateTransactionInput createTransactionInput)
         {
-
             var request = new ECRequest()
             {
                 MerchantId = _options.Value.MerchantId, //
@@ -132,7 +131,7 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
             {
                 MerchantId = _options.Value.MerchantId,
                 MerchantTradeNo = createTransactionInput.MerchantTradeNo,
-                PayToken = createTransactionInput.token,
+                PayToken = createTransactionInput.Token,
             };
 
             //先將transactRequestData序列化為JSON再加密
@@ -155,6 +154,9 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
                     _options.Value.AesIV, 
                     true)
                 );
+
+            
+            
             return data;
         }
 

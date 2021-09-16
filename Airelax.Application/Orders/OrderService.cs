@@ -1,8 +1,10 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Airelax.Application.Account;
 using Airelax.Application.Orders.Request;
 using Airelax.Application.Orders.Response;
 using Airelax.Domain.Orders;
+using Airelax.Domain.Orders.Define;
 using Airelax.Domain.RepositoryInterface;
 using Airelax.Infrastructure.Helpers;
 using Airelax.Infrastructure.ThirdPartyPayment.ECPay;
@@ -85,6 +87,18 @@ namespace Airelax.Application.Orders
             _orderRepository.Add(order);
             _orderRepository.SaveChanges();
             return createOrderResponse;
+        }
+
+        public async Task<bool> Transact(CreateTransactionInput input)
+        {
+            var transactResponseData = await _eCPayService.CreateTransaction(input);
+            if (transactResponseData == null) return false;
+
+            var order =await _orderRepository.GetOrderAsync(x=>x.Id==input.MerchantTradeNo);
+            order.State = OrderState.Finish;
+            _orderRepository.Update(order);
+            _orderRepository.SaveChanges();
+            return true;
         }
     }
 }

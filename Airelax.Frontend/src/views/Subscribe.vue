@@ -6,9 +6,9 @@
         <div class="sticky">
           <SubRoom v-if="get" :room="room" :nightCount="nightCount"></SubRoom>
           <SubPriceDetail
-            v-if="get && fullWidth >= 768"
-            :room="room"
-            :nightCount="nightCount"
+              v-if="get && fullWidth >= 768"
+              :room="room"
+              :nightCount="nightCount"
           ></SubPriceDetail>
         </div>
       </div>
@@ -16,13 +16,13 @@
         <YourTrip :fullWidth="fullWidth"></YourTrip>
         <PayWay :fullWidth="fullWidth"></PayWay>
         <SubPriceDetail
-          v-if="get && fullWidth < 768"
-          :room="room"
-          :nightCount="nightCount"
+            v-if="get && fullWidth < 768"
+            :room="room"
+            :nightCount="nightCount"
         ></SubPriceDetail>
         <RequiredInfo :fullWidth="fullWidth"></RequiredInfo>
         <Unsubscribe></Unsubscribe>
-        <CheckAndSub></CheckAndSub>
+        <CheckAndSub v-if="token&&orderId" :token="token" :orderId="orderId"></CheckAndSub>
       </div>
     </div>
   </div>
@@ -42,6 +42,7 @@ import SubPriceDetail from "../components/Subscribe/SubPriceDetail.vue";
 import RequiredInfo from "../components/Subscribe/RequiredInfo.vue";
 import Unsubscribe from "../components/Subscribe/Unsubscribe.vue";
 import CheckAndSub from "../components/Subscribe/CheckAndSub.vue";
+
 export default {
   components: {
     SubRoom,
@@ -55,35 +56,73 @@ export default {
   },
   created() {
     axios
-      .get(`/api/houses/${this.$route.params.houseId}`, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      })
-      .then((res) => {
-        // this.room = res.data;
-        console.log(res.data)
-        //Todo-Vuex
-        this.room = this.$store.state.room;
-        console.log(this.room)
-        this.get = true;
-      });
+        .get(`/api/houses/${this.$route.params.houseId}`, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+        .then((res) => {
+          // this.room = res.data;
+          console.log(res.data)
+          //Todo-Vuex
+          this.room = this.$store.state.room;
+          console.log(this.room)
+          this.get = true;
+        });
+
+    axios("/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: this.OrdersInput,
+    }).then(res => {
+      const data = res.data;
+      this.orderId = data.orderId;
+      this.token = data.token;
+      console.log(data);
+
+
+    }).catch(err => console.log(err));
+
   },
   data() {
+    const isDateEmpty = Object.keys(this.$store.state.date).length === 0;
     return {
       room: Object,
       nightCount: this.$store.state.nightCount,
       get: false,
       fullWidth: 0,
+      OrdersInput: {
+        houseId: this.$route.params.houseId,
+        startDate: isDateEmpty
+            ? null
+            : this.$store.state.date.start
+                .replace(/[年]/, "-")
+                .replace(/[月]/, "-")
+                .replace("日", ""),
+        endDate: isDateEmpty
+            ? null
+            : this.$store.state.date.end
+                .replace(/[年]/, "-")
+                .replace(/[月]/, "-")
+                .replace("日", ""),
+        adult: this.$store.state.adult,
+        child: this.$store.state.child,
+        baby: this.$store.state.toddler,
+      },
+      orderId: "",
+      token: "",
     };
   },
-  provide(){
+  provide() {
     return {
-      data: this.$store.state.room
+      data: this.$store.state.room,
+      token: this.token
     }
   },
-  computed:{
-    night(){
+  computed: {
+    night() {
       return this.$store.state.nightCount
     }
   },
@@ -91,7 +130,7 @@ export default {
     fullWidth(val) {
       this.fullWidth = val;
     },
-    night(val){
+    night(val) {
       this.nightCount = val
     }
   },
