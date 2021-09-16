@@ -20,6 +20,7 @@ namespace Airelax.Controllers
         
         public async Task<IActionResult> Trip()
         {
+
             var tripViewModel = await _tripService.GetTripViewModel();
 
             return View(tripViewModel);
