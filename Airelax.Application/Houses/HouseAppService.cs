@@ -115,14 +115,25 @@ namespace Airelax.Application.Houses
 
         private static List<House> GetReservableHouses(SearchInput input, List<House> houses)
         {
+            Specification<House> specification = null;
             if (input.Checkin.HasValue && input.Checkout.HasValue)
             {
                 var dateRange = DateTimeHelper.GetDateRange(input.Checkin.Value, input.Checkout.Value);
-                var availableDateSpecification = new AvailableDateSpecification(dateRange);
-                houses = houses.Where(z => availableDateSpecification.IsSatisfy(z)).ToList();
+                specification = new AvailableDateSpecification(dateRange);
             }
 
-            return houses;
+            //設備與服務
+            if (input.Facilities != null)
+            {
+                IEnumerable<Facility> Facilities = input.Facilities.Split(',').Select(int.Parse).Select(x => (Facility)x);
+                var facilitySpecification = new FacilitySpecification(Facilities);
+                if (specification == null) specification = facilitySpecification;
+                else specification = specification.And(facilitySpecification);         
+            }
+
+            if (specification == null) return houses;
+            return houses.Where(z => specification.IsSatisfy(z)).ToList();
+           
         }
 
         public async Task<HouseDto> GetHouse(string id)
@@ -205,10 +216,45 @@ namespace Airelax.Application.Houses
             var customerNumberSpecification = new MaxCustomerNumberSpecification(input.CustomerNumber);
             specification = specification.And(customerNumberSpecification);
 
-            // if (!input.Checkin.HasValue || !input.Checkout.HasValue) return specification;
-            // var dateRange = DateTimeHelper.GetDateRange(input.Checkin.Value, input.Checkout.Value);
-            // var availableDateSpecification = new AvailableDateSpecification(dateRange);
-            // specification = specification.And(availableDateSpecification);
+            //免費退訂
+            var freeUnsubscribeSpecification = new FreeUnsubscribeSpecification(input.FreeCancel);
+            specification = specification.And(freeUnsubscribeSpecification);
+
+            //房源類型
+            if(input.RoomCategories != null)
+            {
+                IEnumerable<RoomCategory> roomCategories = input.RoomCategories.Split(',').Select(int.Parse).Select(x => (RoomCategory)x);
+                var roomCategorySpecification = new RoomCategorySpecification(roomCategories);
+                specification = specification.And(roomCategorySpecification);
+            }
+
+            //價錢
+            var priceSpecification = new PriceSpecification(input.LowPrice, input.HighPrice);
+            specification = specification.And(priceSpecification);
+
+            //即時預定
+            var realtimeSubscribeSpecification = new RealtimeSubscribeSpecification(input.Realtime);
+            specification = specification.And(realtimeSubscribeSpecification);
+
+            //住宿類型
+            if (input.Categories != null)
+            {
+                IEnumerable<Category> Categories = input.Categories.Split(',').Select(int.Parse).Select(x => (Category)x);
+                var categorySpecification = new CategorySpecification(Categories);
+                specification = specification.And(categorySpecification);
+            }
+
+            //特色住宿
+            if (input.HouseTypes != null)
+            {
+                IEnumerable<HouseType> HouseTypes = input.HouseTypes.Split(',').Select(int.Parse).Select(x => (HouseType)x);
+                var houseTypeSpecification = new HouseTypeSpecification(HouseTypes);
+                specification = specification.And(houseTypeSpecification);
+            }
+
+            //房屋守則
+            var houseRuleSpecification = new HouseRuleSpecification(input.AllowPet, input.AllowSmoke);
+            specification = specification.And(houseRuleSpecification);
 
             return specification;
         }
