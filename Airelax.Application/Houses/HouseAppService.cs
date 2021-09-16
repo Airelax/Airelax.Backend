@@ -15,6 +15,7 @@ using Airelax.Domain.Houses.Defines.Spaces;
 using Airelax.Domain.Houses.Price;
 using Airelax.Domain.Houses.Specifications;
 using Airelax.Domain.RepositoryInterface;
+using Airelax.Infrastructure.Helpers;
 using Airelax.Infrastructure.Map.Abstractions;
 using Airelax.Infrastructure.Map.Responses;
 using AutoMapper;
