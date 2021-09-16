@@ -1,96 +1,141 @@
 <template>
-    <div class="head">
-      <SearchBar></SearchBar>
-      <div class="kanban">
-        <span>由奧運與帕運會選手舉辦的線上體驗</span>
-        <button class="goTo">立即瀏覽</button>
-      </div>
+  <div class="head">
+    <SearchBar></SearchBar>
+    <div class="kanban">
+      <p>想去哪?別擔心!</p>
+      <p>你最近哪裡都去不了!</p>
+      <button class="goTo">立即瀏覽</button>
     </div>
-    <div class="body" v-if="$store.state.isBodyShow">
-      <div class="around">
-        <h2>探索周邊</h2>
-        <div class="scrollbar">
-          <div class="yuan-container">
-            <div class="yuan-row">
-              <div class="around-div">
-                <a href="#" @click.prevent="SearchLocation">
-                  <img src="../assets/image/Home/around.png" />
-                  <div class="item mx-lg-2">
-                    <span>台北</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
-                  </div>
-                </a>
-              </div>
-              <div class="around-div">
-                <a href="#" @click.prevent="SearchLocation">
-                  <img src="../assets/image/Home/around2.png" />
-                  <div class="item mx-lg-2">
-                    <span>台南</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
-                  </div>
-                </a>
-              </div>
-              <div class="around-div">
-                <a href="#" @click.prevent="SearchLocation">
-                  <img src="../assets/image/Home/around3.png" />
-                  <div class="item mx-lg-2">
-                    <span>高雄</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
-                  </div>
-                </a>
-              </div>
-              <div class="around-div">
-                <a href="#" @click.prevent="SearchLocation">
-                  <img src="../assets/image/Home/around4.png" />
-                  <div class="item mx-lg-2">
-                    <span>桃園</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
-                  </div>
-                </a>
-              </div>
+  </div>
+  <div class="body" v-if="$store.state.isBodyShow">
+    <div class="around">
+      <h2>探索周邊</h2>
+      <div class="scrollbar">
+        <div class="yuan-container">
+          <div class="yuan-row">
+            <div class="around-div">
+              <a href="#" @click.prevent="SearchLocation">
+                <img src="../assets/image/Home/around.png" />
+                <div class="item mx-lg-2">
+                  <span>台北</span
+                  ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
+                </div>
+              </a>
             </div>
-            <div class="yuan-row">
-              <div class="around-div">
-                <a href="#" @click.prevent="SearchLocation">
-                  <img src="../assets/image/Home/around5.png" />
-                  <div class="item mx-lg-2">
-                    <span>新北市</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
-                  </div>
-                </a>
-              </div>
-              <div class="around-div">
-                <a href="#" @click.prevent="SearchLocation">
-                  <img src="../assets/image/Home/around6.png" />
-                  <div class="item mx-lg-2">
-                    <span>花蓮</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
-                  </div>
-                </a>
-              </div>
-              <div class="around-div">
-                <a href="#" @click.prevent="SearchLocation">
-                  <img src="../assets/image/Home/around7.png" />
-                  <div class="item mx-lg-2">
-                    <span>台東市</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
-                  </div>
-                </a>
-              </div>
-              <div class="around-div">
-                <a href="#" @click.prevent="SearchLocation">
-                  <img src="../assets/image/Home/around8.png" />
-                  <div class="item mx-lg-2">
-                    <span>恆春</span><span>{{getRandomNumber(30,120)}}分鐘車程</span>
-                  </div>
-                </a>
-              </div>
+            <div class="around-div">
+              <a href="#" @click.prevent="SearchLocation">
+                <img src="../assets/image/Home/around2.png" />
+                <div class="item mx-lg-2">
+                  <span>台南</span
+                  ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
+                </div>
+              </a>
+            </div>
+            <div class="around-div">
+              <a href="#" @click.prevent="SearchLocation">
+                <img src="../assets/image/Home/around3.png" />
+                <div class="item mx-lg-2">
+                  <span>高雄</span
+                  ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
+                </div>
+              </a>
+            </div>
+            <div class="around-div">
+              <a href="#" @click.prevent="SearchLocation">
+                <img src="../assets/image/Home/around4.png" />
+                <div class="item mx-lg-2">
+                  <span>桃園</span
+                  ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="yuan-row">
+            <div class="around-div">
+              <a href="#" @click.prevent="SearchLocation">
+                <img src="../assets/image/Home/around5.png" />
+                <div class="item mx-lg-2">
+                  <span>新北市</span
+                  ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
+                </div>
+              </a>
+            </div>
+            <div class="around-div">
+              <a href="#" @click.prevent="SearchLocation">
+                <img src="../assets/image/Home/around6.png" />
+                <div class="item mx-lg-2">
+                  <span>花蓮</span
+                  ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
+                </div>
+              </a>
+            </div>
+            <div class="around-div">
+              <a href="#" @click.prevent="SearchLocation">
+                <img src="../assets/image/Home/around7.png" />
+                <div class="item mx-lg-2">
+                  <span>台東市</span
+                  ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
+                </div>
+              </a>
+            </div>
+            <div class="around-div">
+              <a href="#" @click.prevent="SearchLocation">
+                <img src="../assets/image/Home/around8.png" />
+                <div class="item mx-lg-2">
+                  <span>恆春</span
+                  ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
+                </div>
+              </a>
             </div>
           </div>
         </div>
       </div>
-      <div class="dontWorry">
-        <div class="item">
-          還不知道想去哪嗎？<br />別擔心。
-          <button class="goTo">隨心所欲</button>
+    </div>
+    <div class="dontWorry">
+      <div class="item">
+        還不知道想去哪嗎？<br />別擔心。
+        <button class="goTo">隨心所欲</button>
+      </div>
+    </div>
+    <div class="everyConerComfortable">
+      <h2>任何角落都能找到舒適住宿</h2>
+      <div class="scrollArea">
+        <div class="row featuresRow">
+          <div class="col-12 col-md-3 feature">
+            <img
+              class="w-100"
+              src="../assets/image/Home/family.png"
+              alt="戶外度假勝地"
+            />
+            <p>戶外度假勝地</p>
+          </div>
+          <div class="col-12 col-md-3 feature">
+            <img
+              class="w-100"
+              src="../assets/image/Home/family2.png"
+              alt="獨特房源"
+            />
+            <p>獨特房源</p>
+          </div>
+          <div class="col-12 col-md-3 feature">
+            <img
+              class="w-100"
+              src="../assets/image/Home/family3.png"
+              alt="整套房源"
+            />
+            <p>整套房源</p>
+          </div>
+          <div class="col-12 col-md-3 feature">
+            <img
+              class="w-100"
+              src="../assets/image/Home/family4.png"
+              alt="可攜帶寵物"
+            />
+            <p>可攜帶寵物</p>
+          </div>
         </div>
       </div>
-      <div class="family">
-        <h2>任何角落都能找到舒適住宿</h2>
-        <div class="scrollbar">
+      <!-- <div class="scrollbar">
           <div class="yuan-yuan-container">
             <div class="yuan-row">
               <div class="family-div">
@@ -119,72 +164,87 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="haveFun">
-        <h2>發掘好玩新鮮事</h2>
-        <div class="scrollbar">
-          <div class="yuan-container">
-            <div class="yuan-row">
-              <div class="fun-div">
-                <a href="#">
-                  <img src="../assets/image/Home/haveFun.png" /> <span>體驗</span
-                  ><span class="item">尋找附近的難忘體驗。</span>
-                </a>
-              </div>
-              <div class="fun-div">
-                <a href="#">
-                  <img src="../assets/image/Home/haveFun2.png" /> <span>線上體驗</span
-                  ><span class="item">由體驗達人舉辦的互動式直播體驗。</span>
-                </a>
-              </div>
-              <div class="fun-div">
-                <a href="#">
-                  <img src="../assets/image/Home/haveFun3.png" />
-                  <span>精選系列：浪跡天涯</span
-                  ><span class="item">參加線上體驗，安坐家中暢遊全世界。</span>
-                </a>
-              </div>
+        </div> -->
+    </div>
+    <div class="haveFun">
+      <h2>發掘好玩新鮮事</h2>
+      <div class="scrollbar">
+        <div class="yuan-container">
+          <div class="yuan-row">
+            <div class="fun-div">
+              <a href="#">
+                <img src="../assets/image/Home/haveFun.png" /> <span>體驗</span
+                ><span class="item">尋找附近的難忘體驗。</span>
+              </a>
+            </div>
+            <div class="fun-div">
+              <a href="#">
+                <img src="../assets/image/Home/haveFun2.png" />
+                <span>線上體驗</span
+                ><span class="item">由體驗達人舉辦的互動式直播體驗。</span>
+              </a>
+            </div>
+            <div class="fun-div">
+              <a href="#">
+                <img src="../assets/image/Home/haveFun3.png" />
+                <span>精選系列：浪跡天涯</span
+                ><span class="item">參加線上體驗，安坐家中暢遊全世界。</span>
+              </a>
             </div>
           </div>
         </div>
       </div>
-      <div class="rent">
-        <div class="item">
-          <h2>開始出租吧</h2>
-          分享你的空間，賺取額外收入，開拓新機會。
-          <router-link to="/become-host"  style="text-decoration: none;"><button class="goTo">了解詳情</button></router-link>
-        </div>
+    </div>
+    <div class="rent">
+      <div class="item">
+        <h2>開始出租吧</h2>
+        分享你的空間，賺取額外收入，開拓新機會。
+        <router-link to="/become-host" style="text-decoration: none"
+          ><button class="goTo">了解詳情</button></router-link
+        >
       </div>
     </div>
+  </div>
 </template>
 
 <script>
-import SearchBar from '../components/Home/SearchBar';
+import SearchBar from "../components/Home/SearchBar";
 export default {
-    components:{
-        SearchBar
+  components: {
+    SearchBar,
+  },
+  methods: {
+    SearchLocation(e) {
+      console.log(e.target);
+      this.$store.state.destination = e.target.querySelector("span").innerText;
+      this.$router.push({
+        path: "search",
+        query: {
+          location: this.$store.state.destination,
+        },
+      });
     },
-    methods:{
-      SearchLocation(e){
-        console.log(e.target)
-        this.$store.state.destination = e.target.querySelector('span').innerText;
-        this.$router.push({
-          path: "search",
-          query: {
-            location: this.$store.state.destination,
-          },
-        });
-      },
-      getRandomNumber(min,max){
-        return Math.floor(Math.random() * (max-min+1))+min;
-      },
-    }
-}
+    getRandomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/css/reset.css';
+@import "../assets/css/reset.css";
+.everyConerComfortable {
+  .scrollArea {
+    .featuresRow {
+      overflow: scroll;
+      .feature {
+        img {
+          border-radius: 20px;
+        }
+      }
+    }
+  }
+}
 
 body * {
   font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
@@ -201,7 +261,7 @@ body::-webkit-scrollbar {
   display: flex;
 }
 .notice .item,
-.kanban span,
+.kanban p,
 .goTo,
 .body h2,
 .around-div .item span:nth-child(1),
@@ -245,7 +305,7 @@ body::-webkit-scrollbar {
   left: 0%;
   right: 0;
 }
-.kanban span {
+.kanban p {
   width: 85vw;
   font-size: 7.1875vw;
   color: #fff;
@@ -410,9 +470,9 @@ body::-webkit-scrollbar {
   margin: 4.6875vw auto 0;
   display: block;
 }
-.around-div{
+.around-div {
   .item,
-  img{
+  img {
     pointer-events: none;
   }
 }
@@ -441,7 +501,7 @@ body::-webkit-scrollbar {
     padding: 0px 5.20834vw;
     margin-top: 31vw;
   }
-  .kanban span {
+  .kanban p {
     width: 30.6vw;
     height: 13.022vw;
     line-height: 4.49219vw;
@@ -593,7 +653,7 @@ body::-webkit-scrollbar {
   .kanban {
     margin: 16.5vh 0 0;
   }
-  .kanban span {
+  .kanban p {
     width: 29vw;
     line-height: 4.3125vw;
     font-size: 3.75vw;
@@ -627,7 +687,7 @@ body::-webkit-scrollbar {
     padding-right: 5.2vw;
   }
   .around .around-div {
-      width: 18rem;
+    width: 18rem;
   }
   .around .around-div img {
     width: 4.844vw;
@@ -653,8 +713,8 @@ body::-webkit-scrollbar {
   .family .yuan-row {
     padding-top: 1.25vw;
   }
-  .family-div{
-      width: 19.5rem;
+  .family-div {
+    width: 19.5rem;
   }
   .family .family-div img {
     width: 21.081vw;
@@ -676,8 +736,8 @@ body::-webkit-scrollbar {
   .haveFun .yuan-row {
     padding-top: 1.25vw;
   }
-  .haveFun .fun-div{
-      width: 26.5rem;
+  .haveFun .fun-div {
+    width: 26.5rem;
   }
   .haveFun .fun-div img {
     border-radius: 0.6vw;
