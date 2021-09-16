@@ -582,15 +582,33 @@ namespace Airelax.EntityFramework.Migrations
                     b.Property<string>("Contents")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("HouseId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("MemberOneId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MemberOneStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("MemberTwoId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("MemberTwoStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("HouseId");
 
                     b.ToTable("Messages");
                 });
@@ -851,6 +869,17 @@ namespace Airelax.EntityFramework.Migrations
                     b.HasOne("Airelax.Domain.Members.Member", null)
                         .WithMany("WishLists")
                         .HasForeignKey("MemberId");
+                });
+
+            modelBuilder.Entity("Airelax.Domain.Messages.Message", b =>
+                {
+                    b.HasOne("Airelax.Domain.Houses.House", "House")
+                        .WithMany()
+                        .HasForeignKey("HouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("House");
                 });
 
             modelBuilder.Entity("Airelax.Domain.Orders.Order", b =>

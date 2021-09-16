@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Airelax.Controllers
 {
+
     [Route("api/[controller]")]
     [Authorize]
     public class OrdersController : Controller

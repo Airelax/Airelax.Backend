@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Airelax.Application.Account;
 using Airelax.Application.Helpers;
 using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Application.Houses.Dtos.Response;
@@ -17,6 +18,7 @@ using Airelax.Domain.RepositoryInterface;
 using Airelax.Infrastructure.Map.Abstractions;
 using Airelax.Infrastructure.Map.Responses;
 using AutoMapper;
+using CloudinaryDotNet.Actions;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
@@ -32,7 +34,7 @@ namespace Airelax.Application.Houses
         private readonly IMapper _mapper;
         private readonly ICommentsRepository _commentsRepository;
         private readonly IMemberRepository _memberRepository;
-        public const int PAGE_COUNT = 30;
+        private const int PageCount = 30;
 
         public HouseAppService(
             IHouseRepository houseRepository,
@@ -82,13 +84,19 @@ namespace Airelax.Application.Houses
 
             var sNow = DateTime.Now;
             Console.WriteLine(sNow);
-            var houses = await GetHousesAsync(specification, input.Page);
-            var total = await _houseRepository.GetSatisfyFromAsync(specification).CountAsync();
+
+            var houses = await GetHousesSatisfyFromAsync(specification);
+            houses = GetReservableHouses(input, houses) ?? new List<House>();
+
+            var total = houses.Count;
+            houses = GetHousesByPage(input.Page, houses);
+
+            //var houses = await GetHousesAsync(specification, input.Page);
+            //var total = await _houseRepository.GetSatisfyFromAsync(specification).CountAsync();
 
             var dateTime = DateTime.Now;
             Console.WriteLine(dateTime);
             Console.WriteLine("cost" + (dateTime - sNow));
-
 
             if (houses.IsNullOrEmpty())
                 return searchHousesResponse;
@@ -96,9 +104,36 @@ namespace Airelax.Application.Houses
             var results = GetSearchHouses(houses);
             var simpleHouseDtos = ConvertToSimpleHouseDtos(results);
             searchHousesResponse.Houses = simpleHouseDtos;
-
             searchHousesResponse.Total = total;
             return searchHousesResponse;
+        }
+
+        private static List<House> GetHousesByPage(int page, IEnumerable<House> houses)
+        {
+            return houses.Skip((page - 1) * PageCount).Take(PageCount).ToList();
+        }
+
+        private static List<House> GetReservableHouses(SearchInput input, List<House> houses)
+        {
+            Specification<House> specification = null;
+            if (input.Checkin.HasValue && input.Checkout.HasValue)
+            {
+                var dateRange = DateTimeHelper.GetDateRange(input.Checkin.Value, input.Checkout.Value);
+                specification = new AvailableDateSpecification(dateRange);
+            }
+
+            //設備與服務
+            if (input.Facilities != null)
+            {
+                IEnumerable<Facility> Facilities = input.Facilities.Split(',').Select(int.Parse).Select(x => (Facility)x);
+                var facilitySpecification = new FacilitySpecification(Facilities);
+                if (specification == null) specification = facilitySpecification;
+                else specification = specification.And(facilitySpecification);         
+            }
+
+            if (specification == null) return houses;
+            return houses.Where(z => specification.IsSatisfy(z)).ToList();
+           
         }
 
         public async Task<HouseDto> GetHouse(string id)
@@ -109,11 +144,12 @@ namespace Airelax.Application.Houses
             if (member == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "House exist but member has been deleted");
             var houseComments = (await _commentsRepository.GetAll().Where(x => x.HouseId == house.Id)?.ToListAsync()).GroupBy(x => x.HouseId).FirstOrDefault()?.ToList();
 
+
             var houseDto = new HouseDto
             {
                 Id = house.Id,
                 Title = house.Title,
-                CancelPolicy = (int)house.Policy.CancelPolicy,
+                CancelPolicy = (int) house.Policy.CancelPolicy,
                 Pictures = house.Photos?.Select(x => x.Image) ?? new List<string>(),
                 Space = ConvertToSpaceDto(house),
                 BedroomDetail = ConvertToBedroomDetailDtos(house),
@@ -139,12 +175,10 @@ namespace Airelax.Application.Houses
             return houseDto;
         }
 
-        private Task<List<House>> GetHousesAsync(Specification<House> specification, int page)
+        private async Task<List<House>> GetHousesSatisfyFromAsync(Specification<House> specification)
         {
-            return _houseRepository.GetSatisfyFromAsync(specification)
-                .OrderByDescending(x => x.CreateTime)
-                .Skip((page - 1) * PAGE_COUNT).Take(PAGE_COUNT)
-                .ToListAsync();
+            return await _houseRepository.GetSatisfyFromAsync(specification)
+                .OrderByDescending(x => x.CreateTime).ToListAsync();
         }
 
         private static RankDto ConvertToRankDto(IReadOnlyCollection<HouseCommentObject> houseComments)
@@ -182,10 +216,45 @@ namespace Airelax.Application.Houses
             var customerNumberSpecification = new MaxCustomerNumberSpecification(input.CustomerNumber);
             specification = specification.And(customerNumberSpecification);
 
-            if (!input.Checkin.HasValue || !input.Checkout.HasValue) return specification;
-            var dateRange = DateTimeHelper.GetDateRange(input.Checkin.Value, input.Checkout.Value);
-            var availableDateSpecification = new AvailableDateSpecification(dateRange);
-            specification = specification.And(availableDateSpecification);
+            //免費退訂
+            var freeUnsubscribeSpecification = new FreeUnsubscribeSpecification(input.FreeCancel);
+            specification = specification.And(freeUnsubscribeSpecification);
+
+            //房源類型
+            if(input.RoomCategories != null)
+            {
+                IEnumerable<RoomCategory> roomCategories = input.RoomCategories.Split(',').Select(int.Parse).Select(x => (RoomCategory)x);
+                var roomCategorySpecification = new RoomCategorySpecification(roomCategories);
+                specification = specification.And(roomCategorySpecification);
+            }
+
+            //價錢
+            var priceSpecification = new PriceSpecification(input.LowPrice, input.HighPrice);
+            specification = specification.And(priceSpecification);
+
+            //即時預定
+            var realtimeSubscribeSpecification = new RealtimeSubscribeSpecification(input.Realtime);
+            specification = specification.And(realtimeSubscribeSpecification);
+
+            //住宿類型
+            if (input.Categories != null)
+            {
+                IEnumerable<Category> Categories = input.Categories.Split(',').Select(int.Parse).Select(x => (Category)x);
+                var categorySpecification = new CategorySpecification(Categories);
+                specification = specification.And(categorySpecification);
+            }
+
+            //特色住宿
+            if (input.HouseTypes != null)
+            {
+                IEnumerable<HouseType> HouseTypes = input.HouseTypes.Split(',').Select(int.Parse).Select(x => (HouseType)x);
+                var houseTypeSpecification = new HouseTypeSpecification(HouseTypes);
+                specification = specification.And(houseTypeSpecification);
+            }
+
+            //房屋守則
+            var houseRuleSpecification = new HouseRuleSpecification(input.AllowPet, input.AllowSmoke);
+            specification = specification.And(houseRuleSpecification);
 
             return specification;
         }
@@ -211,8 +280,8 @@ namespace Airelax.Application.Houses
                     Category = x.HouseCategory,
                     Facilities = x.ProvideFacilities?.Intersect(Definition.SimpleFacilities),
                     CustomerNumber = x.CustomerNumber,
-                    Space = x.Spaces?.Where(s => s.SpaceType == SpaceType.Bath || s.SpaceType == SpaceType.Bedroom),
-                    Comment = simpleComment
+                    Space = x.Spaces?.Where(s => s.SpaceType is SpaceType.Bath or SpaceType.Bedroom),
+                    Comment = simpleComment,
                 };
                 return simpleHouse;
             });
@@ -225,16 +294,21 @@ namespace Airelax.Application.Houses
                 var simpleHouseDto = new SimpleHouseDto
                 {
                     Id = x.Id,
-                    Address = $"{x.Location.Town ?? string.Empty}",
+                    Address = $"{x.Location?.Town ?? string.Empty}",
                     Comment = ConvertToSimpleCommentDto(x.Comment),
                     Facility = ConvertToSimpleFacilityDto(x.Facilities),
                     HouseType = x.Category?.Category.ToString(),
                     Picture = x.Pictures?.Select(p => p.Image) ?? new List<string>(),
                     Price = ConvertToPriceDto(x.Price),
                     Space = ConvertToSimpleSpaceDto(x),
-                    Title = x.Title
+                    Title = x.Title,
+                    Coordinate = new CoordinateDto
+                    {
+                        Latitude = x.Location?.Latitude ?? 23,
+                        Longitude = x.Location?.Longitude ?? 121
+                    }
                 };
-                SetWishWist(x, simpleHouseDto);
+                //SetWishWist(x, simpleHouseDto);
 
                 return simpleHouseDto;
             });
@@ -377,15 +451,15 @@ namespace Airelax.Application.Houses
         {
             return new()
             {
-                Provide = house.ProvideFacilities?.Select(x => (int)x),
-                NotProvide = house.NotProvideFacilities?.Select(x => (int)x)
+                Provide = house.ProvideFacilities?.Select(x => (int) x),
+                NotProvide = house.NotProvideFacilities?.Select(x => (int) x)
             };
         }
 
 
         private static SimpleSpaceDto ConvertToSpaceDto(House house)
         {
-            var spaceDto = new SimpleSpaceDto { CustomerNumber = house.CustomerNumber };
+            var spaceDto = new SimpleSpaceDto {CustomerNumber = house.CustomerNumber};
             var houseSpaces = house.Spaces;
             if (houseSpaces == null) return spaceDto;
 

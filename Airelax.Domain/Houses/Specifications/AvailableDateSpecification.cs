@@ -17,7 +17,7 @@ namespace Airelax.Domain.Houses.Specifications
 
         public override Expression<Func<House, bool>> ToExpression()
         {
-            return house => !_requireDates.Any(x => house.ReservationDates.Contains(x));
+            return house => !_requireDates.Intersect(house.ReservationDates).Any();
         }
     }
 }
