@@ -1,7 +1,6 @@
 ﻿@model Airelax.Application.Houses.Dtos.Response.TripViewModels
 
 @{
-    var img = "https://picsum.photos/40/40";
     Layout = "~/Views/Shared/_LayoutSecurity.cshtml";
 }
 
@@ -25,52 +24,6 @@
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="tr_start">
-            @if (Model == null || Model.UpcomingTrips.Count() == 0)
-            {
-                <div id="start">
-                    <div class="more_">
-                        當你準備計劃下一趟旅程時，我們會隨時提供協助。
-                        <a href="#">了解詳情</a>
-                    </div>
-                    <div>
-                        <img src="~/images/trip/img/travel.png" alt="" class="w-100">
-                    </div>
-                    <div>
-                        <a class="btn btn-dark fw-bold explore" href="#" role="button">探索Airelax</a>
-                    </div>
-                    <hr>
-                </div>
-            }
-            else
-            {
-                @foreach (var trip in Model.UpcomingTrips)
-                {
-                    <div class="col">
-                        <a href="#">
-                            <div class="card h-100">
-                                <img src="https://picsum.photos/200/80" class="card-img-top" alt="">
-                                <div class="card-body">
-                                    <p class="card-text" id="date">@trip.StartDate.ToString("yyyy年MM月dd日") – @trip.EndDate.ToString("yyyy年MM月dd日")</p>
-                                    <h5 class="card-title" id="place">@trip.Town</h5>
-                                </div>
-                                <div class="introduce">
-                                    <img src="https://picsum.photos/40/40" alt="房源主圖">
-                                    <div class="d-flex justify-content-between">
-                                        <p class="card-text" id="roomName">@trip.Title</p>
-                                        <i class="fas fa-chevron-right"></i>
-                                    </div>
-                                </div>
-                                <div class="plan">
-                                    顯示更多旅程計畫
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                }
-            }
-
-        </div>
-        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="tr_past">
             <div id="past">
                 @if (Model == null || Model.FinishedTrips.Count() == 0)
                 {
@@ -89,12 +42,11 @@
                     </div>
                 }
 
-
                 else
                 {
-                    @foreach (var trip in Model.FinishedTrips)
-                    {
-                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                        @foreach (var trip in Model.FinishedTrips)
+                        {
                             <div class="col">
                                 <a href="#">
                                     <div class="card h-100">
@@ -104,7 +56,7 @@
                                             <h5 class="card-title" id="place">@trip.Town</h5>
                                         </div>
                                         <div class="introduce">
-                                            <img src="@img" alt="房源主圖">
+                                            <img src="https://picsum.photos/40/40" alt="房源主圖">
                                             <div class="d-flex justify-content-between">
                                                 <p class="card-text" id="roomName">@trip.Title</p>
                                                 <i class="fas fa-chevron-right"></i>
@@ -116,9 +68,61 @@
                                     </div>
                                 </a>
                             </div>
+                        }
+                    </div>
+                    <hr class="mt-5">
+                }
+            </div>
+
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="tr_past">
+            <div id="past">
+                @if (Model == null || Model.UpcomingTrips.Count() == 0)
+                {
+                    <div id="start">
+                        <div class="more_">
+                            當你準備計劃下一趟旅程時，我們會隨時提供協助。
+                            <a href="#">了解詳情</a>
                         </div>
-                        <hr class="mt-5">
-                    }
+                        <div>
+                            <img src="~/images/trip/img/travel.png" alt="" class="w-100">
+                        </div>
+                        <div>
+                            <a class="btn btn-dark fw-bold explore" href="#" role="button">探索Airelax</a>
+                        </div>
+                        <hr>
+                    </div>
+                }
+
+                else
+                {
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                        @foreach (var trip in Model.UpcomingTrips)
+                        {
+                            <div class="col">
+                                <a href="#">
+                                    <div class="card h-100">
+                                        <img src="https://picsum.photos/200/80" class="card-img-top" alt="">
+                                        <div class="card-body">
+                                            <p class="card-text" id="date">@trip.StartDate.ToString("yyyy年MM月dd日") – @trip.EndDate.ToString("yyyy年MM月dd日")</p>
+                                            <h5 class="card-title" id="place">@trip.Town</h5>
+                                        </div>
+                                        <div class="introduce">
+                                            <img src="https://picsum.photos/40/40" alt="房源主圖">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="card-text" id="roomName">@trip.Title</p>
+                                                <i class="fas fa-chevron-right"></i>
+                                            </div>
+                                        </div>
+                                        <div class="plan">
+                                            顯示更多旅程計畫
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                    <hr class="mt-5">
                 }
             </div>
         </div>
