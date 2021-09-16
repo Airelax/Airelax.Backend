@@ -47,7 +47,7 @@ namespace Airelax.Controllers
 
         [HttpPut]
         [Route("detail")]
-        public async Task<bool> UpdateMember([FromBody] EditMemberInput input)
+        public async Task<bool> UpdateMember([FromBody]EditMemberInput input)
         {
             return await _memberService.EditMember(input);
         }
