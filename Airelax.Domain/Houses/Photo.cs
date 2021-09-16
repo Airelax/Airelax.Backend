@@ -7,6 +7,7 @@ namespace Airelax.Domain.Houses
         public Photo(string houseId)
         {
             HouseId = houseId;
+            
         }
 
         public string SpaceId { get; set; }

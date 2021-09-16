@@ -8,6 +8,8 @@ using Airelax.EntityFramework.DbContexts;
 using Lazcat.Infrastructure.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Airelax.EntityFramework.Repositories
 {
@@ -19,6 +21,18 @@ namespace Airelax.EntityFramework.Repositories
         public OrderRepository(AirelaxContext context)
         {
             _context = context;
+        }
+        public async Task<IEnumerable<Order>> GetTrips(string memberId)
+        {
+            var trips = await _context.Orders
+                .Include(x => x.OrderDetail)
+                .Include(x => x.House)
+                .ThenInclude(x => x.HouseLocation)
+                .Include(x => x.House)
+                .ThenInclude(x => x.Photos)
+                .Where(x => x.CustomerId == memberId).ToListAsync();
+
+            return trips;
         }
 
         //public Order GetOrder(string houseId)

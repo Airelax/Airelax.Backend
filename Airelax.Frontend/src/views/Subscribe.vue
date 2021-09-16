@@ -84,7 +84,6 @@ export default {
 
 
     }).catch(err => console.log(err));
-
   },
   data() {
     const isDateEmpty = Object.keys(this.$store.state.date).length === 0;

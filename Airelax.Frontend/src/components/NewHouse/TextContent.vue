@@ -76,5 +76,10 @@ export default {
       default: 50,
     },
   },
+  watch: {
+    message: function (val) {
+      this.$emit("onTextChanged", val)
+    }
+  }
 };
 </script>
