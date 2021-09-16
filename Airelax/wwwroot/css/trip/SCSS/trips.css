@@ -1,0 +1,102 @@
+hr {
+  margin: 0;
+}
+
+.nav-link {
+  color: #c4c0c0;
+  font-weight: bold;
+}
+.nav-link:hover {
+  color: #717171;
+}
+
+.more_,
+.help_c {
+  margin: 23px 0;
+  font-size: 14px;
+  color: #484848;
+}
+.more_ a,
+.help_c a {
+  color: #222222;
+  font-weight: bold;
+}
+
+#past a {
+  text-decoration: none;
+}
+#past a .card {
+  margin-top: 20px !important;
+  border-radius: 10px;
+  box-shadow: 2px 6px 5px #d8d6d6;
+}
+#past a .card-body {
+  padding: 16px 16px 0 16px;
+}
+#past a .card-body p {
+  font-size: 12px;
+  color: #717171;
+  margin: 0;
+}
+#past a .card-body h5 {
+  font-size: 22px;
+  color: #222222;
+  font-weight: bold;
+}
+#past a .introduce {
+  padding: 10px 16px 0 16px;
+}
+#past a .introduce:hover {
+  background-color: #f7f7f7;
+}
+#past a .introduce img {
+  border-radius: 8px;
+  margin-right: 20px;
+  float: left;
+}
+#past a .introduce p {
+  font-size: 14px;
+  color: #222222;
+  display: flex;
+  height: 33px;
+  align-items: center;
+  float: left;
+}
+#past a .introduce i {
+  color: #222222;
+  font-weight: bolder;
+  font-size: 12px;
+  display: flex;
+  height: 33px;
+  align-items: center;
+}
+#past a .plan {
+  border-top: 1px solid #e2e1e1;
+  text-align: center;
+  color: #222222;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 16px;
+}
+#past a .plan:hover {
+  background-color: #f7f7f7;
+}
+
+@media screen and (min-width: 768px) {
+  .explore {
+    padding: 14px 24px;
+    border-radius: 8px;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin: 25px 0;
+  }
+}
+@media screen and (max-width: 767px) {
+  .explore {
+    padding: 12px 24px;
+    border-radius: 8px;
+    width: 100%;
+    margin: 25px 0;
+  }
+}/*# sourceMappingURL=trips.css.map */
