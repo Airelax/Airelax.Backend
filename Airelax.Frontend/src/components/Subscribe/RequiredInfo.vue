@@ -13,6 +13,7 @@
         data-bs-target="#message"
         aria-controls="message"
         v-if="fullWidth < 768"
+        @click.prevent="connectLandlord"
       >
         新增
       </div>
@@ -22,6 +23,7 @@
         data-bs-toggle="modal"
         data-bs-target="#messageModal"
         v-if="fullWidth >= 768"
+        @click.prevent="connectLandlord"
       >
         新增
       </div>
@@ -33,7 +35,7 @@
     tabindex="-1"
     id="message"
     aria-labelledby="messageLabel"
-    v-if="fullWidth < 768"
+    v-if="fullWidth < 768 && isMessageShow"
   >
     <div class="offcanvas-header">
       <button
@@ -74,7 +76,7 @@
     tabindex="-1"
     aria-labelledby="messageModalLabel"
     aria-hidden="true"
-    v-if="fullWidth >= 768"
+    v-if="fullWidth >= 768 && isMessageShow"
   >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -248,16 +250,50 @@ export default {
   inject:["data"],
   data(){
     return{
-      messageContent: ""
+      messageContent: "",
+      memberId: "",
+      isMessageShow: false
     }
   },
   methods:{
+    connectLandlord(){
+      const token = this.getCookie('yee_mother_fucker');
+      if(!token) 
+          window.location.href = 'https://localhost:5001/account/login';
+      const memberInfo = this.parseJwt(token);
+      this.memberId = memberInfo['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+      this.isMessageShow = true;
+    },
+    parseJwt(token){
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+
+      return JSON.parse(jsonPayload);
+    },
+    getCookie(cname){
+      let name = cname + "=";
+      let decodedCookie = decodeURIComponent(document.cookie);
+      let ca = decodedCookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+          let c = ca[i];
+          while (c.charAt(0) === ' ') {
+              c = c.substring(1);
+          }
+          if (c.indexOf(name) === 0) {
+              return c.substring(name.length, c.length);
+          }
+      }
+      return "";
+    },
     createMessage(){
         let mes = {
           MemberOneId: this.data.owner.id,
-          MemberTwoId: this.data.memberId,
+          MemberTwoId: this.memberId,
           Contents:[{
-            SenderId: this.data.memberId,
+            SenderId: this.memberId,
             ReceiverId: this.data.owner.id,
             Content: this.messageContent,
             Time: '2021-09-11T00:00:00'

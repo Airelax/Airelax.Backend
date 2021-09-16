@@ -15,6 +15,7 @@ const routes = [
         component: () => import('../views/Search.vue'),
         meta: {
             searchPage: true,
+            messageLayout: true,
         },
     },
     {

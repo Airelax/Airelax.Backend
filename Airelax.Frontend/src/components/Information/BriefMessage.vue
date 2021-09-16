@@ -8,7 +8,7 @@
                         <div class="img"><img :src="getReceiver(item).portrait"></div>
                     </div>
                     <div class="col-8 text">
-                        <div class="name">[{{getReceiver(item).nickname}}] {{getReceiver(item).name}} {{count}}</div>
+                        <div class="name">[{{getReceiver(item).nickname}}] {{getReceiver(item).name}}</div>
                         <div class="message" v-if="getMessage(item).content.length<=12">{{getMessage(item).content}}</div>
                         <div class="message" v-else>{{getMessage(item).content.slice(0,12)}}...</div>
                         <div class="bookingDate">{{item.tourDetail.startDate.split('T')[0]}} 至 {{item.tourDetail.endDate.split('T')[0]}}</div>
@@ -26,7 +26,7 @@
                         <div class="img"><img :src="getReceiver(item).portrait"></div>
                     </div>
                     <div class="col-8 text">
-                        <div class="name">[{{getReceiver(item).nickname}}] {{getReceiver(item).name}} {{count}}</div>
+                        <div class="name">[{{getReceiver(item).nickname}}] {{getReceiver(item).name}}</div>
                         <div class="message" v-if="getMessage(item).content.length<=12">{{getMessage(item).content}}</div>
                         <div class="message" v-else>{{getMessage(item).content.slice(0,12)}}...</div>
                         <div class="bookingDate">{{item.tourDetail.startDate.split('T')[0]}} 至 {{item.tourDetail.endDate.split('T')[0]}}</div>
@@ -48,7 +48,11 @@
                     <img src="../../assets/image/Room/icon/back.svg"/>
                 </button>
                 <div class="title">
-                    <h2 id="offcanvasRightLabel" v-if="Object.keys(mes).length != 0">[{{getReceiver(mes).nickname}}] {{getReceiver(mes).name}}</h2>
+                    <div class=" d-flex">
+                        <h2 id="offcanvasRightLabel" v-if="Object.keys(mes).length != 0">[{{getReceiver(mes).nickname}}] {{getReceiver(mes).name}}</h2>
+                        <span v-if="count==2" class="ms-2"><i class="fas fa-circle text-success"></i> (上線中)</span>
+                        <span v-else class="ms-2"><i class="fas fa-circle text-danger"></i> (未上線)</span>
+                    </div>
                     <div>回覆時間：1 小時</div>
                 </div>
             </div>
@@ -98,6 +102,7 @@ export default {
     },
     watch:{
         count(val){
+            this.$store.state.onlineCount = val;
             if(val==1){
                 console.log("只有一個人")
             }
@@ -115,6 +120,54 @@ export default {
         var vm = this;
         vm.$store.state.connection = connection;
         vm.mix();
+
+        connection.on("ReceiveStatus",function(objString){
+            var objItem = JSON.parse(objString);
+            let ontime = {
+                MemberId: objItem.memberId,
+                OtherId: objItem.gusetId
+            }
+            for(let i = 0; i < vm.messages.length; i++){
+                if(vm.messages[i].gusetId == objItem.memberId){
+                    connection.invoke("GetCount", vm.mes.connectString).then(x=>{
+                        vm.count = x
+                        if(vm.count==2){
+                            console.log("對方已加入!");
+                            vm.mes.memberOneStatus = 0;
+                            vm.mes.memberTwoStatus = 0;
+                            vm.$store.state.unreadCount = 0;
+                        }
+                        else{
+                            console.log("對方已離開!");
+                        }
+                    })
+                    break;
+                }
+                else if (vm.messages[i].memberId == objItem.memberId){
+                    connection.invoke("GetCount", vm.mes.connectString).then(x=>{
+                        vm.count = x;
+                        if(vm.count==2){
+                            console.log("你好!");
+                        }
+                        else {
+                            console.log("掰掰!");
+                            axios.put(`/api/messages/${vm.$route.params.memberId}/status`, ontime,{
+                            headers: {
+                                "Access-Control-Allow-Origin": "*",
+                            }}).then(function (res) {
+                                    console.log(res.data)
+                                    axios.get(`/api/messages/${vm.$route.params.memberId}`, {
+                                        headers: {"Access-Control-Allow-Origin": "*",},
+                                        }).then((res) => {
+                                            vm.messages = res.data;
+                                    });
+                            })
+                        }
+                    })
+                    break;
+                }
+            }
+        })
     },
     updated(){
         this.scrollToBottom();
@@ -123,8 +176,7 @@ export default {
         mix(){
             var vm = this;
 
-            vm.$store.state.readedCount = 0;
-            vm.$store.state.readed = false;
+            vm.$store.state.unreadCount = 0;
 
             vm.messages.forEach(x=>{
                 connection.invoke("AddAllGroup", x.connectString);
@@ -161,8 +213,9 @@ export default {
                         connection.invoke("GetCount", vm.mes.connectString).then(x=>{
                             vm.count = x
                             if(vm.count==2){
+                                vm.mes.memberOneStatus = 0;
                                 vm.mes.memberTwoStatus = 0;
-                                vm.$store.state.readed = true;
+                                vm.$store.state.unreadCount = 0;
                             }
                             else{
                                 setTimeout(()=>{
@@ -174,7 +227,6 @@ export default {
                                 },1000);
                             }
                         })
-
                         vm.scrollToBottom();
                         break;
                     }
@@ -199,9 +251,9 @@ export default {
                                                     vm.messages = res.data;
                                             });
                                     })
+                                    vm.mes.memberOneStatus = 0;
                                     vm.mes.memberTwoStatus = 0;
-                                    vm.$store.state.readedCount += 1;
-                                    vm.$store.state.readed = true;
+                                    vm.$store.state.unreadCount = 0;
                                 }
                                 else {
                                     axios.put(`/api/messages/${vm.$route.params.memberId}/ontime`, ontime,{
@@ -215,11 +267,10 @@ export default {
                                                     vm.messages = res.data;
                                             });
                                     })
-                                    vm.$store.state.readed = false;
+                                    vm.$store.state.unreadCount += 1;
                                 }
                             })
                         });
-                        
                         vm.scrollToBottom();
                         break;
                     }
@@ -257,15 +308,18 @@ export default {
         },
         removeJoin(){
             var vm = this;
+
             if (vm.width>768){
                 document.querySelectorAll('.hide-message').forEach(x=>{x.classList.remove('d-none')});
                 document.querySelector('.show-message').classList.add('d-none');
                 vm.$store.state.message = {};
             }
+            
+            connection.invoke("OnlineStatus",vm.mes.connectString, JSON.stringify(vm.mes))
+
             connection.invoke("RemoveGroup", vm.mes.connectString).then(()=>{
                 vm.$store.state.signalCommunications = [];
-                vm.$store.state.readedCount = 0;
-                vm.$store.state.readed = false;
+                vm.$store.state.unreadCount = 0;
                 vm.count = 0;
                 vm.messages.forEach(x=>{
                     connection.invoke("AddAllGroup", x.connectString);
@@ -279,7 +333,7 @@ export default {
         },
         sendData(item){
             var vm = this;
-            
+
             vm.mes = item;
             vm.$store.state.message = item;
 
@@ -290,7 +344,7 @@ export default {
             vm.$nextTick(()=>{
                 vm.$store.state.signalCommunications = [];
                 connection.invoke("AddGroup", item.connectString).then(()=>{
-                    connection.invoke("GetCount", vm.mes.connectString).then(x=>{vm.count = x})
+                    connection.invoke("OnlineStatus",vm.mes.connectString, JSON.stringify(vm.mes))
                 })
             });
 

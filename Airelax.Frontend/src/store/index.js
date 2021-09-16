@@ -18,8 +18,20 @@ export default createStore({
         message: {},
         signalCommunications: [],
         connection: null,
-        readed: false,
-        readedCount: 0
+        unreadCount: 0,
+        onlineCount: 0,
+        filters: {
+            freeCancel: false,
+            lowPrice: "",
+            highPrice: "",
+            realtime: false,
+            roomCategories: "",
+            facilities: "",
+            houseTypes: "",
+            features: "",
+            allowPet: false,
+            allowSmoke: false
+        }
     },
     mutations: {
         setNewHouseNextAvailable(state, isAvailable) {

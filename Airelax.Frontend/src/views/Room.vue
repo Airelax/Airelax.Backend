@@ -424,7 +424,7 @@ export default {
     connectLandlord(){
       const token = this.getCookie('yee_mother_fucker');
       if(!token) 
-          window.location.href = '/account/login';
+          window.location.href = 'https://localhost:5001/account/login';
       const memberInfo = this.parseJwt(token);
       this.memberId = memberInfo['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
       this.isConnectShow = true;
