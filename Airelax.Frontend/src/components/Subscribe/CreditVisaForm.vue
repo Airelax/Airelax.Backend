@@ -1,13 +1,13 @@
 <template>
   <Card></Card>
-  <BillingAddress></BillingAddress>
+  <!-- <BillingAddress></BillingAddress> -->
 </template>
 <script>
 import Card from "./Card.vue";
-import BillingAddress from "./BillingAddress.vue";
+//import BillingAddress from "./BillingAddress.vue";
 export default {
   components: {
-    BillingAddress,
+  //  BillingAddress,
     Card,
   },
 };

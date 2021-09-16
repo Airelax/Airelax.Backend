@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <!-- <div class="row">
     <div class="form-floating">
       <input
         class="form-control"
@@ -32,7 +32,45 @@
       />
       <label for="securitycode">安全碼</label>
     </div>
-  </div>
+  </div> -->
+  
+  <div id="ECPayPayment"><!--渲染--></div>
 </template>
+<script>
+import axios from 'axios';
+
+export default {
+  created(){
+      const Environment = 'STAGE'; //請設定要連線的環境: 測試 STAGE ,正式PROD
+        const envi = GetEnvi(Environment);
+       
+    axios("/api/Orders",{
+      method: "POST",
+      headers:{
+        "content-type":"application/json"
+      },
+      data
+    })
+
+
+     ECPay.initialize(envi, 1, function (errMsg) {
+            if (_token === '') {
+                _token = prompt('請填入Token: ');
+            }
+
+            try {
+                ECPay.createPayment(_token, ECPay.Language.zhTW, function (errMsg) {
+                    //console.log('Callback Message: ' + errMsg);
+                    if (errMsg != null)
+                        ErrHandle(errMsg);
+                });
+            } catch (err) {
+                ErrHandle(err);
+            }
+        });
+  }
+}
+</script>
+
 
 

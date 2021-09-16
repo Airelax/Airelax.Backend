@@ -86,8 +86,8 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
 
                 // 加密(先序列化成json字串再加密)
                 Data = CryptographyHelper.AesEncrypt(JsonConvert.SerializeObject(data), 
-                                                        _options.Value.AesKey, 
-                                                        _options.Value.AesIV, 
+                                                        _options.Value.AesKey,
+                                                        _options.Value.AesIV,
                                                         true
                                                     ),
             };
