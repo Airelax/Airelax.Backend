@@ -1,77 +1,78 @@
 <template>
-    <button v-if="width>768" class="btn btn-danger d-none show-message" @click="removeJoin">顯示聊天清單</button>
-    <div v-for="item in messages" :key="item.id">
-        <div class="brief hide-message" @click="sendData(item)">
-            <a v-if="width<768" class="messageBox" data-bs-toggle="offcanvas" href="#offcanvasRight" role="button" aria-controls="offcanvasRight">
-                <div class="row d-flex align-items-center py-2">
-                    <div class="col-2">
-                        <div class="img"><img :src="getReceiver(item).portrait"></div>
+    <div v-if="get">
+        <button v-if="width>768" class="btn btn-danger d-none show-message" @click="removeJoin">顯示聊天清單</button>
+        <div v-for="item in messages" :key="item.id">
+            <div class="brief hide-message" @click="sendData(item)">
+                <a v-if="width<768" class="messageBox" data-bs-toggle="offcanvas" href="#offcanvasRight" role="button" aria-controls="offcanvasRight">
+                    <div class="row d-flex align-items-center py-2">
+                        <div class="col-2">
+                            <div class="img"><img :src="getReceiver(item).portrait"></div>
+                        </div>
+                        <div class="col-8 text">
+                            <div class="name">[{{getReceiver(item).nickname}}] {{getReceiver(item).name}}</div>
+                            <div class="message" v-if="getMessage(item).content.length<=12">{{getMessage(item).content}}</div>
+                            <div class="message" v-else>{{getMessage(item).content.slice(0,12)}}...</div>
+                            <div class="bookingDate">{{item.tourDetail.startDate.split('T')[0]}} 至 {{item.tourDetail.endDate.split('T')[0]}}</div>
+                        </div>
+                        <div class="col-2 info d-flex flex-column align-items-center">
+                            <div class="lastestDate">{{getMessage(item).time.split('T')[0].split('-')[1]}}/{{getMessage(item).time.split('T')[0].split('-')[2]}}</div>
+                            <div class="uncheck" v-if="item.memberId == item.landlord.id && item.memberOneStatus != 0">{{item.memberOneStatus}}</div>
+                            <div class="uncheck" v-else-if="item.memberId != item.landlord.id && item.memberTwoStatus != 0">{{item.memberTwoStatus}}</div>
+                        </div>
                     </div>
-                    <div class="col-8 text">
-                        <div class="name">[{{getReceiver(item).nickname}}] {{getReceiver(item).name}}</div>
-                        <div class="message" v-if="getMessage(item).content.length<=12">{{getMessage(item).content}}</div>
-                        <div class="message" v-else>{{getMessage(item).content.slice(0,12)}}...</div>
-                        <div class="bookingDate">{{item.tourDetail.startDate.split('T')[0]}} 至 {{item.tourDetail.endDate.split('T')[0]}}</div>
+                </a>
+                <a v-else class="messageBox" >
+                    <div class="row d-flex align-items-center py-2">
+                        <div class="col-2">
+                            <div class="img"><img :src="getReceiver(item).portrait"></div>
+                        </div>
+                        <div class="col-8 text">
+                            <div class="name">[{{getReceiver(item).nickname}}] {{getReceiver(item).name}}</div>
+                            <div class="message" v-if="getMessage(item).content.length<=12">{{getMessage(item).content}}</div>
+                            <div class="message" v-else>{{getMessage(item).content.slice(0,12)}}...</div>
+                            <div class="bookingDate">{{item.tourDetail.startDate.split('T')[0]}} 至 {{item.tourDetail.endDate.split('T')[0]}}</div>
+                        </div>
+                        <div class="col-2 info d-flex flex-column align-items-center">
+                            <div class="lastestDate">{{getMessage(item).time.split('T')[0].split('-')[1]}}/{{getMessage(item).time.split('T')[0].split('-')[2]}}</div>
+                            <div class="uncheck" v-if="item.memberId == item.landlord.id && item.memberOneStatus != 0">{{item.memberOneStatus}}</div>
+                            <div class="uncheck" v-else-if="item.memberId != item.landlord.id && item.memberTwoStatus != 0">{{item.memberTwoStatus}}</div>
+                        </div>
                     </div>
-                    <div class="col-2 info d-flex flex-column align-items-center">
-                        <div class="lastestDate">{{getMessage(item).time.split('T')[0].split('-')[1]}}/{{getMessage(item).time.split('T')[0].split('-')[2]}}</div>
-                        <div class="uncheck" v-if="item.memberId == item.landlord.id && item.memberOneStatus != 0">{{item.memberOneStatus}}</div>
-                        <div class="uncheck" v-else-if="item.memberId != item.landlord.id && item.memberTwoStatus != 0">{{item.memberTwoStatus}}</div>
-                    </div>
-                </div>
-            </a>
-            <a v-else class="messageBox" >
-                <div class="row d-flex align-items-center py-2">
-                    <div class="col-2">
-                        <div class="img"><img :src="getReceiver(item).portrait"></div>
-                    </div>
-                    <div class="col-8 text">
-                        <div class="name">[{{getReceiver(item).nickname}}] {{getReceiver(item).name}}</div>
-                        <div class="message" v-if="getMessage(item).content.length<=12">{{getMessage(item).content}}</div>
-                        <div class="message" v-else>{{getMessage(item).content.slice(0,12)}}...</div>
-                        <div class="bookingDate">{{item.tourDetail.startDate.split('T')[0]}} 至 {{item.tourDetail.endDate.split('T')[0]}}</div>
-                    </div>
-                    <div class="col-2 info d-flex flex-column align-items-center">
-                        <div class="lastestDate">{{getMessage(item).time.split('T')[0].split('-')[1]}}/{{getMessage(item).time.split('T')[0].split('-')[2]}}</div>
-                        <div class="uncheck" v-if="item.memberId == item.landlord.id && item.memberOneStatus != 0">{{item.memberOneStatus}}</div>
-                        <div class="uncheck" v-else-if="item.memberId != item.landlord.id && item.memberTwoStatus != 0">{{item.memberTwoStatus}}</div>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-
-    <div v-if="width<768" class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-        <div class="offcanvas-header d-flex flex-column align-items-start p-0">
-            <div class="d-flex justify-content-start align-items-center py-3">
-                <button type="button" class="btn d-flex align-items-center" data-bs-dismiss="offcanvas" aria-label="Close" @click="removeJoin">
-                    <img src="../../assets/image/Room/icon/back.svg"/>
-                </button>
-                <div class="title">
-                    <div class=" d-flex">
-                        <h2 id="offcanvasRightLabel" v-if="Object.keys(mes).length != 0">[{{getReceiver(mes).nickname}}] {{getReceiver(mes).name}}</h2>
-                        <span v-if="count==2" class="ms-2"><i class="fas fa-circle text-success"></i> (上線中)</span>
-                        <span v-else class="ms-2"><i class="fas fa-circle text-danger"></i> (未上線)</span>
-                    </div>
-                    <div>回覆時間：1 小時</div>
-                </div>
+                </a>
             </div>
-            <a href="#" class="row mix d-flex w-100  p-3 align-items-center" @click.prevent="goRoom">
-                <div class="col-2">
-                    <div class="img" v-if="Object.keys(mes).length != 0"><img :src="mes.pictures[0]"></div>
-                </div>
-                <div class="col-10 text-start">
-                    <h3 v-if="Object.keys(mes).length != 0">{{mes.tourDetail.title.slice(0,20)}}...</h3>
-                    <div class="bookingDate" v-if="Object.keys(mes).length != 0">{{mes.tourDetail.startDate.split('T')[0]}} 至 {{mes.tourDetail.endDate.split('T')[0]}}</div>
-                </div>
-            </a>
         </div>
-        <div class="offcanvas-body">
-            <Talk :message="mes"></Talk>
-            <Signal :message="mes"></Signal>
-        </div>
-        <div class="offcanvas-footer">
-            <div class="input"><input type="text" v-model="msg" placeholder="輸入訊息" @keydown.enter="sengMsg"></div>
+        <div v-if="width<768" class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header d-flex flex-column align-items-start p-0">
+                <div class="d-flex justify-content-start align-items-center py-3">
+                    <button type="button" class="btn d-flex align-items-center" data-bs-dismiss="offcanvas" aria-label="Close" @click="removeJoin">
+                        <img src="../../assets/image/Room/icon/back.svg"/>
+                    </button>
+                    <div class="title">
+                        <div class=" d-flex">
+                            <h2 id="offcanvasRightLabel" v-if="Object.keys(mes).length != 0">[{{getReceiver(mes).nickname}}] {{getReceiver(mes).name}}</h2>
+                            <span v-if="count==2" class="ms-2"><i class="fas fa-circle text-success"></i> (上線中)</span>
+                            <span v-else class="ms-2"><i class="fas fa-circle text-danger"></i> (未上線)</span>
+                        </div>
+                        <div>回覆時間：1 小時</div>
+                    </div>
+                </div>
+                <a href="#" class="row mix d-flex w-100  p-3 align-items-center" @click.prevent="goRoom">
+                    <div class="col-2">
+                        <div class="img" v-if="Object.keys(mes).length != 0"><img :src="mes.pictures[0]"></div>
+                    </div>
+                    <div class="col-10 text-start">
+                        <h3 v-if="Object.keys(mes).length != 0">{{mes.tourDetail.title.slice(0,20)}}...</h3>
+                        <div class="bookingDate" v-if="Object.keys(mes).length != 0">{{mes.tourDetail.startDate.split('T')[0]}} 至 {{mes.tourDetail.endDate.split('T')[0]}}</div>
+                    </div>
+                </a>
+            </div>
+            <div class="offcanvas-body">
+                <Talk :message="mes"></Talk>
+                <Signal :message="mes"></Signal>
+            </div>
+            <div class="offcanvas-footer">
+                <div class="input"><input type="text" v-model="msg" placeholder="輸入訊息" @keydown.enter="sengMsg"></div>
+            </div>
         </div>
     </div>
 </template>
@@ -82,6 +83,7 @@ import Talk from '../Information/Talk';
 import Signal from '../Information/SignalMessage';
 import * as signalR from '@microsoft/signalr';
 import moment from 'moment';
+import settingJson from "@/components/Settings/setting";
 
 let hubUrl = "https://localhost:5001/chatHub";
 const connection = new signalR.HubConnectionBuilder().withAutomaticReconnect().withUrl(hubUrl).build();
@@ -89,26 +91,15 @@ connection.start().catch(err=>console.log(err));
 
 export default {
     components:{Talk, Signal},
-    props:['allMsg'],
-    inject: ["reload"],
     data(){
         return{
             mes:{},
             receiver: "",
             msg: "",
             count: 0,
-            messages: this.allMsg
-        }
-    },
-    watch:{
-        count(val){
-            this.$store.state.onlineCount = val;
-            if(val==1){
-                console.log("只有一個人")
-            }
-            else if(val==2){
-                console.log("大家都在了")
-            }
+            setting: settingJson,
+            messages: {},
+            get: false
         }
     },
     computed:{
@@ -119,73 +110,60 @@ export default {
     mounted(){
         var vm = this;
         vm.$store.state.connection = connection;
-        vm.mix();
-
-        connection.on("ReceiveStatus",function(objString){
-            var objItem = JSON.parse(objString);
-            let ontime = {
-                MemberId: objItem.memberId,
-                OtherId: objItem.gusetId
-            }
-            for(let i = 0; i < vm.messages.length; i++){
-                if(vm.messages[i].gusetId == objItem.memberId){
-                    connection.invoke("GetCount", vm.mes.connectString).then(x=>{
-                        vm.count = x
-                        if(vm.count==2){
-                            console.log("對方已加入!");
-                            vm.mes.memberOneStatus = 0;
-                            vm.mes.memberTwoStatus = 0;
-                            vm.$store.state.unreadCount = 0;
-                        }
-                        else{
-                            console.log("對方已離開!");
-                        }
-                    })
-                    break;
-                }
-                else if (vm.messages[i].memberId == objItem.memberId){
-                    connection.invoke("GetCount", vm.mes.connectString).then(x=>{
-                        vm.count = x;
-                        if(vm.count==2){
-                            console.log("你好!");
-                        }
-                        else {
-                            console.log("掰掰!");
-                            axios.put(`/api/messages/${vm.$route.params.memberId}/status`, ontime,{
-                            headers: {
-                                "Access-Control-Allow-Origin": "*",
-                            }}).then(function (res) {
-                                    console.log(res.data)
-                                    axios.get(`/api/messages/${vm.$route.params.memberId}`, {
-                                        headers: {"Access-Control-Allow-Origin": "*",},
-                                        }).then((res) => {
-                                            vm.messages = res.data;
-                                    });
-                            })
-                        }
-                    })
-                    break;
-                }
-            }
-        })
+        vm.startUp();
+        vm.detectStatus();
     },
     updated(){
         this.scrollToBottom();
     },
     methods:{
-        mix(){
+        detectStatus(){
             var vm = this;
-
+            connection.on("ReceiveStatus",function(objString){
+                var objItem = JSON.parse(objString);
+                let ontime = {
+                    MemberId: objItem.memberId,
+                    OtherId: objItem.gusetId
+                }
+                for(let i = 0; i < vm.messages.length; i++){
+                    if(vm.messages[i].gusetId == objItem.memberId){
+                        connection.invoke("GetCount", vm.mes.connectString).then(x=>{
+                            vm.count = x
+                            if(vm.count==2){
+                                vm.mes.memberOneStatus = 0;
+                                vm.mes.memberTwoStatus = 0;
+                                vm.$store.state.unreadCount = 0;
+                            }
+                        })
+                        break;
+                    }
+                    else if (vm.messages[i].memberId == objItem.memberId){
+                        connection.invoke("GetCount", vm.mes.connectString).then(x=>{
+                            vm.count = x;
+                            if(vm.count != 2){
+                                vm.updateStatus(ontime);
+                            }
+                        })
+                        break;
+                    }
+                }
+            })
+        },
+        startUp(){
+            var vm = this;
             vm.$store.state.unreadCount = 0;
-
-            vm.messages.forEach(x=>{
-                connection.invoke("AddAllGroup", x.connectString);
-            });
+            vm.$store.state.signalCommunications = [];
 
             axios.get(`/api/messages/${vm.$route.params.memberId}`, {
                 headers: {"Access-Control-Allow-Origin": "*",}})
                 .then((res) => {
                     vm.messages = res.data;
+                    vm.messages.forEach(x=>{
+                        vm.getFake(x)
+                        connection.invoke("AddAllGroup", x.connectString);
+                    })
+                    vm.get = true;
+                    console.log(vm.messages);
             });
 
             connection.on("ReceiveMessage",function(objString,message){
@@ -219,11 +197,7 @@ export default {
                             }
                             else{
                                 setTimeout(()=>{
-                                    axios.get(`/api/messages/${vm.$route.params.memberId}`, {
-                                    headers: {"Access-Control-Allow-Origin": "*",}})
-                                    .then((res) => {
-                                        vm.messages = res.data;
-                                    });
+                                    vm.getData();
                                 },1000);
                             }
                         })
@@ -240,17 +214,7 @@ export default {
                             connection.invoke("GetCount", vm.mes.connectString).then(x=>{
                                 vm.count = x
                                 if(vm.count==2){
-                                    axios.put(`/api/messages/${vm.$route.params.memberId}/status`, ontime,{
-                                    headers: {
-                                        "Access-Control-Allow-Origin": "*",
-                                    }}).then(function (res) {
-                                            console.log(res.data)
-                                            axios.get(`/api/messages/${vm.$route.params.memberId}`, {
-                                                headers: {"Access-Control-Allow-Origin": "*",},
-                                                }).then((res) => {
-                                                    vm.messages = res.data;
-                                            });
-                                    })
+                                    vm.updateStatus(ontime);
                                     vm.mes.memberOneStatus = 0;
                                     vm.mes.memberTwoStatus = 0;
                                     vm.$store.state.unreadCount = 0;
@@ -259,13 +223,8 @@ export default {
                                     axios.put(`/api/messages/${vm.$route.params.memberId}/ontime`, ontime,{
                                     headers: {
                                         "Access-Control-Allow-Origin": "*",
-                                    }}).then(function (res) {
-                                            console.log(res.data)
-                                            axios.get(`/api/messages/${vm.$route.params.memberId}`, {
-                                                headers: {"Access-Control-Allow-Origin": "*",},
-                                                }).then((res) => {
-                                                    vm.messages = res.data;
-                                            });
+                                    }}).then(function () {
+                                        vm.getData();
                                     })
                                     vm.$store.state.unreadCount += 1;
                                 }
@@ -277,28 +236,22 @@ export default {
                 }
             })
         },
-        useAxios(com){
-            axios.put(`/api/messages/${this.$route.params.memberId}/content`, com,{
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            }}).then(function (res) {
-                    console.log(res.data)
-                }).catch(err=>{console.log(err)})
+        getData(){
+            var vm = this;
+            axios.get(`/api/messages/${vm.$route.params.memberId}`, {
+                headers: {"Access-Control-Allow-Origin": "*",},
+                }).then((res) => {
+                    vm.messages = res.data;
+                    vm.messages.forEach(x=>{vm.getFake(x)})
+            });
         },
         updateStatus(ontime){
-            axios.put(`/api/messages/${this.$route.params.memberId}/status`, ontime,{
+            var vm = this;
+            axios.put(`/api/messages/${vm.$route.params.memberId}/status`, ontime,{
             headers: {
                 "Access-Control-Allow-Origin": "*",
-            }}).then(function (res) {
-                    console.log(res.data)
-            }).catch(err=>{console.log(err)})
-        },
-        updateOntime(ontime){
-            axios.put(`/api/messages/${this.$route.params.memberId}/ontime`, ontime,{
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            }}).then(function (res) {
-                    console.log(res.data)
+            }}).then(function () {
+                vm.getData();
             }).catch(err=>{console.log(err)})
         },
         sengMsg(){
@@ -308,7 +261,6 @@ export default {
         },
         removeJoin(){
             var vm = this;
-
             if (vm.width>768){
                 document.querySelectorAll('.hide-message').forEach(x=>{x.classList.remove('d-none')});
                 document.querySelector('.show-message').classList.add('d-none');
@@ -324,11 +276,7 @@ export default {
                 vm.messages.forEach(x=>{
                     connection.invoke("AddAllGroup", x.connectString);
                 });
-                axios.get(`/api/messages/${vm.$route.params.memberId}`, {
-                    headers: {"Access-Control-Allow-Origin": "*",}})
-                    .then((res) => {
-                        vm.messages = res.data;
-                });
+                vm.getData();
             })
         },
         sendData(item){
@@ -402,6 +350,49 @@ export default {
                     body.scrollTop = body.scrollHeight;
                 }
             })
+        },
+        getRandomNumber(min,max){
+            return Math.floor(Math.random() * (max-min+1))+min;
+        },
+        getRandomList(min,max,num){
+            var list = [];
+            while (list.length != num) {
+                var randomNumber = Math.floor(Math.random() * (max-min+1))+min;
+                if (!list.some((x) => {return x == randomNumber;})
+                ) { list.push(randomNumber);}
+            }
+            return list;
+        },
+        //Todo-先給隨機LandlordCover資料
+        getLandlordCover(messages){
+            if(messages.landlord.cover !== null) return;
+            let num = this.getRandomList(0,this.setting.portraits.length-1,1)[0];
+            messages.landlord.cover = this.setting.portraits[num];
+        },
+        //Todo-先給隨機Portrait資料
+        getPortrait(messages){
+            if(messages.portrait !== null) return;
+            let num = this.getRandomList(0,this.setting.portraits.length-1,1)[0];
+            messages.portrait = this.setting.portraits[num];
+        },
+        //Todo-先給隨機Price資料
+        getPrice(messages){
+            if(messages.paymentDetail.serviceFee !== 0) return;
+            Object.keys(messages.paymentDetail).forEach(x=>{
+                messages.paymentDetail[x] = Math.round(messages.origin*0.1+this.getRandomNumber(1,messages.origin/5));
+            });
+        },
+        //Todo-先給隨機Picture資料
+        getPicture(messages) {
+            if(messages.pictures.length !== 0) return;
+            let num = this.getRandomList(0,this.setting.pictures.length-1,1)[0];
+            messages.pictures.push(this.setting.pictures[num]);
+        },
+        getFake(x){
+            this.getLandlordCover(x);
+            this.getPortrait(x);
+            this.getPrice(x);
+            this.getPicture(x);
         }
     },
 }

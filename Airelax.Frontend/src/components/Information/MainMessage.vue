@@ -196,7 +196,6 @@ export default {
     mounted(){
         this.Diff();
         this.scrollToBottom();
-        console.log(this.$store.state.connection)
     }
 }
 </script>
