@@ -78,9 +78,9 @@
           <div class="row" v-for="item in wishLists" :key="item">
             <!-- 等資料進來，現在放假ˇ資料 -->
             <div class="col-3">
-              <img :src="item.cover" :alt="item.name"/>
+              <img :src="item.cover" :alt="item.name" />
             </div>
-            <div class="col-9">{{item.name}}</div>
+            <div class="col-9">{{ item.name }}</div>
           </div>
         </div>
       </div>
@@ -90,10 +90,10 @@
 
 <script>
 export default {
-  props:{
-    wishLists:{type:Array}
-  }
-}
+  props: {
+    wishLists: { type: Array },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

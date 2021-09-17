@@ -9,12 +9,13 @@ export default createStore({
         date: new Date(),
         isBodyShow: true,
         fullWidth: 0,
-      nightCount: 0,
-      room:{},
-      roomPicture:[],
+        nightCount: 0,
+        room:{},
+        roomPicture:[],
         isNewHouseOptionSelected: false,
         isNewHouseNextAvailable: false,
         newHouseRequest: {},
+        wishListData: {}
     },
     mutations: {
         setNewHouseNextAvailable(state, isAvailable) {

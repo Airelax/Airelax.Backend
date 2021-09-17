@@ -28,7 +28,9 @@
       <div class="maxLength"><label for="">最多50字元</label></div>
     </div>
     <div class="offcanvas-footer">
-      <div @click="createWishList" data-bs-dismiss="offcanvas" class="btn">建立</div>
+      <div @click="createWishList" data-bs-dismiss="offcanvas" class="btn">
+        建立
+      </div>
     </div>
   </div>
   <!-- 768px以上 含768px -->
@@ -64,7 +66,9 @@
           <div class="maxLength"><label for="">最多50字元</label></div>
         </div>
         <div class="footer">
-          <div @click="createWishList" data-bs-dismiss="modal" class="btn">建立</div>
+          <div @click="createWishList" data-bs-dismiss="modal" class="btn">
+            建立
+          </div>
         </div>
       </div>
     </div>
@@ -72,32 +76,32 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
-  data(){
+  data() {
     return {
-      title:'',
-    }
+      title: "",
+    };
   },
-  methods:{
-    createWishList:function(){
-      const dataUrl = '/api/WishLists'
+  methods: {
+    createWishList: function () {
+      const dataUrl = "/api/WishLists";
       axios({
-        method:'Post',
-        url : dataUrl,
+        method: "Post",
+        url: dataUrl,
         headers: {
-            'Content-Type':'application/json'
+          "Content-Type": "application/json",
         },
-        data:{wishName:this.title,houseId:this.houseId}
-      }).then(function(res){
-        console.log(res.data)
-      })
-    }
+        data: { wishName: this.title, houseId: this.houseId },
+      }).then(function (res) {
+        console.log(res.data);
+      });
+    },
   },
-  props:{
-    houseId:{type:String}
+  props: {
+    houseId: { type: String },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
