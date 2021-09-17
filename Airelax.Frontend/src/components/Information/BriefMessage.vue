@@ -82,6 +82,7 @@ import Talk from '../Information/Talk';
 import Signal from '../Information/SignalMessage';
 import * as signalR from '@microsoft/signalr';
 import moment from 'moment';
+import settingJson from "@/components/Settings/setting.js";
 
 let hubUrl = "https://localhost:5001/chatHub";
 const connection = new signalR.HubConnectionBuilder().withAutomaticReconnect().withUrl(hubUrl).build();
@@ -89,7 +90,6 @@ connection.start().catch(err=>console.log(err));
 
 export default {
     components:{Talk, Signal},
-    props:['allMsg'],
     inject: ["reload"],
     data(){
         return{
@@ -97,7 +97,8 @@ export default {
             receiver: "",
             msg: "",
             count: 0,
-            messages: this.allMsg
+            messages: {},
+            setting: settingJson
         }
     },
     watch:{
@@ -160,6 +161,7 @@ export default {
                                         headers: {"Access-Control-Allow-Origin": "*",},
                                         }).then((res) => {
                                             vm.messages = res.data;
+                                            vm.messages.forEach(x=>{vm.getFake(x)})
                                     });
                             })
                         }
@@ -177,16 +179,20 @@ export default {
             var vm = this;
 
             vm.$store.state.unreadCount = 0;
-
-            vm.messages.forEach(x=>{
-                connection.invoke("AddAllGroup", x.connectString);
-            });
+            vm.$store.state.signalCommunications = [];
 
             axios.get(`/api/messages/${vm.$route.params.memberId}`, {
                 headers: {"Access-Control-Allow-Origin": "*",}})
                 .then((res) => {
                     vm.messages = res.data;
+                    vm.messages.forEach(x=>{
+                        vm.getFake(x)
+                        connection.invoke("AddAllGroup", x.connectString);
+                    });
+                    console.log(vm.messages)
             });
+
+            
 
             connection.on("ReceiveMessage",function(objString,message){
                 console.log(message)
@@ -223,6 +229,7 @@ export default {
                                     headers: {"Access-Control-Allow-Origin": "*",}})
                                     .then((res) => {
                                         vm.messages = res.data;
+                                        vm.messages.forEach(x=>{vm.getFake(x)})
                                     });
                                 },1000);
                             }
@@ -249,6 +256,7 @@ export default {
                                                 headers: {"Access-Control-Allow-Origin": "*",},
                                                 }).then((res) => {
                                                     vm.messages = res.data;
+                                                    vm.messages.forEach(x=>{vm.getFake(x)})
                                             });
                                     })
                                     vm.mes.memberOneStatus = 0;
@@ -265,6 +273,7 @@ export default {
                                                 headers: {"Access-Control-Allow-Origin": "*",},
                                                 }).then((res) => {
                                                     vm.messages = res.data;
+                                                    vm.messages.forEach(x=>{vm.getFake(x)})
                                             });
                                     })
                                     vm.$store.state.unreadCount += 1;
@@ -328,6 +337,7 @@ export default {
                     headers: {"Access-Control-Allow-Origin": "*",}})
                     .then((res) => {
                         vm.messages = res.data;
+                        vm.messages.forEach(x=>{vm.getFake(x)})
                 });
             })
         },
@@ -402,6 +412,49 @@ export default {
                     body.scrollTop = body.scrollHeight;
                 }
             })
+        },
+        getRandomNumber(min,max){
+            return Math.floor(Math.random() * (max-min+1))+min;
+        },
+        getRandomList(min,max,num){
+            var list = [];
+            while (list.length != num) {
+                var randomNumber = Math.floor(Math.random() * (max-min+1))+min;
+                if (!list.some((x) => {return x == randomNumber;})
+                ) { list.push(randomNumber);}
+            }
+            return list;
+        },
+        //Todo-先給隨機LandlordCover資料
+        getLandlordCover(messages){
+            if(messages.landlord.cover !== null) return;
+            let num = this.getRandomList(0,this.setting.portraits.length-1,1)[0];
+            messages.landlord.cover = this.setting.portraits[num];
+        },
+        //Todo-先給隨機Portrait資料
+        getPortrait(messages){
+            if(messages.portrait !== null) return;
+            let num = this.getRandomList(0,this.setting.portraits.length-1,1)[0];
+            messages.portrait = this.setting.portraits[num];
+        },
+        //Todo-先給隨機Price資料
+        getPrice(messages){
+            if(messages.paymentDetail.serviceFee !== 0) return;
+            Object.keys(messages.paymentDetail).forEach(x=>{
+                messages.paymentDetail[x] = Math.round(messages.origin*0.1+this.getRandomNumber(1,messages.origin/5));
+            });
+        },
+        //Todo-先給隨機Picture資料
+        getPicture(messages) {
+            if(messages.pictures.length !== 0) return;
+            let num = this.getRandomList(0,this.setting.pictures.length-1,1)[0];
+            messages.pictures.push(this.setting.pictures[num]);
+        },
+        getFake(x){
+            this.getLandlordCover(x);
+            this.getPortrait(x);
+            this.getPrice(x);
+            this.getPicture(x);
         }
     },
 }
