@@ -717,7 +717,6 @@
             
             
     </style>
-
     <div>
         <div class="container">
             <div class="up">
@@ -821,7 +820,6 @@
 </template>
 
 @section ManageJS {
-    <script></script>
     <script>
         let barBtn = document.querySelectorAll('.barBtn');
         let detailSection = document.querySelector('.detail-section');
@@ -829,6 +827,7 @@
         let policySection = document.querySelector('.policy-rule-section');
         let contentDiv = document.querySelectorAll('.content');
         const loading = document.querySelector('#loading');
+        //BasicData
         let instanceBooking = [
             { name: "instance", title: "即時預訂功能已開啟", detail: "符合所有條件的房客可以即時預訂房源，其他房客則須傳送預訂申請。若你對預訂有任何疑慮，可取消且免受處罰。" },
             { name: "instance", title: "即時預訂功能已關閉", detail: "所有房客都必須傳送預訂申請" }
@@ -844,9 +843,9 @@
             { name: "unBooking", title: "嚴格或不可退款", detail: "除了嚴格退訂政策外，您還可以提供不可退款選項：房客雖然會少付10%的費用，不過萬一對方取消預訂，您就能保留全數收款。" },
         ];
         let status = [
-            { name: "unBooking", title: "已發布", detail: "房客可以在搜尋結果中找到你的房源，且可以提出預訂申請或預訂日曆上開放的日期。", icon: '<img src="/icon/Published.svg">' },
-            { name: "unBooking", title: "取消發布", detail: "房客無法預訂或在搜尋結果中找到此房源。", icon: '<img src="/icon/UnPublished.svg">' },
-            { name: "unBooking", title: "下架", detail: "將你的房源從 Airbnb 永久下架。", icon: '<img src="/icon/RemovePublish.svg">' },
+            { name: "status", title: "已發布", detail: "房客可以在搜尋結果中找到你的房源，且可以提出預訂申請或預訂日曆上開放的日期。", icon: '<img src="/icon/Published.svg">' },
+            { name: "status", title: "取消發布", detail: "房客無法預訂或在搜尋結果中找到此房源。", icon: '<img src="/icon/UnPublished.svg">' },
+            { name: "status", title: "下架", detail: "將你的房源從 Airbnb 永久下架。", icon: '<img src="/icon/RemovePublish.svg">' },
         ];
         let description = [
             { title: "房源空間", detail: "提供房源與房型的概述，讓房客對房源有初步的了解。" },
@@ -904,6 +903,7 @@
                 check: ["會，房客會與房東共用空間", "不會，房客可享有單獨的空間"]
             }
         };
+        //UpdateInput
         let updateDescription = {
             Description: "",
             SpaceDescription: "",
@@ -922,6 +922,34 @@
             HouseType: 0,
             RoomCategory: 0
         };
+        let updateTitle = { Title: "" };
+        let updateStatus = { Status: 0 };
+        let updateLocation = {
+            LocationDescription: "",
+            TrafficDescription: ""
+        };
+        let updatePrice = {
+            Origin: 0,
+            WeekDiscount: 0,
+            MonthDiscount: 0,
+            SweetPrice: 0,
+            CleanFee: 0,
+            CashPledge: 0
+        };
+        let updateCancel = {
+            CancelPolicy: 0
+        };
+        let updateRealTime = {
+            CanRealTime: false
+        };
+        let updateCheckTime = {
+            CheckinTime: "",
+            CheckoutTime: "",
+        };
+        let updateOthers = {
+            Other: ""
+        };
+        //FirstTime
         let firstTime = true;
         let AddressFirstTime = true;
         let CategoryFirstTime = true;
@@ -935,9 +963,7 @@
             }
             item.addEventListener('click', (e) => {
                 barBtn.forEach(btn => btn.classList.remove('active'))
-
                 lastBar.classList.add('d-none');
-
                 if (e.target.getAttribute('id') === 'detailBtn' || e.target.getAttribute('id') === 'changeStatus') {
                     detailSection.classList.remove('d-none');
                     document.querySelector('#detailBtn').classList.add('active');
@@ -1057,7 +1083,6 @@
                         }
                     });
                 }
-
 
                 //房間詳情
                 if (this.getAttribute('description') !== null) {
@@ -1230,7 +1255,6 @@
                     if (e.target.getAttribute('price') !== null) {
                         this.value = this.value.replace(/\D/g, '');
                         if (e.target.getAttribute('percent') !== null) {
-                            //待解決
                             if (Number(this.value) > 100 || Number(this.value) < 0) saveBtn.style.display = 'none';
                             else saveBtn.style.display = 'block';
                         }
@@ -1250,34 +1274,6 @@
 
                 //儲存Model
                 saveBtn.addEventListener('click', (event) => {
-                    let updateTitle = { Title: "" };
-                    let updateStatus = { Status: 0 };
-                    let updateLocation = {
-                        LocationDescription: "",
-                        TrafficDescription: ""
-                    };
-                    let updatePrice = {
-                        Origin: 0,
-                        WeekDiscount: 0,
-                        MonthDiscount: 0,
-                        SweetPrice: 0,
-                        CleanFee: 0,
-                        CashPledge: 0
-                    };
-                    let updateCancel = {
-                        CancelPolicy: 0
-                    };
-                    let updateRealTime = {
-                        CanRealTime: false
-                    };
-                    let updateCheckTime = {
-                        CheckinTime: "",
-                        CheckoutTime: "",
-                    };
-                    let updateOthers = {
-                        Other: ""
-                    };
-                    //event.preventDefault();
                     content.innerText = "";
                     if (e.target.getAttribute('textarea') !== null) {
                         content.innerText = textarea.value;
@@ -1292,18 +1288,18 @@
                                 PostData(updateDescription, "Description", "Put");
                                 firstTime = false;
                                 break;
-                            case '街區描述':
-                            case '周邊交通':
+                            case '其他守則':
+                                updateOthers.Other = textarea.value;
+                                PostData(updateOthers, "Others", "Put");
+                                break;
+                            //街區描述 & 周邊交通
+                            default :
                                 document.querySelectorAll('.updateLocation').forEach((x, i) => {
                                     Object.keys(updateLocation).forEach((item, index) => {
                                         if (index == i) updateLocation[item] = x.innerText
                                     });
                                 });
                                 PostData(updateLocation, "Location", "Put");
-                                break;
-                            case '其他守則':
-                                updateOthers.Other = textarea.value;
-                                PostData(updateOthers, "Others", "Put");
                                 break;
                         }
                     }
@@ -1378,12 +1374,8 @@
                                 PostData(updateTitle, "Title", "Put");
                                 document.querySelector('.title-div h1').innerText = input.value;
                                 break;
-                            case '每晚價格':
-                            case '週租折扣':
-                            case '月租折扣':
-                            case '甜甜價':
-                            case '清潔費':
-                            case '押金':
+                            //每晚價格 & 週租折扣 & 月租折扣 & 甜甜價 & 清潔費 & 押金
+                            default :
                                 document.querySelectorAll('.updatePrice').forEach((x, i) => {
                                     Object.keys(updatePrice).forEach((item, index) => {
                                         if (index == i) {
@@ -1428,55 +1420,6 @@
         let facilityBody = document.getElementById('facilityBody');
         let provide = '@Html.Raw(String.Join(',', Model.ProvideFacilities))'.split(',');
         let notProvide = '@Html.Raw(String.Join(',', Model.NotProvideFacilities))'.split(',');
-        window.addEventListener('load', () => {
-            Object.keys(facility).forEach((x, index) => {
-                let div = document.createElement('div');
-                let h3 = document.createElement('h3');
-                h3.innerText = x;
-                div.appendChild(h3);
-                facility[x].forEach((item, i) => {
-                    let list = document.createElement('div');
-                    let span = document.createElement('span');
-                    let group = document.createElement('div');
-                    let noInput = document.createElement('input');
-                    let yesInput = document.createElement('input');
-                    let noLabel = document.createElement('label');
-                    let yesLabel = document.createElement('label');
-                    span.innerText = item;
-                    list.classList.add('modal-list');
-                    setAttributes(group, { "class": "btn-group btn-group-justified" });
-                    setAttributes(noInput, { "type": "radio", "class": "btn-check updateFacility", "name": `${index + 1}${(i + 1).toString().padStart(2, "0")}`, "id": `no-${index + 1}-${i + 1}`, "autocomplete": "off", "value": `${index + 1}${(i + 1).toString().padStart(2, "0")}`, "attr": "no" });
-                    setAttributes(noLabel, { "class": "btn btn-outline-dark editBtn", "for": `no-${index + 1}-${i + 1}` });
-                    setAttributes(yesInput, { "type": "radio", "class": "btn-check updateFacility yesInput", "name": `${index + 1}${(i + 1).toString().padStart(2, "0")}`, "id": `yes-${index + 1}-${i + 1}`, "autocomplete": "off", "value": `${index + 1}${(i + 1).toString().padStart(2, "0")}` });
-                    setAttributes(yesLabel, { "class": "btn btn-outline-dark editBtn", "for": `yes-${index + 1}-${i + 1}` });
-                    noLabel.innerText = "✕";
-                    yesLabel.innerText = "✓";
-
-                    provide.forEach(x => {
-                        if (x == yesInput.getAttribute('name')) { yesInput.setAttribute('checked', 'checked') }
-                    });
-                    notProvide.forEach(x => {
-                        if (x == noInput.getAttribute('name')) { noInput.setAttribute('checked', 'checked') }
-                    });
-
-                    group.appendChild(noInput);
-                    group.appendChild(noLabel);
-                    group.appendChild(yesInput);
-                    group.appendChild(yesLabel);
-                    list.appendChild(span);
-                    list.appendChild(group);
-                    div.appendChild(list);
-                });
-                facilityBody.appendChild(div);
-            });
-            let content = document.querySelector('.facility .content');
-            content.innerText = "";
-            facilityBody.querySelectorAll('.yesInput').forEach(x => {
-                if (x.checked) {
-                    content.innerText += `${getParentNode(x, 2).querySelector('span').innerText},`;
-                }
-            })
-        });
         document.querySelector('.facilityBtn').addEventListener('click', () => {
             let updateFacilityBtn = document.querySelectorAll('#facilityBody .updateFacility');
             updateFacilityBtn.forEach(item => {
@@ -1504,89 +1447,22 @@
             });
         });
 
-        //房源類型初始化
-        window.addEventListener('load', () => {
-            let content = document.querySelector('.category .content');
-            content.innerText += `${typeSelect[0].category[Number('@Html.Raw(Model.HouseCategory.Category)') - 1]}, `;
-            let arr = '@Html.Raw(Model.HouseCategory.HouseType)'.split('');
-            let num = arr[arr.length - 2] == 0 ? Number(arr[arr.length - 1])-1 : Number('@Html.Raw(Model.HouseCategory.HouseType)'.slice(-2))-1;
-            let first = arr.length == 4 ? Number('@Html.Raw(Model.HouseCategory.HouseType)'.slice(0, 1))-1 : Number(arr[0])-1;
-            content.innerText += `${typeSelect[1].houseType[first][num]}, `;
-            content.innerText += `${typeSelect[2].roomCategory[ Number('@Html.Raw(Model.HouseCategory.RoomCategory)') - 1]}, `;
-        });
-
         //房間與空間
+        let UpdateSpace = {
+            Id: "",
+            HouseId: '@Html.Raw(Model.Id)',
+            SpaceType: 0,
+            IsShared: false
+        };
+        let UpdateBedroom = {
+            SpaceId: "",
+            BedType: 0,
+            BedCount: 0,
+            HasIndependentBath: true
+        };
         const spaceBed ='@(Model.SpaceBed == null || !Model.SpaceBed.Any() ? string.Empty : Html.Raw(Model.SpaceBed))';
         let SpaceArray = spaceBed ==='' ? null: JSON.parse('@Html.Raw(Model.SpaceBed)');
         let spaceBody = document.getElementById('spaceBody');
-        console.log(SpaceArray);
-        window.addEventListener('load', () => {
-            Object.keys(space).forEach((x, index) => {
-                let div = document.createElement('div');
-                let h4 = document.createElement('h4');
-                h4.innerText = space[x].title;
-                div.appendChild(h4);
-                if (index == 0) div.classList.add('canUse');
-                else if (index == 1) div.classList.add('bed');
-
-                if (space[x].check !== undefined) {
-                    if (index == 2) {
-                        addBebCheck(x, index, div)
-                    }
-                }
-                if (space[x].detail !== undefined) {
-                    if (index == 0) {
-                        space[x].detail.forEach((item, i) => {
-                            addBedCount(item, div, i);
-                        });
-                    }
-                }
-                spaceBody.appendChild(div);
-            });
-            if(!SpaceArray) return;
-            //初始化
-            SpaceArray.forEach(x => {
-                let canCreate = true;
-                document.querySelectorAll('.canUse .list').forEach((item, itemIndex) => {
-                    let span = item.querySelector('.btn span');
-                    if (itemIndex + 1 == x.SpaceVM.SpaceType) {
-                        if (Number(x.SpaceVM.SpaceType) != 1) span.innerText = Number(span.innerText) + 1
-                        else {
-                            let allRoom = document.querySelectorAll('.bed > div');
-                            allRoom.forEach(y => {
-                                if (y.getAttribute('spaceid') == x.SpaceVM.Id) canCreate = false;
-                            });
-                            if (canCreate) span.innerText = Number(span.innerText) + 1
-                        }
-                    }
-                });
-                if (Number(x.SpaceVM.SpaceType) == 1) {
-                    if (canCreate) addRoom(Number(document.querySelector('.canUse .list:nth-child(2) .btn span').innerText));
-                    let room = document.querySelectorAll('#spaceBody .bed > div');
-                    room.forEach(rm => {
-                        if (rm.getAttribute('spaceid') == x.SpaceVM.Id || rm.getAttribute('spaceid') == undefined) {
-                            rm.setAttribute('spaceid', x.SpaceVM.Id);
-                            if (x.SpaceVM.IsShared) rm.querySelector('.form-check:first-child input').checked = true;
-                            if (x.BedroomDetailVM !== null) {
-                                if (x.BedroomDetailVM.HasIndependentBath) rm.querySelector('.form-check:nth-child(2) input').checked = true;
-                                rm.querySelectorAll('.list').forEach((list, listIndex) => {
-                                    if (listIndex + 1 == x.BedroomDetailVM.BedType) list.querySelector('.btn span').innerText = x.BedroomDetailVM.BedCount;
-                                });
-                            }
-                        }
-                    });
-                }
-                let yesShare = document.querySelector('#spaceBody > div:last-child .form-check:first-child input');
-                let noShare = document.querySelector('#spaceBody > div:last-child .form-check:nth-child(2) input');
-                if (x.SpaceVM.IsShared && yesShare != null && noShare != null) yesShare.checked = true;
-                else noShare.checked = true;
-            });
-            showSpaceContent();
-            let closeBtn = document.getElementById('space-close');
-            closeBtn.addEventListener('click', () => {
-                showSpaceContent();
-            });
-        });
 
         function addBebCheck(x, index, div) {
             space[x].check.forEach(item => {
@@ -1603,7 +1479,6 @@
                 div.appendChild(list);
             });
         }
-
         function showSpaceContent() {
             let content = document.querySelector('.space .content');
             let bedroom = 0;
@@ -1619,21 +1494,6 @@
             })
             content.innerHTML = `臥室: ${bedroom}<br/>衛浴：${bathroom}<br/>其他區域：${otherSpace}<br/>`;
         }
-
-        let UpdateSpace = {
-            Id: "",
-            HouseId: '@Html.Raw(Model.Id)',
-            SpaceType: 0,
-            IsShared: false
-        };
-
-        let UpdateBedroom = {
-            SpaceId: "",
-            BedType: 0,
-            BedCount: 0,
-            HasIndependentBath: true
-        };
-
         function addBedCount(item, div, i) {
             let list = document.createElement('div');
             let span = document.createElement('span');
@@ -1720,7 +1580,6 @@
             list.appendChild(button);
             div.appendChild(list);
         }
-
         function addRoom(num) {
             let bed = document.createElement('div');
             let btn = document.createElement('button');
@@ -1763,31 +1622,7 @@
                         }
                     });
                 });
-                PostData(updateRule,"Rules","Put");
-            });
-        });
-
-        //顯示更多內容初始化
-        window.addEventListener('load', () => {
-            contentDiv.forEach(x => {
-                if (x.innerText.length > 200) {
-                    if (x.getAttribute('id') == 'facilityContent') return;
-                    x.classList.add('hide');
-                    let button = document.createElement('button').cloneNode(true);
-                    button.style.marginTop = "1rem";
-                    button.innerText = "顯示更多";
-                    button.addEventListener('mousedown', (e) => {
-                        if (x.getAttribute('class').includes('hide')) {
-                            x.classList.remove('hide');
-                            e.target.innerText = "隱藏";
-                        }
-                        else {
-                            x.classList.add('hide');
-                            e.target.innerText = "顯示更多";
-                        }
-                    })
-                    x.parentNode.appendChild(button)
-                }
+                PostData(updateRule, "Rules", "Put");
             });
         });
 
@@ -1823,6 +1658,155 @@
                 }
             });
             observer.observe(content, { childList: true });
+        });
+
+        //window載入時初始化
+        window.addEventListener('load', () => {
+            //房源類型-初始化
+            let categoryContent = document.querySelector('.category .content');
+            categoryContent.innerText += `${typeSelect[0].category[Number('@Html.Raw(Model.HouseCategory.Category)') - 1]}, `;
+            let arr = '@Html.Raw(Model.HouseCategory.HouseType)'.split('');
+            let num = arr[arr.length - 2] == 0 ? Number(arr[arr.length - 1])-1 : Number('@Html.Raw(Model.HouseCategory.HouseType)'.slice(-2))-1;
+            let first = arr.length == 4 ? Number('@Html.Raw(Model.HouseCategory.HouseType)'.slice(0, 1))-1 : Number(arr[0])-1;
+            categoryContent.innerText += `${typeSelect[1].houseType[first][num]}, `;
+            categoryContent.innerText += `${typeSelect[2].roomCategory[Number('@Html.Raw(Model.HouseCategory.RoomCategory)') - 1]}, `;
+
+            //設備與服務-初始化
+            Object.keys(facility).forEach((x, index) => {
+                let div = document.createElement('div');
+                let h3 = document.createElement('h3');
+                h3.innerText = x;
+                div.appendChild(h3);
+                facility[x].forEach((item, i) => {
+                    let list = document.createElement('div');
+                    let span = document.createElement('span');
+                    let group = document.createElement('div');
+                    let noInput = document.createElement('input');
+                    let yesInput = document.createElement('input');
+                    let noLabel = document.createElement('label');
+                    let yesLabel = document.createElement('label');
+                    span.innerText = item;
+                    list.classList.add('modal-list');
+                    setAttributes(group, { "class": "btn-group btn-group-justified" });
+                    setAttributes(noInput, { "type": "radio", "class": "btn-check updateFacility", "name": `${index + 1}${(i + 1).toString().padStart(2, "0")}`, "id": `no-${index + 1}-${i + 1}`, "autocomplete": "off", "value": `${index + 1}${(i + 1).toString().padStart(2, "0")}`, "attr": "no" });
+                    setAttributes(noLabel, { "class": "btn btn-outline-dark editBtn", "for": `no-${index + 1}-${i + 1}` });
+                    setAttributes(yesInput, { "type": "radio", "class": "btn-check updateFacility yesInput", "name": `${index + 1}${(i + 1).toString().padStart(2, "0")}`, "id": `yes-${index + 1}-${i + 1}`, "autocomplete": "off", "value": `${index + 1}${(i + 1).toString().padStart(2, "0")}` });
+                    setAttributes(yesLabel, { "class": "btn btn-outline-dark editBtn", "for": `yes-${index + 1}-${i + 1}` });
+                    noLabel.innerText = "✕";
+                    yesLabel.innerText = "✓";
+
+                    provide.forEach(x => {
+                        if (x == yesInput.getAttribute('name')) { yesInput.setAttribute('checked', 'checked') }
+                    });
+                    notProvide.forEach(x => {
+                        if (x == noInput.getAttribute('name')) { noInput.setAttribute('checked', 'checked') }
+                    });
+
+                    group.appendChild(noInput);
+                    group.appendChild(noLabel);
+                    group.appendChild(yesInput);
+                    group.appendChild(yesLabel);
+                    list.appendChild(span);
+                    list.appendChild(group);
+                    div.appendChild(list);
+                });
+                facilityBody.appendChild(div);
+            });
+            let facilityContent = document.querySelector('.facility .content');
+            facilityContent.innerText = "";
+            facilityBody.querySelectorAll('.yesInput').forEach(x => {
+                if (x.checked) {
+                    facilityContent.innerText += `${getParentNode(x, 2).querySelector('span').innerText},`;
+                }
+            })
+
+            //房間與空間-初始化
+            Object.keys(space).forEach((x, index) => {
+                let div = document.createElement('div');
+                let h4 = document.createElement('h4');
+                h4.innerText = space[x].title;
+                div.appendChild(h4);
+                if (index == 0) div.classList.add('canUse');
+                else if (index == 1) div.classList.add('bed');
+
+                if (space[x].check !== undefined) {
+                    if (index == 2) {
+                        addBebCheck(x, index, div)
+                    }
+                }
+                if (space[x].detail !== undefined) {
+                    if (index == 0) {
+                        space[x].detail.forEach((item, i) => {
+                            addBedCount(item, div, i);
+                        });
+                    }
+                }
+                spaceBody.appendChild(div);
+            });
+            if (!SpaceArray) return;
+            SpaceArray.forEach(x => {
+                let canCreate = true;
+                document.querySelectorAll('.canUse .list').forEach((item, itemIndex) => {
+                    let span = item.querySelector('.btn span');
+                    if (itemIndex + 1 == x.SpaceVM.SpaceType) {
+                        if (Number(x.SpaceVM.SpaceType) != 1) span.innerText = Number(span.innerText) + 1
+                        else {
+                            let allRoom = document.querySelectorAll('.bed > div');
+                            allRoom.forEach(y => {
+                                if (y.getAttribute('spaceid') == x.SpaceVM.Id) canCreate = false;
+                            });
+                            if (canCreate) span.innerText = Number(span.innerText) + 1
+                        }
+                    }
+                });
+                if (Number(x.SpaceVM.SpaceType) == 1) {
+                    if (canCreate) addRoom(Number(document.querySelector('.canUse .list:nth-child(2) .btn span').innerText));
+                    let room = document.querySelectorAll('#spaceBody .bed > div');
+                    room.forEach(rm => {
+                        if (rm.getAttribute('spaceid') == x.SpaceVM.Id || rm.getAttribute('spaceid') == undefined) {
+                            rm.setAttribute('spaceid', x.SpaceVM.Id);
+                            if (x.SpaceVM.IsShared) rm.querySelector('.form-check:first-child input').checked = true;
+                            if (x.BedroomDetailVM !== null) {
+                                if (x.BedroomDetailVM.HasIndependentBath) rm.querySelector('.form-check:nth-child(2) input').checked = true;
+                                rm.querySelectorAll('.list').forEach((list, listIndex) => {
+                                    if (listIndex + 1 == x.BedroomDetailVM.BedType) list.querySelector('.btn span').innerText = x.BedroomDetailVM.BedCount;
+                                });
+                            }
+                        }
+                    });
+                }
+                let yesShare = document.querySelector('#spaceBody > div:last-child .form-check:first-child input');
+                let noShare = document.querySelector('#spaceBody > div:last-child .form-check:nth-child(2) input');
+                if (x.SpaceVM.IsShared && yesShare != null && noShare != null) yesShare.checked = true;
+                else noShare.checked = true;
+            });
+            showSpaceContent();
+            let closeBtn = document.getElementById('space-close');
+            closeBtn.addEventListener('click', () => {
+                showSpaceContent();
+            });
+
+            //顯示更多內容初始化
+            contentDiv.forEach(x => {
+                if (x.innerText.length > 200) {
+                    if (x.getAttribute('id') == 'facilityContent') return;
+                    x.classList.add('hide');
+                    let button = document.createElement('button').cloneNode(true);
+                    button.style.marginTop = "1rem";
+                    button.innerText = "顯示更多";
+                    button.addEventListener('mousedown', (e) => {
+                        if (x.getAttribute('class').includes('hide')) {
+                            x.classList.remove('hide');
+                            e.target.innerText = "隱藏";
+                        }
+                        else {
+                            x.classList.add('hide');
+                            e.target.innerText = "顯示更多";
+                        }
+                    })
+                    x.parentNode.appendChild(button)
+                }
+            });
         });
 
         //setAttribute
@@ -1902,7 +1886,6 @@
 
         // 拖曳監聽(必須)
         uploadDiv.addEventListener("dragover", function (e) { e.preventDefault(); })
-
 
         //初始化圖片
         const photoModel = document.querySelector('#photoModal');
@@ -2014,7 +1997,6 @@
         });
 
         //上傳圖片到第三方圖床
-
         const fileUploadUrl = '@Html.Raw(_photoUploadSetting.Value.BaseUrl)/@Html.Raw(_photoUploadSetting.Value.CloudName)/@Html.Raw(_photoUploadSetting.Value.UploadImageApi)';
         function UploadImages(image){
             const div = document.createElement('div');
@@ -2040,7 +2022,6 @@
         }
 
          // 照片進來後的處理
-
         function loadPic(photoUrl, div) {
 
             console.log(photoArray);
