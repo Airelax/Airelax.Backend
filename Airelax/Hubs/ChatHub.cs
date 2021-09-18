@@ -12,6 +12,7 @@ namespace Airelax.Hubs
         public async Task AddGroup(string groupName)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+            if (GetCount(groupName) == 2) return;
             UserHandler.ConnectedIds.Add(groupName);
         }
 
@@ -28,6 +29,7 @@ namespace Airelax.Hubs
         public async Task RemoveGroup(string groupName)
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+            if (GetCount(groupName) == 0) return;
             UserHandler.ConnectedIds.Remove(groupName);
         }
 

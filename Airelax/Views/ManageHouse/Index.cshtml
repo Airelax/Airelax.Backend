@@ -11,11 +11,11 @@
 }
 
 <div class="main">
-<div class="title-div">
-    <h1>@Model.Title</h1>
-    <div class="mix">
+<div class="title-div row p-0 border-bottom-0">
+    <h1 class="col-md-8">@Model.Title</h1>
+    <div class="mix col-md-4 d-flex flex-wrap justify-content-md-end">
         <div class="sleep">
-            <a href="#basic" id="changeStatus" class="barBtn">
+            <a href="#basic" id="changeStatus" class="barBtn p-0">
                 @switch (Model.Status)
                 {
                     case 1:
@@ -32,7 +32,7 @@
                         break;
                 }
             </a>
-            <a href="#policy" id="changeInstance" class="barBtn">
+            <a href="#policy" id="changeInstance" class="barBtn p-0">
                 @if (Model.InstanceBooking)
                 {
                     <span>即時預訂功能已開啟</span>
@@ -44,7 +44,7 @@
             </a>
         </div>
         <div class="view">
-            <a href="#">預覽房源</a>
+            <a href="http://localhost:8080/room/@Model.Id">預覽房源</a>
         </div>
     </div>
 </div>
@@ -125,7 +125,7 @@
             <h2>相片</h2>
             <a href="#" class="editBtn photoBtn"
                data-bs-toggle="modal" data-bs-target="#photoModal">
-                <span>(1張照片)</span>編輯<img src="~/icon/next.svg">
+                <span>(@Model.Pictures.Count()張照片)</span>編輯<img src="~/icon/next.svg">
             </a>
         </div>
         <div class="pic">
@@ -289,7 +289,7 @@
             <div class="col-10">
                 <div class="subtitle">週租折扣</div>
                 <div class="d-flex price-mix">
-                    <div class="content">0</div>
+                    <div class="content updatePrice">@Model.WeekDiscount</div>
                     <span>%</span>
                 </div>
             </div>
@@ -302,7 +302,7 @@
             <div class="col-10">
                 <div class="subtitle">月租折扣</div>
                 <div class="d-flex price-mix">
-                    <div class="content">0</div>
+                    <div class="content updatePrice">@Model.MonthDiscount</div>
                     <span>%</span>
                 </div>
             </div>
@@ -334,7 +334,7 @@
                 <div class="subtitle">清潔費</div>
                 <div class="d-flex price-mix">
                     <span>$&ensp;</span>
-                    <div class="content">0</div>
+                    <div class="content updatePrice">@Model.Fee</div>
                     <span>&ensp;TWD</span>
                 </div>
             </div>
@@ -1190,7 +1190,7 @@
                 //price區域
                 if (this.getAttribute('price') !== null) {
                     if (this.getAttribute('percent') !== null) {
-                        component.shadowRoot.querySelector('.com-priceHtmlspan').style.display = 'block';
+                        component.shadowRoot.querySelector('.com-price span').style.display = 'block';
                     }
                     else {
                         component.shadowRoot.querySelector('.com-price p').style.display = 'block';
@@ -1258,7 +1258,10 @@
                     };
                     let updatePrice = {
                         Origin: 0,
+                        WeekDiscount: 0,
+                        MonthDiscount: 0,
                         SweetPrice: 0,
+                        CleanFee: 0,
                         CashPledge: 0
                     };
                     let updateCancel = {
@@ -1376,7 +1379,10 @@
                                 document.querySelector('.title-div h1').innerText = input.value;
                                 break;
                             case '每晚價格':
+                            case '週租折扣':
+                            case '月租折扣':
                             case '甜甜價':
+                            case '清潔費':
                             case '押金':
                                 document.querySelectorAll('.updatePrice').forEach((x, i) => {
                                     Object.keys(updatePrice).forEach((item, index) => {
@@ -1655,9 +1661,9 @@
                 // 減少臥室
                 if (i == 0) {
                     let lastBtn = document.querySelector('#spaceBody .bed > div:last-child');
+                    UpdateSpace.Id = lastBtn.getAttribute('spaceid');
                     lastBtn.parentNode.removeChild(lastBtn);
                 }
-                UpdateSpace.Id = document.querySelector('.bed > div:last-child').getAttribute('spaceid');
                 UpdateSpace.SpaceType = Number(getParentNode(e.target, 2).getAttribute('index'));
                 PostData(UpdateSpace, "Space", "Delete");
             });
@@ -1680,6 +1686,23 @@
                 if (i == 0) {
                     let num = e.target.parentNode.querySelector('span').innerText;
                     addRoom(num);
+                    UpdateSpace.SpaceType = Number(getParentNode(e.target, 2).getAttribute('index'));
+                    UpdateSpace.IsShared = true;
+                    axios({
+                        method: "Post",
+                        url: `/ManageHouse/@Html.Raw(Model.Id)/Space`,
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        data: JSON.stringify(UpdateSpace),
+                    }).then(function (res) {
+                        let room = document.querySelector('#spaceBody .bed > div:last-child');
+                        let spaceId = res.data[res.data.length - 1].space.id
+                        room.setAttribute('spaceid', spaceId);
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                    return
                 }
                 UpdateSpace.SpaceType = Number(getParentNode(e.target, 2).getAttribute('index'));
                 UpdateSpace.IsShared = true;
@@ -1874,27 +1897,37 @@
         uploadDiv.addEventListener("drop", function (e) {
             e.preventDefault();
             let file = e.dataTransfer.files[0];
-             UploadImages(file);   
+             UploadImages(file);
         })
 
         // 拖曳監聽(必須)
         uploadDiv.addEventListener("dragover", function (e) { e.preventDefault(); })
+
 
         //初始化圖片
         const photoModel = document.querySelector('#photoModal');
         let photoArray = JSON.parse('@(Html.Raw(Json.Serialize(Model.Pictures)))');
         const showPhoto = document.getElementById('showPhoto');
         const cover = document.querySelector('.showPic');
-        cover.setAttribute('style',`background-image:url(${photoArray[0]});`);
-        (function (){
-           photoArray.forEach(image=>{
-               const div = document.createElement('div');
-               div.classList.add('delete');
-               div.style.backgroundImage = `url(${image})`
-               showPhoto.appendChild(div);
-               div.addEventListener('click',e => deleteImage(e, image));
-           });
-        })();
+        if (cover != null) {
+            cover.setAttribute('style', `background-image:url(${photoArray[0]});`);
+            (function () {
+                photoArray.forEach(image => {
+                    const div = document.createElement('div');
+                    div.classList.add('delete');
+                    div.style.backgroundImage = `url(${image})`
+                    showPhoto.appendChild(div);
+                    div.addEventListener('click', e => deleteImage(e, image));
+                    enableDragSort('drag-sort-enable');
+                });
+            })();
+        }
+
+        window.addEventListener('load', () => {
+            if (photoArray.length == 0) {
+                cover.classList.add('d-none');
+            }
+        })
 
         //刪除相片
         function deleteImage(e, photoUrl) {
@@ -1903,14 +1936,14 @@
           if (fileIndex<= -1) return;
           photoArray.splice(fileIndex,1);
         }
-           
-        // 照片上傳監聽        
+
+        // 照片上傳監聽
         const fileBtn = document.querySelector('#upload_img');
         fileBtn.addEventListener("change", function () {
             //將上傳檔案轉換為base64字串
             if (!this.files||!this.files[0]) return;
             let file = this.files[0];
-            UploadImages(file);   
+            UploadImages(file);
         })
 
         //圖片移動順序
@@ -1948,7 +1981,11 @@
         const picNumber = document.querySelector('.up span');
         const savePhotoApiUrl = '/ManageHouse/@Html.Raw(Model.Id)/pictures'
         photoSave.addEventListener('click', () => {
-            //todo
+            photoArray = [];
+            document.querySelectorAll('.delete').forEach(x => {
+                photoArray.push(x.style.backgroundImage.replace('url(', '').replace(')', '').replace(/\"/gi, ""))
+            })
+
             if (photoArray){
                 fetch(savePhotoApiUrl, {
                     method:'POST',
@@ -1965,17 +2002,19 @@
                     photoArray = json.images;
                     console.log(photoArray);
                     console.log((photoArray && photoArray.length));
-                    if (photoArray && photoArray.length){
-                        cover.setAttribute('style',`background-image:url(${photoArray[0]})`);
+                    if (photoArray && photoArray.length && cover != null) {
+                        cover.classList.remove('d-none');
+                        cover.setAttribute('style', `background-image:url(${photoArray[0]})`);
                     }
-                    picNumber.innerText = `${photoArray.length}張照片` 
+                    else if (photoArray.length == 0) cover.classList.add('d-none');
+                    picNumber.innerText = `${photoArray.length}張照片`
                 } )
             }
-           
+
         });
-        
+
         //上傳圖片到第三方圖床
-         
+
         const fileUploadUrl = '@Html.Raw(_photoUploadSetting.Value.BaseUrl)/@Html.Raw(_photoUploadSetting.Value.CloudName)/@Html.Raw(_photoUploadSetting.Value.UploadImageApi)';
         function UploadImages(image){
             const div = document.createElement('div');
@@ -1999,11 +2038,11 @@
                loadPic(imageUrl,div);
            }).catch(err => console.log(err))
         }
-        
+
          // 照片進來後的處理
-               
+
         function loadPic(photoUrl, div) {
-                    
+
             console.log(photoArray);
             div.classList.remove('col-6');
             div.classList.remove('mb-3');
@@ -2011,12 +2050,12 @@
             div.classList.add('delete');
             div.style.backgroundImage = `url(${photoUrl})`
             showPhoto.appendChild(div);
-            
-            div.addEventListener('click', (e) => deleteImage(e, photoUrl));      
+
+            div.addEventListener('click', (e) => deleteImage(e, photoUrl));
              enableDragSort('drag-sort-enable');
         }
-        
-        
+
+
         //sideBar
         let collapse = document.querySelectorAll('.sideBtn');
         let li = document.querySelectorAll('.collapse a');
@@ -2043,7 +2082,7 @@
         window.addEventListener('scroll', (e) => {
             let sTop = document.documentElement.scrollTop;
             scroll.forEach(x => {
-                if (sTop > x.offsetTop - 510) {
+                if (sTop > x.offsetTop - 550) {
                     let h2 = x.querySelector('h2').innerText;
                     li.forEach(x => {
                         if (x.innerText == h2)
