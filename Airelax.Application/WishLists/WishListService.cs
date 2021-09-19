@@ -97,7 +97,7 @@ namespace Airelax.Application.WishLists
         }
 
         public IEnumerable<WishListViewModel> GetWishLists()
-        {
+        {   
             var member = _accountService.GetMember().Result;
             CheckMember(member, member.Id);
 

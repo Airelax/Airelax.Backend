@@ -15,7 +15,8 @@ export default createStore({
         isNewHouseOptionSelected: false,
         isNewHouseNextAvailable: false,
         newHouseRequest: {},
-        wishListData: {}
+        wishListData: {},
+        selectedWishHouseId:""
     },
     mutations: {
         setNewHouseNextAvailable(state, isAvailable) {

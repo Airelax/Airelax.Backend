@@ -104,7 +104,7 @@ export default {
           "Content-Type": "application/json",
         },
         data: {
-          HouseId: this.houseId,
+          HouseId: this.$store.state.selectedWishHouseId,
           WishId: wishId,
           IsAdd: !this.IsAdd,
         },
@@ -113,7 +113,6 @@ export default {
   },
   props: {
     wishLists: { type: Array },
-    houseId: { type: String },
   },
 };
 </script>
