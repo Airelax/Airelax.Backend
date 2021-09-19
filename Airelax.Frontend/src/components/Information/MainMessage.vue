@@ -154,7 +154,7 @@ export default {
                     event.target.style.opacity = '100';
                 });
             }
-        },
+        },  
         close(){
             this.change()
         },
