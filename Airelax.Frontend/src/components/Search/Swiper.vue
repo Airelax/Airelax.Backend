@@ -9,7 +9,7 @@
     :navigation="true"
     class="roomPicture"
   >
-    <swiper-slide v-for="(picture,index) in fiveBlock" :key="index" >
+    <swiper-slide v-for="(picture, index) in fiveBlock" :key="index">
       <img :src="picture" />
     </swiper-slide>
   </swiper>
@@ -43,7 +43,6 @@
   margin-left: auto;
   margin-right: auto;
 }
-
 </style>
 
 <script>
@@ -59,13 +58,13 @@ export default {
     Swiper,
     SwiperSlide,
   },
-  props: ["roomPicture"],
-  computed:{
-    fiveBlock(){
-        return this.roomPicture.filter(function(value, index){
-            return index < 5;
-        })
-    }
-  }
+  props: ["roomPicture", "houseId"],
+  computed: {
+    fiveBlock() {
+      return this.roomPicture.filter(function (value, index) {
+        return index < 5;
+      });
+    },
+  },
 };
 </script>

@@ -1,10 +1,11 @@
 <template>
   <div class="col-12 col-md-6 col-xl-4" v-for="i in wishList" :key="i">
     <div class="car">
-      <img src="https://picsum.photos/600/400/?random=1" alt="TodoCover" />
+      <img :src="i.photo" alt="Photo" />
       <div class="content">
         <div class="starContainer">
-          <Star></Star>&nbsp;Todo總分&nbsp;<span>&nbsp;(Todo則評論)</span>
+          <Star></Star>&nbsp;4.5&nbsp;
+          <span> &nbsp;({{ i.comment.totalComments }}則評論) </span>
         </div>
         <div class="title">
           <span>{{ i.houseCategory }}．位於{{ i.location }}</span>
@@ -26,7 +27,7 @@ import Star from "../Search/Star.vue";
 export default {
   components: { Star },
   props: {
-    wishList: { type: Object },
+    wishList: { type: Array },
   },
 };
 </script>

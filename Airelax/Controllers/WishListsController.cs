@@ -32,18 +32,10 @@ namespace Airelax.Controllers
         }
 
         [HttpPut]
-        [Route("AddHouse")]
-        public bool AddHouse([FromBody] UpdateWishListInput input)
+        [Route("Houses")]
+        public bool ReviseHouses([FromBody] UpdateWishListInput input)
         {
-            _wishListService.AddHouse(input);
-            return true;
-        }
-
-        [HttpPut]
-        [Route("RemoveHouse")]
-        public bool RemoveHouse([FromBody] UpdateWishListInput input)
-        {
-            _wishListService.RemoveHouse(input);
+            _wishListService.ReviseHouse(input);
             return true;
         }
 
@@ -62,9 +54,9 @@ namespace Airelax.Controllers
 
         [HttpGet]
         [Route("{wishId}")]
-        public Task<IEnumerable<WishListHousesViewModel>> GetHousesByWishList(int wishId)
+        public async Task<IEnumerable<WishListHousesViewModel>> GetHousesByWishList(int wishId)
         {
-            return _wishListService.GetHousesByWishList(wishId);
+            return await _wishListService.GetHousesByWishList(wishId);
         }
     }
 }

@@ -81,6 +81,7 @@ export default {
   data() {
     return {
       title: "",
+      key: this.houseId,
     };
   },
   methods: {
@@ -92,14 +93,14 @@ export default {
         headers: {
           "Content-Type": "application/json",
         },
-        data: { wishName: this.title, houseId: this.houseId },
+        data: { wishName: this.title, houseId: this.key },
       }).then(function (res) {
         console.log(res.data);
       });
     },
   },
   props: {
-    houseId: { type: String },
+    houseId: { type: Array },
   },
 };
 </script>

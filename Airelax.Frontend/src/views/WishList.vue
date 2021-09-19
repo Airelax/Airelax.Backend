@@ -96,24 +96,35 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-.heard img:nth-child(1) {
-  width: 18px;
-  height: 18px;
+.heard a img,
+.checkWidth img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
 }
-.heard img:nth-child(2) {
-  width: 28px;
-  height: 28px;
+.heard a img:hover,
+.checkWidth img:hover {
+  background-color: #ebebeb;
 }
-
+.heard a img {
+  padding: 15px;
+  margin-left: -15px;
+}
+.checkWidth img {
+  padding: 11px;
+  margin-right: -11px;
+}
 .main {
   color: #222;
   padding: 0 24px;
   text-align: start;
 }
 .main .title h2 {
-  font-size: 26px;
+  font-size: 32px;
   font-weight: 600;
-  line-height: 30px;
+  line-height: 36px;
+  margin: 20px 0 36px;
 }
 .container-fluid {
   padding: 0;

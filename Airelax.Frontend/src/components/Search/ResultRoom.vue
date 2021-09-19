@@ -24,11 +24,12 @@
         ></Heart>
       </div>
       <CreateWish :houseId="room.id"></CreateWish>
-      <Wish :wishLists="wishLists"></Wish>
+      <Wish :wishLists="wishLists" :houseId="room.id"></Wish>
       <div>
         <RoomSwiper
           :roomPicture="room.picture"
           style="cursor: default"
+          :houseId="room.id"
         ></RoomSwiper>
       </div>
     </div>
@@ -155,76 +156,76 @@
 </template>
 
 <style lang="scss" scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap');
-  @import '@/assets/sass/search.scss';
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap");
+@import "@/assets/sass/search.scss";
 </style>
 
 <script>
-  import Star from './Star.vue'
-  import RoomSwiper from './Swiper.vue'
-  import PriceDetail from './PriceDetail.vue'
-  import MdPriceDetail from './MdPriceDetail.vue'
-  import Wish from './Wish.vue'
-  import CreateWish from './CreateWish.vue'
-  import Heart from './Heart.vue'
-  export default {
-    components: {
-      Star,
-      RoomSwiper,
-      PriceDetail,
-      MdPriceDetail,
-      Wish,
-      CreateWish,
-      Heart,
+import Star from "./Star.vue";
+import RoomSwiper from "./Swiper.vue";
+import PriceDetail from "./PriceDetail.vue";
+import MdPriceDetail from "./MdPriceDetail.vue";
+import Wish from "./Wish.vue";
+import CreateWish from "./CreateWish.vue";
+import Heart from "./Heart.vue";
+export default {
+  components: {
+    Star,
+    RoomSwiper,
+    PriceDetail,
+    MdPriceDetail,
+    Wish,
+    CreateWish,
+    Heart,
+  },
+  created() {
+    console.log(this.wishLists);
+  },
+  data() {
+    return {
+      priceDetail: null,
+    };
+  },
+  props: {
+    rooms: { type: Object },
+    nightCount: { type: Number },
+    wishLists: { type: Array },
+  },
+  methods: {
+    SearchRoom(room) {
+      //Todo-Vuex
+      this.$store.state.roomPicture = room.picture;
+      this.$router.push({
+        path: `/room/${room.id}`,
+      });
     },
-    created() {
-      console.log(this.wishLists)
+    convertToLocaleString(price) {
+      return price.toLocaleString();
     },
-    data() {
-      return {
-        priceDetail: null,
-      }
+    plusServiceFee(price) {
+      return Number(
+        price.sweetPrice == null ? price.origin : price.sweetPrice
+      ).toLocaleString();
     },
-    props: {
-      rooms: { type: Object },
-      nightCount: { type: Number },
-      wishLists: { type: Array },
-    },
-    methods: {
-      SearchRoom(room) {
-        //Todo-Vuex
-        this.$store.state.roomPicture = room.picture
-        this.$router.push({
-          path: `/room/${room.id}`,
-        })
-      },
-      convertToLocaleString(price) {
-        return price.toLocaleString()
-      },
-      plusServiceFee(price) {
-        return Number(
-          price.sweetPrice == null ? price.origin : price.sweetPrice
-        ).toLocaleString()
-      },
-      getTotal(price, nightCount) {
-        let feeTotal
-        let sweetPrice =
-          price.sweetPrice == null ? price.origin : price.sweetPrice
-        let cleanFee = this.getPrice(price.fee.cleanFee)
-        let taxFee = this.getPrice(price.fee.taxFee)
-        let serviceFee = this.getPrice(price.fee.serviceFee)
-        feeTotal = cleanFee + taxFee + serviceFee
+    getTotal(price, nightCount) {
+      let feeTotal;
+      let sweetPrice =
+        price.sweetPrice == null ? price.origin : price.sweetPrice;
+      let cleanFee = this.getPrice(price.fee.cleanFee);
+      let taxFee = this.getPrice(price.fee.taxFee);
+      let serviceFee = this.getPrice(price.fee.serviceFee);
+      feeTotal = cleanFee + taxFee + serviceFee;
 
-        return Number(sweetPrice) * nightCount + feeTotal
-      },
-      deliverDataToDetail(price) {
-        this.priceDetail = price
-      },
-
-      getPrice(price) {
-        if (typeof price == undefined) return 0
-        return Number(price)
-      },
+      return Number(sweetPrice) * nightCount + feeTotal;
     },
-  }
+    deliverDataToDetail(price) {
+      this.priceDetail = price;
+    },
+
+    getPrice(price) {
+      if (typeof price == undefined) return 0;
+      return Number(price);
+    },
+  },
+};
 </script>

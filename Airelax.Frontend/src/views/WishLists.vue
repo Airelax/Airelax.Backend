@@ -48,6 +48,10 @@
   height: 84px;
   padding: 10px 0;
 }
+.column a {
+  color: #222;
+  text-decoration: none;
+}
 .column-wrapper {
   display: flex;
   cursor: pointer;
@@ -68,7 +72,7 @@
   width: 64px;
   height: 64px;
   background-size: cover;
-  background-color: yellowgreen;
+  background-color: #ebebeb;
   border-radius: 10px;
 }
 @media screen and (min-width: 768px) {

@@ -30,12 +30,11 @@
         </div>
         <div class="col-9">建立新的心願單</div>
       </div>
-      <div class="row" v-for="item in 3" :key="item">
-        <!-- 等資料進來，現在放假ˇ資料 -->
+      <div class="row" v-for="item in wishLists" :key="item" @click="send">
         <div class="col-3">
-          <img src="https://picsum.photos/70/70/?random=1" />
+          <img :src="item.cover" :alt="item.name" />
         </div>
-        <div class="col-9">心願單名字</div>
+        <div class="col-9">{{ item.name }}{{ item.id }}</div>
       </div>
     </div>
   </div>
@@ -75,12 +74,11 @@
             </div>
             <div class="col-9">建立新的心願單</div>
           </div>
-          <div class="row" v-for="item in wishLists" :key="item">
-            <!-- 等資料進來，現在放假ˇ資料 -->
+          <div class="row" v-for="item in wishLists" :key="item" @click="send(item.id)">
             <div class="col-3">
               <img :src="item.cover" :alt="item.name" />
             </div>
-            <div class="col-9">{{ item.name }}</div>
+            <div class="col-9">{{ item.name }}{{ item.id }}</div>
           </div>
         </div>
       </div>
@@ -89,9 +87,33 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
+  data() {
+    return {
+      IsAdd: false,
+    };
+  },
+  methods: {
+    send: function (wishId) {
+      const dataUrl = `/api/wishLists/Houses`;
+      axios({
+        method: "Put",
+        url: dataUrl,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          HouseId: this.houseId,
+          WishId: wishId,
+          IsAdd: !this.IsAdd,
+        },
+      });
+    },
+  },
   props: {
     wishLists: { type: Array },
+    houseId: { type: String },
   },
 };
 </script>

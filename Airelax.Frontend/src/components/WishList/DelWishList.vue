@@ -31,7 +31,9 @@
       >
         取消
       </div>
-      <div data-bs-dismiss="offcanvas" class="submitBtn btn">刪除</div>
+      <div data-bs-dismiss="offcanvas" class="submitBtn btn" @click="send">
+        刪除
+      </div>
     </div>
   </div>
   <!-- 768px以上 含768px -->
@@ -68,12 +70,42 @@
           >
             取消
           </div>
-          <div data-bs-dismiss="offcanvas" class="submitBtn btn">刪除</div>
+          <div data-bs-dismiss="offcanvas" class="submitBtn btn" @click="send">
+            刪除
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import axios from "axios";
+export default {
+  data() {
+    return {
+      id: this.$store.state.wishListData.id,
+    };
+  },
+  methods: {
+    send: function () {
+      const dataUrl = `/api/wishLists/`;
+      axios({
+        method: "delete",
+        url: dataUrl,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          WishId: this.id,
+        },
+      })
+        .then()
+        .catch((err) => console.log(err));
+    },
+  },
+};
+</script>
 
 <style scoped>
 .modal.fade,

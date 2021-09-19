@@ -19,10 +19,11 @@
       <div class="row">
         <form class="form-floating">
           <input
-            type="email"
+            type="text"
             class="form-control"
             id="floatingInputValue"
             maxlength="50"
+            v-model="title"
           />
           <label for="floatingInputValue">心願單名稱</label>
         </form>
@@ -39,8 +40,12 @@
       </div>
     </div>
     <div class="offcanvas-footer">
-      <div data-bs-dismiss="offcanvas" class="cancelBtn btn">取消</div>
-      <div data-bs-dismiss="offcanvas" class="saveBtn btn">儲存</div>
+      <div data-bs-dismiss="offcanvas" class="cancelBtn btn" @click="cancel">
+        取消
+      </div>
+      <div data-bs-dismiss="offcanvas" class="saveBtn btn" @click="send">
+        儲存
+      </div>
     </div>
   </div>
   <!-- 768px以上 含768px -->
@@ -66,10 +71,11 @@
           <div class="row">
             <form class="form-floating">
               <input
-                type="email"
+                type="text"
                 class="form-control"
                 id="floatingInputValue"
                 maxlength="50"
+                v-model="title"
               />
               <label for="floatingInputValue">心願單名稱</label>
             </form>
@@ -86,13 +92,49 @@
           </div>
         </div>
         <div class="modal-footer">
-          <div data-bs-dismiss="modal" class="cancelBtn btn">取消</div>
-          <div data-bs-dismiss="modal" class="saveBtn btn">儲存</div>
+          <div data-bs-dismiss="modal" class="cancelBtn btn" @click="cancel">
+            取消
+          </div>
+          <div data-bs-dismiss="modal" class="saveBtn btn" @click="send">
+            儲存
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import axios from "axios";
+export default {
+  data() {
+    return {
+      title: this.$store.state.wishListData.wishName,
+    };
+  },
+  methods: {
+    cancel: function () {
+      this.title = this.$store.state.wishListData.wishName;
+    },
+    send: function () {
+      const dataUrl = `/api/wishLists/`;
+      axios({
+        method: "Put",
+        url: dataUrl,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          WishName: this.title,
+          WishId: this.$store.state.wishListData.id,
+        },
+      })
+        .then(() => (this.$store.state.wishListData.wishName = this.title))
+        .catch((err) => console.log(err));
+    },
+  },
+};
+</script>
 
 <style scoped>
 .modal.fade,

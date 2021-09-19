@@ -12,8 +12,10 @@ namespace Airelax.Application.WishLists.Dtos.Response
         public string HouseCategory { get; set; }
 
         public SimpleCommentDto Comment { get; set; }
-        
+
         public decimal? PricePerNight { get; set; }
+
+        public string Photo { get; set; }
 
         public WishListHousesViewModel()
         {

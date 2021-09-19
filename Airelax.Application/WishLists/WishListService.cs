@@ -43,7 +43,7 @@ namespace Airelax.Application.WishLists
             var wishList = new WishList(member.Id)
             {
                 Name = input.WishName,
-                Houses = new List<string> {house.Id},
+                Houses = new List<string> { house.Id },
                 Cover = house.Photos?.Select(x => x.Image).FirstOrDefault()
             };
             member.WishLists.Add(wishList);
@@ -56,8 +56,6 @@ namespace Airelax.Application.WishLists
         {
             var member = _accountService.GetMember().Result;
             CheckMember(member, member.Id);
-            var house = _houseRepository.GetAsync(x => x.Id == input.HouseId).Result;
-            CheckHouse(house);
             var wishList = member.WishLists.FirstOrDefault(x => x.Id == input.WishId);
             CheckWishListId(wishList);
             wishList.Name = input.WishName;
@@ -66,17 +64,7 @@ namespace Airelax.Application.WishLists
             _memberRepository.SaveChangesAsync().Wait();
         }
 
-        public void AddHouse(UpdateWishListInput input) //點擊房源Id清單api(愛心之後)
-        {
-            ReviseHouse(input, true);
-        }
-
-        public void RemoveHouse(UpdateWishListInput input) //點擊滿愛心(滿->空)
-        {
-            ReviseHouse(input, false);
-        }
-
-        private void ReviseHouse(UpdateWishListInput input, bool isadd)
+        public void ReviseHouse(UpdateWishListInput input)
         {
             var member = _accountService.GetMember().Result;
             CheckMember(member, member.Id);
@@ -84,8 +72,11 @@ namespace Airelax.Application.WishLists
             CheckHouse(house);
             var wishList = member.WishLists.FirstOrDefault(x => x.Id == input.WishId);
             CheckWishListId(wishList);
-            if (isadd == true)
+            if (input.IsAdd)
+            {
                 wishList.Houses.Add(house.Id);
+                wishList.Houses = wishList.Houses.Distinct().ToList();
+            }
             else
                 wishList.Houses.Remove(house.Id);
 
@@ -142,21 +133,15 @@ namespace Airelax.Application.WishLists
                     HouseCategory = x.HouseCategory?.Category.ToString() ?? string.Empty,
                     Location = x.HouseLocation?.Town ?? string.Empty,
                     PricePerNight = x.HousePrice?.PerNight,
-                    Comment = new SimpleCommentDto() {TotalComments = x.Comments?.Count},
+                    Comment = new SimpleCommentDto() { TotalComments = x.Comments?.Count },
+                    Photo = x.Photos.Select(x => x.Image).FirstOrDefault()
                 };
-
-
                 return wishListHousesViewModel;
             });
-
-
             return wishListHousesViewModels;
         }
 
-        //Check區塊
-
-        #region
-
+        #region Check區塊
         private void CheckMember(Member member, string memberId)
         {
             if (member == null) //判斷沒有會員
@@ -180,7 +165,6 @@ namespace Airelax.Application.WishLists
             if (wishList == null)
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "doesnt match WishListId ");
         }
-
-        #endregion
+        #endregion 
     }
 }

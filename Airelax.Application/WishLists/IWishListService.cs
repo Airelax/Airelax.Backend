@@ -11,8 +11,7 @@ namespace Airelax.Application.WishLists
         void DeleteWishList(int wishId);
         IEnumerable<WishListViewModel> GetWishLists();
         void UpdateWishName(UpdateWishListInput input);
-        void AddHouse(UpdateWishListInput input);
-        void RemoveHouse(UpdateWishListInput input);
+        void ReviseHouse(UpdateWishListInput input);
         Task<IEnumerable<WishListHousesViewModel>> GetHousesByWishList(int wishId);
     }
 }
