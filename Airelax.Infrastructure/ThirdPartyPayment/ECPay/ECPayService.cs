@@ -51,9 +51,9 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
                 OrderInfo = new OrderInfo() //由外部傳入
                 {
                     MerchantTradeDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
-                    //訂單編號不可重複
-                    MerchantTradeNo = createTokenInput.MerchantTradeNo,  //orderId?
-                    TotalAmount = createTokenInput.TotalAmount,  //HousePrices.PerNight* (OrderDetails.EndDate-OrderDetails.StartDate)
+                    
+                    MerchantTradeNo = createTokenInput.MerchantTradeNo,  //orderId
+                    TotalAmount = createTokenInput.TotalAmount,  
                     ReturnUrl = "https://localhost:5001/api/system/suc",
                     TradeDesc = createTokenInput.TradeDesc,
                     ItemName = createTokenInput.ItemName,  //房屋名稱
@@ -62,10 +62,10 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
 
 
 
-                ConsumerInfo = new ConsumerInfo()  //由外部傳入  登入後
+                ConsumerInfo = new ConsumerInfo()  //由外部傳入
                 {
-                    Phone = createTokenInput.Phone,  //EmergencyContact.Phone?
-                    Name = createTokenInput.Name,         //Members.Name? EmergencyContact.Name?
+                    Phone = createTokenInput.Phone,  
+                    Name = createTokenInput.Name,         
                     CountryCode = "158",    //固定158
                     Email = createTokenInput.Email,  //Members.Email
                     MerchantMemberId = createTokenInput.MerchantMemberId  //Members.Id
@@ -91,11 +91,13 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
                                                         true
                                                     ),
             };
-            // 發送POST請求到綠界，取得回傳的response
+
+            // 發送POST請求到綠界，取得回傳的response   https://ecpg-stage.ecpay.com.tw/Merchant/GetTokenByTrade
             var responseMessage = await _client.PostAsJsonAsync(_options.Value.Apis.GetTokenByTrade.Url, 
                                                                 tokenRequest);
             //將回應json轉成回應物件
             var tokenResponse = await responseMessage.Content.ReadFromJsonAsync<TokenResponse>();
+
             // 解密回應物件的data
             var tokenResponseData = JsonConvert.DeserializeObject<TokenResponseData>
                 (
@@ -106,7 +108,7 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
                         true
                         )
                 );
-            return tokenResponseData;  //以此Data內的token(廠商驗證碼)進行畫面渲染
+            return tokenResponseData;  //以此物件內的Data(廠商驗證碼)進行畫面渲染
         }
 
 
@@ -143,8 +145,10 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
                     _options.Value.AesIV, 
                     true
                 );
-            //發送POST請求到綠界正式建立交易,取得回傳的response  (JSON)
+
+            //發送POST請求到綠界正式建立交易,取得回傳的response  (JSON)  https://ecpg-stage.ecpay.com.tw/Merchant/CreatePayment
             var responseMessage = await _client.PostAsJsonAsync(_options.Value.Apis.Transaction.Url, request);
+
             //將回應json轉成回應物件(TokenResponse)
             var response = await responseMessage.Content.ReadFromJsonAsync<TokenResponse>();
             //解密回應物件的data

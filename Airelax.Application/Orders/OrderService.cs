@@ -32,6 +32,7 @@ namespace Airelax.Application.Orders
         {
             //取與house有關聯全表
             var house = _houseRepository.GetAsync(x => x.Id == input.HouseId).Result;
+
             //house.HousePrice  
             //取與order有關聯全表
             if (house == null) throw ExceptionBuilder.Build(System.Net.HttpStatusCode.BadRequest,"");
