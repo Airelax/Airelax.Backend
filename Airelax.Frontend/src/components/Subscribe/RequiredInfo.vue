@@ -35,7 +35,7 @@
     tabindex="-1"
     id="message"
     aria-labelledby="messageLabel"
-    v-if="fullWidth < 768 && isMessageShow"
+    v-if="fullWidth < 768"
   >
     <div class="offcanvas-header">
       <button
@@ -76,7 +76,7 @@
     tabindex="-1"
     aria-labelledby="messageModalLabel"
     aria-hidden="true"
-    v-if="fullWidth >= 768 && isMessageShow"
+    v-if="fullWidth >= 768"
   >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -251,49 +251,15 @@ export default {
   data(){
     return{
       messageContent: "",
-      memberId: "",
-      isMessageShow: false
     }
   },
   methods:{
-    connectLandlord(){
-      const token = this.getCookie('yee_mother_fucker');
-      if(!token) 
-          window.location.href = 'https://localhost:5001/account/login';
-      const memberInfo = this.parseJwt(token);
-      this.memberId = memberInfo['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
-      this.isMessageShow = true;
-    },
-    parseJwt(token){
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-
-      return JSON.parse(jsonPayload);
-    },
-    getCookie(cname){
-      let name = cname + "=";
-      let decodedCookie = decodeURIComponent(document.cookie);
-      let ca = decodedCookie.split(';');
-      for (let i = 0; i < ca.length; i++) {
-          let c = ca[i];
-          while (c.charAt(0) === ' ') {
-              c = c.substring(1);
-          }
-          if (c.indexOf(name) === 0) {
-              return c.substring(name.length, c.length);
-          }
-      }
-      return "";
-    },
     createMessage(){
         let mes = {
           MemberOneId: this.data.owner.id,
-          MemberTwoId: this.memberId,
+          MemberTwoId: this.$store.state.login.memberId,
           Contents:[{
-            SenderId: this.memberId,
+            SenderId: this.$store.state.login.memberId,
             ReceiverId: this.data.owner.id,
             Content: this.messageContent,
             Time: '2021-09-11T00:00:00'
@@ -308,12 +274,17 @@ export default {
     },
     useAxios(mes){
       let vm = this;
-      axios.post(`/api/messages/${this.data.memberId}/create`, mes,{
+      if(vm.messageContent == ""){
+        vm.$swal('請填入訊息內容');
+        return;
+      }
+      axios.post(`/api/messages/${vm.data.memberId}/create`, mes,{
         headers: {
             "Access-Control-Allow-Origin": "*",
         }}).then(function (res) {
                 console.log(res.data);
                 vm.messageContent="";
+                vm.$swal('訊息傳送成功');
             }).catch(err=>{console.log(err)})
     },
     getDate(x){

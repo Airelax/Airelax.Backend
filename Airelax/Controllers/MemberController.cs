@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Airelax.Application.Account;
 using Airelax.Application.Members;
 using Airelax.Application.Members.Dtos.Request;
 using Microsoft.AspNetCore.Authorization;
@@ -11,10 +12,12 @@ namespace Airelax.Controllers
     public class MemberController : Controller
     {
         private readonly IMemberService _memberService;
+        private readonly IAccountService _accountService;
 
-        public MemberController(IMemberService memberService)
+        public MemberController(IMemberService memberService, IAccountService accountService)
         {
             _memberService = memberService;
+            _accountService = accountService;
         }
 
         [HttpGet]
@@ -42,6 +45,8 @@ namespace Airelax.Controllers
         [Route("today")]
         public IActionResult Today()
         {
+            var member = _accountService.GetMember().Result.Id;
+            ViewBag.memberId = member;
             return View();
         }
 

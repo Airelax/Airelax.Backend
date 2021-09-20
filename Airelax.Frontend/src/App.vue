@@ -29,6 +29,8 @@ export default {
     };
   },
   mounted() {
+    //login-check
+    this.loginChcek();
     let vm = this;
     vm.$store.state.fullWidth = document.body.clientWidth;
     window.addEventListener("resize", function () {
@@ -54,6 +56,40 @@ export default {
     },
   },
   methods:{
+    //登入檢查
+    loginChcek(){
+      const token = this.getCookie('yee_mother_fucker');
+      this.$store.state.login.token = token;
+      // if(!token)  window.location.href = 'https://localhost:5001/account/login';
+      if(token != ""){
+        const memberInfo = this.parseJwt(token);
+        this.$store.state.login.memberId = memberInfo['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+      }
+    },
+    parseJwt(token){
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+
+      return JSON.parse(jsonPayload);
+    },
+    getCookie(cname){
+      let name = cname + "=";
+      let decodedCookie = decodeURIComponent(document.cookie);
+      let ca = decodedCookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+          let c = ca[i];
+          while (c.charAt(0) === ' ') {
+              c = c.substring(1);
+          }
+          if (c.indexOf(name) === 0) {
+              return c.substring(name.length, c.length);
+          }
+      }
+      return "";
+    },
     getDate(x){
       let year = x.slice(0,4)
       let month = x.slice(5,7)

@@ -761,8 +761,9 @@
           </div>
         </div>
         <div class="RoomType">
+          <i v-if="!get" class="fas fa-spinner fa-spin" style="font-size:5rem;margin:5rem 0;"></i>
           <div class="col-12" v-if="get">
-            <ResultRoom :rooms="rooms" :nightCount="nightCount"></ResultRoom>
+            <ResultRoom :rooms="rooms" :nightCount="$store.state.nightCount==0?1:$store.state.nightCount"></ResultRoom>
           </div>
         </div>
         <div class="page d-flex justify-content-center">
@@ -795,7 +796,7 @@
         <div class="col-12" v-if="false && get">
           <BrowsingRecord
             :rooms="rooms"
-            :nightCount="nightCount"
+            :nightCount="$store.state.nightCount==0?1:nightCount"
           ></BrowsingRecord>
         </div>
       </div>
@@ -890,7 +891,6 @@ export default {
     return {
       setting: settingJson,
       rooms: Array,
-      nightCount: 3,
       perPageRoomCount: 20,
       get: false,
       location: null,

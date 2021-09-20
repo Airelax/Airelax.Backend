@@ -164,23 +164,21 @@
               </div>
               <div class="price-show">
                 <p>清潔費</p>
-                <span>${{data.price.fee.cleanFee}}</span>
+                <span>${{data.price.fee.cleanFee.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</span>
               </div>
               <div class="price-show">
                 <p>服務費</p>
-                <span>${{data.price.fee.serviceFee}}</span>
+                <span>${{data.price.fee.serviceFee.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</span>
               </div>
               <div class="price-show">
                 <p>稅額</p>
-                <span>${{data.price.fee.taxFee}}</span>
+                <span>${{data.price.fee.taxFee.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</span>
               </div>
               <div class="price-total">
                 <p>總價</p>
                 <span
                   >${{
-                    (data.price.origin*$store.state.nightCount+data.price.fee.cleanFee+data.price.fee.serviceFee+data.price.fee.taxFee)
-                      .toFixed(0)
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    (data.price.origin*$store.state.nightCount+data.price.fee.cleanFee+data.price.fee.serviceFee+data.price.fee.taxFee).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }}</span
                 >
               </div>
@@ -417,49 +415,24 @@ export default {
       isCommentShow: false,
       fullWidth: 0,
       setting: settingJson,
-      memberId: ""
     };
   },
   methods: {
     connectLandlord(){
-      const token = this.getCookie('yee_mother_fucker');
-      if(!token) 
-          window.location.href = 'https://localhost:5001/account/login';
-      const memberInfo = this.parseJwt(token);
-      this.memberId = memberInfo['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+      if(this.$store.state.login.token == "")  window.location.href = 'https://localhost:5001/account/login';
       this.isConnectShow = true;
-    },
-    parseJwt(token){
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-
-      return JSON.parse(jsonPayload);
-    },
-    getCookie(cname){
-      let name = cname + "=";
-      let decodedCookie = decodeURIComponent(document.cookie);
-      let ca = decodedCookie.split(';');
-      for (let i = 0; i < ca.length; i++) {
-          let c = ca[i];
-          while (c.charAt(0) === ' ') {
-              c = c.substring(1);
-          }
-          if (c.indexOf(name) === 0) {
-              return c.substring(name.length, c.length);
-          }
-      }
-      return "";
     },
     createMessage(){
         let messageContent = document.getElementById('messageContent').value;
+        if(Object.keys(this.$store.state.date).length == 0 || messageContent == "") {
+          this.$swal('請填入住宿日期與訊息內容');
+          return;
+        }
         let mes = {
           MemberOneId: this.data.owner.id,
-          MemberTwoId: this.memberId,
+          MemberTwoId: this.$store.state.login.memberId,
           Contents:[{
-            SenderId: this.memberId,
+            SenderId: this.$store.state.login.memberId,
             ReceiverId: this.data.owner.id,
             Content: messageContent,
             Time: '2021-09-11T00:00:00'
@@ -473,12 +446,14 @@ export default {
         this.useAxios(mes);
     },
     useAxios(mes){
-      axios.post(`/api/messages/${this.memberId}/create`, mes,{
+      let vm = this;
+      axios.post(`/api/messages/${this.$store.state.login.memberId}/create`, mes,{
         headers: {
             "Access-Control-Allow-Origin": "*",
         }}).then(function (res) {
                 console.log(res.data);
                 document.getElementById('messageContent').value="";
+                vm.$swal('訊息傳送成功');
             }).catch(err=>{console.log(err)})
     },
     getDate(x){
@@ -651,6 +626,11 @@ export default {
       this.isCommentShow = val;
     },
     goSubscribe(){
+      if(this.$store.state.login.token == "")  window.location.href = 'https://localhost:5001/account/login';
+      if(this.$store.getters.TotalCustomer == 0) {
+        this.$swal('請填入房客人數');
+        return
+      }
       this.$router.push({
         path: `/subscribe/${this.data.id}`,
       });

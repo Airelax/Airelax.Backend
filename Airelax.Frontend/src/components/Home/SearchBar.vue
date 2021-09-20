@@ -24,6 +24,7 @@
               :model-config="modelConfig"
               is-range
               v-model="$store.state.date"
+              :min-date="new Date()"
           >
             <template v-slot="{ inputValue, inputEvents }">
               <div class="picker">
@@ -205,7 +206,7 @@ export default {
       }
 
       this.$router.push({
-        path: "search",
+        path: "/search",
         query: {
           location: this.$store.state.destination,
           customerNumber: this.$store.getters.TotalCustomer,
