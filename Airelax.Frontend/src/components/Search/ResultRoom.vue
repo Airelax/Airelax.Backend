@@ -125,7 +125,7 @@
             aria-controls="offcanvasBottom"
             v-on:click="deliverDataToDetail(room.price)"
           >
-            總計 ${{ getTotal(room.price, nightCount) }} TWD
+            總計 ${{ getTotal(room.price, nightCount).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",") }} TWD
           </div>
           <a
             class="btn mdTotalLink d-none d-md-inline ms-md-auto"
@@ -135,7 +135,7 @@
             data-bs-target="#myModal"
             v-on:click="deliverDataToDetail(room.price)"
           >
-            總計 ${{ getTotal(room.price, nightCount) }} TWD
+            總計 ${{ getTotal(room.price, nightCount).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",") }} TWD
           </a>
         </div>
       </div>

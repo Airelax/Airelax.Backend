@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Airelax.Application.Account;
 using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Application.Houses.Dtos.Response;
 using Airelax.Domain.Comments;
@@ -379,9 +380,9 @@ namespace Airelax.Application.Houses
 
             if (housePrice.Fee == null) return price;
 
-            price.Fee.CleanFee = decimal.Round(housePrice.Fee.CleanFee);
-            price.Fee.ServiceFee = decimal.Round(housePrice.Fee.ServiceFee);
-            price.Fee.TaxFee = decimal.Round(housePrice.Fee.TaxFee);
+            price.Fee.CleanFee = decimal.Round((decimal)housePrice.Fee.CleanFee);
+            price.Fee.ServiceFee = decimal.Round((decimal)housePrice.Fee.ServiceFee);
+            price.Fee.TaxFee = decimal.Round((decimal)housePrice.Fee.TaxFee);
             return price;
         }
 

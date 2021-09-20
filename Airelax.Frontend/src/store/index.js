@@ -19,7 +19,6 @@ export default createStore({
         signalCommunications: [],
         connection: null,
         unreadCount: 0,
-        onlineCount: 0,
         filters: {
             freeCancel: false,
             lowPrice: "",
@@ -31,6 +30,10 @@ export default createStore({
             features: "",
             allowPet: false,
             allowSmoke: false
+        },
+        login: {
+            token: "",
+            memberId: ""
         }
     },
     mutations: {
@@ -39,12 +42,11 @@ export default createStore({
         },
         setNewHouseRequest(state, request) {
             state.newHouseRequest = request;
-        }
+        },
     },
     actions: {},
     getters: {
         TotalCustomer(state) {
-
             return state.adult + state.child + state.toddler
         },
         TotalPrice(state) {

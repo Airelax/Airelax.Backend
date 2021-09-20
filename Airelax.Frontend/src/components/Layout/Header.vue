@@ -9,7 +9,8 @@
 				</div>
 			<div class="d-flex align-items-center">
 				<!-- Todo-根據有無登入顯示不同button -->
-				<router-link to="/become-host"><button type="button" id="register">成為房東 / 體驗達人</button></router-link>
+				<a href="https://localhost:5001/member/today" v-if="$store.state.login.token != ''"><button type="button" id="register">切換至出租模式</button></a>
+				<router-link to="/become-host" v-else><button type="button" id="register">成為房東 / 體驗達人</button></router-link>
 				<Member></Member>
 			</div>
 		</div>

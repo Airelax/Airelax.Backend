@@ -94,6 +94,7 @@
 
 .main .title-div h1 {
     font-weight: 900;
+    overflow-wrap: break-word;
 }
 
 .main .title-div .sleep a {

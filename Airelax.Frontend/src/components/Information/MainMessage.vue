@@ -154,7 +154,7 @@ export default {
                     event.target.style.opacity = '100';
                 });
             }
-        },
+        },  
         close(){
             this.change()
         },
@@ -196,7 +196,6 @@ export default {
     mounted(){
         this.Diff();
         this.scrollToBottom();
-        console.log(this.$store.state.connection)
     }
 }
 </script>

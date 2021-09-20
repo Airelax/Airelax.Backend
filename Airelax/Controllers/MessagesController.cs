@@ -11,7 +11,7 @@ namespace Airelax.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class MessagesController : Controller
+    public class MessagesController : ControllerBase
     {
         private readonly IMessageService _messageService;
         public MessagesController(IMessageService messageService)

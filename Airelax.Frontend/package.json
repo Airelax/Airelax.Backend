@@ -24,6 +24,7 @@
     "v3-carousel": "^1.1.1",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
+    "vue-sweetalert2": "^5.0.2",
     "vue3-carousel": "^0.1.24",
     "vue3-perfect-scrollbar": "^1.5.5",
     "vuex": "^4.0.0-0"
