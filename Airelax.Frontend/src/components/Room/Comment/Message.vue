@@ -1,6 +1,6 @@
 <template>
   <div class="user">
-    <img :src="msg.portrait" style="width: 3rem;"/>
+    <img :src="msg.cover" style="width: 3rem;"/>
     <div class="item">
       <span v-html="highlight(msg.name)"></span>
       <span v-html="highlight(msg.date)"></span>
@@ -21,40 +21,48 @@
   margin-bottom: 12px;
   align-items: center;
 }
+
 .user img {
   width: 45px;
   height: 45px;
   border-radius: 50%;
 }
+
 .item {
   padding-left: 12px;
   display: flex;
   flex-direction: column;
   text-align: start;
 }
+
 .item > span:nth-child(1) {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: .2rem;
 }
+
 .item > span:nth-child(2) {
   color: #717171;
   font-size: 14px;
   margin-top: .2rem;
 }
+
 .massage {
   text-align: initial;
 }
+
 .massage p {
   text-align: justify;
   margin-bottom: 0;
   line-height: 1.5rem;
 }
+
 .allMsg {
   cursor: pointer;
   width: 124px;
   display: none;
 }
+
 .allMsg::after {
   content: "";
   display: inline-block;
@@ -64,9 +72,11 @@
   position: relative;
   top: 2px;
 }
+
 .allMsg span {
   font-weight: 600;
 }
+
 .allMsg span::after {
   content: "";
   display: inline-block;
@@ -76,11 +86,13 @@
   z-index: 1;
   left: 11px;
 }
+
 @media screen and (min-width: 768px) {
   .item {
     margin: auto 0;
   }
 }
+
 @media screen and (min-width: 1200px) {
   .user {
     margin-bottom: 16px;
@@ -90,10 +102,10 @@
 
 <script>
 export default {
-  props: ["msg","search"],
+  props: ["msg", "search"],
   methods: {
-    highlight (text) {
-      if(this.search==undefined) return text;
+    highlight(text) {
+      if (this.search == undefined) return text;
       let regWord = new RegExp(this.search, 'gi')
       return text.replace(regWord, `<span style="background: orange;">${this.search}</span>`)
     }

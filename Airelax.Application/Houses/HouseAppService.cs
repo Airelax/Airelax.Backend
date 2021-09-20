@@ -202,7 +202,8 @@ namespace Airelax.Application.Houses
                     AuthorId = c.AuthorId,
                     Content = c.Comment.Content,
                     Date = c.Comment.CommentTime.ToString("yyyy-MM-dd"),
-                    Name = c.AuthorName
+                    Name = c.AuthorName,
+                    Cover = c.Cover,
                 });
         }
 
@@ -310,18 +311,6 @@ namespace Airelax.Application.Houses
             });
         }
 
-        private static void SetWishWist(SearchHouse x, SimpleHouseDto simpleHouseDto)
-        {
-            var wishList = x.WishList?.FirstOrDefault(w => w.Houses.Contains(x.Id));
-            if (wishList != null)
-                simpleHouseDto.WishList = new WishListDto
-                {
-                    Cover = wishList.Cover,
-                    Houses = wishList.Houses,
-                    Name = wishList.Name
-                };
-        }
-
         private static SimpleSpaceDto ConvertToSimpleSpaceDto(SearchHouse house)
         {
             var simpleSpaceDto = new SimpleSpaceDto
@@ -380,9 +369,9 @@ namespace Airelax.Application.Houses
 
             if (housePrice.Fee == null) return price;
 
-            price.Fee.CleanFee = decimal.Round((decimal)housePrice.Fee.CleanFee);
-            price.Fee.ServiceFee = decimal.Round((decimal)housePrice.Fee.ServiceFee);
-            price.Fee.TaxFee = decimal.Round((decimal)housePrice.Fee.TaxFee);
+            price.Fee.CleanFee = decimal.Round(housePrice.Fee.CleanFee);
+            price.Fee.ServiceFee = decimal.Round(housePrice.Fee.ServiceFee);
+            price.Fee.TaxFee = decimal.Round(housePrice.Fee.TaxFee);
             return price;
         }
 
