@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Airelax.Application.Account;
-//using Airelax.Application.Helpers;
 using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Application.Houses.Dtos.Response;
 using Airelax.Domain.Comments;
@@ -19,7 +18,6 @@ using Airelax.Infrastructure.Helpers;
 using Airelax.Infrastructure.Map.Abstractions;
 using Airelax.Infrastructure.Map.Responses;
 using AutoMapper;
-using CloudinaryDotNet.Actions;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
@@ -126,15 +124,12 @@ namespace Airelax.Application.Houses
             //設備與服務
             if (input.Facilities != null)
             {
-                IEnumerable<Facility> Facilities = input.Facilities.Split(',').Select(int.Parse).Select(x => (Facility)x);
-                var facilitySpecification = new FacilitySpecification(Facilities);
-                if (specification == null) specification = facilitySpecification;
-                else specification = specification.And(facilitySpecification);         
+                var facilities = input.Facilities.Split(',').Select(int.Parse).Select(x => (Facility) x);
+                var facilitySpecification = new FacilitySpecification(facilities);
+                specification = specification == null ? facilitySpecification : specification.And(facilitySpecification);
             }
 
-            if (specification == null) return houses;
-            return houses.Where(z => specification.IsSatisfy(z)).ToList();
-           
+            return specification == null ? houses : houses.Where(z => specification.IsSatisfy(z)).ToList();
         }
 
         public async Task<HouseDto> GetHouse(string id)
@@ -222,9 +217,9 @@ namespace Airelax.Application.Houses
             specification = specification.And(freeUnsubscribeSpecification);
 
             //房源類型
-            if(input.RoomCategories != null)
+            if (input.RoomCategories != null)
             {
-                IEnumerable<RoomCategory> roomCategories = input.RoomCategories.Split(',').Select(int.Parse).Select(x => (RoomCategory)x);
+                var roomCategories = input.RoomCategories.Split(',').Select(int.Parse).Select(x => (RoomCategory) x);
                 var roomCategorySpecification = new RoomCategorySpecification(roomCategories);
                 specification = specification.And(roomCategorySpecification);
             }
@@ -240,16 +235,16 @@ namespace Airelax.Application.Houses
             //住宿類型
             if (input.Categories != null)
             {
-                IEnumerable<Category> Categories = input.Categories.Split(',').Select(int.Parse).Select(x => (Category)x);
-                var categorySpecification = new CategorySpecification(Categories);
+                var categories = input.Categories.Split(',').Select(int.Parse).Select(x => (Category) x);
+                var categorySpecification = new CategorySpecification(categories);
                 specification = specification.And(categorySpecification);
             }
 
             //特色住宿
             if (input.HouseTypes != null)
             {
-                IEnumerable<HouseType> HouseTypes = input.HouseTypes.Split(',').Select(int.Parse).Select(x => (HouseType)x);
-                var houseTypeSpecification = new HouseTypeSpecification(HouseTypes);
+                var houseTypes = input.HouseTypes.Split(',').Select(int.Parse).Select(x => (HouseType) x);
+                var houseTypeSpecification = new HouseTypeSpecification(houseTypes);
                 specification = specification.And(houseTypeSpecification);
             }
 
