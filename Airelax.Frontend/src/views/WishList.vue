@@ -59,26 +59,11 @@ export default {
       data: {
         wishId: this.$store.state.wishListData.id,
       },
-    }).then((res) => {
-      this.wishList = res.data;
-      console.log(this.wishList);
-    });
-    //寫法二
-    // let wishId = {
-    //   wishId: Number(vm.$store.state.wishListId),
-    // };
-    // axios
-    //   .get(dataUrl, wishId, {
-    //     headers: {
-    //       "Access-Control-Allow-Origin": "*",
-    //     },
-    //   })
-    //   .then(function (res) {
-    //     console.log(res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    })
+      .then((res) => {
+        this.wishList = res.data;
+      })
+      .catch((err) => console.log(err));
   },
   components: {
     WishCar,
@@ -105,7 +90,7 @@ export default {
 }
 .heard a img:hover,
 .checkWidth img:hover {
-  background-color: #ebebeb;
+  background-color: #eee;
 }
 .heard a img {
   padding: 15px;

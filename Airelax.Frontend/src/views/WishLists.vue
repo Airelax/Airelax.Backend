@@ -138,7 +138,6 @@ export default {
       .get(dataUrl)
       .then((res) => {
         this.wishLists = res.data;
-        console.log(this.wishLists);
       })
       .catch((err) => {
         console.log(err);

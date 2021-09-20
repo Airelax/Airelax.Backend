@@ -19,7 +19,7 @@
       <p class="offcanvas-title" id="deleteWishTitle">刪除此心願單</p>
     </div>
     <div class="offcanvas-body small">
-      <p>確定要刪除{{ $store.state.wishListData.wishName }}嗎?</p>
+      <p>您確定要刪除{{ $store.state.wishListData.wishName }}嗎?</p>
     </div>
     <div class="offcanvas-footer">
       <div
@@ -59,7 +59,7 @@
           <p class="modal-title" id="mdDelWishLabel">刪除此心願單</p>
         </div>
         <div class="modal-body">
-          <p>確定要刪除{{ $store.state.wishListData.wishName }}嗎?</p>
+          <p>您確定要刪除{{ $store.state.wishListData.wishName }}嗎?</p>
         </div>
         <div class="modal-footer">
           <div
@@ -70,7 +70,7 @@
           >
             取消
           </div>
-          <div data-bs-dismiss="offcanvas" class="submitBtn btn" @click="send">
+          <div data-bs-dismiss="modal" class="submitBtn btn" @click="send">
             刪除
           </div>
         </div>
@@ -89,6 +89,7 @@ export default {
   },
   methods: {
     send: function () {
+      const vm = this;
       const dataUrl = `/api/wishLists/`;
       axios({
         method: "delete",
@@ -100,7 +101,11 @@ export default {
           WishId: this.id,
         },
       })
-        .then()
+        .then(function () {
+          setTimeout(function () {
+            vm.$router.push({ name: "wishLists" });
+          }, 500);
+        })
         .catch((err) => console.log(err));
     },
   },
@@ -125,18 +130,22 @@ export default {
 }
 .modal-header .btn-close,
 .offcanvas-header .btn-close {
-  margin: -0.5rem auto -0.5rem -0.5rem;
+  margin: -0.625rem auto -0.625rem -0.625rem;
 }
 .btn-close {
   font-size: 12px;
   opacity: 0.8;
   border-radius: 50%;
+  padding: 10px;
+}
+.btn-close:hover {
+  background-color: #eee;
 }
 .modal-title,
 .offcanvas-title {
   font-weight: 800;
   margin-right: auto;
-  padding-right: 10px;
+  padding-right: 11px;
 }
 .modal-body,
 .offcanvas-body {
@@ -146,6 +155,7 @@ export default {
 .offcanvas-body p {
   font-size: 14px;
   margin: 0;
+  text-align: start;
 }
 .modal-footer,
 .offcanvas-footer {
@@ -166,6 +176,11 @@ export default {
   padding: 10px;
   text-decoration: underline;
   color: #222;
+  border-radius: 8px;
+}
+.cancelBtn.btn:hover {
+  color: rgba(34, 34, 34, 0.9);
+  background-color: #eee;
 }
 .submitBtn.btn {
   margin: 0;
@@ -173,6 +188,9 @@ export default {
   color: #fff;
   background-color: #222;
   border-radius: 8px;
+}
+.submitBtn.btn:hover {
+  background-color: rgba(34, 34, 34, 0.9);
 }
 .offcanvas-bottom {
   height: fit-content;

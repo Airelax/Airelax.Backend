@@ -40,22 +40,34 @@ namespace Airelax.Application.WishLists
             var house = _houseRepository.GetAsync(x => x.Id == input.HouseId).Result;
             CheckHouse(house);
 
-            var wishList = new WishList(member.Id)
+            if (CheckWishHouses(member, input))
             {
-                Name = input.WishName,
-                Houses = new List<string> { house.Id },
-                Cover = house.Photos?.Select(x => x.Image).FirstOrDefault()
-            };
-            member.WishLists.Add(wishList);
+                var wishListId = member.WishLists.FirstOrDefault(x => x.Id == (member.WishLists.FirstOrDefault(x => x.Houses.Contains(input.HouseId)).Id));
+                wishListId.Name = input.WishName;
 
-            _memberRepository.UpdateAsync(member).Wait();
-            _memberRepository.SaveChangesAsync().Wait();
+                _memberRepository.UpdateAsync(member).Wait();
+                _memberRepository.SaveChangesAsync().Wait();
+            }
+            else
+            {
+                var wishList = new WishList(member.Id)
+                {
+                    Name = input.WishName,
+                    Houses = new List<string> { house.Id },
+                    Cover = house.Photos?.Select(x => x.Image).FirstOrDefault()
+                };
+                member.WishLists.Add(wishList);
+
+                _memberRepository.UpdateAsync(member).Wait();
+                _memberRepository.SaveChangesAsync().Wait();
+            }
         }
 
         public void UpdateWishName(UpdateWishListInput input)
         {
             var member = _accountService.GetMember().Result;
             CheckMember(member, member.Id);
+            CheckWishListName(member, input.WishName);
             var wishList = member.WishLists.FirstOrDefault(x => x.Id == input.WishId);
             CheckWishListId(wishList);
             wishList.Name = input.WishName;
@@ -72,6 +84,10 @@ namespace Airelax.Application.WishLists
             CheckHouse(house);
             var wishList = member.WishLists.FirstOrDefault(x => x.Id == input.WishId);
             CheckWishListId(wishList);
+
+            if (CheckWishHouses(member, input))
+                input.IsAdd = !input.IsAdd;
+
             if (input.IsAdd)
             {
                 wishList.Houses.Add(house.Id);
@@ -97,7 +113,7 @@ namespace Airelax.Application.WishLists
         }
 
         public IEnumerable<WishListViewModel> GetWishLists()
-        {   
+        {
             var member = _accountService.GetMember().Result;
             CheckMember(member, member.Id);
 
@@ -142,29 +158,58 @@ namespace Airelax.Application.WishLists
         }
 
         #region Check區塊
-        private void CheckMember(Member member, string memberId)
+        /// <summary>
+        /// 判斷沒有會員
+        /// </summary>
+        /// <param name="member"></param>
+        /// <param name="memberId"></param>
+        private static void CheckMember(Member member, string memberId)
         {
-            if (member == null) //判斷沒有會員
+            if (member == null)
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"memberId: {memberId} doesnt match member ");
         }
 
+        /// <summary>
+        /// 有會員的情況,心願單->每個指定會員->找每個名字==帶入名字時
+        /// </summary>
+        /// <param name="member"></param>
+        /// <param name="wishListName"></param>
         private static void CheckWishListName(Member member, string wishListName)
         {
-            if (member.WishLists.Any(w => w.Name == wishListName)) //有會員的情況,心願單-每個指定會員-找每個名字==帶入名字時
+            if (member.WishLists.Any(w => w.Name == wishListName))
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "WishLists.Name cannot be repeated ");
         }
 
+        /// <summary>
+        /// 判斷沒有房源
+        /// </summary>
+        /// <param name="house"></param>
         private static void CheckHouse(House house)
         {
-            if (house == null) //判斷沒有房源
+            if (house == null)
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "doesnt match HouseId ");
         }
 
+        /// <summary>
+        /// 判斷沒有心願單
+        /// </summary>
+        /// <param name="wishList"></param>
         private static void CheckWishListId(WishList wishList)
         {
             if (wishList == null)
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "doesnt match WishListId ");
         }
-        #endregion 
+
+        /// <summary>
+        /// 判斷心願單沒有房源
+        /// </summary>
+        /// <returns></returns>
+        private static bool CheckWishHouses(Member member, CreateWishListInput input)
+        {
+            if (member.WishLists.Any(x => x.Houses.Contains(input.HouseId)))
+                return true;
+            return false;
+        }
+        #endregion
     }
 }

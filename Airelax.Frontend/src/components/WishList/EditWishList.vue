@@ -154,18 +154,22 @@ export default {
 }
 .modal-header .btn-close,
 .offcanvas-header .btn-close {
-  margin: -0.5rem auto -0.5rem -0.5rem;
+  margin: -0.625rem auto -0.625rem -0.625rem;
 }
 .btn-close {
   font-size: 12px;
   opacity: 0.8;
   border-radius: 50%;
+  padding: 10px;
+}
+.btn-close:hover {
+  background-color: #eee;
 }
 .modal-title,
 .offcanvas-title {
   font-weight: 800;
   margin-right: auto;
-  padding-right: 10px;
+  padding-right: 11px;
 }
 .modal-body,
 .offcanvas-body {
@@ -198,8 +202,8 @@ export default {
 .delete a {
   font-size: 14px;
   color: #b32505;
-  padding: 32px 0 0;
-  margin-top: 32px;
+  padding: 15px 10px;
+  margin-left: -10px;
 }
 .modal-footer,
 .offcanvas-footer {
@@ -220,6 +224,11 @@ export default {
   padding: 10px;
   text-decoration: underline;
   color: #222;
+  border-radius: 8px;
+}
+.cancelBtn.btn:hover {
+  color: rgba(34, 34, 34, 0.9);
+  background-color: #eee;
 }
 .saveBtn.btn {
   margin: 0;
@@ -227,6 +236,9 @@ export default {
   color: #fff;
   background-color: #222;
   border-radius: 8px;
+}
+.saveBtn.btn:hover {
+  background-color: rgba(34, 34, 34, 0.9);
 }
 .offcanvas-bottom {
   height: fit-content;

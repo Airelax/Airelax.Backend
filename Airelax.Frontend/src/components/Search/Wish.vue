@@ -25,16 +25,27 @@
         <div class="col-3">
           <img
             src="https://a0.muscache.com/im/pictures/2cf775f5-3b30-4806-8572-977a74b6834e.jpg"
-            alt=""
+            alt="+"
           />
         </div>
         <div class="col-9">建立新的心願單</div>
       </div>
-      <div class="row" v-for="item in wishLists" :key="item" @click="send">
+
+      <div
+        class="row"
+        data-bs-dismiss="offcanvas"
+        v-for="item in wishLists"
+        :key="item"
+        @click="send(item.id)"
+      >
         <div class="col-3">
-          <img :src="item.cover" :alt="item.name" />
+          <img
+            :src="'https://picsum.photos/600/400/?random=100'"
+            :alt="item.name"
+          />
+          <!---:src="item.cover"--->
         </div>
-        <div class="col-9">{{ item.name }}{{ item.id }}</div>
+        <div class="col-9">{{ item.name }}</div>
       </div>
     </div>
   </div>
@@ -69,16 +80,26 @@
             <div class="col-3">
               <img
                 src="https://a0.muscache.com/im/pictures/2cf775f5-3b30-4806-8572-977a74b6834e.jpg"
-                alt=""
+                alt="+"
               />
             </div>
             <div class="col-9">建立新的心願單</div>
           </div>
-          <div class="row" v-for="item in wishLists" :key="item" @click="send(item.id)">
+          <div
+            class="row"
+            data-bs-dismiss="modal"
+            v-for="item in wishLists"
+            :key="item"
+            @click="send(item.id)"
+          >
             <div class="col-3">
-              <img :src="item.cover" :alt="item.name" />
+              <img
+                :src="'https://picsum.photos/600/400/?random=100'"
+                :alt="item.name"
+              />
+              <!---:src="item.cover"--->
             </div>
-            <div class="col-9">{{ item.name }}{{ item.id }}</div>
+            <div class="col-9">{{ item.name }}</div>
           </div>
         </div>
       </div>
@@ -91,12 +112,13 @@ import axios from "axios";
 export default {
   data() {
     return {
-      IsAdd: false,
+      IsAdd: true,
     };
   },
   methods: {
     send: function (wishId) {
       const dataUrl = `/api/wishLists/Houses`;
+      const vm = this;
       axios({
         method: "Put",
         url: dataUrl,
@@ -106,9 +128,17 @@ export default {
         data: {
           HouseId: this.$store.state.selectedWishHouseId,
           WishId: wishId,
-          IsAdd: !this.IsAdd,
+          IsAdd: this.IsAdd,
         },
-      });
+      })
+        .then(function () { //Todo 與愛心獨立事件有關的地方
+          vm.$emit(
+            "onWishListUpdated",
+            wishId,
+            vm.$store.state.selectedWishHouseId
+          );
+        })
+        .catch((err) => console.log(err));
     },
   },
   props: {
