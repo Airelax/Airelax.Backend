@@ -160,6 +160,7 @@
 
 .msg-title {
     margin-bottom: 24px;
+    font-size: 0;
 }
 
 .msg-title h3 {

@@ -38,6 +38,7 @@
   .my-row {
     height: 136px;
     width: 50%;
+    padding-right: 95px;
   }
 }
 </style>
