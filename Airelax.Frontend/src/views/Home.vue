@@ -97,42 +97,40 @@
         <button class="goTo">隨心所欲</button>
       </div>
     </div>
-    <div class="everyConerComfortable">
+    <div class="row everyCornerComfortable">
       <h2>任何角落都能找到舒適住宿</h2>
       <div class="scrollArea">
-        <div class="row featuresRow">
-          <div class="col-12 col-md-3 feature">
-            <img
-              class="w-100"
-              src="../assets/image/Home/family.png"
-              alt="戶外度假勝地"
-            />
-            <p>戶外度假勝地</p>
-          </div>
-          <div class="col-12 col-md-3 feature">
-            <img
-              class="w-100"
-              src="../assets/image/Home/family2.png"
-              alt="獨特房源"
-            />
-            <p>獨特房源</p>
-          </div>
-          <div class="col-12 col-md-3 feature">
-            <img
-              class="w-100"
-              src="../assets/image/Home/family3.png"
-              alt="整套房源"
-            />
-            <p>整套房源</p>
-          </div>
-          <div class="col-12 col-md-3 feature">
-            <img
-              class="w-100"
-              src="../assets/image/Home/family4.png"
-              alt="可攜帶寵物"
-            />
-            <p>可攜帶寵物</p>
-          </div>
+        <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature">
+          <img
+            class="w-100"
+            src="../assets/image/Home/family.png"
+            alt="戶外度假勝地"
+          />
+          <p>戶外度假勝地</p>
+        </div>
+        <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature">
+          <img
+            class="w-100"
+            src="../assets/image/Home/family2.png"
+            alt="獨特房源"
+          />
+          <p>獨特房源</p>
+        </div>
+        <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature">
+          <img
+            class="w-100"
+            src="../assets/image/Home/family3.png"
+            alt="整套房源"
+          />
+          <p>整套房源</p>
+        </div>
+        <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature">
+          <img
+            class="w-100"
+            src="../assets/image/Home/family4.png"
+            alt="可攜帶寵物"
+          />
+          <p>可攜帶寵物</p>
         </div>
       </div>
       <!-- <div class="scrollbar">
@@ -166,9 +164,39 @@
           </div>
         </div> -->
     </div>
-    <div class="haveFun">
+    <div class="row freshThing">
       <h2>發掘好玩新鮮事</h2>
-      <div class="scrollbar">
+      <div class="scrollArea">
+        <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-4 feature">
+          <img
+            class="w-100"
+            src="../assets/image/Home/haveFun.png"
+            alt="尋找附近的難忘體驗"
+          />
+          <p>體驗</p>
+          <p class="fs-6">尋找附近的難忘體驗。</p>
+        </div>
+        <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-4 feature">
+          <img
+            class="w-100"
+            src="../assets/image/Home/haveFun2.png"
+            alt="由體驗達人舉辦的互動式直播體驗。"
+          />
+          <p>線上體驗</p>
+          <p class="fs-6">由體驗達人舉辦的互動式直播體驗。</p>
+        </div>
+        <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-4 feature">
+          <img
+            class="w-100"
+            src="../assets/image/Home/haveFun3.png"
+            alt="參加線上體驗，安坐家中暢遊全世界。"
+          />
+          <p>精選系列：浪跡天涯</p>
+          <p class="fs-6">參加線上體驗，安坐家中暢遊全世界。</p>
+        </div>
+      </div>
+
+      <!-- <div class="scrollbar">
         <div class="yuan-container">
           <div class="yuan-row">
             <div class="fun-div">
@@ -193,7 +221,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="rent">
       <div class="item">
@@ -233,20 +261,34 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/css/reset.css";
-.everyConerComfortable {
+.everyCornerComfortable,
+.freshThing {
+  overflow: hidden;
+  height: 75%;
+  margin: 50px 0;
   .scrollArea {
-    .featuresRow {
-      overflow: scroll;
-      .feature {
-        img {
-          border-radius: 20px;
-        }
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    height: 100%;
+    .feature {
+      img {
+        border-radius: 20px;
+      }
+      p {
+        font-weight: 700;
+        padding-top: 15px;
+      }
+      .fs-6 {
+        font-weight: 400;
       }
     }
   }
 }
 
 body * {
+  outline: 1px solid hotpink;
+
   font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
     "Helvetica Neue", sans-serif;
   text-align: left;
