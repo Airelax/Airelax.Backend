@@ -16,8 +16,10 @@
     @RenderSection("topJS", required: false)
 </head>
 <body>
-
-            @RenderBody()
+    <header>
+        @await RenderSectionAsync("header", false)
+    </header>
+    @RenderBody()
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -31,5 +33,5 @@
     @RenderSection("endCSS", required: false)
     @RenderSection("endJS", required: false)
 
-    </body>
+</body>
 </html>

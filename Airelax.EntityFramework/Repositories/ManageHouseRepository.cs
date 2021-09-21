@@ -24,6 +24,7 @@ namespace Airelax.EntityFramework.Repositories
                 from s in _context.Spaces.Where(x => x.HouseId == h.Id)
                 from b in _context.BedroomDetails.Where(x => x.SpaceId == s.Id).DefaultIfEmpty()
                 where h.Id == id
+                orderby s.CreateTime
                 select new SpaceBed
                 {
                     Space = s,

@@ -1,4 +1,6 @@
-﻿namespace Airelax.Application.ManageHouses.Request
+﻿using System;
+
+namespace Airelax.Application.ManageHouses.Request
 {
     public class HouseSpaceInput
     {

@@ -50,7 +50,7 @@ namespace Airelax.Controllers
         [HttpGet]
         public IActionResult Login([FromQuery] string returnUrl = "/")
         {
-            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.ReturnUrl = string.IsNullOrEmpty(returnUrl)? "/":returnUrl;
             return View();
         }
 
@@ -65,8 +65,10 @@ namespace Airelax.Controllers
                 case AccountStatus.Success:
                 {
                     SetJwt(loginResult.Token);
-                    return Redirect(input.ReturnUrl);
-                }
+                        //return Redirect(input.ReturnUrl);
+                        //return RedirectToAction("Index", "Vue");
+                        return Redirect("http://localhost:8080/");
+                    }
                 case AccountStatus.WrongPassword:
                     return View(input);
                 case AccountStatus.Signup:
@@ -113,7 +115,8 @@ namespace Airelax.Controllers
         {
             HttpContext.Response.Cookies.Delete(Define.Authorization.JWT_COOKIE_KEY);
             await HttpContext.SignOutAsync();
-            return RedirectToAction("index", "Vue");
+            //return RedirectToAction("Index", "Vue");
+            return Redirect("http://localhost:8080/");
         }
 
         private void SetJwt(string token)

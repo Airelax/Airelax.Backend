@@ -164,23 +164,21 @@
               </div>
               <div class="price-show">
                 <p>清潔費</p>
-                <span>${{data.price.fee.cleanFee}}</span>
+                <span>${{data.price.fee.cleanFee.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</span>
               </div>
               <div class="price-show">
                 <p>服務費</p>
-                <span>${{data.price.fee.serviceFee}}</span>
+                <span>${{data.price.fee.serviceFee.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</span>
               </div>
               <div class="price-show">
                 <p>稅額</p>
-                <span>${{data.price.fee.taxFee}}</span>
+                <span>${{data.price.fee.taxFee.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}}</span>
               </div>
               <div class="price-total">
                 <p>總價</p>
                 <span
                   >${{
-                    (data.price.origin*$store.state.nightCount+data.price.fee.cleanFee+data.price.fee.serviceFee+data.price.fee.taxFee)
-                      .toFixed(0)
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    (data.price.origin*$store.state.nightCount+data.price.fee.cleanFee+data.price.fee.serviceFee+data.price.fee.taxFee).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }}</span
                 >
               </div>
@@ -223,7 +221,7 @@
               class="contact"
               data-bs-toggle="modal"
               data-bs-target="#myModal"
-              @click="isConnectShow = true"
+              @click.prevent="connectLandlord"
               >聯絡房東</a
             >
             <div class="security">
@@ -368,7 +366,7 @@
               v-if="isConnectShow"
             >
               <p>有其他疑問嗎？</p>
-              <button type="button" class="btn btn-primary btn-dark">
+              <button type="button" class="btn btn-primary btn-dark" @click.prevent="createMessage">
                 傳訊息給房東
               </button>
             </div>
@@ -397,7 +395,8 @@ import Cancel from "../components/Room/Cancel";
 import Comment from "../components/Room/Comment";
 import CommentModal from "../components/Room/ModalComment";
 import Bed from "../components/Room/RoomDatasWithPic";
-import settingJson from "../components/Settings/setting"
+import settingJson from "../components/Settings/setting";
+// import {moment} from 'moment';
 
 export default {
   data() {
@@ -415,10 +414,54 @@ export default {
       isDatePickerShow: false,
       isCommentShow: false,
       fullWidth: 0,
-      setting: settingJson
+      setting: settingJson,
     };
   },
   methods: {
+    connectLandlord(){
+      if(this.$store.state.login.token == "")  window.location.href = 'https://localhost:5001/account/login';
+      this.isConnectShow = true;
+    },
+    createMessage(){
+        let messageContent = document.getElementById('messageContent').value;
+        if(Object.keys(this.$store.state.date).length == 0 || messageContent == "") {
+          this.$swal('請填入住宿日期與訊息內容');
+          return;
+        }
+        let mes = {
+          MemberOneId: this.data.owner.id,
+          MemberTwoId: this.$store.state.login.memberId,
+          Contents:[{
+            SenderId: this.$store.state.login.memberId,
+            ReceiverId: this.data.owner.id,
+            Content: messageContent,
+            Time: '2021-09-11T00:00:00'
+          }],
+          HouseId: this.data.id,
+          StartDate: this.getDate(this.$store.state.date.start),
+          EndDate: this.getDate(this.$store.state.date.end),
+          MemberOneStatus: 1,
+          MemberTwoStatus: 0
+        }
+        this.useAxios(mes);
+    },
+    useAxios(mes){
+      let vm = this;
+      axios.post(`/api/messages/${this.$store.state.login.memberId}/create`, mes,{
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+        }}).then(function (res) {
+                console.log(res.data);
+                document.getElementById('messageContent').value="";
+                vm.$swal('訊息傳送成功');
+            }).catch(err=>{console.log(err)})
+    },
+    getDate(x){
+      let year = x.slice(0,4)
+      let month = x.slice(5,7)
+      let day = x.slice(8,10)
+      return `${year}-${month}-${day}T00:00:00`;
+    },
     getRandomNumber(min,max){
       return Math.floor(Math.random() * (max-min+1))+min;
     },
@@ -583,6 +626,11 @@ export default {
       this.isCommentShow = val;
     },
     goSubscribe(){
+      if(this.$store.state.login.token == "")  window.location.href = 'https://localhost:5001/account/login';
+      if(this.$store.getters.TotalCustomer == 0) {
+        this.$swal('請填入房客人數');
+        return
+      }
       this.$router.push({
         path: `/subscribe/${this.data.id}`,
       });

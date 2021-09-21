@@ -46,7 +46,7 @@ namespace Airelax.Controllers
 
         [HttpPut]
         [Route("{id}/Title")]
-        public IActionResult UpdateTitle(string id, HouseTitleInput input)
+        public IActionResult UpdateTitle(string id, [FromBody] HouseTitleInput input)
         {
             var title = _manageHouseService.UpdateTitle(id, input);
             return Ok(title);

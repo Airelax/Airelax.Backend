@@ -18,6 +18,8 @@ namespace Airelax.Application.ManageHouses.Response
         public string Origin { get; set; }
         public string SweetPrice { get; set; }
         public string Fee { get; set; }
+        public string WeekDiscount { get; set; }
+        public string MonthDiscount { get; set; }
         public int Cancel { get; set; }
         public bool InstanceBooking { get; set; }
         public string CheckinTime { get; set; }
