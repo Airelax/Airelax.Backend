@@ -1405,7 +1405,6 @@
                 url: `/ManageHouse/@Html.Raw(Model.Id)/${type}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    
                 },
                 data: JSON.stringify(request),
             }).then(function (res) {
@@ -1958,7 +1957,6 @@
                     }),
                     headers: {
                         'content-type': 'application/json',
-                        'Authorization': ''
                     },
                 })
                 .then(response=>response.json())

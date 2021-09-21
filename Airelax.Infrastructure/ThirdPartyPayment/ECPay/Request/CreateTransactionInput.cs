@@ -8,7 +8,7 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay.Request
 {
     public class CreateTransactionInput
     {
-        public string token { get; set; }
+        public string Token { get; set; }
         public string MerchantTradeNo { get; set; }
     }
 }

@@ -3,7 +3,7 @@
     <Header v-if="$store.state.fullWidth>768 && !$route.meta.homeLayout"></Header>
     <HomeHeader v-if="$store.state.fullWidth>768 && $route.meta.homeLayout"></HomeHeader>
     <slot/>
-    <Footer></Footer>
+    <Footer v-if="!$route.meta.messageLayout || ($route.meta.searchPage && $store.state.fullWidth>768)"></Footer>
     <RwdNavbar v-if="$store.state.fullWidth<768 && isRwdShow"></RwdNavbar>
 </template>
 

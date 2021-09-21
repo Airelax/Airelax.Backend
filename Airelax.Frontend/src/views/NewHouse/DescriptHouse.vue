@@ -1,7 +1,7 @@
 <template>
   <Layout :isVideoBanner="true" :img="img" :title="'請描述你的房源'">
     <div class="all-center">
-      <TextContent :title="'撰寫房源描述'"></TextContent>
+      <TextContent  :title="'撰寫房源描述'"></TextContent>
     </div>
   </Layout>
 </template>
@@ -30,5 +30,24 @@ export default {
     Layout,
     TextContent,
   },
+  methods: {
+    onTextChanged(message) {
+      if (message) {
+        this.$store.commit('setNewHouseNextAvailable', true);
+      }
+      const houseId = this.$route.params.id;
+      const req = {
+        method: houseId ? "PUT" : "POST",
+        url: houseId ? `/${houseId}/price` : "",
+        redirectName: `photo`,
+        body: {
+          Title: message,
+          //todo identity
+          memberId: 'M00056b77d3'
+        }
+      }
+      this.$store.commit('setNewHouseRequest', req);
+    },
+  }
 };
 </script>

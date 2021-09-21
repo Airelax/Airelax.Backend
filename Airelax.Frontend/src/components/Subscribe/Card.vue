@@ -33,41 +33,55 @@
       <label for="securitycode">安全碼</label>
     </div>
   </div> -->
-  
+
   <div id="ECPayPayment"><!--渲染--></div>
 </template>
 <script>
-import axios from 'axios';
+//import axios from 'axios';
 
 export default {
-  created(){
-      const Environment = 'STAGE'; //請設定要連線的環境: 測試 STAGE ,正式PROD
-        const envi = GetEnvi(Environment);
-       
-    axios("/api/Orders",{
-      method: "POST",
-      headers:{
-        "content-type":"application/json"
-      },
-      data
-    })
+  mounted() {
+    // const envi = 'Stage';
+    // window.handlerMsg = function (errMsg) {
+    //   //console.log('Callback Message: ' + errMsg);
+    //   if (errMsg != null)
+    //     console.log(errMsg);
+    // }
+    // window.token = this.token;
+    // window.$(function () {
+    //
+    //   //初始化SDK畫面
+    //   window.ECPay.initialize(envi, 1, function () {
+    //     console.log(window.token);
+    //     try {
+    //       window.ECPay.createPayment(window.token, window.ECPay.Language.zhTW, msg => window.handlerMsg(msg));
+    //     } catch (err) {
+    //       console.log(err);
+    //     }
+    //   });
 
-
-     ECPay.initialize(envi, 1, function (errMsg) {
-            if (_token === '') {
-                _token = prompt('請填入Token: ');
-            }
-
-            try {
-                ECPay.createPayment(_token, ECPay.Language.zhTW, function (errMsg) {
-                    //console.log('Callback Message: ' + errMsg);
-                    if (errMsg != null)
-                        ErrHandle(errMsg);
-                });
-            } catch (err) {
-                ErrHandle(err);
-            }
-        });
+    //消費者選擇完成付款方式,取得PayToken 
+    //   $('#').click(function () {
+    //
+    //     try {
+    //       window.ECPay.getPayToken(function (paymentInfo, errMsg) {
+    //         //console.log("response => getPayToken(paymentInfo, errMsg):", paymentInfo, errMsg);
+    //         if (errMsg != null) {
+    //           ErrHandle(errMsg);
+    //           return;
+    //         }
+    //         $("#PayToken").val(paymentInfo.PayToken);
+    //        
+    //         return true;
+    //       });
+    //     } catch (err) {
+    //       console.log(err);
+    //     }
+    //
+    //     return false;
+    //   });
+    // });
+    // });
   }
 }
 </script>

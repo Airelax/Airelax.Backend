@@ -12,7 +12,11 @@ const routes = [
     {
         path: '/search',
         name: 'Search',
-        component: () => import('../views/Search.vue')
+        component: () => import('../views/Search.vue'),
+        meta: {
+            searchPage: true,
+            messageLayout: true,
+        },
     },
     {
         path: '/room/:houseId',
@@ -23,6 +27,14 @@ const routes = [
         path: '/subscribe/:houseId',
         name: 'Subscribe',
         component: () => import('../views/Subscribe.vue')
+    },
+    {
+        path: '/message/:memberId',
+        name: 'Message',
+        component: () => import('../views/Information.vue'),
+        meta: {
+            messageLayout: true,
+        },
     },
     {
         path: '/wishList',
@@ -88,9 +100,9 @@ const routes = [
             //     component: () => import('../views/NewHouse/SetHousePhoto.vue'),
             // },
             {
-                path: ':id/highlight',
-                name: 'HouseHighlight',
-                component: () => import('../views/NewHouse/ChooseHouseHighlight.vue'),
+                path: ':id/title',
+                name: 'HouseTitle',
+                component: () => import('../views/NewHouse/NamingHouse.vue'),
             },
         ]
     },

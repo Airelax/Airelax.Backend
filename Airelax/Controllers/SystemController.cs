@@ -42,12 +42,13 @@ namespace Airelax.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        [Route("{orderId}/{token}")]
+        public IActionResult Index(string token, string orderId)
         {
+            ViewBag.OrderId = orderId;
+            ViewBag.Token = token;
             return View();
         }
-
-        
         
         [HttpPost]
         [Route("suc")]

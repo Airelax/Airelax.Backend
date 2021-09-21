@@ -50,7 +50,7 @@ namespace Airelax.Controllers
         [HttpGet]
         public IActionResult Login([FromQuery] string returnUrl = "/")
         {
-            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.ReturnUrl = string.IsNullOrEmpty(returnUrl)? "/":returnUrl;
             return View();
         }
 
