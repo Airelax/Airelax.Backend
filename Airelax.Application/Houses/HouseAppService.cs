@@ -33,7 +33,7 @@ namespace Airelax.Application.Houses
         private readonly IMapper _mapper;
         private readonly ICommentsRepository _commentsRepository;
         private readonly IMemberRepository _memberRepository;
-        private const int PageCount = 30;
+        private const int PageCount = 20;
 
         public HouseAppService(
             IHouseRepository houseRepository,
@@ -89,10 +89,7 @@ namespace Airelax.Application.Houses
 
             var total = houses.Count;
             houses = GetHousesByPage(input.Page, houses);
-
-            //var houses = await GetHousesAsync(specification, input.Page);
-            //var total = await _houseRepository.GetSatisfyFromAsync(specification).CountAsync();
-
+            
             var dateTime = DateTime.Now;
             Console.WriteLine(dateTime);
             Console.WriteLine("cost" + (dateTime - sNow));

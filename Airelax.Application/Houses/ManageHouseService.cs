@@ -37,12 +37,13 @@ namespace Airelax.Application.Houses
         public IEnumerable<MyHouseViewModel> GetMyHouseViewModel()
         {
             var memberId = _accountService.GetAuthMemberId();
-            var houses = _houseRepository.GetAll().Where(x => x.OwnerId == memberId);
+            var houses = _houseRepository.GetAll().Where(x => x.OwnerId == memberId && !x.IsDeleted);
 
             if (houses.IsNullOrEmpty())
                 return new List<MyHouseViewModel>();
 
-            var myHouseViewModel = houses.Select(x => new MyHouseViewModel
+            var list = houses.ToList();
+            var myHouseViewModel = list.Select(x => new MyHouseViewModel
             {
                 HouseId = x.Id,
                 Title = x.Title,
