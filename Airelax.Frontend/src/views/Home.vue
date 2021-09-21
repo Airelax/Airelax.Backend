@@ -97,131 +97,86 @@
         <button class="goTo">隨心所欲</button>
       </div>
     </div>
-    <div class="row everyCornerComfortable">
+    <div class="anyCorner">
       <h2>任何角落都能找到舒適住宿</h2>
-      <div class="scrollArea">
-        <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature">
-          <img
-            class="w-100"
-            src="../assets/image/Home/family.png"
-            alt="戶外度假勝地"
-          />
-          <p>戶外度假勝地</p>
-        </div>
-        <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature">
-          <img
-            class="w-100"
-            src="../assets/image/Home/family2.png"
-            alt="獨特房源"
-          />
-          <p>獨特房源</p>
-        </div>
-        <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature">
-          <img
-            class="w-100"
-            src="../assets/image/Home/family3.png"
-            alt="整套房源"
-          />
-          <p>整套房源</p>
-        </div>
-        <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature">
-          <img
-            class="w-100"
-            src="../assets/image/Home/family4.png"
-            alt="可攜帶寵物"
-          />
-          <p>可攜帶寵物</p>
+      <div class="row everyCornerComfortable">
+        <div class="scrollArea">
+          <div
+            class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature"
+          >
+            <img
+              class="w-100"
+              src="../assets/image/Home/family.png"
+              alt="戶外度假勝地"
+            />
+            <p>戶外度假勝地</p>
+          </div>
+          <div
+            class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature"
+          >
+            <img
+              class="w-100"
+              src="../assets/image/Home/family2.png"
+              alt="獨特房源"
+            />
+            <p>獨特房源</p>
+          </div>
+          <div
+            class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature"
+          >
+            <img
+              class="w-100"
+              src="../assets/image/Home/family3.png"
+              alt="整套房源"
+            />
+            <p>整套房源</p>
+          </div>
+          <div
+            class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature"
+          >
+            <img
+              class="w-100"
+              src="../assets/image/Home/family4.png"
+              alt="可攜帶寵物"
+            />
+            <p>可攜帶寵物</p>
+          </div>
         </div>
       </div>
-      <!-- <div class="scrollbar">
-          <div class="yuan-yuan-container">
-            <div class="yuan-row">
-              <div class="family-div">
-                <a href="#">
-                  <img src="../assets/image/Home/family.png" />
-                  <span>戶外度假勝地</span>
-                </a>
-              </div>
-              <div class="family-div">
-                <a href="#">
-                  <img src="../assets/image/Home/family2.png" />
-                  <span>獨特房源</span>
-                </a>
-              </div>
-              <div class="family-div">
-                <a href="#">
-                  <img src="../assets/image/Home/family3.png" />
-                  <span>整套房源</span>
-                </a>
-              </div>
-              <div class="family-div">
-                <a href="#">
-                  <img src="../assets/image/Home/family4.png" />
-                  <span>可攜帶寵物</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div> -->
     </div>
-    <div class="row freshThing">
+    <div class="findFresh">
       <h2>發掘好玩新鮮事</h2>
-      <div class="scrollArea">
-        <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-4 feature">
-          <img
-            class="w-100"
-            src="../assets/image/Home/haveFun.png"
-            alt="尋找附近的難忘體驗"
-          />
-          <p>體驗</p>
-          <p class="fs-6">尋找附近的難忘體驗。</p>
-        </div>
-        <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-4 feature">
-          <img
-            class="w-100"
-            src="../assets/image/Home/haveFun2.png"
-            alt="由體驗達人舉辦的互動式直播體驗。"
-          />
-          <p>線上體驗</p>
-          <p class="fs-6">由體驗達人舉辦的互動式直播體驗。</p>
-        </div>
-        <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-4 feature">
-          <img
-            class="w-100"
-            src="../assets/image/Home/haveFun3.png"
-            alt="參加線上體驗，安坐家中暢遊全世界。"
-          />
-          <p>精選系列：浪跡天涯</p>
-          <p class="fs-6">參加線上體驗，安坐家中暢遊全世界。</p>
-        </div>
-      </div>
-
-      <!-- <div class="scrollbar">
-        <div class="yuan-container">
-          <div class="yuan-row">
-            <div class="fun-div">
-              <a href="#">
-                <img src="../assets/image/Home/haveFun.png" /> <span>體驗</span
-                ><span class="item">尋找附近的難忘體驗。</span>
-              </a>
-            </div>
-            <div class="fun-div">
-              <a href="#">
-                <img src="../assets/image/Home/haveFun2.png" />
-                <span>線上體驗</span
-                ><span class="item">由體驗達人舉辦的互動式直播體驗。</span>
-              </a>
-            </div>
-            <div class="fun-div">
-              <a href="#">
-                <img src="../assets/image/Home/haveFun3.png" />
-                <span>精選系列：浪跡天涯</span
-                ><span class="item">參加線上體驗，安坐家中暢遊全世界。</span>
-              </a>
-            </div>
+      <div class="freshThing">
+        <div class="scrollArea">
+          <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-4 fresh">
+            <img
+              class="w-100"
+              src="../assets/image/Home/haveFun.png"
+              alt="尋找附近的難忘體驗"
+            />
+            <p>體驗</p>
+            <p class="fs-6">尋找附近的難忘體驗。</p>
+          </div>
+          <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-4 fresh">
+            <img
+              class="w-100"
+              src="../assets/image/Home/haveFun2.png"
+              alt="由體驗達人舉辦的互動式直播體驗。"
+            />
+            <p>線上體驗</p>
+            <p class="fs-6">由體驗達人舉辦的互動式直播體驗。</p>
+          </div>
+          <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-4 fresh">
+            <img
+              class="w-100"
+              src="../assets/image/Home/haveFun3.png"
+              alt="參加線上體驗，安坐家中暢遊全世界。"
+            />
+            <p>精選系列：浪跡天涯</p>
+            <p class="fs-6">參加線上體驗，安坐家中暢遊全世界。</p>
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
     <div class="rent">
       <div class="item">
@@ -264,14 +219,12 @@ export default {
 .everyCornerComfortable,
 .freshThing {
   overflow: hidden;
-  height: 75%;
-  margin: 50px 0;
   .scrollArea {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: scroll;
-    height: 100%;
-    .feature {
+    .feature,
+    .fresh {
       img {
         border-radius: 20px;
       }
@@ -285,10 +238,20 @@ export default {
     }
   }
 }
+.everyCornerComfortable {
+  height: 450px;
+  .scrollArea {
+    height: 470px;
+  }
+}
+.freshThing {
+  height: 560px;
+  .scrollArea {
+    height: 580px;
+  }
+}
 
 body * {
-  outline: 1px solid hotpink;
-
   font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
     "Helvetica Neue", sans-serif;
   text-align: left;
@@ -315,9 +278,9 @@ body::-webkit-scrollbar {
   font-weight: 700;
 }
 .head {
-  height: 125.132vw;
+  height: 125vw;
   background-size: cover;
-  background-image: url(../assets/image/Home/Kanban.png);
+  background-image: url(https://a0.muscache.com/im/pictures/0c38042b-8685-4180-8d9b-12a6892ac6d8.jpg?im_w=720);
   position: relative;
 }
 .notice {
@@ -348,9 +311,8 @@ body::-webkit-scrollbar {
   right: 0;
 }
 .kanban p {
-  width: 85vw;
-  font-size: 7.1875vw;
-  color: #fff;
+  font-size: 25px;
+  color: #000000a8;
   padding-bottom: 12px;
   margin: auto;
   display: block;
@@ -489,7 +451,7 @@ body::-webkit-scrollbar {
   margin-top: 1.25vw;
 }
 .rent {
-  height: 25rem;
+  height: 45rem;
   background-image: url(../assets/image/Home/rent.png);
   background-size: cover;
   border-radius: 5vw;
@@ -520,6 +482,19 @@ body::-webkit-scrollbar {
 }
 
 @media screen and (min-width: 768px) {
+  .everyCornerComfortable {
+    height: 450px;
+    .scrollArea {
+      height: 470px;
+    }
+  }
+  .freshThing {
+    height: 560px;
+    .scrollArea {
+      height: 580px;
+    }
+  }
+
   .notice {
     height: 7.554vw;
   }
@@ -534,9 +509,7 @@ body::-webkit-scrollbar {
     margin: 0 auto;
   }
   .head {
-    height: 76.948vw;
-    background-image: url(../assets/image/Home/Kanban-md.png);
-    background-position: -23.25vw;
+    background-image: url(https://a0.muscache.com/im/pictures/57b9f708-bb12-498c-bc33-769f8fc43e63.jpg?im_w=2560);
   }
   .kanban {
     text-align: start;
@@ -544,12 +517,12 @@ body::-webkit-scrollbar {
     margin-top: 31vw;
   }
   .kanban p {
-    width: 30.6vw;
-    height: 13.022vw;
+    color: #000000a8;
     line-height: 4.49219vw;
-    font-size: 3.90625vw;
-    padding: 0;
-    margin: 0;
+    font-size: 50px;
+    text-align: start;
+    padding: 10px 0;
+    margin-left: 0;
   }
   .goTo {
     width: 11.46vw;
@@ -675,6 +648,13 @@ body::-webkit-scrollbar {
 }
 
 @media screen and (min-width: 1280px) {
+  .freshThing {
+    height: 540px;
+    .scrollArea {
+      height: 560px;
+    }
+  }
+
   .notice {
     height: 58px;
   }
@@ -689,7 +669,7 @@ body::-webkit-scrollbar {
   }
   .head {
     height: 85vh;
-    background-position: 0;
+    background-position: bottom;
     padding-top: 80px;
   }
   .kanban {
@@ -810,6 +790,21 @@ body::-webkit-scrollbar {
     width: 8.75vw;
     height: 3.75vw;
     font-size: 1.25vw;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .everyCornerComfortable {
+    height: 540px;
+    .scrollArea {
+      height: 560px;
+    }
+  }
+  .freshThing {
+    height: 720px;
+    .scrollArea {
+      height: 740px;
+    }
   }
 }
 </style>
