@@ -29,17 +29,14 @@ const routes = [
         component: () => import('../views/Subscribe.vue')
     },
     {
-        path: '/message/:memberId',
-        name: 'Message',
-        component: () => import('../views/Information.vue'),
-        meta: {
-            messageLayout: true,
-        },
+        path: '/wishLists',
+        name: 'wishLists',
+        component: () => import('../views/WishLists.vue')
     },
     {
-        path: '/wishList',
+        path:'/wishLists/:id',
         name: 'wishList',
-        component: () => import('../views/WishList.vue')
+        component:() => import('../views/WishList.vue')
     },
     {
         path: '/become-host',

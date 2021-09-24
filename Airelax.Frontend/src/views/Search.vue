@@ -816,6 +816,8 @@
       <Map v-if="get" :location="location" :houses="rooms"></Map>
     </div>
   </div>
+  <CreateWish></CreateWish>
+  <Wish :wishLists="wishLists" @onWishListUpdated="onWishListUpdated"></Wish>
 </template>
 
 <script>
@@ -824,6 +826,8 @@ import ResultRoom from "../components/Search/ResultRoom";
 import BrowsingRecord from "../components/Search/BrowsingRecord";
 import Map from "../components/Map/SearchMap.vue";
 import settingJson from "../components/Settings/setting";
+import Wish from "@/components/Search/Wish";
+import CreateWish from "@/components/Search/CreateWish";
 
 export default {
   created() {
@@ -843,6 +847,19 @@ export default {
     if (this.$store.state.filters.allowSmoke) searchApi += `&allowsmoke=${this.$store.state.filters.allowSmoke}`;
 
     //todo
+
+    const dataUrl = "/api/wishLists";
+    axios
+      .get(dataUrl)
+      .then((res) => {
+        console.log(res.data);
+        this.wishLists = res.data;
+        this.isWishListGet = true;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     axios.get(searchApi, {
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -897,7 +914,13 @@ export default {
       })
     })
   },
-  components: {ResultRoom, BrowsingRecord, Map},
+  components: {
+    ResultRoom,
+    BrowsingRecord,
+    Map,
+    Wish,
+    CreateWish,
+  },
   data() {
     return {
       totalRooms: 0,
@@ -1064,7 +1087,20 @@ export default {
           this.reload();
         })
       }
-
+    },
+    onWishListUpdated(wishId, houseId) {
+      //Todo 與愛心獨立事件有關的地方
+      const focusWishHouses = this.wishLists.find(
+        (x) => x.id === wishId
+      ).houses;
+      if (focusWishHouses.some((x) => x === houseId)) {
+        const index = focusWishHouses.indexOf(houseId);
+        focusWishHouses.splice(index, 1);
+      } else focusWishHouses.push(houseId);
+    },
+    onCreateWishList(wishName, houseId) {
+      //Todo 缺畫面同步,現有代碼不會動
+      this.wishLists.push({ name: wishName, houses: [houseId] });
     },
     getRandomNumber(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;

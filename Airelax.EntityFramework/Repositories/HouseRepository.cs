@@ -61,7 +61,8 @@ namespace Airelax.EntityFramework.Repositories
 
         private IIncludableQueryable<House, ReservationRule> GetHouseIncludeAll()
         {
-            return _repository.GetAll<string, House>().Include(x => x.Comments)
+            return _repository.GetAll<string, House>()
+                .Include(x => x.Comments)
                 .Include(x => x.Photos)
                 .Include(x => x.Policy)
                 .Include(x => x.Spaces)
