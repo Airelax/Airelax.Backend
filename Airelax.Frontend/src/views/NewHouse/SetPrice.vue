@@ -40,8 +40,6 @@ export default {
         redirectName: `/`,
         body: {
           price: price,
-          //todo identity
-          memberId: 'M00056b77d3'
         }
       }
       this.$store.commit('setNewHouseRequest', req);

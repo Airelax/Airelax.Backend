@@ -1,12 +1,14 @@
 ﻿using System.Threading.Tasks;
 using Airelax.Application.Houses;
 using Airelax.Application.Houses.Dtos.Request;
+using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Airelax.Controllers
 {
     [ApiController]
     [Route("api/new-house")]
+    [Authorize]
     public class NewHouseController : Controller
     {
         private readonly INewHouseService _houseAppService;

@@ -52,22 +52,21 @@ namespace Airelax.Application.Houses
         public async Task<SearchHousesResponse> Search(SearchInput input)
         {
             Check.CheckNull(input);
-            //todo
-            //var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.Location);
-            var geocodingInfo = new GeocodingInfo
-            {
-                Bounds = new CoordinateRange
-                {
-                    Northeast = new Coordinate(25.2103038, 121.6659421),
-                    SouthWest = new Coordinate(24.9605084, 121.4570603)
-                },
-                Location = new Coordinate(25.0329636, 121.5654268),
-                Viewport = new CoordinateRange
-                {
-                    Northeast = new Coordinate(25.2103038, 121.6659421),
-                    SouthWest = new Coordinate(24.9605084, 121.4570603)
-                }
-            };
+            var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.Location);
+            // var geocodingInfo = new GeocodingInfo
+            // {
+            //     Bounds = new CoordinateRange
+            //     {
+            //         Northeast = new Coordinate(25.2103038, 121.6659421),
+            //         SouthWest = new Coordinate(24.9605084, 121.4570603)
+            //     },
+            //     Location = new Coordinate(25.0329636, 121.5654268),
+            //     Viewport = new CoordinateRange
+            //     {
+            //         Northeast = new Coordinate(25.2103038, 121.6659421),
+            //         SouthWest = new Coordinate(24.9605084, 121.4570603)
+            //     }
+            // };
 
             if (geocodingInfo == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "找不到地址");
 
@@ -209,6 +208,7 @@ namespace Airelax.Application.Houses
         private static Specification<House> GetSpecification(SearchInput input, GeocodingInfo geocodingInfo)
         {
             Specification<House> specification = new InRangeLocationSpecification(geocodingInfo.Bounds.SouthWest, geocodingInfo.Bounds.Northeast);
+            specification = specification.And(new PublishedSpecification());
             var customerNumberSpecification = new MaxCustomerNumberSpecification(input.CustomerNumber);
             specification = specification.And(customerNumberSpecification);
 
@@ -293,7 +293,7 @@ namespace Airelax.Application.Houses
                     Address = $"{x.Location?.Town ?? string.Empty}",
                     Comment = ConvertToSimpleCommentDto(x.Comment),
                     Facility = ConvertToSimpleFacilityDto(x.Facilities),
-                    HouseType = x.Category?.Category.ToString(),
+                    HouseType = x.Category?.Category == null ?string.Empty: Definition.ChtMapping.HouseCategory[x.Category.Category],
                     Picture = x.Pictures?.Select(p => p.Image) ?? new List<string>(),
                     Price = ConvertToPriceDto(x.Price),
                     Space = ConvertToSimpleSpaceDto(x),
@@ -304,8 +304,7 @@ namespace Airelax.Application.Houses
                         Longitude = x.Location?.Longitude ?? 121
                     }
                 };
-                //SetWishWist(x, simpleHouseDto);
-
+                 
                 return simpleHouseDto;
             });
         }

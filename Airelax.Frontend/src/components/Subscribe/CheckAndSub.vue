@@ -50,11 +50,10 @@ export default {
   },
   data() {
     return {
-      href: `http://127.0.0.1:5000/api/system/${this.orderId}/${this.token}`
+      href: `/api/system/${this.orderId}/${this.token}`
     }
   },
   mounted() {
-    console.log(this.href);
   }
 };
 </script>

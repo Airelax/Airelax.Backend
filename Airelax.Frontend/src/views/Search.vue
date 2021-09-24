@@ -843,7 +843,6 @@ export default {
           this.getPicture();
           //Todo-Vuex-初始
           this.$store.state.room = {};
-          console.log(res.data.houses)
           this.location = data.locationInfo;
           this.get = true;
         });

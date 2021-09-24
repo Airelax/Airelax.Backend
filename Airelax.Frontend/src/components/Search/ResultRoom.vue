@@ -181,7 +181,6 @@ export default {
   },
   methods: {
     SearchRoom(room){
-      //Todo-Vuex
       this.$store.state.roomPicture = room.picture
       this.$router.push({
         path: `/room/${room.id}`,

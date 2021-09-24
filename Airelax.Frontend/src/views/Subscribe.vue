@@ -61,12 +61,8 @@ export default {
             "Access-Control-Allow-Origin": "*",
           },
         })
-        .then((res) => {
-          // this.room = res.data;
-          console.log(res.data)
-          //Todo-Vuex
+        .then(() => {
           this.room = this.$store.state.room;
-          console.log(this.room)
           this.get = true;
         });
 
@@ -80,8 +76,6 @@ export default {
       const data = res.data;
       this.orderId = data.orderId;
       this.token = data.token;
-      console.log(data);
-
 
     }).catch(err => console.log(err));
   },

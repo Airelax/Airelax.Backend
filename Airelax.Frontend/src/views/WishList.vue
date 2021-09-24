@@ -124,7 +124,6 @@
       axios
         .get(dataUrl)
         .then((res) => {
-          console.log(res.data);
           this.wishList = res.data;
         })
         .catch((err) => {
