@@ -1,14 +1,14 @@
 ﻿using System.Threading.Tasks;
 using Airelax.Application.Houses;
 using Airelax.Application.Houses.Dtos.Request;
-using Microsoft.AspNet.SignalR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Airelax.Controllers
 {
     [ApiController]
-    [Route("api/new-house")]
     [Authorize]
+    [Route("api/new-house")]
     public class NewHouseController : Controller
     {
         private readonly INewHouseService _houseAppService;
@@ -78,6 +78,13 @@ namespace Airelax.Controllers
         public async Task<bool> SetHouseLocation(string id, CreateLocationInput input)
         {
             return false;
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<bool> Delete(string id)
+        {
+            return await _houseAppService.DeleteHouseAsync(id);
         }
     }
 }

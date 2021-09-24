@@ -5,6 +5,5 @@ namespace Airelax.Application.Houses.Dtos.Request
     public class CreateHouseInput
     {
         public Category Category { get; set; }
-        public string MemberId { get; set; }
     }
 }

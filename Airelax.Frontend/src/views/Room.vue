@@ -14,7 +14,7 @@
         <div class="mix-md d-flex">
           <div class="remix">
             <i class="fas fa-star"></i>
-            <span class="num">{{ data.rank.star }}</span>
+            <span class="num">{{ data.rank.star.toFixed(2) }}</span>
             <a href="#" @click.prevent="isCommentShow = true" @click="show" data-bs-toggle="modal"
                data-bs-target="#myModal">({{ data.comments.length }}則評論)</a>
             <span class="dot">·</span>
@@ -121,7 +121,7 @@
               </p>
               <div>
                 <i class="fas fa-star"></i>
-                <span class="num">{{ data.rank.star }}</span>
+                <span class="num">{{ data.rank.star.toFixed(2) }}</span>
                 <a href="#" @click.prevent="isCommentShow = true" @click="show" data-bs-toggle="modal"
                    data-bs-target="#myModal">({{ data.comments.length }}則評論)</a>
               </div>
@@ -519,6 +519,7 @@ export default {
             this.getPicture();
             this.getTotalComments();
             this.getPrice();
+
             if (Object.keys(this.$store.state.room).length === 0) this.$store.state.room = this.data;
             else this.data = this.$store.state.room;
             this.get = true;
@@ -545,7 +546,7 @@ export default {
     },
     //Todo-先給隨機Rank資料
     getRank() {
-      if (this.data.rank.star !== 0) return;
+      if (this.data.rank.star.toFixed(2) !== 0) return;
       Object.keys(this.data.rank).forEach((x) => {
         if (x == "star") {
           this.data.rank[x] = 0
