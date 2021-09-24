@@ -33,7 +33,7 @@ namespace Airelax.Application.Houses
         private readonly IMapper _mapper;
         private readonly ICommentsRepository _commentsRepository;
         private readonly IMemberRepository _memberRepository;
-        private const int PageCount = 30;
+        private const int PageCount = 20;
 
         public HouseAppService(
             IHouseRepository houseRepository,
@@ -52,22 +52,21 @@ namespace Airelax.Application.Houses
         public async Task<SearchHousesResponse> Search(SearchInput input)
         {
             Check.CheckNull(input);
-            //todo
-            //var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.Location);
-            var geocodingInfo = new GeocodingInfo
-            {
-                Bounds = new CoordinateRange
-                {
-                    Northeast = new Coordinate(25.2103038, 121.6659421),
-                    SouthWest = new Coordinate(24.9605084, 121.4570603)
-                },
-                Location = new Coordinate(25.0329636, 121.5654268),
-                Viewport = new CoordinateRange
-                {
-                    Northeast = new Coordinate(25.2103038, 121.6659421),
-                    SouthWest = new Coordinate(24.9605084, 121.4570603)
-                }
-            };
+            var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.Location);
+            // var geocodingInfo = new GeocodingInfo
+            // {
+            //     Bounds = new CoordinateRange
+            //     {
+            //         Northeast = new Coordinate(25.2103038, 121.6659421),
+            //         SouthWest = new Coordinate(24.9605084, 121.4570603)
+            //     },
+            //     Location = new Coordinate(25.0329636, 121.5654268),
+            //     Viewport = new CoordinateRange
+            //     {
+            //         Northeast = new Coordinate(25.2103038, 121.6659421),
+            //         SouthWest = new Coordinate(24.9605084, 121.4570603)
+            //     }
+            // };
 
             if (geocodingInfo == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "找不到地址");
 
@@ -89,10 +88,7 @@ namespace Airelax.Application.Houses
 
             var total = houses.Count;
             houses = GetHousesByPage(input.Page, houses);
-
-            //var houses = await GetHousesAsync(specification, input.Page);
-            //var total = await _houseRepository.GetSatisfyFromAsync(specification).CountAsync();
-
+            
             var dateTime = DateTime.Now;
             Console.WriteLine(dateTime);
             Console.WriteLine("cost" + (dateTime - sNow));
@@ -202,13 +198,15 @@ namespace Airelax.Application.Houses
                     AuthorId = c.AuthorId,
                     Content = c.Comment.Content,
                     Date = c.Comment.CommentTime.ToString("yyyy-MM-dd"),
-                    Name = c.AuthorName
+                    Name = c.AuthorName,
+                    Cover = c.Cover,
                 });
         }
 
         private static Specification<House> GetSpecification(SearchInput input, GeocodingInfo geocodingInfo)
         {
             Specification<House> specification = new InRangeLocationSpecification(geocodingInfo.Bounds.SouthWest, geocodingInfo.Bounds.Northeast);
+            specification = specification.And(new PublishedSpecification());
             var customerNumberSpecification = new MaxCustomerNumberSpecification(input.CustomerNumber);
             specification = specification.And(customerNumberSpecification);
 
@@ -293,7 +291,7 @@ namespace Airelax.Application.Houses
                     Address = $"{x.Location?.Town ?? string.Empty}",
                     Comment = ConvertToSimpleCommentDto(x.Comment),
                     Facility = ConvertToSimpleFacilityDto(x.Facilities),
-                    HouseType = x.Category?.Category.ToString(),
+                    HouseType = x.Category?.Category == null ?string.Empty: Definition.ChtMapping.HouseCategory[x.Category.Category],
                     Picture = x.Pictures?.Select(p => p.Image) ?? new List<string>(),
                     Price = ConvertToPriceDto(x.Price),
                     Space = ConvertToSimpleSpaceDto(x),
@@ -304,22 +302,9 @@ namespace Airelax.Application.Houses
                         Longitude = x.Location?.Longitude ?? 121
                     }
                 };
-                //SetWishWist(x, simpleHouseDto);
-
+                 
                 return simpleHouseDto;
             });
-        }
-
-        private static void SetWishWist(SearchHouse x, SimpleHouseDto simpleHouseDto)
-        {
-            var wishList = x.WishList?.FirstOrDefault(w => w.Houses.Contains(x.Id));
-            if (wishList != null)
-                simpleHouseDto.WishList = new WishListDto
-                {
-                    Cover = wishList.Cover,
-                    Houses = wishList.Houses,
-                    Name = wishList.Name
-                };
         }
 
         private static SimpleSpaceDto ConvertToSimpleSpaceDto(SearchHouse house)
@@ -380,9 +365,9 @@ namespace Airelax.Application.Houses
 
             if (housePrice.Fee == null) return price;
 
-            price.Fee.CleanFee = decimal.Round((decimal)housePrice.Fee.CleanFee);
-            price.Fee.ServiceFee = decimal.Round((decimal)housePrice.Fee.ServiceFee);
-            price.Fee.TaxFee = decimal.Round((decimal)housePrice.Fee.TaxFee);
+            price.Fee.CleanFee = decimal.Round(housePrice.Fee.CleanFee);
+            price.Fee.ServiceFee = decimal.Round(housePrice.Fee.ServiceFee);
+            price.Fee.TaxFee = decimal.Round(housePrice.Fee.TaxFee);
             return price;
         }
 

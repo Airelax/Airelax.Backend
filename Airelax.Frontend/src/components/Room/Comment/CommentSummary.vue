@@ -3,7 +3,7 @@
     <i class="fas fa-star"></i>
     <h2>
       <div v-if="comment">
-        {{ rank.star }}．{{ comment.length }}則評價
+        {{ rank.star.toFixed(2) }}．{{ comment.length }}則評價
       </div>
     </h2>
   </div>
@@ -15,10 +15,12 @@
   display: flex;
   align-items: baseline;
   align-items: center;
-  i{
+
+  i {
     color: #FF385C;
     margin-right: 1rem;
   }
+
   h2 {
     font-size: 22px;
     font-weight: 600;
@@ -30,6 +32,6 @@
 
 <script>
 export default {
-  props: ["comment","rank"],
+  props: ["comment", "rank"],
 };
 </script>

@@ -167,7 +167,6 @@ export default {
     },
     methods:{
       SearchLocation(e){
-        console.log(e.target)
         this.$store.state.destination = e.target.querySelector('span').innerText;
         this.$router.push({
           path: "search",

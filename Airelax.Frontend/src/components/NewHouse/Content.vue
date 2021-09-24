@@ -31,7 +31,7 @@
 .content {
   padding-bottom: 80px;
   height: 100%;
-}
+}  
 
 .step-controls {
   padding: 10px 15px;

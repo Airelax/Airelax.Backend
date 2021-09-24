@@ -77,7 +77,6 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
             //初始化綠界要的參數(Token)
             var tokenRequest = new ECRequest
             {
-                //todo 
                 MerchantId = _options.Value.MerchantId,  //由外部傳入
                 RqHeader = new ECRequestHeader() {
                                 TimeStamp = DateTimeOffset.Now.ToUnixTimeSeconds(), 

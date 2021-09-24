@@ -55,7 +55,7 @@ export default {
             alert("Partyin Partyin Yeah!");
           });
         });
-
+        this.setMarker();
 
       });
     },
