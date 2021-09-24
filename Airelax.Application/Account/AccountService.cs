@@ -69,7 +69,7 @@ namespace Airelax.Application.Account
                 Birthday = input.Birthday,
                 Email = input.Email,
                 // todo default cover
-                Cover = "acvavevasabhetscv"
+                Cover = "https://www.zuckermanlaw.com/wp-content/uploads/whistleblowing/anonymous-sec-whistleblower.jpg"
             };
 
             //以產出Id

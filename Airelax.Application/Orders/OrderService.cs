@@ -73,16 +73,14 @@ namespace Airelax.Application.Orders
                 Email = member.Email,
                 MerchantMemberId = member.Id
             };
-
             
-
             var tokenData=_eCPayService.GetToken(createTokenInput).Result;
             var createOrderResponse = new CreateOrderResponse
             {
                 Token = tokenData.Token,
                 OrderId = order.Id
             };
-            //todo 金流
+
             _houseRepository.UpdateAsync(house);
             _orderRepository.Add(order);
             _orderRepository.SaveChanges();

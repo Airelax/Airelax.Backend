@@ -214,9 +214,8 @@ export default {
     wishLists: { type: Array },
   },
   methods: {
-    SearchRoom(room) {
-      //Todo-Vuex
-      this.$store.state.roomPicture = room.picture;
+    SearchRoom(room){
+      this.$store.state.roomPicture = room.picture
       this.$router.push({
         path: `/room/${room.id}`,
       });

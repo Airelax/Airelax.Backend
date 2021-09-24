@@ -51,6 +51,7 @@ namespace Airelax.EntityFramework.Repositories
                         HouseName = h.Title,
                         HouseStatus = h.Status,
                         AuthorName = mem.Name,
+                        Cover = mem.Cover,
                         Stars = s,
                         AuthorId = c.AuthorId
                     });

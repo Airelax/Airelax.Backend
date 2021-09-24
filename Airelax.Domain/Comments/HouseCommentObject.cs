@@ -11,5 +11,6 @@ namespace Airelax.Domain.Comments
         public string AuthorName { get; set; }
         public Star Stars { get; set; }
         public string AuthorId { get; set; }
+        public string Cover { get; set; }
     }
 }
