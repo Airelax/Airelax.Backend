@@ -59,6 +59,30 @@ namespace Airelax.Infrastructure.Map
         {
             var geometry = geocodingResponse.results.First()?.geometry;
             if (geometry == null) throw ExceptionBuilder.Build(HttpStatusCode.InternalServerError, "cannot not get map data");
+            var geocodingInfo = new GeocodingInfo(){Location = new Coordinate(geometry.location.lat, geometry.location.lng)};
+
+            if (geometry.bounds == null)
+            {
+                var south = geocodingInfo.Location.Latitude-0.02;
+                var north = geocodingInfo.Location.Latitude+0.02;
+                var west = geocodingInfo.Location.Longitude-0.02;
+                var east = geocodingInfo.Location.Longitude+0.02;
+                var southwest = new Coordinate(south, west);
+                var northeast = new Coordinate(north, east);
+                
+                geocodingInfo.Bounds = new CoordinateRange
+                {
+                    SouthWest = southwest,
+                    Northeast = northeast
+                };
+                geocodingInfo.Viewport = new CoordinateRange
+                {
+                    SouthWest = southwest,
+                    Northeast = northeast
+                };
+                return geocodingInfo;
+            }
+            
             return new GeocodingInfo
             {
                 Bounds = new CoordinateRange

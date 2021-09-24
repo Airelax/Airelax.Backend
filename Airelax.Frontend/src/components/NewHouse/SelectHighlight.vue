@@ -1,13 +1,13 @@
 <template>
   <div class="contain">
     <div class="item-group">
-      <Hightlight
-        v-for="highlight in highlights"
-        :key="highlight.mapping"
-        :highlight="highlight"
-        @selected="selected"
-        :isActive="values.includes(highlight.mapping)"
-      ></Hightlight>
+      <Highlight
+          v-for="highlight in highlights"
+          :key="highlight.mapping"
+          :highlight="highlight"
+          @selected="selected"
+          :isActive="values.includes(highlight.mapping)"
+      ></Highlight>
     </div>
   </div>
 </template>
@@ -32,8 +32,12 @@
 
 <script>
 import setting from "./setting.js";
-import Hightlight from "./Highlight.vue";
+import Highlight from "./Highlight.vue";
+
 export default {
+  created() {
+    this.$store.commit('setNewHouseNextAvailable', true);
+  },
   data() {
     return {
       highlights: setting.houseHighlight,
@@ -41,7 +45,7 @@ export default {
     };
   },
   components: {
-    Hightlight,
+    Highlight: Highlight,
   },
   methods: {
     selected: function (mapping) {
@@ -50,6 +54,7 @@ export default {
       if (this.values.length > 2) this.values = this.values.slice(-2);
 
       this.$emit("selected", mapping);
+      
     },
   },
 };

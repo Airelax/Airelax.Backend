@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using Airelax.Application.Account;
 using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Domain.Houses;
 using Airelax.Domain.Houses.Price;
@@ -14,19 +15,18 @@ namespace Airelax.Application.Houses
     public class NewHouseService : INewHouseService
     {
         private readonly IHouseRepository _houseRepository;
-        private readonly IRepository _repository;
+        private readonly IAccountService _accountService;
 
-        public NewHouseService(IRepository repository, IHouseRepository houseRepository)
+        public NewHouseService(IHouseRepository houseRepository, IAccountService accountService)
         {
-            _repository = repository;
             _houseRepository = houseRepository;
+            _accountService = accountService;
         }
 
         public async Task<string> CreateAsync(CreateHouseInput input)
         {
-            var owner = await _repository.GetAsync<string, Member>(x => x.Id == input.MemberId);
-            if (owner == null) throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, $"member id: {input.MemberId} is not exist");
-            var house = new House(owner.Id);
+            var ownerId = _accountService.GetAuthMemberId();
+            var house = new House(ownerId);
             house.HouseCategory = new HouseCategory(house.Id) {Category = input.Category};
             await _houseRepository.CreateAsync(house);
             await _houseRepository.SaveChangesAsync();
@@ -86,6 +86,14 @@ namespace Airelax.Application.Houses
             var house = await GetHouse(id);
             house.ProvideFacilities = input.ProvideFacilities;
             await UpdateHouse(house);
+            return true;
+        }
+
+        public async Task<bool> DeleteHouseAsync(string id)
+        {
+            var house = await GetHouse(id);
+            await _houseRepository.DeleteAsync(house);
+            await _houseRepository.SaveChangesAsync();
             return true;
         }
 

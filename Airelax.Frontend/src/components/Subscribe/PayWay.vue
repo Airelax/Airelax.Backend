@@ -47,7 +47,7 @@
       <h5 class="offcanvas-title" id="creditLabel">新增信用卡詳情</h5>
     </div>
     <div class="offcanvas-body small">
-      <CreditVisaForm></CreditVisaForm>
+      <CreditVisaForm :token="token"></CreditVisaForm>
     </div>
     <div class="offcanvas-footer d-flex pe-4">
       <div class="btn btn-dark ms-auto" data-bs-dismiss="offcanvas">完成</div>
@@ -109,6 +109,9 @@ export default {
     fullWidth: {
       type: Number,
     },
+    token:{
+      type:String,
+    }
   },
   components: {
     CreditVisaForm,

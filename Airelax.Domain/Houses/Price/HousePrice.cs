@@ -24,7 +24,7 @@ namespace Airelax.Domain.Houses.Price
             var sweetPrice = PerWeekNight ?? PerNight;
             var nightsPrice = sweetPrice * diffDay;
 
-            if (Fee != null) nightsPrice = Fee.CleanFee + Fee.ServiceFee + Fee.TaxFee;
+            if (Fee != null) nightsPrice += Fee.CleanFee + Fee.ServiceFee + Fee.TaxFee;
 
             return nightsPrice;
             //return nightsPrice + Fee?.CleanFee ?? 0 + Fee?.ServiceFee ?? 0 + Fee?.TaxFee ?? 0;

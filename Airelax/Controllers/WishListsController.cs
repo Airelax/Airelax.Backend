@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Airelax.Application.WishLists;
 using Airelax.Application.WishLists.Dtos.Request;
 using Airelax.Application.WishLists.Dtos.Response;
@@ -17,7 +18,7 @@ namespace Airelax.Controllers
         }
 
         [HttpPost]
-        public bool Create( [FromBody] CreateWishListInput input)
+        public bool Create([FromBody] CreateWishListInput input)
         {
             _wishListService.CreateWishList(input);
             return true;
@@ -26,7 +27,15 @@ namespace Airelax.Controllers
         [HttpPut]
         public bool Update([FromBody] UpdateWishListInput input)
         {
-            _wishListService.UpdateWishList(input);
+            _wishListService.UpdateWishName(input);
+            return true;
+        }
+
+        [HttpPut]
+        [Route("Houses")]
+        public bool ReviseHouses([FromBody] UpdateWishListInput input)
+        {
+            _wishListService.ReviseHouse(input);
             return true;
         }
 
@@ -38,9 +47,16 @@ namespace Airelax.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<WishListViewModel> Get(string memberId)
+        public IEnumerable<WishListViewModel> GetWishLists()
         {
-            return _wishListService.GetWishList(memberId);
+            return _wishListService.GetWishLists();
+        }
+
+        [HttpGet]
+        [Route("{wishId}")]
+        public async Task<IEnumerable<WishListHousesViewModel>> GetHousesByWishList(int wishId)
+        {
+            return await _wishListService.GetHousesByWishList(wishId);
         }
     }
 }

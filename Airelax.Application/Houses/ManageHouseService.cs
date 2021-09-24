@@ -37,12 +37,13 @@ namespace Airelax.Application.Houses
         public IEnumerable<MyHouseViewModel> GetMyHouseViewModel()
         {
             var memberId = _accountService.GetAuthMemberId();
-            var houses = _houseRepository.GetAll().Where(x => x.OwnerId == memberId);
+            var houses = _houseRepository.GetAll().Where(x => x.OwnerId == memberId && !x.IsDeleted);
 
             if (houses.IsNullOrEmpty())
                 return new List<MyHouseViewModel>();
 
-            var myHouseViewModel = houses.Select(x => new MyHouseViewModel
+            var list = houses.ToList();
+            var myHouseViewModel = list.Select(x => new MyHouseViewModel
             {
                 HouseId = x.Id,
                 Title = x.Title,
@@ -113,8 +114,9 @@ namespace Airelax.Application.Houses
                 CustomerNumber = house.CustomerNumber,
                 Origin = Convert.ToString((int) (house.HousePrice?.PerNight ?? 0)),
                 SweetPrice = Convert.ToString((int) (house.HousePrice?.PerWeekNight ?? 0)),
-                ////Discount
-                ////Fee = price.Fee,
+                WeekDiscount = Convert.ToString((int)(house.HousePrice?.Discount?.Week ?? 0)),
+                MonthDiscount = Convert.ToString((int)(house.HousePrice?.Discount?.Month ?? 0)),
+                Fee = Convert.ToString((int)(house.HousePrice?.Fee?.CleanFee ?? 0)),
                 Cancel = (int) (house.Policy?.CancelPolicy ?? CancelPolicy.StrictOrNotRefund),
                 InstanceBooking = house.Policy?.CanRealTime ?? false,
                 CheckinTime = house.Policy?.CheckinTime.ToString("t", DateTimeFormatInfo.InvariantInfo),
@@ -218,6 +220,15 @@ namespace Airelax.Application.Houses
             house.HousePrice.PerNight = input.Origin;
             house.HousePrice.PerWeekNight = input.SweetPrice;
             house.Policy.CashPledge = input.CashPledge;
+            house.HousePrice.Fee = new Domain.Houses.Price.Fee()
+            {
+                CleanFee = input.CleanFee
+            };
+            house.HousePrice.Discount = new Domain.Houses.Price.Discount()
+            {
+                Week = (int)input.WeekDiscount,
+                Month = (int)input.MonthDiscount
+            };
             UpdateHouse(house);
             return input;
         }
@@ -282,7 +293,7 @@ namespace Airelax.Application.Houses
             return input;
         }
 
-        public HouseSpaceInput CreateSpace(string id, HouseSpaceInput input)
+        public List<SpaceBed> CreateSpace(string id, HouseSpaceInput input)
         {
             var house = GetHouse(id);
             CheckAuthorization(house.OwnerId);
@@ -290,11 +301,12 @@ namespace Airelax.Application.Houses
             {
                 HouseId = input.HouseId,
                 SpaceType = (SpaceType) input.SpaceType,
-                IsShared = input.IsShared
+                IsShared = input.IsShared,
             };
             house.Spaces.Add(space);
             UpdateHouse(house);
-            return input;
+            var SpaceId = _manageHouseRepository.GetSpace(id);
+            return SpaceId;
         }
 
         public HouseSpaceInput DeleteSpace(string id, HouseSpaceInput input)

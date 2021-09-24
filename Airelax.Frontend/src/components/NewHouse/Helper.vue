@@ -1,11 +1,11 @@
 <template>
   <div class="helper">
-    <button class="close">
+    <button class="close" @click="leaveOut">
       <svg
-        viewBox="0 0 32 32"
-        xmlns="http://www.w3.org/2000/svg"
-        
-        focusable="false"
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+
+          focusable="false"
       >
         <path d="m6 6 20 20"></path>
         <path d="m26 6-20 20"></path>
@@ -14,7 +14,7 @@
     <button>
       <div>協助</div>
     </button>
-    <button>
+    <button @click="leaveOut">
       <div>儲存並退出</div>
     </button>
   </div>
@@ -76,6 +76,7 @@ button {
     button {
       background-color: #eee;
       color: #000;
+
       &:first-child {
         display: none;
       }
@@ -90,9 +91,21 @@ button {
 </style>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {};
   },
+  methods: {
+    leaveOut() {
+      if (this.$route.params.id) {
+        axios(`/api/new-house/${this.$route.params.id}`, {method: 'delete'})
+            .then(() => window.location.href = '/member/all').catch(err => console.log(err));
+      } else {
+        window.location.href = '/member/all';
+      }
+    }
+  }
 };
 </script>

@@ -1,4 +1,8 @@
-﻿namespace Airelax.Defines
+﻿using System.Collections.Generic;
+using Airelax.Domain.Houses;
+using Airelax.Domain.Houses.Defines;
+
+namespace Airelax.Defines
 {
     public struct Define
     {
@@ -13,5 +17,7 @@
         {
             public const string JWT_COOKIE_KEY = "yee_mother_fucker";
         }
+        
+       
     }
 }

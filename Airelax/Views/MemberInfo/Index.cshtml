@@ -2,7 +2,9 @@
 @{
     Layout = "~/Views/Shared/_LayoutMemberInfo.cshtml";
 }
-<nav>眼睛業障重nav</nav>
+@section header{
+    <partial name="_MemberNavPartial"></partial>
+}
 <div class="container-xl">
     <div class="row">
         <div class="col-12 col-md-3">
@@ -58,7 +60,7 @@
                 </div>
             </div>
             <div class="row writingAboutMe collapse" id="aboutCollapse">
-                <partial name="~/Views/Shared/MemberInfo/_AboutCollapsePartial.cshtml"/>
+                <partial name="~/Views/Shared/MemberInfo/_AboutCollapsePartial.cshtml" />
             </div>
             <div class="row checked">
                 <h3>
@@ -66,11 +68,11 @@
                     已確認
                 </h3>
                 <div class="col col-md-12">
-                    <img src="~/images/memberInfo/hook.svg"/>
+                    <img src="~/images/memberInfo/hook.svg" />
                     <span>電子郵件</span>
                 </div>
                 <div class="col col-md-12">
-                    <img src="~/images/memberInfo/hook.svg"/>
+                    <img src="~/images/memberInfo/hook.svg" />
                     <span>電話號碼</span>
                 </div>
             </div>
@@ -79,7 +81,7 @@
                     <span>@Model.MemberName</span>
                     的房源
                 </h3>
-                <partial name="~/Views/Shared/MemberInfo/_HousesSourseSwiperPartial.cshtml"/>
+                <partial name="~/Views/Shared/MemberInfo/_HousesSourseSwiperPartial.cshtml" />
             </div>
         </div>
         <div class="d-none d-md-block col-md-6">
@@ -111,14 +113,14 @@
                 </div>
             </div>
             <div class="row mdWritingAboutMe collapse" id="mdAboutCollapse">
-                <partial name="~/Views/Shared/MemberInfo/_AboutMdCollapsePartial.cshtml"/>
+                <partial name="~/Views/Shared/MemberInfo/_AboutMdCollapsePartial.cshtml" />
             </div>
             <div class="row houseSource">
                 <h3>
                     <span>@Model.MemberName</span>
                     的房源
                 </h3>
-                <partial name="~/Views/Shared/MemberInfo/_HousesSourseSwiperPartial.cshtml"/>
+                <partial name="~/Views/Shared/MemberInfo/_HousesSourseSwiperPartial.cshtml" />
             </div>
         </div>
     </div>
@@ -234,7 +236,7 @@
                 },
                 data: MemberInfoInput,
             })
-                .then(function (res) {
+            .then(function (res) {
                     console.log(res.status);
                 if (res.status == 200) {
                     updateWrittenArea(MemberInfoInput,

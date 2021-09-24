@@ -66,7 +66,6 @@ export default {
   display: none;
 }
 .scrollbar {
-  width: fit-content;
   display: flex;
 }
 .btn-box {
@@ -132,8 +131,10 @@ export default {
   }
   .scrollbar {
     width: 100%;
+    height: 816px;
     display: block;
     margin-top: 32px;
+    overflow: hidden;
   }
   .btn-modal {
     width: 169px;
@@ -178,10 +179,9 @@ export default {
 }
 @media screen and (min-width: 1200px) {
   .scrollbar {
+    height: 408px;
     display: flex;
     flex-wrap: wrap;
-    height: 25rem;
-    overflow: hidden;
   }
 }
 </style>

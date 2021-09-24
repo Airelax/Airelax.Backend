@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 using System.Web;
 using Airelax.Application.Account.Dtos.Request;
 using Airelax.Application.Account.Dtos.Response;
-using Airelax.Application.Helpers;
 using Airelax.Domain.Members;
 using Airelax.Domain.Members.Defines;
 using Airelax.Domain.RepositoryInterface;
+using Airelax.Infrastructure.Helpers;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
@@ -69,7 +69,7 @@ namespace Airelax.Application.Account
                 Birthday = input.Birthday,
                 Email = input.Email,
                 // todo default cover
-                Cover = "acvavevasabhetscv"
+                Cover = "https://www.zuckermanlaw.com/wp-content/uploads/whistleblowing/anonymous-sec-whistleblower.jpg"
             };
 
             //以產出Id

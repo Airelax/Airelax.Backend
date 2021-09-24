@@ -1,9 +1,11 @@
 ﻿<template>
-  <div id="map">{{ location }}</div>
+  <div id="map"></div>
+
 </template>
 
 <script>
-import { Loader } from "@googlemaps/js-api-loader";
+import {Loader} from "@googlemaps/js-api-loader";
+import createHTMLMapMarker from "@/components/Map/PriceMarker";
 
 export default {
   name: "SearchMap",
@@ -25,8 +27,8 @@ export default {
     };
   },
   mounted() {
-    console.log(this.location);
     this.initMap();
+  }, beforeUpdate() {
   },
   methods: {
     initMap() {
@@ -41,7 +43,20 @@ export default {
           maxZoom: 20,
           mapTypeControl: false,
         });
+
+        this.houses.forEach(house => {
+          const marker = createHTMLMapMarker({
+            latlng: new window.google.maps.LatLng(house.coordinate.latitude, house.coordinate.longitude),
+            map: this.map,
+            html: `<div class="badge rounded-pill bg-light text-dark p-1" style="z-index:999;">NT$${house.price.origin}TWD</div>`
+          });
+
+          marker.addListener("click", () => {
+            alert("Partyin Partyin Yeah!");
+          });
+        });
         this.setMarker();
+
       });
     },
     setMarker() {
@@ -57,9 +72,17 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #map {
   width: 100%;
   height: 100%;
 }
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 </style>

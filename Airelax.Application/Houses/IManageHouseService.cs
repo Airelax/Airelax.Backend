@@ -4,6 +4,7 @@ using Airelax.Application.Houses.Dtos.Request.ManageHouse;
 using Airelax.Application.Houses.Dtos.Response;
 using Airelax.Application.ManageHouses.Request;
 using Airelax.Application.ManageHouses.Response;
+using Airelax.Domain.Houses;
 
 namespace Airelax.Application.Houses
 {
@@ -24,7 +25,7 @@ namespace Airelax.Application.Houses
         RealTimeInput UpdateRealTime(string id, RealTimeInput input);
         HouseRuleInput UpdateRules(string id, HouseRuleInput input);
         HouseStatusInput UpdateStatus(string id, HouseStatusInput input);
-        HouseSpaceInput CreateSpace(string id, HouseSpaceInput input);
+        List<SpaceBed> CreateSpace(string id, HouseSpaceInput input);
         HouseSpaceInput DeleteSpace(string id, HouseSpaceInput input);
         BedroomDetailInput CreateBedroomDetail(string id, BedroomDetailInput input);
         BedroomDetailInput UpdateBedroomDetail(string id, BedroomDetailInput input);

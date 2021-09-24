@@ -207,11 +207,26 @@ export default {
         },
       });
     },
-    getRandomNumber(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
+
+    methods:{
+      SearchLocation(e){
+        this.$store.state.destination = e.target.querySelector('span').innerText;
+        this.$router.push({
+          path: "search",
+          query: {
+            location: this.$store.state.destination,
+          },
+        });
+      },
+      getRandomNumber(min,max){
+        return Math.floor(Math.random() * (max-min+1))+min;
+      },
     },
-  },
-};
+    mounted(){
+      this.$store.state.isBodyShow = true;
+    }
+}
+
 </script>
 
 <style lang="scss" scoped>
