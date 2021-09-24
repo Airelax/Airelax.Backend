@@ -1,27 +1,28 @@
 <template>
+
   <div
-    class="row eachRoom me-0 p-0"
-    v-for="room in rooms"
-    :key="room.id"
-    style="cursor: pointer"
+      class="row eachRoom me-0 p-0"
+      v-for="room in rooms"
+      :key="room.id"
+      style="cursor: pointer"
   >
     <div class="col-12 col-md-5">
       <div class="label d-flex position-relative">
         <div class="perfect me-auto">超讚房東</div>
         <Heart
-          class="d-md-none .heart"
-          data-bs-target="#wish"
-          data-bs-toggle="offcanvas"
-          aria-controls="offcanvasBottom"
-          @click="updateWishList(room.id)"
-          style="
+            class="d-md-none .heart"
+            data-bs-target="#wish"
+            data-bs-toggle="offcanvas"
+            aria-controls="offcanvasBottom"
+            @click="updateWishList(room.id)"
+            style="
             height: 24px;
             width: 24px;
             stroke: #fff;
             stroke-width: 2;
             overflow: visible;
           "
-          :class="{
+            :class="{
             wishHeart: wishLists
               ? wishLists
                   .flatMap((x) => x.houses)
@@ -33,14 +34,14 @@
       </div>
       <div>
         <RoomSwiper
-          :roomPicture="room.picture"
-          style="cursor: default"
-          :houseId="room.id"
+            :roomPicture="room.picture"
+            style="cursor: default"
+            :houseId="room.id"
         ></RoomSwiper>
       </div>
     </div>
     <div
-      class="
+        class="
         col-12 col-md-7
         d-md-flex
         flex-md-column
@@ -57,7 +58,7 @@
               {{ room.comment.star }}
             </span>
             <span class="commentCount" id="commentCount"
-              >({{ room.comment.TotalComments }})</span
+            >({{ room.comment.totalComments }})</span
             >
           </div>
           <div class="typeAddress d-md-none my-1">
@@ -73,11 +74,11 @@
         <div class="col-md-2 d-none d-md-block text-md-end">
           <!--Todo 與愛心獨立事件有關的地方-->
           <Heart
-            class="d-none d-md-block .heart"
-            data-bs-toggle="modal"
-            data-bs-target="#mdWish"
-            @click="updateWishList(room.id)"
-            style="
+              class="d-none d-md-block .heart"
+              data-bs-toggle="modal"
+              data-bs-target="#mdWish"
+              @click="updateWishList(room.id)"
+              style="
               width: 45px;
               height: 45px;
               border-radius: 50%;
@@ -86,7 +87,7 @@
               stroke-width: 2;
               overflow: visible;
             "
-            :class="{
+              :class="{
               wishHeart: wishLists
                 ? wishLists
                     .flatMap((x) => x.houses)
@@ -131,34 +132,34 @@
         </div>
         <div class="total d-md-flex">
           <div
-            class="mdComment d-none d-md-inline-flex align-items-center"
-            @click="SearchRoom(room)"
+              class="mdComment d-none d-md-inline-flex align-items-center"
+              @click="SearchRoom(room)"
           >
             <Star></Star>
             <span class="starScore fw-bold" id="starScore">
               {{ room.comment.star }}
             </span>
             <span class="commentCount" id="commentCount"
-              >({{ room.comment.TotalComments }}則評論)</span
+            >({{ room.comment.totalComments }}則評論)</span
             >
           </div>
           <div
-            class="totalLink d-md-none my-1"
-            type="button"
-            data-bs-target="#PriceDetail"
-            data-bs-toggle="offcanvas"
-            aria-controls="offcanvasBottom"
-            v-on:click="deliverDataToDetail(room.price)"
+              class="totalLink d-md-none my-1"
+              type="button"
+              data-bs-target="#PriceDetail"
+              data-bs-toggle="offcanvas"
+              aria-controls="offcanvasBottom"
+              v-on:click="deliverDataToDetail(room.price)"
           >
             總計 ${{ getTotal(room.price, nightCount).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",") }} TWD
           </div>
           <a
-            class="btn mdTotalLink d-none d-md-inline ms-md-auto"
-            id="mdTotalLink"
-            role="button"
-            data-bs-toggle="modal"
-            data-bs-target="#myModal"
-            v-on:click="deliverDataToDetail(room.price)"
+              class="btn mdTotalLink d-none d-md-inline ms-md-auto"
+              id="mdTotalLink"
+              role="button"
+              data-bs-toggle="modal"
+              data-bs-target="#myModal"
+              v-on:click="deliverDataToDetail(room.price)"
           >
             總計 ${{ getTotal(room.price, nightCount).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",") }} TWD
           </a>
@@ -209,12 +210,12 @@ export default {
     };
   },
   props: {
-    rooms: { type: Object },
-    nightCount: { type: Number },
-    wishLists: { type: Array },
+    rooms: {type: Object},
+    nightCount: {type: Number},
+    wishLists: {type: Array},
   },
   methods: {
-    SearchRoom(room){
+    SearchRoom(room) {
       this.$store.state.roomPicture = room.picture
       this.$router.push({
         path: `/room/${room.id}`,
@@ -225,13 +226,13 @@ export default {
     },
     plusServiceFee(price) {
       return Number(
-        price.sweetPrice == null ? price.origin : price.sweetPrice
+          price.sweetPrice == null ? price.origin : price.sweetPrice
       ).toLocaleString();
     },
     getTotal(price, nightCount) {
       let feeTotal;
       let sweetPrice =
-        price.sweetPrice == null ? price.origin : price.sweetPrice;
+          price.sweetPrice == null ? price.origin : price.sweetPrice;
       let cleanFee = this.getPrice(price.fee.cleanFee);
       let taxFee = this.getPrice(price.fee.taxFee);
       let serviceFee = this.getPrice(price.fee.serviceFee);

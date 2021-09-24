@@ -261,7 +261,7 @@ namespace Airelax.Application.Houses
                 {
                     Number = x.Comments?.Count ?? 0
                 };
-                if (!x.Comments.IsNullOrEmpty()) simpleComment.Stars = Math.Round(x.Comments?.Average(c => c.Star?.Total ?? 0) ?? 0, 1);
+                if (!x.Comments.IsNullOrEmpty()) simpleComment.Stars = Math.Round(x.Comments?.Average(c => c.Star?.Total ?? 0) ?? 0, 2);
 
                 var simpleHouse = new SearchHouse
                 {
