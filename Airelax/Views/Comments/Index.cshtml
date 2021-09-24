@@ -89,10 +89,10 @@
         all.addEventListener("click", () => {
             rendering(jsonData.find((x) => x.HouseId == status).Comments);
         });
-        all.addEventListener("click", () => {
-            follow("all");
-        })
     }
+    all.addEventListener("click", () => {
+        follow("all");
+    })
 
     const btnGroup = document.querySelector(".btn-group");
     const labelData = ["5★", "4★", "3★", "2★", "1★"];
@@ -134,8 +134,12 @@
             sum += x.Stars;
         });
         sum /= data.Comments.length;
-        lScores.innerText = sum.toFixed(1);
-
+        if (Number.isNaN(sum)) {
+            sum = 0;
+            lScores.innerText = sum;
+        }
+        else
+            lScores.innerText = sum.toFixed(1);
         rendering(data.Comments);
     }
 
@@ -149,9 +153,8 @@
     function rendering(para) {
         message.innerHTML = "";
         para.forEach((element, index) => {
-            const msg = document.createElement("div");
-            msg.classList = "msg-column";
-            msg.innerHTML = `
+            createComment(
+            `
             <div class="user">
                 <div class="user-wrapper">
                    <img src="https://picsum.photos/56/56/?random=${index}" />
@@ -168,8 +171,27 @@
             <div class="msg-content">
                 <p>${element.Content}</p>
             </div>
-           `;
-            message.append(msg);
+            `
+            )
         });
+        if (para.length == 0) {
+            for (let i = 0; i < 3; i++)
+                createComment("");
+        }
+        else if (para.length == 1) {
+            for (let i = 0; i < 2; i++)
+                createComment("");
+        }
+        else if (para.length == 2) {
+            for (let i = 0; i < 1; i++)
+                createComment("");
+        }
+    }
+
+    function createComment(template) {
+        const msg = document.createElement("div");
+        msg.classList = "msg-column";
+        msg.innerHTML = `${template}`
+        message.append(msg);
     }
 </script>

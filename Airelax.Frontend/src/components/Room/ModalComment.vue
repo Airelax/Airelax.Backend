@@ -4,9 +4,9 @@
       <div class="summary col-12 col-lg-4 d-flex">
         <CommentSummary :rank="rank" :comment="comment"></CommentSummary>
       </div>
-      <div class="search col-12 col-lg-8 ">
+      <div class="search col-12 col-lg-8">
         <div class="icon"></div>
-        <input type="text" placeholder="搜尋評價" v-model.number="search"/>
+        <input type="text" placeholder="搜尋評價" v-model.number="search" />
       </div>
       <div class="row ranks col-12 col-lg-4">
         <div
@@ -23,12 +23,8 @@
       </div>
       <div class="row messages col-12 col-lg-8 ps-md-5">
         <div class="row">
-          <div
-            v-for="com in searchData"
-            :key="com.id"
-            class="message"
-          >
-            <Message :msg="com" :search="search"></Message>
+          <div v-for="com in searchData" :key="com.id" class="message">
+            <Message :msg="com" :search="search" :isModal="true"></Message>
           </div>
         </div>
       </div>
@@ -105,10 +101,10 @@
   .ranks {
     height: 250px;
   }
-  .row{
-      margin-right: 0 !important;
+  .row {
+    margin-right: 0 !important;
   }
-  .search{
+  .search {
     margin-left: 3rem;
     width: 60%;
   }
@@ -128,20 +124,25 @@ export default {
   },
   data() {
     return {
-      search: '',
-      setting: setting.chineseTranslation
+      search: "",
+      setting: setting.chineseTranslation,
     };
   },
-  props:["rank","comment"],
+  props: ["rank", "comment"],
   computed: {
-      searchData: function() {
-          var search = this.search;
-          if (search) {
-              let regWord = new RegExp(search, 'gi')
-              return this.comment.filter(item => item.content.match(regWord) || item.name.match(regWord) || item.date.match(regWord))
-          }
-          return this.comment;
+    searchData: function () {
+      var search = this.search;
+      if (search) {
+        let regWord = new RegExp(search, "gi");
+        return this.comment.filter(
+          (item) =>
+            item.content.match(regWord) ||
+            item.name.match(regWord) ||
+            item.date.match(regWord)
+        );
       }
-  }
+      return this.comment;
+    },
+  },
 };
 </script>
