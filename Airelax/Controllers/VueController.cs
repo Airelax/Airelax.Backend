@@ -36,6 +36,7 @@ namespace Airelax.Controllers
         [HttpGet("/subscribe/{id}")]
         [HttpGet("/message")]
         [HttpGet("/room/{id}")]
+        [HttpGet("/wishLists/{id}")]
         public IActionResult BecomeHost(string id)
         {
             return File("/index.html", "text/html");

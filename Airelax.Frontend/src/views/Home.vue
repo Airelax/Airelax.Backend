@@ -94,7 +94,7 @@
     <div class="dontWorry">
       <div class="item">
         還不知道想去哪嗎？<br />別擔心。
-        <button class="goTo">隨心所欲</button>
+        <button class="goTo" @click="freeGo">隨心所欲</button>
       </div>
     </div>
     <div class="anyCorner">
@@ -209,6 +209,15 @@ export default {
       });
     },
 
+    freeGo() {
+      this.$store.state.destination = "台北";
+      this.$router.push({
+        path: "/search",
+        query: {
+          location: this.$store.state.destination,
+        },
+      });
+    },
     getRandomNumber(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
@@ -408,8 +417,8 @@ body::-webkit-scrollbar {
 .around .around-div .item {
   width: 29vw;
   margin: auto;
-  margin-left: 3vw;
   position: relative;
+  margin-left: 4vw;
 }
 
 .around .around-div .item span {
@@ -789,7 +798,7 @@ body::-webkit-scrollbar {
     padding-top: 1.04166vw;
   }
   .around .around-div {
-    width: 22vw;
+    width: 23vw;
   }
   .around .around-div img {
     width: 4.844vw;

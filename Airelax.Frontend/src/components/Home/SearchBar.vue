@@ -80,12 +80,17 @@
           <ul>
             <li><span>隨時隨地出發</span></li>
             <li>
-              <a href="#">
+              <router-link :to="{
+              path: '/search',
+              query: {
+              location: $store.state.destination,
+              },
+              }">
                 <div class="everywhere">
                   <p>隨心所欲</p>
                   <i class="fas fa-home"></i>
                 </div>
-              </a>
+              </router-link>
             </li>
           </ul>
         </li>
