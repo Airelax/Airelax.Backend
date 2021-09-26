@@ -9,7 +9,7 @@
                     @Html.ActionLink("今天", "today", "Member", new { }, new { @class = "nav-link fw-bold ps-3" })
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-bold ps-3" href="http://localhost:8080/message/@ViewBag.memberId">收件匣</a>
+                    <a class="nav-link fw-bold ps-3" href="/message/@ViewBag.memberId">收件匣</a>
                 </li>
                 <li class="nav-item">
                     @Html.ActionLink("評價", "Index", "Comments", new { }, new { @class = "nav-link fw-bold ps-3" })
@@ -28,7 +28,7 @@
                             @Html.ActionLink("房源", "MyHousesDetail", "ManageHouse", new { }, new { @class = "nav-link fw-bold ps-3 text-dark" })
                         </li>
                         <li>
-                            <a class="dropdown-item fw-bold" href="http://localhost:8080/become-host">建立房源</a>
+                            <a class="dropdown-item fw-bold" href="/become-host/category">建立房源</a>
                         </li>
                         <hr>
                         <li>
@@ -61,14 +61,14 @@
                     <a class="dropdown-item fw-bold" asp-controller="Member" asp-action="Index">帳號</a>
                 </li>
                 <li>
-                    <a class="dropdown-item fw-bold" href="http://localhost:8080/message/@ViewBag.memberId">收件匣</a>
+                    <a class="dropdown-item fw-bold" href="/message/@ViewBag.memberId">收件匣</a>
                 </li>
                 <li>
                     <a class="dropdown-item fw-bold" href="#">尋求協助</a>
                 </li>
                 <hr>
                 <li>
-                    <a class="dropdown-item fw-bold" href="http://localhost:8080/">切換至旅行模式</a>
+                    <a class="dropdown-item fw-bold" href="/">切換至旅行模式</a>
                 </li>
                 <li>
                     <a class="dropdown-item fw-bold" asp-controller="Account" asp-action="Logout">登出</a>
@@ -97,7 +97,7 @@
                             <a class="dropdown-item fw-bold" asp-controller="Member" asp-action="Today"><img src="~/images/Members/Nav/1.svg" style="width: 40px;margin-right:1rem;">今天</a>
                         </li>
                         <li>
-                            <a class="dropdown-item fw-bold" href="http://localhost:8080/message/@ViewBag.memberId"><img src="~/images/Members/Nav/2.svg" style="width: 40px;margin-right:1rem;">收件匣</a>
+                            <a class="dropdown-item fw-bold" href="/message/@ViewBag.memberId"><img src="~/images/Members/Nav/2.svg" style="width: 40px;margin-right:1rem;">收件匣</a>
                         </li>
                         <li>
                             <a class="dropdown-item fw-bold" asp-controller="ManageHouse" asp-action="MyHousesDetail"><img src="~/images/Members/Nav/5.svg" style="width: 40px;margin-right:1rem;">房源</a>
@@ -114,7 +114,7 @@
                             <a class="dropdown-item fw-bold" asp-controller="Member" asp-action="Index"><img src="~/images/Members/Nav/9.svg" style="width: 40px;margin-right:1rem;">帳號設定</a>
                         </li>
                         <li>
-                            <a class="dropdown-item fw-bold" href="http://localhost:8080/become-host"><img src="~/images/Members/Nav/12.svg" style="width: 40px;margin-right:1rem;">建立新房源</a>
+                            <a class="dropdown-item fw-bold" href="/become-host/category"><img src="~/images/Members/Nav/12.svg" style="width: 40px;margin-right:1rem;">建立新房源</a>
                         </li>
                         <hr>
                         <small>資源和支援</small>
@@ -123,7 +123,7 @@
                         </li>
                         <hr>
                         <div class="d-grid gap-2 d-md-block">
-                            <a class="btn btn-outline-dark btn-sm fw-bold" href="http://localhost:8080/">切換至旅行模式</a>
+                            <a class="btn btn-outline-dark btn-sm fw-bold" href="/">切換至旅行模式</a>
                             <a class="btn btn-outline-dark btn-sm fw-bold" asp-controller="Account" asp-action="Logout">登出</a>
                         </div>
                     </ul>

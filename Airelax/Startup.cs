@@ -38,12 +38,12 @@ namespace Airelax
         public void ConfigureServices(IServiceCollection services)
         {
             string connectString;
-            if (HostEnvironment.IsDevelopment())
-            {
-                connectString = Define.Database.LOCAL_CONNECT_STRING;
-                services.AddCors(opt => { opt.AddPolicy("dev", builder => builder.WithOrigins("http://localhost:8080").AllowCredentials().AllowAnyHeader()); });
-            }
-            else
+            // if (HostEnvironment.IsDevelopment())
+            // {
+            //     connectString = Define.Database.LOCAL_CONNECT_STRING;
+            //     services.AddCors(opt => { opt.AddPolicy("dev", builder => builder.WithOrigins("http://localhost:8080").AllowCredentials().AllowAnyHeader()); });
+            // }
+            // else
             {
                 connectString = Define.Database.DB_CONNECT_STRING;
                 //todo remove product
@@ -52,7 +52,6 @@ namespace Airelax
             // dotnet ef --startup-project Airelax migrations add $description -p Airelax.EntityFramework
             // 更新資料庫 dotnet ef --startup-project Airelax database update -p Airelax.EntityFramework
 
-            //if use local DB
             services.AddDbContext<AirelaxContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString(connectString),
                     x =>
@@ -61,7 +60,7 @@ namespace Airelax
                         x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                     })
             );
-
+            
             services.AddByDependencyInjectionAttribute();
             services.AddControllersWithViews();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Airelax", Version = "v1"}); });

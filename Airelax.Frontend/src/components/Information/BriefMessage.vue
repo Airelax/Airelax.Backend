@@ -107,7 +107,7 @@ import * as signalR from '@microsoft/signalr';
 import moment from 'moment';
 import settingJson from "@/components/Settings/setting";
 
-let hubUrl = "https://localhost:5001/chatHub";
+let hubUrl = "/chatHub";
 const connection = new signalR.HubConnectionBuilder().withAutomaticReconnect().withUrl(hubUrl).build();
 connection.start().catch(err => console.log(err));
 

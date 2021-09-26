@@ -9,7 +9,7 @@
             <strong>訊息</strong> <i v-if="haveMessage" class="fas fa-circle ms-2" style="font-size:.5rem;color: #ff385c;"></i>
         </li>
       </router-link>
-      <a href="https://localhost:5001/trip" class="text-decoration-none">
+      <a href="/trip" class="text-decoration-none">
         <li class="list-group-item border-0">
             <strong>旅程</strong>
         </li>
@@ -19,12 +19,12 @@
             <strong>心願單</strong>
         </li>
       </router-link>
-      <a href="https://localhost:5001/member/today" class="text-decoration-none">
+      <a href="/member/today" class="text-decoration-none">
         <li class="list-group-item border-0">
             <strong>管理房源</strong>
         </li>
       </a>
-      <a href="https://localhost:5001/member" class="text-decoration-none">
+      <a href="/member" class="text-decoration-none">
         <li class="list-group-item border-0 border-bottom">
             <strong>帳號</strong>
         </li>
@@ -34,19 +34,19 @@
             <strong>協助</strong>
         </li>
       </router-link>
-      <a href="https://localhost:5001/account/logout" class="text-decoration-none">
+      <a href="/account/logout" class="text-decoration-none">
         <li class="list-group-item border-0 rounded-end">
             <strong>登出</strong>
         </li>
       </a>
     </ul>
     <ul class="list-group text-start" v-else>
-      <a href="https://localhost:5001/account/login" class="text-decoration-none">
+      <a href="/account/login" class="text-decoration-none">
         <li class="list-group-item border-0 rounded-top">
             <strong>登入</strong>
         </li>
       </a>
-      <a href="https://localhost:5001/account/register"  class="text-decoration-none">
+      <a href="/account/register"  class="text-decoration-none">
         <li class="list-group-item border-0 border-bottom">
             <strong>註冊</strong>
         </li>

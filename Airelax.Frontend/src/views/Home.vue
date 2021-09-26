@@ -577,16 +577,18 @@ body::-webkit-scrollbar {
     padding: 0px 5.20834vw;
     margin-top: 31vw;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
   .kanban p {
-    width: 100%;
     color: #000000;
     line-height: 4.49219vw;
     font-size: 50px;
+    //text-align: start;
+    margin: auto;
     padding: 10px 0;
-    margin-left: 0;
+    text-align: center;
   }
   .goTo {
     width: 11.46vw;
@@ -739,12 +741,18 @@ body::-webkit-scrollbar {
   }
   .kanban {
     margin: 16.5vh 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
   .kanban p {
     width: 29vw;
     line-height: 4.3125vw;
     font-size: 3.75vw;
-    text-align: left;
+    //text-align: left;
+    margin: auto;
+    text-align: center;
   }
   .goTo {
     width: 6.875vw;

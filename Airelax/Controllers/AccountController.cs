@@ -67,7 +67,7 @@ namespace Airelax.Controllers
                     SetJwt(loginResult.Token);
                         //return Redirect(input.ReturnUrl);
                         //return RedirectToAction("Index", "Vue");
-                        return Redirect("http://localhost:8080/");
+                        return Redirect("/");
                     }
                 case AccountStatus.WrongPassword:
                     return View(input);
@@ -116,7 +116,7 @@ namespace Airelax.Controllers
             HttpContext.Response.Cookies.Delete(Define.Authorization.JWT_COOKIE_KEY);
             await HttpContext.SignOutAsync();
             //return RedirectToAction("Index", "Vue");
-            return Redirect("http://localhost:8080/");
+            return Redirect("/");
         }
 
         private void SetJwt(string token)

@@ -203,7 +203,7 @@
                 <p>房東 : {{ data.owner.name }}</p>
                 <span>加入時間 : {{ data.owner.registerTime.split('T')[0] }}</span>
               </div>
-              <a class="img" :href="'https://localhost:5001/MemberInfo/'+data.owner.id">
+              <a class="img" :href="'/MemberInfo/'+data.owner.id">
                 <img :src="data.owner.cover" style="width: 3rem;"/>
               </a>
             </div>
@@ -421,7 +421,7 @@ export default {
   },
   methods: {
     connectLandlord() {
-      if (this.$store.state.login.token == "") window.location.href = 'https://localhost:5001/account/login';
+      if (this.$store.state.login.token == "") window.location.href = '/account/login';
       this.isConnectShow = true;
     },
     createMessage() {
@@ -511,6 +511,7 @@ export default {
           })
           .then((res) => {
             this.data = res.data;
+            console.log(res.data);
             this.getSpace();
             this.getRank();
             this.getHonor();
@@ -631,7 +632,7 @@ export default {
       this.isCommentShow = val;
     },
     goSubscribe() {
-      if (this.$store.state.login.token == "") window.location.href = 'https://localhost:5001/account/login';
+      if (this.$store.state.login.token == "") window.location.href = '/account/login';
       if (this.$store.getters.TotalCustomer == 0) {
         this.$swal('請填入房客人數');
         return

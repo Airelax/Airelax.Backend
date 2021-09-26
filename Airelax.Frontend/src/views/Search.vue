@@ -866,6 +866,7 @@ export default {
       },
     })
         .then((res) => {
+          console.log(res.data);
           const data = res.data;
           this.rooms = data.houses;
           this.totalRooms = data.total;

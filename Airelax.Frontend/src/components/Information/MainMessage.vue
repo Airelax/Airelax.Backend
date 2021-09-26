@@ -44,7 +44,7 @@
                             ﹥
                         </div>
                     </a>
-                    <a  :href="'https://localhost:5001/MemberInfo/'+ $store.state.message.landlord.id" class="landlord  d-flex align-items-center justify-content-between">
+                    <a  :href="'/MemberInfo/'+ $store.state.message.landlord.id" class="landlord  d-flex align-items-center justify-content-between">
                         <div >
                             <div class="landlord-name">房東：{{$store.state.message.landlord.name}}</div>
                         </div>

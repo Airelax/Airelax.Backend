@@ -54,7 +54,7 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
                     //訂單編號不可重複
                     MerchantTradeNo = createTokenInput.MerchantTradeNo,  //orderId?
                     TotalAmount = createTokenInput.TotalAmount,  //HousePrices.PerNight* (OrderDetails.EndDate-OrderDetails.StartDate)
-                    ReturnUrl = "https://localhost:5001/api/system/suc",
+                    ReturnUrl = "/api/system/suc",
                     TradeDesc = createTokenInput.TradeDesc,
                     ItemName = createTokenInput.ItemName,  //房屋名稱
                     
@@ -70,7 +70,7 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
                     Email = createTokenInput.Email,  //Members.Email
                     MerchantMemberId = createTokenInput.MerchantMemberId  //Members.Id
                 },
-                CardInfo = new CardInfo() {OrderResultUrl = "https://localhost:5001/Swagger/index.html"}
+                CardInfo = new CardInfo() {OrderResultUrl = "/Swagger/index.html"}
             };
 
 
@@ -172,7 +172,7 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
                     MerchantTradeDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
                     MerchantTradeNo = "AirelaxTest003",
                     TotalAmount = 2000,
-                    ReturnUrl = "https://localhost:5001/api/system/suc",
+                    ReturnUrl = "/api/system/suc",
                     TradeDesc = "qwdqdc",
                     ItemName = "wecww"
                 },
@@ -184,7 +184,7 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
                     Email = "123@gmail.com",
                     MerchantMemberId = "M23455"
                 },
-                CardInfo = new CardInfo() { OrderResultUrl = "https://localhost:5001/Swagger/index.html" }
+                CardInfo = new CardInfo() { OrderResultUrl = "/Swagger/index.html" }
             };
 
             var tokenRequest = new ECRequest
