@@ -14,7 +14,7 @@
             <strong>旅程</strong>
         </li>
       </a>
-      <router-link to="/wishList" class="text-decoration-none">
+      <router-link to="/wishLists" class="text-decoration-none">
         <li class="list-group-item border-0 border-bottom">
             <strong>心願單</strong>
         </li>

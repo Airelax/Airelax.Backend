@@ -12,7 +12,7 @@
             <div class="col my-4 mx-3">
                 <div class="d-flex justify-content-between mt-3">
                     <div>
-                        <h4 class="fw-bold">姓名，您好 :</h4>
+                        <h4 class="fw-bold phoneName"></h4>
                         @Html.ActionLink("顯示個人資料", "Index", "MemberInfo",
                             new { },
                             new { @class = "text-dark fw-bold" })
@@ -134,7 +134,7 @@
                 <h2 class="fw-bold">帳號</h2>
                 <div>
                     <div id="nameID" class="d-inline">
-                        <div class="d-inline" id="userName"></div>
+                        <div class="d-inline userName"></div>
                     </div>
                     @Html.ActionLink("前往個人頁面", "Index", "MemberInfo",
                         new { },
@@ -269,11 +269,13 @@
     <script src="~/js/jwt.js"></script>
     <script src="~/js/cookie.js"></script>
     <script>
-    const userName = document.querySelector('#userName');
+    const userName = document.querySelector('.userName');
+    const phoneName = document.querySelector('.phoneName');
         window.onload = ()=>{
            const token = getCookie('@Html.Raw(Define.Authorization.JWT_COOKIE_KEY)');
            const memberInfo = parseJwt(token);
            userName.innerText = memberInfo['@Html.Raw(ClaimTypes.Name)'];
+           phoneName.innerText = memberInfo['@Html.Raw(ClaimTypes.Name)'] + '，你好:';
         };
     </script>
 }
