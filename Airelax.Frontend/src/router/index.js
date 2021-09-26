@@ -19,6 +19,14 @@ const routes = [
         },
     },
     {
+        path: '/message',
+        name: 'Message',
+        component: () => import('../views/Information.vue'),
+        meta: {
+            messageLayout: true,
+        },
+    },
+    {
         path: '/room/:houseId',
         name: 'Room',
         component: () => import('../views/Room.vue')
@@ -102,11 +110,6 @@ const routes = [
                 component: () => import('../views/NewHouse/NamingHouse.vue'),
             },
         ]
-    },
-    {
-        path: '/map',
-        name: 'map',
-        component: () => import('../components/Map/SearchMap.vue')
     },
 ]
 

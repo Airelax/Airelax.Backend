@@ -175,7 +175,7 @@ export default {
       vm.$store.state.unreadCount = 0;
       vm.$store.state.signalCommunications = [];
 
-      axios.get(`/api/messages/${vm.$route.params.memberId}`, {
+      axios.get(`/api/messages/${vm.$store.state.login.memberId}`, {
         headers: {"Access-Control-Allow-Origin": "*",}
       })
           .then((res) => {

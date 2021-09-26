@@ -9,6 +9,8 @@ namespace Airelax.Controllers
         [HttpGet("/new-house")]
         [HttpGet("/become-host")]
         [HttpGet("/become-host/new-house")]
+        [HttpGet("/wishList")]
+        [HttpGet("/wishLists")]
         // [HttpGet("/become-host/{houseId?}/new-house")]
         // GET
         public IActionResult Index()
@@ -18,6 +20,23 @@ namespace Airelax.Controllers
 
         [HttpGet("/search")]
         public IActionResult Search(dynamic parameters)
+        {
+            return File("/index.html", "text/html");
+        }
+
+        [HttpGet("/become-host/category")]
+        [HttpGet("/become-host/{id?}/category")]
+        [HttpGet("/become-host/{id}/type")]
+        [HttpGet("/become-host/{id}/room")]
+        [HttpGet("/become-host/{id}/location")]
+        [HttpGet("/become-host/{id}/facilities")]
+        [HttpGet("/become-host/{id}/price")]
+        [HttpGet("/become-host/{id}/description")]
+        [HttpGet("/become-host/{id}/title")]
+        [HttpGet("/subscribe/{id}")]
+        [HttpGet("/message")]
+        [HttpGet("/room/{id}")]
+        public IActionResult BecomeHost(string id)
         {
             return File("/index.html", "text/html");
         }

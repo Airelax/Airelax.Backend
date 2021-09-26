@@ -74,9 +74,9 @@ export default {
       data: this.OrdersInput,
     }).then(res => {
       const data = res.data;
+      console.log(data)
       this.orderId = data.orderId;
       this.token = data.token;
-
     }).catch(err => console.log(err));
   },
   data() {

@@ -6,17 +6,17 @@
         <div class="collapse navbar-collapse d-flex justify-content-center d-none d-xl-block">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    @Html.ActionLink("今天", "today", "Member", new { }, new { @class = "nav-link fw-bold ps-3" })
+                    @Html.ActionLink("今天", "today", "Member", new {}, new {@class = "nav-link fw-bold ps-3"})
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-bold ps-3" href="/message/@ViewBag.memberId">收件匣</a>
+                    <a class="nav-link fw-bold ps-3" href="/message">收件匣</a>
                 </li>
                 <li class="nav-item">
-                    @Html.ActionLink("評價", "Index", "Comments", new { }, new { @class = "nav-link fw-bold ps-3" })
+                    @Html.ActionLink("評價", "Index", "Comments", new {}, new {@class = "nav-link fw-bold ps-3"})
                 </li>
                 <li class="nav-item">
                     @* todo router *@
-                    @Html.ActionLink("收入", "today", "Member", new { }, new { @class = "nav-link fw-bold ps-3" })
+                    @Html.ActionLink("收入", "today", "Member", new {}, new {@class = "nav-link fw-bold ps-3"})
                 </li>
                 <li class="nav-item dropdown ps-3">
                     <a class="nav-link dropdown-toggle fw-bold" href="#" id="navbarDropdownMenuLink" role="button"
@@ -25,7 +25,7 @@
                     </a>
                     <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
                         <li>
-                            @Html.ActionLink("房源", "MyHousesDetail", "ManageHouse", new { }, new { @class = "nav-link fw-bold ps-3 text-dark" })
+                            @Html.ActionLink("房源", "MyHousesDetail", "ManageHouse", new {}, new {@class = "nav-link fw-bold ps-3 text-dark"})
                         </li>
                         <li>
                             <a class="dropdown-item fw-bold" href="/become-host/category">建立房源</a>
@@ -61,7 +61,7 @@
                     <a class="dropdown-item fw-bold" asp-controller="Member" asp-action="Index">帳號</a>
                 </li>
                 <li>
-                    <a class="dropdown-item fw-bold" href="/message/@ViewBag.memberId">收件匣</a>
+                    <a class="dropdown-item fw-bold" href="/message">訊息</a>
                 </li>
                 <li>
                     <a class="dropdown-item fw-bold" href="#">尋求協助</a>
@@ -97,7 +97,7 @@
                             <a class="dropdown-item fw-bold" asp-controller="Member" asp-action="Today"><img src="~/images/Members/Nav/1.svg" style="width: 40px;margin-right:1rem;">今天</a>
                         </li>
                         <li>
-                            <a class="dropdown-item fw-bold" href="/message/@ViewBag.memberId"><img src="~/images/Members/Nav/2.svg" style="width: 40px;margin-right:1rem;">收件匣</a>
+                            <a class="dropdown-item fw-bold" href="/message"><img src="~/images/Members/Nav/2.svg" style="width: 40px;margin-right:1rem;">收件匣</a>
                         </li>
                         <li>
                             <a class="dropdown-item fw-bold" asp-controller="ManageHouse" asp-action="MyHousesDetail"><img src="~/images/Members/Nav/5.svg" style="width: 40px;margin-right:1rem;">房源</a>

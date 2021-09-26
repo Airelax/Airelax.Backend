@@ -4,7 +4,7 @@
     <i class="fas fa-user-circle"></i>
     <i v-if="haveMessage" class="fas fa-circle ms-2 haveMessage"></i>
     <ul class="list-group text-start" v-if="$store.state.login.token != ''">
-      <router-link :to="{ path: `/message/${$store.state.login.memberId}`}" class="text-decoration-none"> 
+      <router-link :to="{ path: `/message`}" class="text-decoration-none"> 
         <li class="list-group-item border-0 rounded-top d-flex align-items-center">
             <strong>訊息</strong> <i v-if="haveMessage" class="fas fa-circle ms-2" style="font-size:.5rem;color: #ff385c;"></i>
         </li>

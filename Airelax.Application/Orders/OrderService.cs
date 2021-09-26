@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Airelax.Application.Account;
 using Airelax.Application.Orders.Request;
@@ -11,6 +12,7 @@ using Airelax.Infrastructure.ThirdPartyPayment.ECPay;
 using Airelax.Infrastructure.ThirdPartyPayment.ECPay.Request;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
+using SpanJson;
 
 namespace Airelax.Application.Orders
 {
@@ -81,6 +83,7 @@ namespace Airelax.Application.Orders
                 OrderId = order.Id
             };
 
+            Console.WriteLine(JsonSerializer.Generic.Utf16.Serialize(tokenData));
             _houseRepository.UpdateAsync(house);
             _orderRepository.Add(order);
             _orderRepository.SaveChanges();

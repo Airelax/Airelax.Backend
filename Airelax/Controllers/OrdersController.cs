@@ -16,12 +16,10 @@ namespace Airelax.Controllers
     public class OrdersController : Controller
     {
         private readonly IOrderService _orderService;
-        private readonly IECPayService _ecPayService;
 
-        public OrdersController(IOrderService orderService, IECPayService ecPayService)
+        public OrdersController(IOrderService orderService)
         {
             _orderService = orderService;
-            _ecPayService = ecPayService;
         }
 
         [HttpPost]

@@ -13,9 +13,9 @@ namespace Airelax.Controllers
     public class TripController : Controller
     {
         private readonly ITripService _tripService;
-        public TripController (ITripService tripservice)
+        public TripController (ITripService tripService)
         {
-            _tripService = tripservice;
+            _tripService = tripService;
         }
         [HttpGet]
         

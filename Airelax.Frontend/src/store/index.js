@@ -17,8 +17,8 @@ export default createStore({
         newHouseRequest: {},
         message: {},
         signalCommunications: [],
-              wishListData: {},
-    selectedWishHouseId: '',
+        wishListData: {},
+        selectedWishHouseId: '',
         connection: null,
         unreadCount: 0,
         filters: {

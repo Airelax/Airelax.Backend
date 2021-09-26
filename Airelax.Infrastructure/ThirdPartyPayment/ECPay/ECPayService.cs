@@ -54,7 +54,7 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
                     //訂單編號不可重複
                     MerchantTradeNo = createTokenInput.MerchantTradeNo,  //orderId?
                     TotalAmount = createTokenInput.TotalAmount,  //HousePrices.PerNight* (OrderDetails.EndDate-OrderDetails.StartDate)
-                    ReturnUrl = "/api/system/suc",
+                    ReturnUrl = "https://airelax.azurewebsites.net/api/system/suc",
                     TradeDesc = createTokenInput.TradeDesc,
                     ItemName = createTokenInput.ItemName,  //房屋名稱
                     
@@ -70,7 +70,7 @@ namespace Airelax.Infrastructure.ThirdPartyPayment.ECPay
                     Email = createTokenInput.Email,  //Members.Email
                     MerchantMemberId = createTokenInput.MerchantMemberId  //Members.Id
                 },
-                CardInfo = new CardInfo() {OrderResultUrl = "/Swagger/index.html"}
+                CardInfo = new CardInfo() {OrderResultUrl = "https://airelax.azurewebsites.net/"}
             };
 
 
