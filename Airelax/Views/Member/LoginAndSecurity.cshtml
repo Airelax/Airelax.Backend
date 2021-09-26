@@ -6,14 +6,16 @@
         <div class="d-md-none d-lg-none ">
             <nav class="navbar navbar-light position-fixed bg-white w-100">
                 <div class="container-fluid w-100">
-                    <a class="navbar-brand fs-3" href="#"><i class="fas fa-angle-left"></i></a>
+                    <a class="navbar-brand fs-3" href="#">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
                 </div>
             </nav>
         </div>
         <div class="row">
             <div class="col my-4 mx-3 pt-5 ">
                 <div class="mb-3 fw-bold p_info">
-                    <a href="#" class="text-decoration-none text-dark">帳號<i class="fas fa-angle-right mx-3"></i></a>
+                    <a href="/member" class="text-decoration-none text-dark">帳號<i class="fas fa-angle-right mx-3"></i></a>
                     <span>登入與安全性</span>
                 </div>
                 <h2 class="fw-bolder c_info">登入與安全性</h2>
@@ -110,13 +112,20 @@
                 <div class="col">
                     <div class="card card shadow p-3 mb-3 bg-body rounded">
                         <div class="card-body" style="border: none;">
-                            <img src="./dist//img/member/002.svg" style="height: 38px;" class="mb-2" />
+
+                            <img src="./dist/img/member/002.svg" style="height: 38px;" class="mb-2" alt=""/>
                             <h5 class="card-title fw-bold" style="font-size: 18px;">確保你的帳號安全</h5>
                             <p class="card-text" style="font-size: 16px;">我們會定期檢查帳號，確保安全無虞。如果還有其他可以提升帳號安全性的方式，我們也會通知你。</p>
                             <p class="card-text" style="font-size: 16px;">
-                                進一步了解針對<a href="#" class="lodger"
-                                          style="color:#008489;">房客／參加者</a>和<a href="#" class="landlord"
-                                                                               style="color:#008489;">房東／體驗達人</a>的安全建議。
+                                進一步了解針對
+                                <a href="#" class="lodger"
+                                   style="color:#008489;">
+                                    房客／參加者
+                                </a>和
+                                <a href="#" class="landlord"
+                                   style="color:#008489;">
+                                    房東／體驗達人
+                                </a>的安全建議。
                             </p>
                         </div>
                     </div>
@@ -138,5 +147,5 @@
 </div>
 
 @section topCSS{
-    <link href="~/scss/Login_security.min.css" rel="stylesheet" />
+    <link href="~/scss/Login_security.min.css" rel="stylesheet"/>
 }

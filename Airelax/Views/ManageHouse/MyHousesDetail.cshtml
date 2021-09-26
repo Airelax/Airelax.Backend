@@ -1,0 +1,271 @@
+﻿@model IEnumerable<Airelax.Application.Houses.Dtos.Response.MyHouseViewModel>
+
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@section header{
+    <partial name="_MemberNavPartial"></partial>
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between mt-4">
+        <div class="fs-4 fw-bold">@Model.Count()個房源</div>
+
+        <div class="add_ph">
+            <button class="btn fs-4" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvaBottom"
+                    aria-controls="offcanvasBottom">
+                <i class="bi bi-filter"></i>
+            </button>
+            <div class="offcanvas offcanvas-bottom " tabindex="-1" id="offcanvaBottom"
+                 aria-labelledby="offcanvasBottomLabel">
+                <div class="header px-3 pt-3 ">
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close "></button>
+                    <h6 class="offcanvas-title fw-bold" id="offcanvasBottomLabel">篩選房源</h6>
+                    <div></div>
+                </div>
+                <hr>
+                <div class="offcanvas-body">
+                    <div class="px-4 pb-4">
+                        <div class="fw-bold mb-3">房源狀態</div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="listed">
+                            <label class="form-check-label" for="listed">
+                                已發佈
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="unlisted">
+                            <label class="form-check-label" for="unlisted">
+                                取消發佈
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="inProgress">
+                            <label class="form-check-label" for="inProgress">
+                                建立中
+                            </label>
+                        </div>
+                        <hr>
+                        <div class="fw-bold my-3 ">更多選項</div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="listed">
+                            <label class="form-check-label" for="listed">
+                                即時預訂功能已關閉
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="listed">
+                            <label class="form-check-label" for="listed">
+                                必須更新房源
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <a class="text-black-50" href="#" disabled="true">全部清除</a>
+                        <button type="button" class="btn btn-dark fw-bolder px-3">套用</button>
+                    </div>
+                </div>
+
+            </div>
+            <button type="button" class="border border-dark fw-bolder rounded-pill bg-light addRoom_ph"
+                    style="width: 32px;height: 32px;">
+                <i class="bi bi-plus-lg"></i>
+            </button>
+        </div>
+        <div class="add">
+            <a href="/become-host/category" type="button" class="btn  fw-bolder"><i class="bi bi-plus-lg me-2"></i>建立房源</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="d-flex">
+            <div class="col col-md-5 col-lg-4">
+                <div class="mb-5 d-flex justify-content-center search_room">
+                    <form action="search-form">
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="搜尋房源">
+                    </form>
+                </div>
+            </div>
+            <div class="option">
+                <div class="btn-group col-md-2 col-lg-1">
+                    <button class="btn btn-sm ms-4 dropdown-toggle btn_r" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false" data-bs-auto-close="outside">
+                        房源狀態
+                    </button>
+                    <div class="dropdown-menu mt-2 pb-0">
+                        <div class="px-4 pb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="listed">
+                                <label class="form-check-label" for="listed">
+                                    已發佈
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="unlisted">
+                                <label class="form-check-label" for="unlisted">
+                                    取消發佈
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="inProgress">
+                                <label class="form-check-label" for="inProgress">
+                                    建立中
+                                </label>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-between">
+                            <a class="text-black-50" href="#" placeholder="Disabled">清除</a>
+                            <button type="button" class="btn btn-dark fw-bolder px-3">套用</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="option">
+                <div class="btn-group col-md-2 col-lg-1">
+                    <button class="btn btn-sm ms-2 dropdown-toggle btn_r" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false" data-bs-auto-close="outside">
+                        更多篩選條件
+                    </button>
+                    <div class="dropdown-menu mt-2 pb-0">
+                        <div class="px-4 pb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="book_off">
+                                <label class="form-check-label" for="book_off">
+                                    即時預訂功能已關閉
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="unlisting">
+                                <label class="form-check-label" for="unlisting">
+                                    必須更新房源
+                                </label>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-between">
+                            <a class="text-black-50" href="#" disabled="false">清除</a>
+                            <button type="button" class="btn btn-dark fw-bolder px-3">套用</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="list-group">
+        <div class="fir_ph">
+            <div class="d-flex justify-content-between">
+                <div class="form-check ms-4">
+                    <input class="form-check-input" type="checkbox" value="房源" id="listing">
+                    <label class="form-check-label" for="listing">
+                    </label>
+                </div>
+                <button class="btn " id="sortBy" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
+                        aria-controls="offcanvasBottom">
+                    排序方式：
+                </button>
+                <div class="offcanvas offcanvas-bottom h-50" tabindex="-1" id="offcanvasBottom"
+                     aria-labelledby="offcanvasBottomLabel">
+                    <div class="header px-3 pt-3">
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                aria-label="Close">
+                        </button>
+                        <h6 class="offcanvas-title fw-bold" id="offcanvasBottomLabel">排序選項</h6>
+                        <div></div>
+                    </div>
+                    <hr>
+                    <div class="offcanvas-body">
+                        <div class="list-group sort_by">
+                            <a href="#" class="list-group-item list-group-item-action list-group-item-light">房源</a>
+                            <a href="#" class="list-group-item list-group-item-action list-group-item-light">狀態</a>
+                            <a href="#" class="list-group-item list-group-item-action list-group-item-light">即時預訂</a>
+                            <a href="#" class="list-group-item list-group-item-action list-group-item-light">位置</a>
+                            <a href="#" class="list-group-item list-group-item-action list-group-item-light">上次修改時間</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fir">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">
+                        <div class="form-check ms-3 ds">
+                            <input class="form-check-input" type="checkbox" value="房源" id="listing">
+                            <label class="form-check-label" for="listing">
+                                房源
+                            </label>
+                        </div>
+                    </th>
+                    <th scope="col" class="status ds">狀態</th>
+                    <th scope="col" class="location ds">位置</th>
+                    <th scope="col" class="modidied ds">上次修改時間</th>
+                </tr>
+                </thead>
+                <tbody id="tb">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<template id="house">
+    <tr>
+        <th scope="row">
+            <a href="#" class="list-group-item list-group-item-action room_list d-flex" aria-current="true">
+                <div class="form-check d-inline-block">
+                    <input class="form-check-input" type="checkbox" value="" id="listing">
+                    <label class="form-check-label" for="listing">
+                    </label>
+                </div>
+                <div>
+                    <img src="~/images/ManageHouse/21.jpg" alt="" id="roomPic">
+                </div>
+                <div class="fw-bold" id="title"></div>
+            </a>
+        </th>
+        <td id="status"></td>
+        <td id="location_"></td>
+        <td id="lastMos"></td>
+    </tr>
+</template>
+
+@section topCSS {
+    <link href="~/css/ManageHouse/landlord_room.css" rel="stylesheet"/>
+}
+
+@section Scripts {
+    <script>
+    const houses = @Html.Raw(Json.Serialize(Model));
+    const house = document.querySelector("#house");
+    const manageHouseUrl = '/managehouse'
+
+
+    houses.forEach(function (item)
+    {
+        let cloneContent = house.content.cloneNode(true);
+        cloneContent.querySelector('a').href = manageHouseUrl+`/${item.houseId}`;
+        cloneContent.querySelector('#title').innerText = item.title;
+        cloneContent.querySelector('#status').innerText = houseStatus(item.createState);
+        cloneContent.querySelector('#location_').innerText = item.location;
+        cloneContent.querySelector('#lastMos').innerText = item.lastReservationTime;
+
+        document.querySelector('tbody').append(cloneContent);
+
+    })
+
+    function houseStatus(num) {
+
+        switch (num) {
+            case 1:
+                return "建立中"
+            case 2:
+                return "已完成"
+            default:
+                return ""
+        }
+
+    }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.9.2/dist/umd/popper.min.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+}

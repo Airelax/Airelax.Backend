@@ -21,14 +21,16 @@
           type="email"
           class="form-control"
           id="floatingInputValue"
-          value="逮爸"
+          v-model="title"
         />
         <label for="floatingInputValue">心願單名稱</label>
       </form>
       <div class="maxLength"><label for="">最多50字元</label></div>
     </div>
     <div class="offcanvas-footer">
-      <div class="btn">建立</div>
+      <div @click="createWishList" data-bs-dismiss="offcanvas" class="btn">
+        建立
+      </div>
     </div>
   </div>
   <!-- 768px以上 含768px -->
@@ -57,35 +59,78 @@
               type="email"
               class="form-control"
               id="floatingInputValue"
-              value="逮爸"
+              v-model="title"
             />
             <label for="floatingInputValue">心願單名稱</label>
           </form>
           <div class="maxLength"><label for="">最多50字元</label></div>
         </div>
         <div class="footer">
-          <div class="btn">建立</div>
+          <div @click="createWishList" data-bs-dismiss="modal" class="btn">
+            建立
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 
+<script>
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      title: "",
+    };
+  },
+  methods: {
+    createWishList: function () {
+      const dataUrl = "/api/WishLists";
+      const vm = this;
+      axios({
+        method: "Post",
+        url: dataUrl,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          wishName: this.title,
+          houseId: this.$store.state.selectedWishHouseId,
+        },
+      })
+        .then(function () { //Todo 缺畫面同步,現有代碼不會動
+          vm.$emit(
+            "onCreateWishList",
+            vm.title,
+            vm.$store.state.selectedWishHouseId
+          );
+        })
+        .catch((err) => console.log(err));
+    },
+  },
+};
+</script>
+
 <style lang="scss" scoped>
 /*共用開頭 */
 * {
   font-family: "Noto Sans TC", sans-serif;
+
   .form-floating {
     .form-control {
       border-radius: 10px;
     }
+
     .form-control:link {
       border: 1px solid #616161;
     }
+
     .form-control:focus {
       border: 2px solid #000;
     }
   }
+
   .maxLength {
     font-size: 12px;
     text-align: start;
@@ -94,25 +139,30 @@
     padding-top: 5px;
     color: #5f5f5f;
   }
+
   .btn-close {
     color: #000;
     opacity: 1;
     border-radius: 50%;
     font-size: 12px;
   }
+
   .btn-close:hover {
     background-color: #efefef80;
   }
 }
+
 /*共用結尾 */
 //768px以下offcanvas
 .offcanvas {
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   height: auto;
+
   .offcanvas-header {
     border-bottom: 0.5px solid #ededed;
     padding: 20px 30px;
+
     .offcanvas-title {
       color: #000;
       margin: auto;
@@ -120,12 +170,15 @@
       font-weight: 500;
     }
   }
+
   .offcanvas-body {
     padding: 20px 30px;
   }
+
   .offcanvas-footer {
     border-top: 0.5px solid #ededed;
     padding: 20px 30px;
+
     .btn {
       font-size: 16px;
       display: block;
@@ -136,31 +189,38 @@
     }
   }
 }
+
 //768px以上modal
 .modal {
   .modal-dialog {
     .modal-content {
       border-radius: 10px;
+
       .modal-header {
         margin: auto;
         border: none;
+
         .btn-close {
           position: relative;
           right: 155px;
         }
+
         .modal-title {
           color: #000;
           font-size: 16px;
           font-weight: 500;
         }
       }
+
       .modal-body {
         border-top: 0.5px solid #ededed;
       }
     }
+
     .footer {
       border-top: 0.5px solid #ededed;
       padding: 20px;
+
       .btn {
         font-size: 16px;
         display: block;

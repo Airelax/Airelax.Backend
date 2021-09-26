@@ -140,6 +140,6 @@
         Breakfast = 1201,
         CleaningBeforeCheckout = 1202, // 退房前打掃
         LongTermStaysAllowed = 1203, //可長期住宿
-        LuggageDropOffAllowed = 1204, //可存放行李
+        LuggageDropOffAllowed = 1204 //可存放行李
     }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="row frontPage">
-    <div class="col-1 btn">
+    <div class="col-1 btn" @click="goBack()">
       <img src="@/assets/image/Subscribe/toFrontPage.svg" alt="toFrontPage" />
     </div>
     <div class="col-11">
@@ -63,5 +63,13 @@
 }
 </style>
 <script>
-export default {};
+export default {
+  methods:{
+    goBack() {
+      this.$router.push({
+        path: `/room/${this.$route.params.houseId}`,
+      });
+    },
+  }
+};
 </script>

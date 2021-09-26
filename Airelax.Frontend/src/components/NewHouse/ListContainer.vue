@@ -1,5 +1,5 @@
 <template>
-  <div class="contain">
+  <div class="container">
     <ul>
       <slot></slot>
     </ul>
@@ -8,13 +8,27 @@
 
 
 <style lang="scss" scoped>
-.contain {
+@import "../../assets/css/reset.css";
+
+.container {
   display: flex;
-  align-items: center;
+
   justify-content: center;
   height: 100%;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  & {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
+
 ul {
+  box-sizing: border-box;
   width: 80%;
   max-width: 450px;
   padding: 0;

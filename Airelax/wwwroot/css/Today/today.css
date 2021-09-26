@@ -1,0 +1,44 @@
+* {
+  color: #484848;
+}
+
+.bg_img {
+  height: 16rem;
+  z-index: -10;
+}
+
+.banner {
+  background-image: url("../../images/Members/Today/ySry930W5TklUCdPGwZvhShkxmlA5XTMUKtCBVuol3YS6MrvY4AAA==.webp");
+  background-size: 100%;
+}
+
+.pic {
+  position: relative;
+  top: -60px;
+  z-index: -10;
+}
+
+@media screen and (max-width: 767px) {
+  .options {
+    display: none;
+  }
+}
+@media screen and (min-width: 768px) {
+  .banner {
+    padding-left: 100px !important;
+    padding-right: 100px !important;
+  }
+
+  .options_ph {
+    display: none;
+  }
+
+  .options .card {
+    border-radius: 20px;
+  }
+  .options .card img {
+    border-radius: 20px 20px 0 0;
+  }
+}
+
+/*# sourceMappingURL=today.css.map */

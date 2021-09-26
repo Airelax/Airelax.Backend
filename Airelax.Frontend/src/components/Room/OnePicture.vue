@@ -30,6 +30,9 @@ export default {
     background-color: #000;
     display: flex;
     align-items: center;
+    .img{
+        margin: auto;
+    }
     img{
         width: 100%;
     }
@@ -59,6 +62,9 @@ export default {
             right: 3%;
             font-size: 1.2rem;
             color: #fff;
+        }
+        .img{
+            margin: unset;
         }
     }
 }

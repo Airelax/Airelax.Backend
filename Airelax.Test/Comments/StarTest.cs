@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Airelax.Domain.Comments;
 using Shouldly;
 using Xunit;
@@ -19,18 +18,18 @@ namespace Airelax.Test.Comments
         {
             yield return new object[]
             {
-                new Star("1", 6, 6, 6, 6, 6, 6),
+                new Star("1", 5, 5, 5, 5, 5, 5),
                 5.0
             };
             yield return new object[]
             {
-                new Star("1", 5, 3, 5, 6, 3, 6),
-                3.9
+                new Star("1", 5, 3, 5, 5, 3, 5),
+                4.3
             };
             yield return new object[]
             {
-                new Star("1", 1, 4, 5, 6, 4, 5),
-                3.5
+                new Star("1", 1, 4, 5, 5, 4, 5),
+                4.0
             };
         }
     }

@@ -5,27 +5,27 @@ export default {
         ch: "星星",
       },
       {
-        eng: "CleanScore",
+        eng: "cleanScore",
         ch: "乾淨度",
       },
       {
-        eng: "CommunicationScore",
+        eng: "communicationScore",
         ch: "溝通",
       },
       {
-        eng: "ExperienceScore",
+        eng: "experienceScore",
         ch: "入住",
       },
       {
-        eng: "CheapPriceScore",
+        eng: "cheapPriceScore",
         ch: "性價比",
       },
       {
-        eng: "LocationScore",
+        eng: "locationScore",
         ch: "位置",
       },
       {
-        eng: "AccuracyScore",
+        eng: "accuracyScore",
         ch: "準確性",
       },
     ],

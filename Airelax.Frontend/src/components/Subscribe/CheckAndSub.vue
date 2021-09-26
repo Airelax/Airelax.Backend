@@ -8,7 +8,7 @@
       此外，我也同意支付顯示的總金額（含住宿稅和服務費）。
       Airbnb現已在該地區代收彙繳政府徵收的住宿稅。
     </p>
-    <div class="btn">申請預訂</div>
+    <a :href="href" class="btn">申請預訂</a>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -19,6 +19,7 @@
     line-height: 1.5;
     font-weight: 400;
   }
+
   .btn {
     font-weight: 500;
     color: #fff;
@@ -28,8 +29,31 @@
     margin-bottom: 10px;
     border-radius: 15px;
   }
+
+  .btn:active {
+    background-color: #fff;
+    color: #ff385c;
+    border: 1px solid #ededed;
+  }
 }
 </style>
 <script>
-export default {};
+
+export default {
+  props: {
+    token: {
+      type: String,
+    },
+    orderId: {
+      type: String,
+    }
+  },
+  data() {
+    return {
+      href: `/api/system/${this.orderId}/${this.token}`
+    }
+  },
+  mounted() {
+  }
+};
 </script>

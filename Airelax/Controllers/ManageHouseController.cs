@@ -1,28 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Airelax.Application.Houses;
 using Airelax.Application.Houses.Dtos.Request.ManageHouse;
+using Airelax.Application.ManageHouses.Request;
+using Airelax.Application.ManageHouses.Response;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Airelax.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     public class ManageHouseController : Controller
     {
         private readonly IManageHouseService _manageHouseService;
+
         public ManageHouseController(IManageHouseService manageHouseService)
         {
             _manageHouseService = manageHouseService;
         }
 
         [HttpGet]
-        [Route("{id}")]
-        public IActionResult Index(string id)
+        [Route("all")]
+        public IActionResult MyHousesDetail()
         {
-            var manageInfo = _manageHouseService.GetManageHouseInfo(id);
-            //todo error
-            if (manageInfo == null) return Content("Error");
+            var myHousesViewModel = _manageHouseService.GetMyHouseViewModel();
+            return View(myHousesViewModel);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> IndexAsync(string id)
+        {
+            var manageInfo = await _manageHouseService.GetManageHouseInfo(id);
+            if (manageInfo == null) return RedirectToAction("Index", "Error");
             return View(manageInfo);
         }
 
@@ -168,6 +178,13 @@ namespace Airelax.Controllers
         {
             var bedroomDetail = _manageHouseService.UpdateBedroomDetail(id, input);
             return Ok(bedroomDetail);
+        }
+
+        [HttpPost]
+        [Route("{id}/pictures")]
+        public async Task<UploadHouseImagesViewModel> UploadHouseImages(string id, [FromBody] UploadHouseImagesInput input)
+        {
+            return await _manageHouseService.UploadHouseImages(id, input);
         }
     }
 }

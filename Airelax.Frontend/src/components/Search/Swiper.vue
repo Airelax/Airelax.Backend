@@ -9,7 +9,7 @@
     :navigation="true"
     class="roomPicture"
   >
-    <swiper-slide v-for="picture in roomPicture" :key="picture.index" >
+    <swiper-slide v-for="(picture, index) in fiveBlock" :key="index">
       <img :src="picture" />
     </swiper-slide>
   </swiper>
@@ -29,12 +29,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 25vh;
+  flex-grow: 1;
 }
 
 .swiper-slide img {
-  display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
 .swiper-container {
@@ -56,6 +58,13 @@ export default {
     Swiper,
     SwiperSlide,
   },
-  props: ["roomPicture"],
+  props: ["roomPicture", "houseId"],
+  computed: {
+    fiveBlock() {
+      return this.roomPicture.filter(function (value, index) {
+        return index < 5;
+      });
+    },
+  },
 };
 </script>

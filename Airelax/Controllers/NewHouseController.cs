@@ -1,16 +1,14 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Airelax.Application.Houses;
 using Airelax.Application.Houses.Dtos.Request;
-using Airelax.Domain.Members;
-using Airelax.EntityFramework.DbContexts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Airelax.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/new-house")]
+    [Authorize]
+    [Route("api/new-house")]
     public class NewHouseController : Controller
     {
         private readonly INewHouseService _houseAppService;
@@ -27,10 +25,10 @@ namespace Airelax.Controllers
         }
 
         [HttpPut]
-        [Route("{id}/category")]
-        public async Task<bool> UpdateHouseCategory(string id, UpdateHouseCategoryInput input)
+        [Route("{id}/type")]
+        public async Task<bool> UpdateHouseType(string id, UpdateHouseTypeInput input)
         {
-            return await _houseAppService.UpdateHouseCategory(id, input);
+            return await _houseAppService.UpdateHouseType(id, input);
         }
 
         [HttpPut]
@@ -39,7 +37,7 @@ namespace Airelax.Controllers
         {
             return await _houseAppService.UpdateRoomCategory(id, input);
         }
-        
+
         [HttpPut]
         [Route("{id}/title")]
         public async Task<bool> UpdateHouseTitle(string id, UpdateHouseTitleInput input)
@@ -73,6 +71,20 @@ namespace Airelax.Controllers
         public async Task<bool> UpdateHousePrice(string id, UpdateHousePriceInput input)
         {
             return await _houseAppService.UpdateHousePriceInput(id, input);
+        }
+
+        [HttpPost]
+        [Route("{id}/location")]
+        public async Task<bool> SetHouseLocation(string id, CreateLocationInput input)
+        {
+            return false;
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<bool> Delete(string id)
+        {
+            return await _houseAppService.DeleteHouseAsync(id);
         }
     }
 }

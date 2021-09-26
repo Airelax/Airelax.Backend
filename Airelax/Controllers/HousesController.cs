@@ -1,17 +1,13 @@
-﻿using Airelax.Application.Houses;
+﻿using System.Threading.Tasks;
+using Airelax.Application.Houses;
 using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Application.Houses.Dtos.Response;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 
 namespace Airelax.Controllers
 {
     [ApiController]
-    [Route(template: "api/[controller]")]
+    [Route("api/[controller]")]
     public class HousesController : Controller
     {
         private readonly IHouseAppService _houseAppService;
@@ -30,7 +26,7 @@ namespace Airelax.Controllers
 
         [HttpGet]
         [Route("Search")]
-        public async Task<IEnumerable<SimpleHouseDto>> Search([FromQuery] SearchInput input)
+        public async Task<SearchHousesResponse> Search([FromQuery] SearchInput input)
         {
             return await _houseAppService.Search(input);
         }

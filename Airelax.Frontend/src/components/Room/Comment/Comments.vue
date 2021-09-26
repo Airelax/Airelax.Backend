@@ -30,7 +30,6 @@
 
 <script>
 import setting from "./msgSetting";
-import axios from "axios";
 import Rank from "./Rank.vue";
 
 export default {
@@ -40,17 +39,6 @@ export default {
       setting: setting.chineseTranslation,
     };
   },
-  components: { Rank },
-  created: function () {
-    const api = "https://bs-howard.github.io/Homework/fake-room-data.json";
-    axios
-      .get(api)
-      .then((response) => {
-        this.data = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
+  components: { Rank }
 };
 </script>

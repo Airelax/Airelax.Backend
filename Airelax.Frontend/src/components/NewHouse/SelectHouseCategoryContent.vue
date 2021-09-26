@@ -1,6 +1,6 @@
 <template>
   <ListContainer>
-    <SelectedHouseList> </SelectedHouseList>
+    <SelectedHouseList></SelectedHouseList>
   </ListContainer>
 </template>
 

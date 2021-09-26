@@ -1,0 +1,31 @@
+﻿<div class="swiper-container Swiper mySwiper  ">
+    <div class="swiper-wrapper">
+        @foreach (var item in Model.HouseSource)
+        {
+            <div class="swiper-slide">
+                <div class="container btn">
+                    <div>
+                        <img src="https://picsum.photos/200/200/?random=1">
+                    </div>
+                    <div class="comment">
+                        <img class="starImg" src="~/images/memberInfo/starFilling.svg" alt="starFilling">
+                        <span>
+                            @item.StarScore
+                        </span>
+                        (<span>@item.CommentCount</span>)
+                    </div>
+                    <div class="roomAndHouseType">
+                        <span class="roomType">@item.RoomType</span>
+                        <span class="houseType">@item.HouseType</span>
+                    </div>
+                    <h3 class="roomTitle">
+                        @item.RoomTitle
+                    </h3>
+                </div>
+            </div>
+
+        }
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>

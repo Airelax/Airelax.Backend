@@ -3,38 +3,38 @@
     <h3>價格詳情</h3>
     <div class="row roomPrice">
       <div class="col-6">
-        ${{ convertToLocaleString(room.Price.sweetPrice) }} x
+        ${{ convertToLocaleString(room.price.sweetPrice) }} x
         {{ Number(nightCount) }}晚
       </div>
       <div class="col-6 text-end">
         ${{
           convertToLocaleString(
-            Number(room.Price.sweetPrice) * Number(nightCount)
+            Number(room.price.sweetPrice) * Number(nightCount)
           )
         }}
       </div>
     </div>
-    <div class="row cleanFee" v-if="room.Price.Fee.CleanFee">
+    <div class="row cleanFee" v-if="room.price.fee.cleanFee">
       <div class="col-6">清潔費</div>
       <div class="col-6 text-end">
-        ${{ convertToLocaleString(room.Price.Fee.CleanFee) }}
+        ${{ convertToLocaleString(room.price.fee.cleanFee) }}
       </div>
     </div>
-    <div class="row serviceFee" v-if="room.Price.Fee.ServiceFee">
+    <div class="row serviceFee" v-if="room.price.fee.serviceFee">
       <div class="col-6">服務費</div>
       <div class="col-6 text-end">
-        ${{ convertToLocaleString(room.Price.Fee.ServiceFee) }}
+        ${{ convertToLocaleString(room.price.fee.serviceFee) }}
       </div>
     </div>
-    <div class="row taxFee" v-if="room.Price.Fee.tax">
+    <div class="row taxFee" v-if="room.price.fee.taxFee">
       <div class="col-6">稅額</div>
       <div class="col-6 text-end">
-        ${{ convertToLocaleString(room.Price.Fee.tax) }}
+        ${{ convertToLocaleString(room.price.fee.taxFee) }}
       </div>
     </div>
     <div class="row total">
       <div class="col-6">總額</div>
-      <div class="col-6 text-end">${{ getTotal(room.Price, nightCount) }}</div>
+      <div class="col-6 text-end">${{ getTotal(room.price, nightCount) }}</div>
     </div>
     <div class="row moreInfo d-md-none">
       <div
@@ -64,32 +64,32 @@
       ></button>
       <p class="offcanvas-title" id="subMoreInfoTitle">價格詳情</p>
     </div>
-    <div v-if="room.Price" class="offcanvas-body small">
+    <div v-if="room.price" class="offcanvas-body small">
       <div class="row roomPrice">
         <div class="col-10">
           <p>
-            ${{ convertToLocaleString(room.Price.sweetPrice) }} x
+            ${{ convertToLocaleString(room.price.sweetPrice) }} x
             {{ Number(nightCount) }}晚
           </p>
         </div>
         <div class="col-2 text-end">
           ${{
             convertToLocaleString(
-              Number(room.Price.sweetPrice) * Number(nightCount)
+              Number(room.price.sweetPrice) * Number(nightCount)
             )
           }}
         </div>
       </div>
-      <div class="row cleanFee" v-if="room.Price.Fee.CleanFee">
+      <div class="row cleanFee" v-if="room.price.fee.cleanFee">
         <div class="col-10">
           <p>清潔費</p>
           <p>此一次性費用為房東收取的清潔費。</p>
         </div>
         <div class="col-2 text-end">
-          ${{ convertToLocaleString(room.Price.Fee.CleanFee) }}
+          ${{ convertToLocaleString(room.price.fee.cleanFee) }}
         </div>
       </div>
-      <div class="row serviceFee" v-if="room.Price.Fee.ServiceFee">
+      <div class="row serviceFee" v-if="room.price.fee.serviceFee">
         <div class="col-10">
           <p>服務費</p>
           <p>
@@ -98,13 +98,13 @@
           </p>
         </div>
         <div class="col-2 text-end">
-          ${{ convertToLocaleString(room.Price.Fee.ServiceFee) }}
+          ${{ convertToLocaleString(room.price.fee.serviceFee) }}
         </div>
       </div>
-      <div class="row taxFee" v-if="room.Price.Fee.tax">
+      <div class="row taxFee" v-if="room.price.fee.taxFee">
         <div class="col-10"><p>稅額</p></div>
         <div class="col-2 text-end">
-          ${{ convertToLocaleString(room.Price.Fee.tax) }}
+          ${{ convertToLocaleString(room.price.fee.taxFee) }}
         </div>
       </div>
     </div>
@@ -112,7 +112,7 @@
       <div class="row total">
         <div class="col-10">總額</div>
         <div class="col-2 text-end">
-          ${{ getTotal(room.Price, nightCount) }}
+          ${{ getTotal(room.price, nightCount) }}
         </div>
       </div>
     </div>
@@ -206,9 +206,9 @@ export default {
     getTotal(price, nightCount) {
       let feeTotal;
       let sweetprice = price.sweetPrice;
-      let cleanFee = price.Fee.CleanFee;
-      let taxFee = price.Fee.tax;
-      let serviceFee = price.Fee.ServiceFee;
+      let cleanFee = price.fee.cleanFee;
+      let taxFee = price.fee.taxFee;
+      let serviceFee = price.fee.serviceFee;
       if (cleanFee && taxFee && serviceFee) {
         feeTotal = Number(cleanFee) + Number(serviceFee) + Number(taxFee);
       } else if (!cleanFee && !taxFee && !serviceFee) {

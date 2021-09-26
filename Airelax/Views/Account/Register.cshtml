@@ -39,6 +39,7 @@
             </div>
 
             <div class="form-floating">
+                <div class="my-1">請填入出生日期</div>
                 @*@Html.TextBoxFor(m => m.Birthday, new { @class = "form-control", id = "floatingBirth", placeholder = "出生日期" })*@
                 @Html.EditorFor(m => m.Birthday, new { @class = "form-control", id = "floatingBirth", placeholder = "出生日期" })
 
@@ -78,9 +79,7 @@
                 </div>*@
 
             <button class="w-100 btn signIn my-3" type="submit">同意並繼續</button>
-
-
-
+            
         </form>
     </main>
 

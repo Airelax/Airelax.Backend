@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Airelax.Domain.DomainObject;
-using Lazcat.Infrastructure.Map.Responses;
+using Airelax.Infrastructure.Map.Responses;
 
 namespace Airelax.Domain.Houses.Specifications
 {
     public class InRangeLocationSpecification : Specification<House>
     {
-        private readonly Coordinate _southwest;
         private readonly Coordinate _northeast;
+        private readonly Coordinate _southwest;
 
 
         public InRangeLocationSpecification(Coordinate southwest, Coordinate northeast)

@@ -1,0 +1,122 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div class="order-info">
+    <div class="container">
+        <img src="~/images/pay/ecpay_fb.png" alt="ecpay logo" style="width:110px" />
+        <div class="bg">
+            <div class="pay text-black-50 fw-bold">付款方式</div>
+            <div id="ECPayPayment"></div><br />
+            <form action="" id="PayProcess" method="post">
+                <div style="text-align: center;">
+                    <input id="PaymentType" name="PaymentType" type="hidden" value="" />
+                    <input id="btnPay" type="button" class="btn single btn-success w-75" value="確認付款" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://ecpg-stage.ecpay.com.tw/Scripts/sdk-1.0.0.js?t=20210121100116"></script>
+    <script type="text/javascript">
+
+
+    $(function () {
+        var Environment = 'STAGE'; //請設定要連線的環境: 測試 STAGE ,正式PROD
+        var envi = GetEnvi(Environment);
+        let _token = '@Html.Raw(ViewBag.Token)';
+        let orderId = '@Html.Raw(ViewBag.OrderId)';
+
+        //初始化SDK畫面
+        ECPay.initialize(envi, 1, function (errMsg) {
+            if (_token === '') {
+                _token = prompt('請填入Token: ');
+            }
+
+            try {
+                ECPay.createPayment(_token, ECPay.Language.zhTW, function (errMsg) {
+                    if (errMsg != null)
+                        ErrHandle(errMsg);
+                });
+
+            } catch (err) {
+                ErrHandle(err);
+            }
+        });
+
+
+
+        //消費者選擇完成付款方式,取得PayToken
+        $('#btnPay').click(function () {
+            try {
+                ECPay.getPayToken(function (paymentInfo, errMsg) {
+                    //console.log("response => getPayToken(paymentInfo, errMsg):", paymentInfo, errMsg);
+                    if (errMsg != null) {
+                        ErrHandle(errMsg);
+                        return;
+                    }
+
+                    fetch('/api/orders/transaction',{
+                        method:'POST',
+                        headers:{'content-type': 'application/json'},
+                        body:JSON.stringify({
+                            token: paymentInfo.PayToken,
+                            MerchantTradeNo: orderId
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(json =>{
+                        if (json === true) {
+                            alert('付款成功');
+                            window.location.href = '/trip';
+                        }
+                    })
+                    .catch(err => console.log(err));
+
+                    //$("#PayProcess").submit();
+                    return true;
+                });
+            } catch (err) {
+               // ErrHandle(err);
+            }
+
+            return false;
+        });
+    });
+
+    function GetEnvi(env) {
+        var result = 'STAGE';
+        switch (env) {
+
+            case 'STAGE':
+                result = 'Stage';
+                break;
+            case 'PROD':
+                result = 'Prod';
+                break;
+        }
+        return result;
+    }
+
+    function ErrHandle(strErr) {
+
+        if (strErr != null) {
+            $('#ECPayPayment').append('<div style="text-align: center;"><label style="color: red;">' + strErr + '</label></div>');
+            console.log(strErr);
+        } else {
+            $('#ECPayPayment').append('<div style="text-align: center;"><label style="color: red;">Token取得失敗</label></div>');
+            console.log('Wrong');
+        }
+
+        //$('#btnPay').hide();
+    }
+    </script>
+
+}
+@section topCSS{
+    <link href="~/css/pay/pay.css" rel="stylesheet" />
+}

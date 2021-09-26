@@ -1,11 +1,12 @@
-
 <template>
   <div class="contain">
     <div class="create-helper">
       <Helper></Helper>
     </div>
     <div class="content">
-      <slot><div class="error">Oops! Something Error</div></slot>
+      <slot>
+        <div class="error">Oops! Something Error</div>
+      </slot>
     </div>
     <div v-if="notFirst" class="step-controls">
       <StepControl></StepControl>
@@ -24,11 +25,13 @@
   position: relative;
   display: block;
   height: 100%;
+  overflow: auto;
 }
 
 .content {
   padding-bottom: 80px;
-}
+  height: 100%;
+}  
 
 .step-controls {
   padding: 10px 15px;
@@ -78,6 +81,7 @@
 <script>
 import StepControl from "./StepControl.vue";
 import Helper from "./Helper.vue";
+
 export default {
   props: {
     notFirst: {

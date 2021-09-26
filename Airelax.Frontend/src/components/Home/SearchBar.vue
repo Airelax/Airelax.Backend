@@ -7,49 +7,51 @@
           <label>
             <span class="search-title sm-search-title">位置</span>
             <input
-              id="searchInput"
-              type="text"
-              placeholder="你想去哪裡 ?"
-              autocomplete="off"
-              v-model="$store.state.destination"
+                id="searchInput"
+                type="text"
+                placeholder="你想去哪裡 ?"
+                autocomplete="off"
+                v-model="$store.state.destination"
+                @keydown.enter.prevent="search()"
             />
           </label>
         </div>
         <div class="lg-search">
           <v-date-picker
-            :transition="'none'"
-            :columns="$screens({ default: 2 })"
-            color="pink"
-            :model-config="modelConfig"
-            is-range
-            v-model="$store.state.date"
+              :transition="'none'"
+              :columns="$screens({ default: 2 })"
+              color="pink"
+              :model-config="modelConfig"
+              is-range
+              v-model="$store.state.date"
+              :min-date="new Date()"
           >
             <template v-slot="{ inputValue, inputEvents }">
               <div class="picker">
                 <div id="in-date-time" class="search-div in-date">
                   <span class="search-title">入住</span>
                   <input
-                    placeholder="新增日期"
-                    :value="inputValue.start"
-                    v-on="inputEvents.start"
-                    class="px-2 py-1 focus:outline-none focus:border-indigo-300"
-                    readonly
+                      placeholder="新增日期"
+                      :value="inputValue.start"
+                      v-on="inputEvents.start"
+                      class="px-2 py-1 focus:outline-none focus:border-indigo-300"
+                      readonly
                   />
                 </div>
                 <div id="out-date-time" class="search-div out-date">
                   <span class="search-title">退房</span>
                   <input
-                    placeholder="新增日期"
-                    :value="inputValue.end"
-                    v-on="inputEvents.end"
-                    class="
+                      placeholder="新增日期"
+                      :value="inputValue.end"
+                      v-on="inputEvents.end"
+                      class="
                       px-2
                       py-1
                       rounded
                       focus:outline-none
                       focus:border-indigo-300
                     "
-                    readonly
+                      readonly
                   />
                 </div>
               </div>
@@ -78,12 +80,17 @@
           <ul>
             <li><span>隨時隨地出發</span></li>
             <li>
-              <a href="#">
+              <router-link :to="{
+              path: '/search',
+              query: {
+              location: this.$store.state.destination,
+              },
+              }">
                 <div class="everywhere">
                   <p>隨心所欲</p>
                   <i class="fas fa-home"></i>
                 </div>
-              </a>
+              </router-link>
             </li>
           </ul>
         </li>
@@ -107,9 +114,12 @@
           <span>滿13歲</span>
         </div>
         <div>
-          <button class="minus" @click="minus" id="adult-minus">-</button
-          ><span id="adult">{{ adult }}</span
-          ><button class="plus" @click="plus" id="adult-plus">+</button>
+          <button class="minus" @click="minus" id="adult-minus">-
+          </button
+          >
+          <span id="adult">{{ adult }}</span
+          >
+          <button class="plus" @click="plus" id="adult-plus">+</button>
         </div>
       </div>
       <div class="people-control" id="child">
@@ -118,9 +128,12 @@
           <span>2 - 12歲</span>
         </div>
         <div>
-          <button class="minus" @click="minus" id="child-minus">-</button
-          ><span>{{ child }}</span
-          ><button class="plus" @click="plus" id="child-plus">+</button>
+          <button class="minus" @click="minus" id="child-minus">-
+          </button
+          >
+          <span>{{ child }}</span
+          >
+          <button class="plus" @click="plus" id="child-plus">+</button>
         </div>
       </div>
       <div class="people-control" id="toddler">
@@ -129,9 +142,12 @@
           <span>2歲以下</span>
         </div>
         <div>
-          <button class="minus" @click="minus" id="toddler-minus">-</button
-          ><span>{{ toddler }}</span
-          ><button class="plus" @click="plus" id="toddler-plus">+</button>
+          <button class="minus" @click="minus" id="toddler-minus">-
+          </button
+          >
+          <span>{{ toddler }}</span
+          >
+          <button class="plus" @click="plus" id="toddler-plus">+</button>
         </div>
       </div>
     </div>
@@ -148,6 +164,7 @@ export default {
       },
     };
   },
+  inject: ["reload"],
   methods: {
     HideBody() {
       if (this.$store.state.fullWidth < 768)
@@ -158,32 +175,48 @@ export default {
       document.querySelector(".location").classList.remove("rwdShow");
       document.querySelector(".searchBar").classList.remove("toggle");
       document.querySelector(".searchBar").parentElement.style.backgroundColor =
-        "transparent";
+          "transparent";
       document.getElementById("footer").style.display = "flex";
       e.target.style.display = "none";
     },
     plus(e) {
-      if (e.target.getAttribute("id") == "adult-plus")
+      if (e.target.getAttribute("id") === "adult-plus")
         this.$store.state.adult += 1;
-      else if (e.target.getAttribute("id") == "child-plus")
+      else if (e.target.getAttribute("id") === "child-plus")
         this.$store.state.child += 1;
-      else if (e.target.getAttribute("id") == "toddler-plus")
+      else if (e.target.getAttribute("id") === "toddler-plus")
         this.$store.state.toddler += 1;
     },
     minus(e) {
-      if (e.target.getAttribute("id") == "adult-minus")
+      if (e.target.getAttribute("id") === "adult-minus")
         this.$store.state.adult -= 1;
-      else if (e.target.getAttribute("id") == "child-minus")
+      else if (e.target.getAttribute("id") === "child-minus")
         this.$store.state.child -= 1;
-      else if (e.target.getAttribute("id") == "toddler-minus")
+      else if (e.target.getAttribute("id") === "toddler-minus")
         this.$store.state.toddler -= 1;
     },
     search() {
-      console.log(111);
+      const isDateEmpty = Object.keys(this.$store.state.date).length === 0;
+      if (this.$route.meta.searchPage) {
+        this.$router.replace({
+          query: {
+            location: this.$store.state.destination,
+            customerNumber: this.$store.getters.TotalCustomer,
+            checkin: isDateEmpty ? null : this.$store.state.date.start.replace(/[年]/, '-').replace(/[月]/, '-').replace('日', ''),
+            checkout: isDateEmpty ? null : this.$store.state.date.end.replace(/[年]/, '-').replace(/[月]/, '-').replace('日', ''),
+          }
+        })
+        this.reload();
+        return;
+      }
+
       this.$router.push({
-        path: "search",
+        path: "/search",
         query: {
           location: this.$store.state.destination,
+          customerNumber: this.$store.getters.TotalCustomer,
+          checkin: isDateEmpty ? null : this.$store.state.date.start.replace(/[年]/, '-').replace(/[月]/, '-').replace('日', ''),
+          checkout: isDateEmpty ? null : this.$store.state.date.end.replace(/[年]/, '-').replace(/[月]/, '-').replace('日', ''),
         },
       });
     },
@@ -273,7 +306,7 @@ export default {
       peoplePart.classList.remove("toggle");
       peoplePart.classList.add("show");
       peoplePart.style.marginLeft = `${
-        searchBar.offsetLeft + searchBar.offsetWidth - peoplePart.offsetWidth
+          searchBar.offsetLeft + searchBar.offsetWidth - peoplePart.offsetWidth
       }px`;
       focus(e.target);
     });
@@ -307,14 +340,17 @@ export default {
   list-style: none;
   text-align: left;
 }
+
 header {
   width: 100%;
+
   form {
     position: relative;
     display: flex;
     justify-content: space-evenly;
     padding-top: 1rem;
     margin-bottom: -1px;
+
     .searchBar {
       position: relative;
       z-index: 10;
@@ -326,6 +362,7 @@ header {
       background-color: #fff;
       border-radius: 28px;
       align-items: center;
+
       &.fixed {
         position: fixed;
         transition: 0.3s;
@@ -333,19 +370,24 @@ header {
         border: 2px solid rgb(121, 121, 121);
         box-shadow: 5px 5px 10px rgb(160, 160, 160);
       }
+
       &.toggle {
         background-color: #f1f1f1;
         width: 80%;
       }
+
       .search-position {
         width: 100%;
         display: flex;
         align-items: center;
+
         .sm-search-icon {
           cursor: pointer;
         }
+
         label {
           flex-grow: 1;
+
           input {
             border: none;
             width: 95%;
@@ -356,6 +398,7 @@ header {
           }
         }
       }
+
       .lg-search {
         display: none;
         align-items: center;
@@ -366,6 +409,7 @@ header {
           justify-content: space-between;
           align-items: center;
           height: 4rem;
+
           .lg-search-icon {
             display: flex;
             align-items: center;
@@ -375,16 +419,20 @@ header {
             background-color: #ff385c;
             color: #fff;
             border-radius: 50%;
+
             &.toggle {
               width: 6rem;
               border-radius: 28px;
             }
+
             &:hover {
               background-color: #ce1739;
             }
+
             i {
               margin: auto;
             }
+
             .lg-search-icon-txt {
               display: none;
               font-weight: 900;
@@ -393,15 +441,18 @@ header {
           }
         }
       }
+
       .search-title {
         margin-left: 1rem;
         font-weight: 700;
         pointer-events: none;
       }
+
       .sm-search-title {
         display: none;
       }
     }
+
     .sm-cancel {
       background-color: #fff;
       border: none;
@@ -410,6 +461,7 @@ header {
       display: none;
     }
   }
+
   .location {
     position: relative;
     z-index: 10;
@@ -418,33 +470,40 @@ header {
     height: 100vh;
     background-color: #fff;
     position: relative;
+
     &.rwdShow {
       width: 100%;
       display: flex;
       border-radius: unset;
       height: 100vh;
     }
+
     &.show {
       width: 25rem;
       display: block;
       border-radius: 28px;
       height: 40vh;
     }
+
     &.show.toggle {
       display: none;
     }
+
     ul {
       width: 100%;
       padding-left: 0;
       padding: 0.5rem 1rem;
+
       li:first-child {
         span {
           font-size: 0.8rem;
           font-weight: 700;
         }
       }
+
       a {
         text-decoration: none;
+
         .everywhere {
           display: flex;
           justify-content: left;
@@ -458,35 +517,42 @@ header {
           border: 1px solid rgb(202, 202, 202);
           box-shadow: 5px 5px 10px 5px rgb(214, 212, 212);
           color: rgb(167, 19, 167);
+
           p {
             font-size: 1.2rem;
             font-weight: 900;
             margin: auto;
             margin-left: 0;
           }
+
           i {
             font-size: 1.8rem;
           }
         }
       }
+
       .record {
         .place {
           display: flex;
           margin: 1rem 0;
+
           a {
             text-decoration: none;
             color: #000;
             display: flex;
+
             .clock {
               display: flex;
               width: 3rem;
               height: 3rem;
               background-color: #f1f1f1;
               border-radius: 6px;
+
               i {
                 margin: auto;
               }
             }
+
             .searchPlace {
               margin: auto;
               margin-left: 1rem;
@@ -496,6 +562,7 @@ header {
       }
     }
   }
+
   .people {
     position: relative;
     z-index: 10;
@@ -504,33 +571,42 @@ header {
     display: none;
     flex-direction: column;
     margin-top: 1rem;
+
     &.show {
       display: flex;
     }
+
     &.show.toggle {
       display: none;
     }
+
     .people-control {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1.2rem 0;
+
       &:not(:last-child) {
         border-bottom: 1px solid rgb(204, 201, 201);
       }
+
       margin: 0.3rem 2rem;
+
       .txt {
         display: flex;
         flex-direction: column;
         line-height: 1.2rem;
+
         strong {
           font-size: 1.2rem;
         }
+
         span {
           color: rgb(104, 102, 102);
           font-size: 0.9rem;
         }
       }
+
       button {
         width: 2rem;
         height: 2rem;
@@ -549,34 +625,43 @@ header {
   header {
     form {
       padding-top: 6rem;
+
       .searchBar {
         padding: 0rem;
         border-radius: 50px;
         border: 1px solid rgb(196, 196, 196);
+
         .search-position {
           width: 50%;
+
           .sm-search-icon {
             display: none;
           }
+
           .sm-search-title {
             display: inline;
           }
+
           #searchInput {
             margin-top: 0.2rem;
             font-size: 0.9rem;
             margin-left: 1rem;
           }
         }
+
         .lg-search {
           display: flex;
           flex-grow: 1;
+
           .search-div {
             flex-grow: 1;
           }
+
           .picker {
             display: flex;
             align-items: center;
             width: 30%;
+
             input {
               display: block;
               border: none;
@@ -587,26 +672,33 @@ header {
               background-color: transparent;
               font-size: 0.9rem;
             }
+
             .search-div {
               padding-top: 0.9rem;
             }
           }
         }
+
         .search-div {
           border-radius: 50px;
           cursor: pointer;
           padding: 0.6rem 0;
           height: 4rem;
+
           label {
             cursor: pointer;
           }
+
           &:hover {
             background-color: rgb(228, 228, 228) !important;
           }
+
           &:first-child {
             padding-left: 1rem;
           }
+
           border-right: 1px solid rgb(199, 198, 198);
+
           .placeholder {
             margin-left: 1.1rem;
             color: rgb(97, 96, 96);
@@ -616,16 +708,19 @@ header {
         }
       }
     }
+
     .people {
       width: 25rem;
       border: 1px solid rgb(202, 202, 202);
     }
+
     .location {
       margin-top: 1rem;
       border: 1px solid rgb(202, 202, 202);
     }
   }
 }
+
 @media screen and (min-width: 1280px) {
   form {
     padding-top: 0 !important;

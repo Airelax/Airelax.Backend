@@ -1,0 +1,134 @@
+﻿<nav class="navbar navbar-expand-md navbar-light bg-light">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand" asp-controller="Member" asp-action="Today">
+            <img src="~/images/Members/Today/slogo.png" alt="" style="width: 40px;">
+        </a>
+        <div class="collapse navbar-collapse d-flex justify-content-center d-none d-xl-block">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    @Html.ActionLink("今天", "today", "Member", new {}, new {@class = "nav-link fw-bold ps-3"})
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold ps-3" href="/message">收件匣</a>
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink("評價", "Index", "Comments", new {}, new {@class = "nav-link fw-bold ps-3"})
+                </li>
+                <li class="nav-item">
+                    @* todo router *@
+                    @Html.ActionLink("收入", "today", "Member", new {}, new {@class = "nav-link fw-bold ps-3"})
+                </li>
+                <li class="nav-item dropdown ps-3">
+                    <a class="nav-link dropdown-toggle fw-bold" href="#" id="navbarDropdownMenuLink" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        選單
+                    </a>
+                    <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            @Html.ActionLink("房源", "MyHousesDetail", "ManageHouse", new {}, new {@class = "nav-link fw-bold ps-3 text-dark"})
+                        </li>
+                        <li>
+                            <a class="dropdown-item fw-bold" href="/become-host/category">建立房源</a>
+                        </li>
+                        <hr>
+                        <li>
+                            <a class="dropdown-item fw-bold" href="#">《在地指南》</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item fw-bold" href="#">交易紀錄</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item fw-bold" href="#">瀏覽出租資源</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item fw-bold" href="#">前往我們的社區論壇</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- 大頭貼btn -->
+        <div class="file dropdown">
+            <a class="" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+               aria-expanded="false">
+                <i class="fas fa-user-circle" style="font-size:2rem;color:black;"></i>
+            </a>
+            <ul class="dropdown-menu  dropdown-menu-end " aria-labelledby="dropdownMenuLink">
+                <li>
+                    <a class="dropdown-item fw-bold" asp-controller="MemberInfo" asp-action="Index">個人資料</a>
+                </li>
+                <li>
+                    <a class="dropdown-item fw-bold" asp-controller="Member" asp-action="Index">帳號</a>
+                </li>
+                <li>
+                    <a class="dropdown-item fw-bold" href="/message">訊息</a>
+                </li>
+                <li>
+                    <a class="dropdown-item fw-bold" href="#">尋求協助</a>
+                </li>
+                <hr>
+                <li>
+                    <a class="dropdown-item fw-bold" href="/">切換至旅行模式</a>
+                </li>
+                <li>
+                    <a class="dropdown-item fw-bold" asp-controller="Account" asp-action="Logout">登出</a>
+                </li>
+            </ul>
+        </div>
+        <!-- 1100px 漢堡btn -->
+        <div class="nav_ph">
+            <button class="navbar-toggler rounded-circle" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" style="width: 40px;height: 40px;">
+                <span class="fs-6 d-flex align-items-center">
+                    <i class="fas fa-bars"></i>
+                </span>
+            </button>
+            <div class="offcanvas offcanvas-top h-100" tabindex="-1" id="offcanvasTop"
+                 aria-labelledby="offcanvasTopLabel">
+                <div class="offcanvas-header">
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                            aria-label="Close">
+                    </button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="p-0" aria-labelledby="dropdownMenuLink">
+                        <small>選單</small>
+                        <li>
+                            <a class="dropdown-item fw-bold" asp-controller="Member" asp-action="Today"><img src="~/images/Members/Nav/1.svg" style="width: 40px;margin-right:1rem;">今天</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item fw-bold" href="/message"><img src="~/images/Members/Nav/2.svg" style="width: 40px;margin-right:1rem;">收件匣</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item fw-bold" asp-controller="ManageHouse" asp-action="MyHousesDetail"><img src="~/images/Members/Nav/5.svg" style="width: 40px;margin-right:1rem;">房源</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item fw-bold" href="#"><img src="~/images/Members/Nav/7.svg" style="width: 40px;margin-right:1rem;">交易紀錄</a>
+                        </li>
+                        <hr>
+                        <small>帳號</small>
+                        <li>
+                            <a class="dropdown-item fw-bold" asp-controller="MemberInfo" asp-action="Index"><img src="~/images/Members/Nav/8.svg" style="width: 40px;margin-right:1rem;">你的個人資料</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item fw-bold" asp-controller="Member" asp-action="Index"><img src="~/images/Members/Nav/9.svg" style="width: 40px;margin-right:1rem;">帳號設定</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item fw-bold" href="/become-host/category"><img src="~/images/Members/Nav/12.svg" style="width: 40px;margin-right:1rem;">建立新房源</a>
+                        </li>
+                        <hr>
+                        <small>資源和支援</small>
+                        <li>
+                            <a class="dropdown-item fw-bold" href="#"><img src="~/images/Members/Nav/15.svg" style="width: 40px;margin-right:1rem;">尋求協助</a>
+                        </li>
+                        <hr>
+                        <div class="d-grid gap-2 d-md-block">
+                            <a class="btn btn-outline-dark btn-sm fw-bold" href="/">切換至旅行模式</a>
+                            <a class="btn btn-outline-dark btn-sm fw-bold" asp-controller="Account" asp-action="Logout">登出</a>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

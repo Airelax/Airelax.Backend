@@ -1,17 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Airelax.EntityFramework.DbContexts;
-using Microsoft.EntityFrameworkCore;
-using Lazcat.Infrastructure.Extensions;
-using Lazcat.Infrastructure.ExceptionHandlers;
-using Airelax.Domain.Members;
+﻿using System.Threading.Tasks;
+using Airelax.Application.MemberInfos;
+using Airelax.Application.MemberInfos.Request;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 
 namespace Airelax.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     public class MemberInfoController : Controller
     {
         private readonly IMemberInfoService _memberInfoService;
@@ -21,18 +18,15 @@ namespace Airelax.Controllers
             _memberInfoService = memberInfoService;
         }
 
-
         [HttpGet]
-        [Route("{memberId}")]
+        [Route("~")]
+        [Route("{memberId?}")]
         public IActionResult Index(string memberId)
         {
             var memberInfoViewModel = _memberInfoService.GetMemberInfoViewModel(memberId);
 
             if (memberInfoViewModel == null)
-            {
-                //todo 錯誤畫面
-                return Content("錯誤畫面");
-            }
+                return RedirectToAction("Index", "Error");
 
             return View(memberInfoViewModel);
         }
@@ -40,13 +34,24 @@ namespace Airelax.Controllers
 
         [HttpPut]
         [Route("{memberId}")]
-        public async Task<MemberInfoInput> UpdateMemberInfo(string memberId, [FromBody] MemberInfoInput input)
+        public async Task<UpdateMemberInfoInput> UpdateMemberInfo(string memberId, [FromBody] UpdateMemberInfoInput input)
         {
-            var aboutMe = _memberInfoService.GetAboutMe(memberId, input);
-
+            var aboutMe = await _memberInfoService.UpdateMemberInfo(input);
             return aboutMe;
         }
 
+        [HttpGet]
+        [Route("edit-photo")]
+        public IActionResult EditPhoto()
+        {
+            return View();
+        }
 
+        [HttpPut]
+        [Route("edit-photo")]
+        public async Task<string> EditPhoto([FromBody] EditPhotoInput input)
+        {
+            return await _memberInfoService.UpdateCover(input);
+        }
     }
 }

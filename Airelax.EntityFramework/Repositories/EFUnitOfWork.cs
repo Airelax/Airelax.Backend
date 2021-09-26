@@ -12,16 +12,22 @@ namespace Airelax.EntityFramework.Repositories
     [DependencyInjection(typeof(IUnitOfWork))]
     public class EFUnitOfWork : IUnitOfWork, IDisposable
     {
-        private readonly AirelaxContext _context;
-        private ConcurrentDictionary<string, object> _repositories;
         private readonly IActivator _activator;
+        private readonly AirelaxContext _context;
         private bool _disposed;
+        private ConcurrentDictionary<string, object> _repositories;
 
         public EFUnitOfWork(AirelaxContext context, IActivator activator)
         {
             _context = context;
             _activator = activator;
             _repositories = new ConcurrentDictionary<string, object>();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public async Task SaveAsync()
@@ -42,21 +48,11 @@ namespace Airelax.EntityFramework.Repositories
             return (EFGenericRepository<TId, TEntity>) _repositories[type];
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
         private void Dispose(bool disposing)
         {
             if (!_disposed)
-            {
                 if (disposing)
-                {
                     _context.Dispose();
-                }
-            }
 
             _disposed = true;
         }
