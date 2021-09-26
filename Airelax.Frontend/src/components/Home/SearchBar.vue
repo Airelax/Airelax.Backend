@@ -83,7 +83,7 @@
               <router-link :to="{
               path: '/search',
               query: {
-              location: this.$store.state.destination,
+              location: $store.state.destination,
               },
               }">
                 <div class="everywhere">
