@@ -1,14 +1,12 @@
-﻿using Airelax.Application.Account;
-using Airelax.Application.Houses.Dtos.Response;
-using Airelax.Domain.Orders;
-using Airelax.Domain.RepositoryInterface;
-using Lazcat.Infrastructure.DependencyInjection;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Airelax.Application.Account;
+using Airelax.Application.Houses.Dtos.Response;
+using Airelax.Domain.RepositoryInterface;
+using Lazcat.Infrastructure.DependencyInjection;
 
-namespace Airelax
+namespace Airelax.Application.Trips
 {
     [DependencyInjection(typeof(ITripService))]
     public class TripService : ITripService

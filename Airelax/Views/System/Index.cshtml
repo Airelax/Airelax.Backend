@@ -2,18 +2,20 @@
     Layout = "_Layout";
 }
 
-<!DOCTYPE html>
-
-
 <div class="order-info">
-    <div id="ECPayPayment"></div><br/>
-
-    <form action="" id="PayProcess" method="post">
-        <div style="text-align: center;">
-            <input id="PaymentType" name="PaymentType" type="hidden" value=""/>
-            <input id="btnPay" type="button" class="btn single btn-gray-dark" value="確認付款"/>
+    <div class="container">
+        <img src="~/images/pay/ecpay_fb.png" alt="ecpay logo" style="width:110px" />
+        <div class="bg">
+            <div class="pay text-black-50 fw-bold">付款方式</div>
+            <div id="ECPayPayment"></div><br />
+            <form action="" id="PayProcess" method="post">
+                <div style="text-align: center;">
+                    <input id="PaymentType" name="PaymentType" type="hidden" value="" />
+                    <input id="btnPay" type="button" class="btn single btn-success w-75" value="確認付款" />
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
 
 @section Scripts
@@ -22,7 +24,7 @@
     <script src="https://ecpg-stage.ecpay.com.tw/Scripts/sdk-1.0.0.js?t=20210121100116"></script>
     <script type="text/javascript">
 
-   
+
     $(function () {
         var Environment = 'STAGE'; //請設定要連線的環境: 測試 STAGE ,正式PROD
         var envi = GetEnvi(Environment);
@@ -40,15 +42,15 @@
                     if (errMsg != null)
                         ErrHandle(errMsg);
                 });
-           
+
             } catch (err) {
                 ErrHandle(err);
             }
         });
 
-       
 
-        //消費者選擇完成付款方式,取得PayToken 
+
+        //消費者選擇完成付款方式,取得PayToken
         $('#btnPay').click(function () {
             try {
                 ECPay.getPayToken(function (paymentInfo, errMsg) {
@@ -57,7 +59,7 @@
                         ErrHandle(errMsg);
                         return;
                     }
-                    
+
                     fetch('/api/orders/transaction',{
                         method:'POST',
                         headers:{'content-type': 'application/json'},
@@ -74,7 +76,7 @@
                         }
                     })
                     .catch(err => console.log(err));
-                    
+
                     //$("#PayProcess").submit();
                     return true;
                 });
@@ -113,4 +115,8 @@
         //$('#btnPay').hide();
     }
     </script>
+
+}
+@section topCSS{
+    <link href="~/css/pay/pay.css" rel="stylesheet" />
 }
