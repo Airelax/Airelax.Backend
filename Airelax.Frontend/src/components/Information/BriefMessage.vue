@@ -107,7 +107,7 @@ import * as signalR from '@microsoft/signalr';
 import moment from 'moment';
 import settingJson from "@/components/Settings/setting";
 
-let hubUrl = "/chatHub";
+let hubUrl = "https://airelax.azurewebsites.net/chathub";
 const connection = new signalR.HubConnectionBuilder().withAutomaticReconnect().withUrl(hubUrl).build();
 connection.start().catch(err => console.log(err));
 
