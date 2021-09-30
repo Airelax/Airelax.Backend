@@ -24,7 +24,6 @@ export default {
       this.$store.commit('setNewHouseNextAvailable', false);
       return;
     }
-    //todo fetch house
     this.$store.commit('setNewHouseNextAvailable', true);
   },
   data() {

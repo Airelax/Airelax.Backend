@@ -42,8 +42,6 @@ export default {
         redirectName: `photo`,
         body: {
           Title: message,
-          //todo identity
-          memberId: 'M00056b77d3'
         }
       }
       this.$store.commit('setNewHouseRequest', req);
