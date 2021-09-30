@@ -108,8 +108,10 @@ import moment from 'moment';
 import settingJson from "@/components/Settings/setting";
 
 let hubUrl = "https://airelax.azurewebsites.net/chathub";
-const connection = new signalR.HubConnectionBuilder().withAutomaticReconnect().withUrl(hubUrl).build();
-connection.start().catch(err => console.log(err));
+const connection = new signalR.HubConnectionBuilder().withUrl(hubUrl,{
+  skipNegotiation: true,
+  transport: signalR.HttpTransportType.WebSockets
+}).configureLogging(signalR.LogLevel.Information).withAutomaticReconnect().build();
 
 export default {
   components: {Talk, Signal},
@@ -130,10 +132,12 @@ export default {
     }
   },
   mounted() {
-    var vm = this;
-    vm.$store.state.connection = connection;
-    vm.startUp();
-    vm.detectStatus();
+    connection.start().then(()=>{
+      var vm = this;
+      vm.$store.state.connection = connection;
+      vm.startUp();
+      vm.detectStatus();
+    }).catch(err => console.log(err));
   },
   updated() {
     this.scrollToBottom();
