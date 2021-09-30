@@ -91,7 +91,7 @@ const routes = [
             },
             {
                 path: ':id/price',
-                name: 'HousePrice',
+                name: 'Price',
                 component: () => import('../views/NewHouse/SetPrice.vue'),
             },
             {

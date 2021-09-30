@@ -70,13 +70,12 @@ export default {
   },
   watch: {
     photos(val) {
-      console.log(val);
       if (val.length >= 5) {
         this.$store.commit('setNewHouseNextAvailable', true);
         const houseId = this.$route.params.id;
         const req = {
           method: houseId ? "PUT" : "POST",
-          url: houseId ? `/ManageHouse/${houseId}/pictures` : "",
+          url: houseId ? `/${houseId}/pictures` : "",
           redirectName: `HouseTitle`,
           body: {
             Images: this.photos
