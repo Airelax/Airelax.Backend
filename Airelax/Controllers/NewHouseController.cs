@@ -73,11 +73,11 @@ namespace Airelax.Controllers
             return await _houseAppService.UpdateHousePriceInput(id, input);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("{id}/location")]
         public async Task<bool> SetHouseLocation(string id, CreateLocationInput input)
         {
-            return false;
+            return await _houseAppService.UpdateLocation(id, input);
         }
 
         [HttpDelete]

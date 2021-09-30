@@ -15,6 +15,7 @@ export default {
     },
     houses: {
       type: Array,
+      default: () => []
     },
   },
   data() {
@@ -44,17 +45,19 @@ export default {
           mapTypeControl: false,
         });
 
-        this.houses.forEach(house => {
-          const marker = createHTMLMapMarker({
-            latlng: new window.google.maps.LatLng(house.coordinate.latitude, house.coordinate.longitude),
-            map: this.map,
-            html: `<div class="badge rounded-pill bg-light text-dark p-1" style="z-index:999;">NT$${house.price.origin}TWD</div>`
-          });
+        if (this.houses.length) {
+          this.houses.forEach(house => {
+            const marker = createHTMLMapMarker({
+              latlng: new window.google.maps.LatLng(house.coordinate.latitude, house.coordinate.longitude),
+              map: this.map,
+              html: `<div class="badge rounded-pill bg-light text-dark p-1" style="z-index:999;">NT$${house.price.origin}TWD</div>`
+            });
 
-          marker.addListener("click", () => {
-            alert("Partyin Partyin Yeah!");
+            marker.addListener("click", () => {
+              alert("Partyin Partyin Yeah!");
+            });
           });
-        });
+        }
         this.setMarker();
 
       });

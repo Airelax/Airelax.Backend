@@ -14,5 +14,6 @@ namespace Airelax.Application.Houses
         Task<bool> UpdateHouseDescription(string id, UpdateHouseDescriptionInput input);
         Task<bool> UpdateHouseFacilities(string id, UpdateHouseFacilitiesInput input);
         Task<bool> DeleteHouseAsync(string id);
+        Task<bool> UpdateLocation(string id, CreateLocationInput input);
     }
 }

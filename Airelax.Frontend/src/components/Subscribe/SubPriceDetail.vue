@@ -218,7 +218,7 @@ export default {
       } else if (!cleanFee && taxFee && serviceFee) {
         feeTotal = Number(taxFee) + Number(serviceFee);
       }
-      return (Number(sweetprice) * nightCount + feeTotal).toLocaleString();
+      return (Number(sweetprice) * Number(nightCount) + Number(feeTotal)).toLocaleString();
     },
   },
 };
