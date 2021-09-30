@@ -42,6 +42,7 @@ export default {
         }
       }
       this.$store.commit('setNewHouseRequest', req);
+      this.$store.commit('setNewHouseNextAvailable', true);
     }
   }
 };
