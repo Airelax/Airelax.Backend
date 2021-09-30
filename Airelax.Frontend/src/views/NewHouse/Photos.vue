@@ -7,7 +7,7 @@
           <input id="upload_img" style="display:none;" type="file" @change="photoChange">上傳相片
         </label>
         <div class="row" id="showPhoto">
-          <div class="col-12 col-md-6" v-for="(photo,index) in photos" v-key="index">
+          <div class="col-12 col-md-6" v-for="(photo,index) in photos" :key="index">
             <img class="photo" :src="photo" alt="">
           </div>
         </div>
