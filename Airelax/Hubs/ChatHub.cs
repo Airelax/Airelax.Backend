@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Airelax.Hubs
 {
-    [AllowAnonymous]
     public class ChatHub : Hub
     {
         public async Task AddGroup(string groupName)
