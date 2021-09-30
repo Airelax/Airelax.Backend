@@ -115,7 +115,7 @@ let hubUrl = "/chathub";
 const connection = new signalR.HubConnectionBuilder().withUrl(hubUrl, {
   skipNegotiation: true,
   transport: signalR.HttpTransportType.WebSockets
-}).configureLogging(signalR.LogLevel.Information).withAutomaticReconnect().build();
+}).configureLogging(signalR.LogLevel.Debug).withAutomaticReconnect().build();
 
 export default {
   components: {Talk, Signal},
@@ -136,8 +136,12 @@ export default {
     }
   },
   mounted() {
+    var vm = this;
+    console.log(connection)
+    console.log("get Start")
     connection.start().then(() => {
-      var vm = this;
+      console.log("get Into Start")
+
       vm.$store.state.connection = connection;
       vm.startUp();
       vm.detectStatus();
@@ -193,6 +197,7 @@ export default {
               connection.invoke("AddAllGroup", x.connectString);
             })
             vm.get = true;
+            console.log(vm.messages)
           });
 
       connection.on("ReceiveMessage", function (objString, message) {
