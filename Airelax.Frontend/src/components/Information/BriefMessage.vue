@@ -19,7 +19,9 @@
             </div>
             <div class="col-2 info d-flex flex-column align-items-center">
               <div class="lastestDate">
-                {{ getMessage(item).time.split('T')[0].split('-')[1] }}/{{ getMessage(item).time.split('T')[0].split('-')[2] }}
+                {{
+                  getMessage(item).time.split('T')[0].split('-')[1]
+                }}/{{ getMessage(item).time.split('T')[0].split('-')[2] }}
               </div>
               <div class="uncheck" v-if="item.memberId == item.landlord.id && item.memberOneStatus != 0">
                 {{ item.memberOneStatus }}
@@ -45,7 +47,9 @@
             </div>
             <div class="col-2 info d-flex flex-column align-items-center">
               <div class="lastestDate">
-                {{ getMessage(item).time.split('T')[0].split('-')[1] }}/{{ getMessage(item).time.split('T')[0].split('-')[2] }}
+                {{
+                  getMessage(item).time.split('T')[0].split('-')[1]
+                }}/{{ getMessage(item).time.split('T')[0].split('-')[2] }}
               </div>
               <div class="uncheck" v-if="item.memberId == item.landlord.id && item.memberOneStatus != 0">
                 {{ item.memberOneStatus }}
@@ -107,8 +111,8 @@ import * as signalR from '@microsoft/signalr';
 import moment from 'moment';
 import settingJson from "@/components/Settings/setting";
 
-let hubUrl = "https://airelax.azurewebsites.net/chathub";
-const connection = new signalR.HubConnectionBuilder().withUrl(hubUrl,{
+let hubUrl = "/chathub";
+const connection = new signalR.HubConnectionBuilder().withUrl(hubUrl, {
   skipNegotiation: true,
   transport: signalR.HttpTransportType.WebSockets
 }).configureLogging(signalR.LogLevel.Information).withAutomaticReconnect().build();
@@ -132,7 +136,7 @@ export default {
     }
   },
   mounted() {
-    connection.start().then(()=>{
+    connection.start().then(() => {
       var vm = this;
       vm.$store.state.connection = connection;
       vm.startUp();

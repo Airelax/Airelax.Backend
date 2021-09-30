@@ -31,7 +31,7 @@ FROM base AS final
 WORKDIR /app
 
 ENV ASPNETCORE_ENVIRONMENT Production
-ENV ASPNETCORE_URLS http://*:5000
+ENV ASPNETCORE_URLS http://*:80
 
 COPY --from=base /app/publish .
 COPY --from=buildvue /src/dist /app/wwwroot
