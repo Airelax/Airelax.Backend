@@ -36,7 +36,7 @@ export default {
       const req = {
         method: houseId ? "PUT" : "POST",
         url: houseId ? `/${houseId}/price` : "",
-        redirectName: `/`,
+        redirectName: `/manageHouse/all`,
         body: {
           price: price,
         }

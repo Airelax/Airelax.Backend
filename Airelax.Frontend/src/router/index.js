@@ -99,11 +99,11 @@ const routes = [
                 name: 'HouseDescription',
                 component: () => import('../views/NewHouse/DescriptHouse.vue'),
             },
-            // {
-            //     path: ':id/photos',
-            //     name: 'HousePhotos',
-            //     component: () => import('../views/NewHouse/SetHousePhoto.vue'),
-            // },
+            {
+                path: ':id/photos',
+                name: 'HousePhotos',
+                component: () => import('../views/NewHouse/Photos.vue'),
+            },
             {
                 path: ':id/title',
                 name: 'HouseTitle',

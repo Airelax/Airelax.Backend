@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Airelax.Application.Account;
 using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Domain.Houses;
+using Airelax.Domain.Houses.Defines;
 using Airelax.Domain.Houses.Price;
 using Airelax.Domain.Members;
 using Airelax.Domain.RepositoryInterface;
@@ -49,6 +50,7 @@ namespace Airelax.Application.Houses
         {
             var house = await GetHouse(id);
             house.HousePrice = new HousePrice(house.Id) {PerNight = input.Price};
+            house.CreateState = CreateState.Completed;
             await UpdateHouse(house);
             return true;
         }
