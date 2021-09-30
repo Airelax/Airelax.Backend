@@ -111,11 +111,11 @@ import * as signalR from '@microsoft/signalr';
 import moment from 'moment';
 import settingJson from "@/components/Settings/setting";
 
-let hubUrl = "/chathub";
+let hubUrl = "https://airelax.azurewebsites.net/chathub";
 const connection = new signalR.HubConnectionBuilder().withUrl(hubUrl, {
-  skipNegotiation: true,
-  transport: signalR.HttpTransportType.WebSockets
-}).configureLogging(signalR.LogLevel.Debug).withAutomaticReconnect().build();
+  skipNegotiation: false,
+  transport: signalR.HttpTransportType.None
+}).configureLogging(signalR.LogLevel.Information).withAutomaticReconnect().build();
 
 export default {
   components: {Talk, Signal},

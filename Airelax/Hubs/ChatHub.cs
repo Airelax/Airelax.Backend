@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Transports;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Airelax.Hubs
 {
+    [AllowAnonymous]
     public class ChatHub : Hub
     {
         public async Task AddGroup(string groupName)
