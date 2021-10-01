@@ -115,7 +115,7 @@ let hubUrl = "https://airelax.azurewebsites.net/chathub";
 const connection = new signalR.HubConnectionBuilder().withUrl(hubUrl, {
       skipNegotiation: true,
       transport: signalR.HttpTransportType.WebSockets
-    }).withAutomaticReconnect().build();
+    }).build();
 
 export default {
   components: {Talk, Signal},
@@ -137,6 +137,7 @@ export default {
   },
   mounted() {
     var vm = this;
+    console.log("12:24")
     console.log(connection)
     console.log("get Start")
     connection.start().then(() => {

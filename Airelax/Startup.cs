@@ -96,10 +96,11 @@ namespace Airelax
             services.AddControllersWithViews();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // SignalR
-            services.AddSignalR().AddAzureSignalR(options =>
-            {
-                options.ConnectionString = "Endpoint=https://airelax-signalr.service.signalr.net;AccessKey=i/uHEFtaqirRH/V0zreuc1mWHK15ASvCipxod6M63zg=;Version=1.0;";
-            });
+            services.AddSignalR();
+            //    .AddAzureSignalR(options =>
+            //{
+            //    options.ConnectionString = "Endpoint=https://airelax-signalr.service.signalr.net;AccessKey=i/uHEFtaqirRH/V0zreuc1mWHK15ASvCipxod6M63zg=;Version=1.0;";
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -120,14 +121,14 @@ namespace Airelax
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseFileServer();
+            //app.UseFileServer();
             if (env.IsDevelopment())
             {
                 app.UseCors("dev");
             }
             
             app.UseMiddleware<RequestHeaderMiddleware>();
-
+            app.UseWebSockets();
 
             app.UseAuthentication();
             app.UseAuthorization();
