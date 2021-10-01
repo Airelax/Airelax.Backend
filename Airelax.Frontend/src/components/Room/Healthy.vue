@@ -2,8 +2,8 @@
     <div class="main">
         <h2>健康與安全</h2>
         <ul>
-            <li><img src="@/assets/image/Room/icon/time.svg">承諾遵守 Airbnb 的深度清潔流程。</li>
-            <li><img src="@/assets/image/Room/icon/spray.svg"><span>在新冠肺炎疫情大流行期間，所有用戶都必須閱讀和遵守 Airbnb 的社交距離指南和其他防疫指南。</span></li>
+            <li><img src="@/assets/image/Room/icon/time.svg">承諾遵守 Airelax 的深度清潔流程。</li>
+            <li><img src="@/assets/image/Room/icon/spray.svg"><span>在新冠肺炎疫情大流行期間，所有用戶都必須閱讀和遵守 Airelax 的社交距離指南和其他防疫指南。</span></li>
             <li><img src="@/assets/image/Room/icon/detect2.svg">一氧化碳警報器</li>
             <li><img src="@/assets/image/Room/icon/detect1.svg">煙霧警報器</li>
         </ul>

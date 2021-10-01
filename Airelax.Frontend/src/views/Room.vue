@@ -228,7 +228,7 @@
             >
             <div class="security">
               <span
-              >為了確保您的付款安全，切勿透過Airbnb網站或應用程式以外的方式進行匯款或聯絡。</span
+              >為了確保您的付款安全，切勿透過Airelax網站或應用程式以外的方式進行匯款或聯絡。</span
               >
               <div class="icon">
                 <img src="../assets/image/Room/icon/security.svg"/>
@@ -269,7 +269,7 @@
           >
             <div class="txt">
               <h2>健康與安全</h2>
-              <span>運用Airbnb社交距離指南和其他防疫指南</span>
+              <span>運用Airelax社交距離指南和其他防疫指南</span>
               <Healthy
                   v-if="fullWidth > 768"
                   :detail="data.houseRule"

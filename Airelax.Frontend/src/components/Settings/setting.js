@@ -41,7 +41,7 @@ export default {
     {
       img: require("@/assets/pic/HonorIcons/DeepCleaning.svg"),
       chinese: "深度清潔",
-      description: "此房東承諾遵守 Airbnb 的深度清潔五步驟。",
+      description: "此房東承諾遵守 Airelax 的深度清潔五步驟。",
     },
     {
       img: require("@/assets/pic/HonorIcons/SelfCheck-in.svg"),
@@ -837,7 +837,7 @@ export default {
   //健康與安全
   safety: [
     {
-      chinese: "適用 Airbnb 社交距離指南和其他防疫指南",
+      chinese: "適用 Airelax 社交距離指南和其他防疫指南",
       img: require("@/assets/pic/SafetyIcons/EpidemicPrevention.svg"),
     },
     {
@@ -853,12 +853,12 @@ export default {
       img: require("@/assets/pic/SafetyIcons/SmokeAlarm.svg"),
     },
     {
-      chinese: "承諾遵守 Airbnb 的深度清潔流程。 顯示更多內容",
+      chinese: "承諾遵守 Airelax 的深度清潔流程。 顯示更多內容",
       img: "",
     },
     {
       chinese:
-        "在新冠肺炎疫情大流行期間，所有用戶都必須閱讀和遵守 Airbnb 的社交距離指南和其他防疫指南。",
+        "在新冠肺炎疫情大流行期間，所有用戶都必須閱讀和遵守 Airelax 的社交距離指南和其他防疫指南。",
       img: require("@/assets/pic/SafetyIcons/EpidemicPrevention.svg"),
     },
     {
