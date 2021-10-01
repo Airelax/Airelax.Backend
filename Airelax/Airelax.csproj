@@ -22,11 +22,17 @@
         </None>
     </ItemGroup>
 
+	<ItemGroup>
+		<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+		<DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.2" />
+	</ItemGroup>
+
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
         <PackageReference Include="BCrypt.Net" Version="0.1.0" />
         <PackageReference Include="Lazcat.Infrastructure" Version="1.0.9" />
         <PackageReference Include="Microsoft.AspNet.SignalR.Core" Version="2.4.2" />
+        <PackageReference Include="Microsoft.Azure.SignalR" Version="1.11.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.8">
             <PrivateAssets>all</PrivateAssets>
