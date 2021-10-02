@@ -113,9 +113,9 @@ import settingJson from "@/components/Settings/setting";
 
 let hubUrl = "https://airelax.azurewebsites.net/chathub";
 const connection = new signalR.HubConnectionBuilder().withUrl(hubUrl, {
-      skipNegotiation: true,
-      transport: signalR.HttpTransportType.WebSockets
-    }).build();
+  skipNegotiation: false,
+  transport: signalR.HttpTransportType.WebSockets
+}).build();
 
 export default {
   components: {Talk, Signal},
