@@ -46,7 +46,7 @@ namespace Airelax
             // else
             {
                 connectString = Define.Database.DB_CONNECT_STRING;
-                services.AddCors(opt => { opt.AddPolicy("dev", builder => builder.WithOrigins("https://airelax.azurewebsites.net").AllowAnyMethod().AllowAnyHeader().AllowCredentials()); });
+                services.AddCors(opt => { opt.AddPolicy("dev", builder => builder.WithOrigins("http://airelax.azurewebsites.net").AllowAnyMethod().AllowAnyHeader().AllowCredentials()); });
                 //todo remove product
                 //connectString = Define.Database.LOCAL_CONNECT_STRING;
             }
