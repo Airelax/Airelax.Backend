@@ -773,7 +773,8 @@
         <div class="RoomType">
           <i v-if="!get" class="fas fa-spinner fa-spin" style="font-size:5rem;margin:5rem 0;"></i>
           <div class="col-12" v-if="get">
-            <ResultRoom :rooms="rooms" :nightCount="$store.state.nightCount==0?1:$store.state.nightCount"></ResultRoom>
+            <ResultRoom :rooms="rooms" :nightCount="$store.state.nightCount==0?1:$store.state.nightCount"
+                        @updateWishList="updateWishList" :wishLists="wishLists"></ResultRoom>
           </div>
         </div>
         <div class="page d-flex justify-content-center">
@@ -816,7 +817,7 @@
       <Map v-if="get" :location="location" :houses="rooms"></Map>
     </div>
   </div>
-  <CreateWish></CreateWish>
+  <CreateWish @onCreateWishList="onCreateWishList"></CreateWish>
   <Wish :wishLists="wishLists" @onWishListUpdated="onWishListUpdated"></Wish>
 </template>
 
@@ -850,15 +851,14 @@ export default {
 
     const dataUrl = "/api/wishLists";
     axios
-      .get(dataUrl)
-      .then((res) => {
-        console.log(res.data);
-        this.wishLists = res.data;
-        this.isWishListGet = true;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .get(dataUrl)
+        .then((res) => {
+          this.wishLists = res.data;
+          this.isWishListGet = true;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
     axios.get(searchApi, {
       headers: {
@@ -866,7 +866,6 @@ export default {
       },
     })
         .then((res) => {
-          console.log(res.data);
           const data = res.data;
           this.rooms = data.houses;
           this.totalRooms = data.total;
@@ -929,6 +928,7 @@ export default {
       rooms: Array,
       perPageRoomCount: 20,
       get: false,
+      wishLists: null,
       location: null,
       TypeOfPlace: [
         {
@@ -1090,18 +1090,17 @@ export default {
       }
     },
     onWishListUpdated(wishId, houseId) {
-      //Todo 與愛心獨立事件有關的地方
       const focusWishHouses = this.wishLists.find(
-        (x) => x.id === wishId
+          (x) => x.id === wishId
       ).houses;
-      if (focusWishHouses.some((x) => x === houseId)) {
-        const index = focusWishHouses.indexOf(houseId);
-        focusWishHouses.splice(index, 1);
-      } else focusWishHouses.push(houseId);
+
+      focusWishHouses.push(houseId);
     },
-    onCreateWishList(wishName, houseId) {
-      //Todo 缺畫面同步,現有代碼不會動
-      this.wishLists.push({ name: wishName, houses: [houseId] });
+
+    onCreateWishList(wishName, houseId, wishId) {
+      this.wishLists.push({name: wishName, houses: [houseId], id: wishId});
+      const temp = Array.from(this.wishLists);
+      this.wishLists = temp;
     },
     getRandomNumber(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -1132,6 +1131,31 @@ export default {
           item.picture.push(this.setting.pictures[x]);
         });
       });
+    },
+    updateWishList() {
+      const dataUrl = `/api/wishLists/Houses`;
+      const vm = this;
+      const wishList = this.wishLists.find(x => x.houses.includes(this.$store.state.selectedWishHouseId))
+      axios({
+        method: "Put",
+        url: dataUrl,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          HouseId: this.$store.state.selectedWishHouseId,
+          WishId: wishList.id,
+        },
+      })
+          .then(function () {
+            const index = wishList.houses.indexOf(vm.$store.state.selectedWishHouseId);
+            console.log(vm.wishLists);
+            if (index !== -1) wishList.houses.splice(index, 1);
+
+            vm.wishLists = Array.from(vm.wishLists);
+            console.log(vm.wishLists);
+          })
+          .catch((err) => console.log(err));
     },
   },
   computed: {

@@ -132,7 +132,7 @@ export default {
       axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyATKZH9GY5SsO9JbZJWw9k4gCNN8hCbumw`)
           .then(res => {
             const data = res.data.results[0];
-            console.log(data);
+    
             vm.address.zipcode = data.address_components.find(x => x.types.includes('postal_code')).long_name;
             vm.address.city = data.address_components.find(x => x.types.includes('administrative_area_level_2')).long_name;
             vm.address.town = data.address_components.find(x => x.types.includes('administrative_area_level_3')).long_name;

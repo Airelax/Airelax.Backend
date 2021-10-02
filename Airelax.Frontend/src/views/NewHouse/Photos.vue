@@ -36,7 +36,6 @@ export default {
   },
   methods: {
     photoChange(e) {
-      console.log(e.target.files);
       if (!e.target.files || !e.target.files[0]) return;
       const file = e.target.files[0];
       this.send3rd(file);
@@ -53,7 +52,6 @@ export default {
         data: formData,
         headers: {"Content-Type": "multipart/form-data"}
       }).then(res => {
-        console.log(res.data);
         const p = Array.from(vm.photos);
         p.push(res.data.secure_url);
         vm.photos = p;

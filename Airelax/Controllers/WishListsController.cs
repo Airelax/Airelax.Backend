@@ -18,10 +18,9 @@ namespace Airelax.Controllers
         }
 
         [HttpPost]
-        public bool Create([FromBody] CreateWishListInput input)
+        public int Create([FromBody] CreateWishListInput input)
         {
-            _wishListService.CreateWishList(input);
-            return true;
+            return _wishListService.CreateWishList(input);
         }
 
         [HttpPut]
@@ -35,8 +34,7 @@ namespace Airelax.Controllers
         [Route("Houses")]
         public bool ReviseHouses([FromBody] UpdateWishListInput input)
         {
-            _wishListService.ReviseHouse(input);
-            return true;
+            return _wishListService.ReviseHouse(input);
         }
 
         [HttpDelete]
