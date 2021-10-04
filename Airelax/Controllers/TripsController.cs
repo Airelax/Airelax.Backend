@@ -10,22 +10,27 @@ namespace Airelax.Controllers
 {
     [Route("[controller]")]
     [Authorize]
-    public class TripController : Controller
+    public class TripsController : Controller
     {
         private readonly ITripService _tripService;
-        public TripController (ITripService tripService)
+
+        public TripsController(ITripService tripService)
         {
             _tripService = tripService;
         }
+
         [HttpGet]
-        
-        public async Task<IActionResult> Trip()
+        public async Task<IActionResult> Trips()
         {
-
-            var tripViewModel = await _tripService.GetTripViewModel();
-
+            var tripViewModel = await _tripService.GetTrips();
             return View(tripViewModel);
-            
+        }
+
+        [HttpGet]
+        [Route("{id}/detail")]
+        public async Task<TripDetail> GetTrip(string id)
+        {
+            return await _tripService.GetTripDetail(id);
         }
     }
 }

@@ -5,6 +5,7 @@ namespace Airelax.Application.Trips
 {
     public interface ITripService
     {
-        Task<TripViewModels> GetTripViewModel();
+        Task<TripViewModels> GetTrips();
+        Task<TripDetail> GetTripDetail(string id);
     }
 }

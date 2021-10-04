@@ -1,0 +1,344 @@
+﻿@model Airelax.Application.Houses.Dtos.Response.TripViewModels
+
+@{
+    Layout = "_Layout";
+}
+
+@section header{
+    <partial name="_MemberNavPartial"></partial>
+}
+
+<div class="container">
+    <div class="title my-3">
+        <h2 class="fw-bold">旅程</h2>
+    </div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tr_start" data-bs-toggle="tab" data-bs-target="#home" type="button"
+                    role="tab" aria-controls="home" aria-selected="true">
+                即將開始
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tr_past" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab"
+                    aria-controls="profile" aria-selected="false">
+                過往旅程
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="tr_start">
+            <div id="past">
+                @if (Model == null || !Model.FinishedTrips.Any())
+                {
+                    <div id="start">
+                        <div class="more_">
+                            當你準備計劃下一趟旅程時，我們會隨時提供協助。
+                            <a href="#">了解詳情</a>
+                        </div>
+                        <div>
+                            <img src="~/images/trip/img/travel.png" alt="" class="w-100">
+                        </div>
+                        <div>
+                            <a class="btn btn-dark fw-bold explore" href="#" role="button">探索Airelax</a>
+                        </div>
+                        <hr>
+                    </div>
+                }
+
+                else
+                {
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                        @foreach (var trip in Model.FinishedTrips)
+                        {
+                            <div class="col" onclick="getTripDetail('@Html.Raw(trip.OrderId)')" data-bs-toggle="modal" data-bs-target="#pastOrderModel">
+
+                                <div class="card h-100">
+                                    <img src="@trip.Image" class="card-img-top" alt="">
+                                    <div class="card-body">
+                                        <p class="card-text" id="date">@trip.StartDate.ToString("yyyy年MM月dd日") – @trip.EndDate.ToString("yyyy年MM月dd日")</p>
+                                        <h5 class="card-title" id="place">@trip.Town</h5>
+                                    </div>
+                                    <div class="introduce">
+                                        <img src="@trip.Image" alt="房源主圖">
+                                        <div class="d-flex justify-content-between">
+                                            <p class="card-text" id="roomName">@trip.Title</p>
+                                            <i class="fas fa-chevron-right"></i>
+                                        </div>
+                                    </div>
+                                    <div class="plan">
+                                        顯示更多旅程計畫
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <hr class="mt-5">
+                }
+            </div>
+
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="tr_past">
+            <div id="past">
+                @if (Model == null || !Model.UpcomingTrips.Any())
+                {
+                    <div id="start">
+                        <div class="more_">
+                            當你準備計劃下一趟旅程時，我們會隨時提供協助。
+                            <a href="#">了解詳情</a>
+                        </div>
+                        <div>
+                            <img src="~/images/trip/img/travel.png" alt="" class="w-100">
+                        </div>
+                        <div>
+                            <a class="btn btn-dark fw-bold explore" href="#" role="button">探索Airelax</a>
+                        </div>
+                        <hr>
+                    </div>
+                }
+
+                else
+                {
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                        @foreach (var trip in Model.UpcomingTrips)
+                        {
+                            <div class="col">
+                                <a href="#">
+                                    <div class="card h-100">
+                                        <img src="@trip.Image" class="card-img-top" alt="">
+                                        <div class="card-body">
+                                            <p class="card-text" id="date">@trip.StartDate.ToString("yyyy年MM月dd日") – @trip.EndDate.ToString("yyyy年MM月dd日")</p>
+                                            <h5 class="card-title" id="place">@trip.Town</h5>
+                                        </div>
+                                        <div class="introduce">
+                                            <img src="@trip.Image" alt="房源主圖">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="card-text" id="roomName">@trip.Title</p>
+                                                <i class="fas fa-chevron-right"></i>
+                                            </div>
+                                        </div>
+                                        <div class="plan">
+                                            顯示更多旅程計畫
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                    <hr class="mt-5">
+                }
+            </div>
+        </div>
+        <div class="help_c">
+            在這裡找不到預訂？
+            <a href="#">前往說明中心。</a>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal pastOrder fade show" id="pastOrderModel" tabindex="-1" aria-labelledby="pastOrderModelLabel"
+     aria-hidden="false">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="lds-ellipsis d-none">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pastOrderModelLabel">房屋詳細</h5>
+                <div type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></div>
+            </div>
+            <div class="modal-body">
+                <div class="picture">
+                    <img class="p-source" src="" alt="">
+                </div>
+                <h3 class="roomName"></h3>
+                <div class="date">
+                    <div class="col">
+                        <p class="pointInTime">入住</p>
+                        <span class="startDate d-block">
+                        </span>
+                        <span class="startTime d-block">
+                        </span>
+                    </div>
+                    <div class="col">
+                        <p class="pointInTime">退房</p>
+                        <span class="endDate d-block">
+                        </span>
+                        <span class="endTime d-block">
+                        </span>
+                    </div>
+                </div>
+                <div class="orderTotal">
+                    <div class="totalTitle">
+                        金額
+                    </div>
+                    <p class="price"></p>
+                </div>
+                <div class="peopleCount">
+                    <div class="countTitle">
+                        房客人數
+                    </div>
+                    <p><span class="customerNumber"></span></p>
+                </div>
+                <div class="addressArea" id="addressArea">
+                    <div class="addressTitle">
+                        地址
+                    </div>
+                    <div class="collTitle" type="button" data-bs-toggle="collapse" data-bs-target="#addressCollapse"
+                         aria-expanded="false" aria-controls="addressCollapse">
+                        <span class="address">
+                        </span>
+                        <span class="open">展開</span>
+                    </div>
+
+                </div>
+                <div id="addressCollapse" class="accordion-collapse collapse" aria-labelledby="address"
+                     data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        map
+                    </div>
+                </div>
+                <div class="comment" id="headingOne">
+                    <div class="commentTitle">
+                        評論
+                    </div>
+                    <div class="collTitle" type="button" data-bs-toggle="collapse" data-bs-target="#commentCollapse"
+                         aria-expanded="false" aria-controls="commentCollapse">
+                        <span>建立評論</span>
+                        <span class="open">展開</span>
+                    </div>
+                </div>
+                <div id="commentCollapse" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                     data-bs-parent="#accordionExample">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" type="text" id="commentInput">
+                        <label for="commentInput">建立評論</label>
+                    </div>
+                    <div class="btn btn-dark" data-bs-toggle="collapse" data-bs-target="#commentCollapse">儲存</div>
+                </div>
+                <div class="return">
+                    <a href="#">退訂政策</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section topCSS{
+    <link href="~/css/trip/SCSS/trips.css" rel="stylesheet"/>
+    <style>
+        .introduce > img{
+            width: 28px;
+            height: 28px;
+        }
+        .card-img-top{width: 100%;height: 200px;}
+        .card,
+         .col{
+            margin-bottom: 20px;
+        }
+        
+        .lds-ellipsis {
+          display: inline-block;
+          position: relative;
+          width: 80px;
+          height: 80px;
+        }
+        .lds-ellipsis div {
+          position: absolute;
+          top: 33px;
+          width: 13px;
+          height: 13px;
+          border-radius: 50%;
+          background: #fff;
+          animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        }
+        .lds-ellipsis div:nth-child(1) {
+          left: 8px;
+          animation: lds-ellipsis1 0.6s infinite;
+        }
+        .lds-ellipsis div:nth-child(2) {
+          left: 8px;
+          animation: lds-ellipsis2 0.6s infinite;
+        }
+        .lds-ellipsis div:nth-child(3) {
+          left: 32px;
+          animation: lds-ellipsis2 0.6s infinite;
+        }
+        .lds-ellipsis div:nth-child(4) {
+          left: 56px;
+          animation: lds-ellipsis3 0.6s infinite;
+        }
+        
+        @@keyframes lds-ellipsis1 {
+          0% {
+            transform: scale(0);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+        @@keyframes lds-ellipsis3 {
+          0% {
+            transform: scale(1);
+          }
+          100% {
+            transform: scale(0);
+          }
+        }
+        @@keyframes lds-ellipsis2 {
+          0% {
+            transform: translate(0, 0);
+          }
+          100% {
+            transform: translate(24px, 0);
+          }
+        }
+    </style>
+}
+
+@section Scripts{
+    <script>
+        const loading = document.querySelector('.lds-ellipsis');
+        const modalContent = document.querySelector('.modal-content');
+        const pSource = document.querySelector('.p-source');
+        const roomName = document.querySelector('.roomName');
+        const startDate = document.querySelector('.startDate');
+        const endDate = document.querySelector('.endDate');
+        const startTime = document.querySelector('.startTime');
+        const endTime = document.querySelector('.endTime');
+        const price = document.querySelector('.price');
+        const customerNumber = document.querySelector('.customerNumber');
+        const address = document.querySelector('.address');
+        
+        function getTripDetail(id){
+            loading.classList.remove('d-none'); 
+               modalContent.classList.add('d-none');
+            fetch(`/trips/${id}/detail`)
+                .then(response => response.json())
+                .then(json => {
+                   
+                   pSource.src = json.image;
+                   roomName.innerText = json.title;
+                   startDate.innerText = json.checkin;
+                   startTime.innerText = json.checkinTime;
+                   endDate.innerText = json.checkout;
+                   endTime.innerText = json.checkoutTime;
+                   price.innerText = json.price;
+                   address.innerText = json.address;
+                   customerNumber.innerText = `${json.customer}位`;
+                   
+                   console.log(json);
+                  
+                   loading.classList.add('d-none'); 
+                   modalContent.classList.remove('d-none');
+                   
+                })
+                .catch(err=>console.log(err))
+        }
+    </script>
+
+}

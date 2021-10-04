@@ -23,15 +23,19 @@ namespace Airelax.EntityFramework.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Order>> GetTrips(string memberId)
+        public async Task<IEnumerable<Order>> GetTrips(Expression<Func<Order, bool>> exp)
         {
             var trips = await _context.Orders
+                .Include(x=>x.OrderPriceDetail)
                 .Include(x => x.OrderDetail)
                 .Include(x => x.House)
                 .ThenInclude(x => x.HouseLocation)
                 .Include(x => x.House)
                 .ThenInclude(x => x.Photos)
-                .Where(x => x.CustomerId == memberId && !x.IsDeleted)
+                .Include(x => x.House)
+                .ThenInclude(x => x.Policy)
+                .Where(exp)
+                .Where(x => !x.IsDeleted)
                 .ToListAsync();
 
             return trips;
