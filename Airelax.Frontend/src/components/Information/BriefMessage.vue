@@ -111,7 +111,7 @@ import * as signalR from '@microsoft/signalr';
 import moment from 'moment';
 import settingJson from "@/components/Settings/setting";
 
-let hubUrl = "http://airelax.azurewebsites.net/chathub";
+let hubUrl = "/chathub";
 const connection = new signalR.HubConnectionBuilder().withUrl(hubUrl, {
   skipNegotiation: true,
   transport: signalR.HttpTransportType.WebSockets
@@ -137,12 +137,7 @@ export default {
   },
   mounted() {
     var vm = this;
-    console.log("10-03 20:10")
-    console.log(connection)
-    console.log("get Start")
     connection.start().then(() => {
-      console.log("get Into Start")
-      console.log(connection)
       vm.$store.state.connection = connection;
       vm.startUp();
       vm.detectStatus();
