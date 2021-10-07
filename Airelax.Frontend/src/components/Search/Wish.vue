@@ -40,7 +40,7 @@
       >
         <div class="col-3">
           <img
-            :src="'https://picsum.photos/600/400/?random=100'"
+            :src="item.cover"
             :alt="item.name"
           />
           <!---:src="item.cover"--->
