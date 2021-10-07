@@ -36,7 +36,8 @@ export default createStore({
         login: {
             token: "",
             memberId: ""
-        }
+        },
+        tempMessage:[]
     },
     mutations: {
         setNewHouseNextAvailable(state, isAvailable) {

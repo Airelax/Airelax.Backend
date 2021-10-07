@@ -156,7 +156,7 @@ export default {
           MemberId: objItem.memberId,
           OtherId: objItem.gusetId
         }
-        for (let i = 0; i < vm.messages.length; i++) {
+        for (let i = 0; i < vm.$store.state.tempMessage.length; i++) {
           if (vm.messages[i].gusetId == objItem.memberId) {
             connection.invoke("GetCount", vm.mes.connectString).then(x => {
               vm.count = x
@@ -167,7 +167,7 @@ export default {
               }
             })
             break;
-          } else if (vm.messages[i].memberId == objItem.memberId) {
+          } else if (vm.$store.state.tempMessage[i].memberId == objItem.memberId) {
             connection.invoke("GetCount", vm.mes.connectString).then(x => {
               vm.count = x;
               if (vm.count != 2) {
@@ -189,6 +189,7 @@ export default {
       })
           .then((res) => {
             vm.messages = res.data;
+            vm.$store.state.tempMessage = res.data;
             vm.messages.forEach(x => {
               vm.getFake(x)
               connection.invoke("AddAllGroup", x.connectString);
@@ -212,7 +213,7 @@ export default {
           OtherId: objItem.gusetId
         }
 
-        for (let i = 0; i < vm.messages.length; i++) {
+        for (let i = 0; i < vm.$store.state.tempMessage.length; i++) {
           if (vm.messages[i].gusetId == objItem.memberId) {
             if (Object.keys(vm.mes).length != 0) {
               vm.$store.state.signalCommunications.push(com);
@@ -231,7 +232,7 @@ export default {
             })
             vm.scrollToBottom();
             break;
-          } else if (vm.messages[i].memberId == objItem.memberId) {
+          } else if (vm.$store.state.tempMessage[i].memberId == objItem.memberId) {
             vm.$store.state.signalCommunications.push(com);
             axios.put(`/api/messages/${vm.$route.params.memberId}/content`, com, {
               headers: {
@@ -270,6 +271,7 @@ export default {
         headers: {"Access-Control-Allow-Origin": "*",},
       }).then((res) => {
         vm.messages = res.data;
+        vm.$store.state.tempMessage = res.data;
         vm.messages.forEach(x => {
           vm.getFake(x)
         })
