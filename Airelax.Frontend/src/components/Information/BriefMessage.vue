@@ -113,8 +113,8 @@ import settingJson from "@/components/Settings/setting";
 
 let hubUrl = "/chathub";
 const connection = new signalR.HubConnectionBuilder().withUrl(hubUrl, {
-  skipNegotiation: true,
-  transport: signalR.HttpTransportType.WebSockets
+  skipNegotiation: false,
+  transport: signalR.HttpTransportType.LongPolling
 }).build();
 
 export default {
@@ -138,6 +138,7 @@ export default {
   mounted() {
     var vm = this;
     connection.start().then(() => {
+      console.log("10/07 01:43")
       vm.$store.state.connection = connection;
       vm.startUp();
       vm.detectStatus();
