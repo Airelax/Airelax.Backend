@@ -1,11 +1,14 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Airelax.Application.Account;
 using Airelax.Application.Houses.Dtos.Request;
 using Airelax.Domain.Houses;
+using Airelax.Domain.Houses.Defines;
 using Airelax.Domain.Houses.Price;
 using Airelax.Domain.Members;
 using Airelax.Domain.RepositoryInterface;
+using Airelax.Infrastructure.Map.Abstractions;
 using Lazcat.Infrastructure.DependencyInjection;
 using Lazcat.Infrastructure.ExceptionHandlers;
 
@@ -16,11 +19,13 @@ namespace Airelax.Application.Houses
     {
         private readonly IHouseRepository _houseRepository;
         private readonly IAccountService _accountService;
+        private readonly IGeocodingService _geocodingService;
 
-        public NewHouseService(IHouseRepository houseRepository, IAccountService accountService)
+        public NewHouseService(IHouseRepository houseRepository, IAccountService accountService, IGeocodingService geocodingService)
         {
             _houseRepository = houseRepository;
             _accountService = accountService;
+            _geocodingService = geocodingService;
         }
 
         public async Task<string> CreateAsync(CreateHouseInput input)
@@ -45,6 +50,7 @@ namespace Airelax.Application.Houses
         {
             var house = await GetHouse(id);
             house.HousePrice = new HousePrice(house.Id) {PerNight = input.Price};
+            house.CreateState = CreateState.Completed;
             await UpdateHouse(house);
             return true;
         }
@@ -86,6 +92,39 @@ namespace Airelax.Application.Houses
             var house = await GetHouse(id);
             house.ProvideFacilities = input.ProvideFacilities;
             await UpdateHouse(house);
+            return true;
+        }
+
+        public async Task<bool> UpdateLocation(string id, CreateLocationInput input)
+        {
+            var house = await GetHouse(id);
+            var geocodingInfo = await _geocodingService.GetGeocodingInfo(input.FullAddress);
+
+            if (string.IsNullOrEmpty(input.AddressDetail))
+            {
+                input.City = geocodingInfo.AddressComponent.FirstOrDefault(x => x.types.Contains("administrative_area_level_2")).long_name;
+                input.ZipCode = geocodingInfo.AddressComponent.FirstOrDefault(x => x.types.Contains("postal_code")).long_name;
+                input.Town = geocodingInfo.AddressComponent.FirstOrDefault(x => x.types.Contains("administrative_area_level_3")).long_name;
+                geocodingInfo.AddressComponent.Reverse();
+                input.AddressDetail = string.Concat(geocodingInfo.AddressComponent.Select(x => x.long_name))
+                    .Replace(input.City, "")
+                    .Replace(input.ZipCode, "")
+                    .Replace("台灣", "")
+                    .Replace(input.Town, "");
+            }
+
+            house.HouseLocation = new HouseLocation(house.Id)
+            {
+                AddressDetail = input.AddressDetail ?? string.Empty,
+                City = input.City ?? string.Empty,
+                Country = "台灣",
+                Town = input.Town,
+                Longitude = geocodingInfo.Location.Longitude,
+                Latitude = geocodingInfo.Location.Latitude
+            };
+
+            await _houseRepository.UpdateAsync(house);
+            await _houseRepository.SaveChangesAsync();
             return true;
         }
 

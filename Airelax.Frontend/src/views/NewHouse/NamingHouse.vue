@@ -28,8 +28,7 @@ export default {
       this.$store.commit('setNewHouseNextAvailable', false);
       return;
     }
-
-    //todo fetch house
+    
     this.$store.commit('setNewHouseNextAvailable', true);
   },
   data() {
@@ -53,8 +52,6 @@ export default {
         redirectName: `HouseDescription`,
         body: {
           Title: message,
-          //todo identity
-          memberId: 'M00056b77d3'
         }
       }
       this.$store.commit('setNewHouseRequest', req);

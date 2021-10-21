@@ -15,7 +15,7 @@
           <div class="yuan-row">
             <div class="around-div">
               <a href="#" @click.prevent="SearchLocation">
-                <img src="../assets/image/Home/around.png"/>
+                <img src="../assets/image/Home/around.png" />
                 <div class="item mx-lg-2">
                   <span>台北</span
                   ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
@@ -24,7 +24,7 @@
             </div>
             <div class="around-div">
               <a href="#" @click.prevent="SearchLocation">
-                <img src="../assets/image/Home/around2.png"/>
+                <img src="../assets/image/Home/around2.png" />
                 <div class="item mx-lg-2">
                   <span>台南</span
                   ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
@@ -33,7 +33,7 @@
             </div>
             <div class="around-div">
               <a href="#" @click.prevent="SearchLocation">
-                <img src="../assets/image/Home/around3.png"/>
+                <img src="../assets/image/Home/around3.png" />
                 <div class="item mx-lg-2">
                   <span>高雄</span
                   ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
@@ -42,7 +42,7 @@
             </div>
             <div class="around-div">
               <a href="#" @click.prevent="SearchLocation">
-                <img src="../assets/image/Home/around4.png"/>
+                <img src="../assets/image/Home/around4.png" />
                 <div class="item mx-lg-2">
                   <span>桃園</span
                   ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
@@ -53,7 +53,7 @@
           <div class="yuan-row">
             <div class="around-div">
               <a href="#" @click.prevent="SearchLocation">
-                <img src="../assets/image/Home/around5.png"/>
+                <img src="../assets/image/Home/around5.png" />
                 <div class="item mx-lg-2">
                   <span>新北市</span
                   ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
@@ -62,7 +62,7 @@
             </div>
             <div class="around-div">
               <a href="#" @click.prevent="SearchLocation">
-                <img src="../assets/image/Home/around6.png"/>
+                <img src="../assets/image/Home/around6.png" />
                 <div class="item mx-lg-2">
                   <span>花蓮</span
                   ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
@@ -71,7 +71,7 @@
             </div>
             <div class="around-div">
               <a href="#" @click.prevent="SearchLocation">
-                <img src="../assets/image/Home/around7.png"/>
+                <img src="../assets/image/Home/around7.png" />
                 <div class="item mx-lg-2">
                   <span>台東市</span
                   ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
@@ -80,7 +80,7 @@
             </div>
             <div class="around-div">
               <a href="#" @click.prevent="SearchLocation">
-                <img src="../assets/image/Home/around8.png"/>
+                <img src="../assets/image/Home/around8.png" />
                 <div class="item mx-lg-2">
                   <span>恆春</span
                   ><span>{{ getRandomNumber(30, 120) }}分鐘車程</span>
@@ -93,7 +93,7 @@
     </div>
     <div class="dontWorry">
       <div class="item">
-        還不知道想去哪嗎？<br/>別擔心。
+        還不知道想去哪嗎？<br />別擔心。
         <button class="goTo" @click="freeGo">隨心所欲</button>
       </div>
     </div>
@@ -102,42 +102,42 @@
       <div class="row everyCornerComfortable">
         <div class="scrollArea">
           <div
-              class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature"
+            class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature"
           >
             <img
-                class="w-100"
-                src="../assets/image/Home/family.png"
-                alt="戶外度假勝地"
+              class="w-100"
+              src="../assets/image/Home/family.png"
+              alt="戶外度假勝地"
             />
             <p>戶外度假勝地</p>
           </div>
           <div
-              class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature"
+            class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature"
           >
             <img
-                class="w-100"
-                src="../assets/image/Home/family2.png"
-                alt="獨特房源"
+              class="w-100"
+              src="../assets/image/Home/family2.png"
+              alt="獨特房源"
             />
             <p>獨特房源</p>
           </div>
           <div
-              class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature"
+            class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature"
           >
             <img
-                class="w-100"
-                src="../assets/image/Home/family3.png"
-                alt="整套房源"
+              class="w-100"
+              src="../assets/image/Home/family3.png"
+              alt="整套房源"
             />
             <p>整套房源</p>
           </div>
           <div
-              class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature"
+            class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-3 feature"
           >
             <img
-                class="w-100"
-                src="../assets/image/Home/family4.png"
-                alt="可攜帶寵物"
+              class="w-100"
+              src="../assets/image/Home/family4.png"
+              alt="可攜帶寵物"
             />
             <p>可攜帶寵物</p>
           </div>
@@ -150,27 +150,27 @@
         <div class="scrollArea">
           <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-4 fresh">
             <img
-                class="w-100"
-                src="../assets/image/Home/haveFun.png"
-                alt="尋找附近的難忘體驗"
+              class="w-100"
+              src="../assets/image/Home/haveFun.png"
+              alt="尋找附近的難忘體驗"
             />
             <p>體驗</p>
             <p class="fs-6">尋找附近的難忘體驗。</p>
           </div>
           <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-4 fresh">
             <img
-                class="w-100"
-                src="../assets/image/Home/haveFun2.png"
-                alt="由體驗達人舉辦的互動式直播體驗。"
+              class="w-100"
+              src="../assets/image/Home/haveFun2.png"
+              alt="由體驗達人舉辦的互動式直播體驗。"
             />
             <p>線上體驗</p>
             <p class="fs-6">由體驗達人舉辦的互動式直播體驗。</p>
           </div>
           <div class="col-11 fs-4 col-sm-6 p-2 p-sm-2 col-md-4 col-xl-4 fresh">
             <img
-                class="w-100"
-                src="../assets/image/Home/haveFun3.png"
-                alt="參加線上體驗，安坐家中暢遊全世界。"
+              class="w-100"
+              src="../assets/image/Home/haveFun3.png"
+              alt="參加線上體驗，安坐家中暢遊全世界。"
             />
             <p>精選系列：浪跡天涯</p>
             <p class="fs-6">參加線上體驗，安坐家中暢遊全世界。</p>
@@ -182,11 +182,9 @@
       <div class="item">
         <h2>開始出租吧</h2>
         分享你的空間，賺取額外收入，開拓新機會。
-        <router-link to="/become-host" style="text-decoration: none"
-        >
+        <router-link to="/become-host" style="text-decoration: none">
           <button class="goTo">了解詳情</button>
-        </router-link
-        >
+        </router-link>
       </div>
     </div>
   </div>
@@ -212,12 +210,12 @@ export default {
     },
 
     freeGo() {
-      this.$store.state.destination = '台北';
+      this.$store.state.destination = "台北";
       this.$router.push({
         path: "/search",
         query: {
           location: this.$store.state.destination,
-        }
+        },
       });
     },
     getRandomNumber(min, max) {
@@ -226,9 +224,8 @@ export default {
   },
   mounted() {
     this.$store.state.isBodyShow = true;
-  }
-}
-
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -279,7 +276,7 @@ export default {
 
 body * {
   font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
-  "Helvetica Neue", sans-serif;
+    "Helvetica Neue", sans-serif;
   text-align: left;
 }
 
@@ -418,8 +415,14 @@ body::-webkit-scrollbar {
 }
 
 .around .around-div .item {
+  width: 29vw;
   margin: auto;
+  position: relative;
   margin-left: 4vw;
+}
+
+.around .around-div .item span {
+  position: absolute;
 }
 
 .around .around-div .item span {
@@ -427,6 +430,10 @@ body::-webkit-scrollbar {
   font-size: 5vw;
   color: #222222;
   display: block;
+}
+
+.around .around-div .item span:nth-child(1) {
+  bottom: 5px;
 }
 
 .around .around-div .item span:nth-child(2) {
@@ -612,22 +619,25 @@ body::-webkit-scrollbar {
     font-size: 3.38542vw;
   }
   .around .yuan-container {
-    width: 129.5vw;
+    width: 124vw;
   }
   .around .around-div img {
     width: 9.375vw;
     height: 9.375vw;
     border-radius: 1.65vw;
   }
+  .around .around-div .item {
+    width: 12.5vw;
+  }
   .around .around-div .item span {
     line-height: normal;
     font-size: 2.08333vw;
   }
   .around .yuan-row:nth-child(1) {
-    padding: 2.08333vw 7.11979vw 0 0;
+    padding: 2.08333vw 0 0 0;
   }
   .around .yuan-row:nth-child(2) {
-    padding: 2.08333vw 7.11979vw 0 0;
+    padding: 2.08333vw 0 0 0;
   }
   .dontWorry {
     height: 47.136vw;
@@ -779,18 +789,16 @@ body::-webkit-scrollbar {
     overflow: hidden;
   }
   .around .yuan-container {
-    width: 94.79116vw;
+    width: 99vw;
   }
   .around .yuan-row:nth-child(1) {
     padding-top: 1.25vw;
-    padding-right: 5.2vw;
   }
   .around .yuan-row:nth-child(2) {
     padding-top: 1.04166vw;
-    padding-right: 5.2vw;
   }
   .around .around-div {
-    width: 18rem;
+    width: 23vw;
   }
   .around .around-div img {
     width: 4.844vw;

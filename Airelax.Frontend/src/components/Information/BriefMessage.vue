@@ -19,7 +19,9 @@
             </div>
             <div class="col-2 info d-flex flex-column align-items-center">
               <div class="lastestDate">
-                {{ getMessage(item).time.split('T')[0].split('-')[1] }}/{{ getMessage(item).time.split('T')[0].split('-')[2] }}
+                {{
+                  getMessage(item).time.split('T')[0].split('-')[1]
+                }}/{{ getMessage(item).time.split('T')[0].split('-')[2] }}
               </div>
               <div class="uncheck" v-if="item.memberId == item.landlord.id && item.memberOneStatus != 0">
                 {{ item.memberOneStatus }}
@@ -45,7 +47,9 @@
             </div>
             <div class="col-2 info d-flex flex-column align-items-center">
               <div class="lastestDate">
-                {{ getMessage(item).time.split('T')[0].split('-')[1] }}/{{ getMessage(item).time.split('T')[0].split('-')[2] }}
+                {{
+                  getMessage(item).time.split('T')[0].split('-')[1]
+                }}/{{ getMessage(item).time.split('T')[0].split('-')[2] }}
               </div>
               <div class="uncheck" v-if="item.memberId == item.landlord.id && item.memberOneStatus != 0">
                 {{ item.memberOneStatus }}
@@ -107,9 +111,11 @@ import * as signalR from '@microsoft/signalr';
 import moment from 'moment';
 import settingJson from "@/components/Settings/setting";
 
-let hubUrl = "/chatHub";
-const connection = new signalR.HubConnectionBuilder().withAutomaticReconnect().withUrl(hubUrl).build();
-connection.start().catch(err => console.log(err));
+let hubUrl = "/chathub";
+const connection = new signalR.HubConnectionBuilder().withUrl(hubUrl, {
+  skipNegotiation: false,
+  transport: signalR.HttpTransportType.LongPolling
+}).build();
 
 export default {
   components: {Talk, Signal},
@@ -131,9 +137,12 @@ export default {
   },
   mounted() {
     var vm = this;
-    vm.$store.state.connection = connection;
-    vm.startUp();
-    vm.detectStatus();
+    connection.start().then(() => {
+      console.log("10/07 01:43")
+      vm.$store.state.connection = connection;
+      vm.startUp();
+      vm.detectStatus();
+    }).catch(err => console.log(err));
   },
   updated() {
     this.scrollToBottom();
@@ -147,7 +156,7 @@ export default {
           MemberId: objItem.memberId,
           OtherId: objItem.gusetId
         }
-        for (let i = 0; i < vm.messages.length; i++) {
+        for (let i = 0; i < vm.$store.state.tempMessage.length; i++) {
           if (vm.messages[i].gusetId == objItem.memberId) {
             connection.invoke("GetCount", vm.mes.connectString).then(x => {
               vm.count = x
@@ -158,7 +167,7 @@ export default {
               }
             })
             break;
-          } else if (vm.messages[i].memberId == objItem.memberId) {
+          } else if (vm.$store.state.tempMessage[i].memberId == objItem.memberId) {
             connection.invoke("GetCount", vm.mes.connectString).then(x => {
               vm.count = x;
               if (vm.count != 2) {
@@ -180,11 +189,13 @@ export default {
       })
           .then((res) => {
             vm.messages = res.data;
+            vm.$store.state.tempMessage = res.data;
             vm.messages.forEach(x => {
               vm.getFake(x)
               connection.invoke("AddAllGroup", x.connectString);
             })
             vm.get = true;
+            console.log(vm.messages)
           });
 
       connection.on("ReceiveMessage", function (objString, message) {
@@ -202,7 +213,7 @@ export default {
           OtherId: objItem.gusetId
         }
 
-        for (let i = 0; i < vm.messages.length; i++) {
+        for (let i = 0; i < vm.$store.state.tempMessage.length; i++) {
           if (vm.messages[i].gusetId == objItem.memberId) {
             if (Object.keys(vm.mes).length != 0) {
               vm.$store.state.signalCommunications.push(com);
@@ -221,7 +232,7 @@ export default {
             })
             vm.scrollToBottom();
             break;
-          } else if (vm.messages[i].memberId == objItem.memberId) {
+          } else if (vm.$store.state.tempMessage[i].memberId == objItem.memberId) {
             vm.$store.state.signalCommunications.push(com);
             axios.put(`/api/messages/${vm.$route.params.memberId}/content`, com, {
               headers: {
@@ -260,6 +271,7 @@ export default {
         headers: {"Access-Control-Allow-Origin": "*",},
       }).then((res) => {
         vm.messages = res.data;
+        vm.$store.state.tempMessage = res.data;
         vm.messages.forEach(x => {
           vm.getFake(x)
         })

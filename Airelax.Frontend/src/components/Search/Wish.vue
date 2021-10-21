@@ -40,7 +40,7 @@
       >
         <div class="col-3">
           <img
-            :src="'https://picsum.photos/600/400/?random=100'"
+            :src="item.cover"
             :alt="item.name"
           />
           <!---:src="item.cover"--->
@@ -110,11 +110,6 @@
 <script>
 import axios from "axios";
 export default {
-  data() {
-    return {
-      IsAdd: true,
-    };
-  },
   methods: {
     send: function (wishId) {
       const dataUrl = `/api/wishLists/Houses`;
@@ -128,14 +123,13 @@ export default {
         data: {
           HouseId: this.$store.state.selectedWishHouseId,
           WishId: wishId,
-          IsAdd: this.IsAdd,
         },
       })
-        .then(function () { //Todo 與愛心獨立事件有關的地方
+        .then(function () {
           vm.$emit(
             "onWishListUpdated",
             wishId,
-            vm.$store.state.selectedWishHouseId
+            vm.$store.state.selectedWishHouseId,
           );
         })
         .catch((err) => console.log(err));

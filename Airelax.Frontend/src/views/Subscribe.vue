@@ -14,7 +14,7 @@
       </div>
       <div class="col-12 col-md-6">
         <YourTrip :fullWidth="fullWidth"></YourTrip>
-        <PayWay :fullWidth="fullWidth"></PayWay>
+        <!--        <PayWay :fullWidth="fullWidth"></PayWay>-->
         <SubPriceDetail
             v-if="get && fullWidth < 768"
             :room="room"
@@ -37,7 +37,7 @@ import axios from "axios";
 import SubRoom from "../components/Subscribe/SubRoom.vue";
 import FrontPage from "../components/Subscribe/FrontPage.vue";
 import YourTrip from "../components/Subscribe/YourTrip.vue";
-import PayWay from "../components/Subscribe/PayWay.vue";
+// import PayWay from "../components/Subscribe/PayWay.vue";
 import SubPriceDetail from "../components/Subscribe/SubPriceDetail.vue";
 import RequiredInfo from "../components/Subscribe/RequiredInfo.vue";
 import Unsubscribe from "../components/Subscribe/Unsubscribe.vue";
@@ -48,7 +48,7 @@ export default {
     SubRoom,
     FrontPage,
     YourTrip,
-    PayWay,
+    // PayWay,
     SubPriceDetail,
     RequiredInfo,
     Unsubscribe,
@@ -74,7 +74,6 @@ export default {
       data: this.OrdersInput,
     }).then(res => {
       const data = res.data;
-      console.log(data)
       this.orderId = data.orderId;
       this.token = data.token;
     }).catch(err => console.log(err));

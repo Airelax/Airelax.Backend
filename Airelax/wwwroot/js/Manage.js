@@ -48,7 +48,7 @@ let status = [
     {
         name: "unBooking",
         title: "下架",
-        detail: "將你的房源從 Airbnb 永久下架。",
+        detail: "將你的房源從 Airelax 永久下架。",
         icon: '<img src="/icon/RemovePublish.svg" alt="removePublish">'
     },
 ];

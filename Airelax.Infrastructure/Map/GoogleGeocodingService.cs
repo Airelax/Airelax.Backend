@@ -39,6 +39,10 @@ namespace Airelax.Infrastructure.Map
             return ConvertToGeocodingInfo(geocodingResponse);
         }
 
+        public async Task GetAddressDetail(long lat, long lng)
+        {
+        }
+
         private async Task<T> SendRequest<T>(string requestUrl) where T : GoogleApiStatus
         {
             try
@@ -59,17 +63,21 @@ namespace Airelax.Infrastructure.Map
         {
             var geometry = geocodingResponse.results.First()?.geometry;
             if (geometry == null) throw ExceptionBuilder.Build(HttpStatusCode.InternalServerError, "cannot not get map data");
-            var geocodingInfo = new GeocodingInfo(){Location = new Coordinate(geometry.location.lat, geometry.location.lng)};
+            var geocodingInfo = new GeocodingInfo()
+            {
+                AddressComponent = geocodingResponse.results.First().address_components,
+                Location = new Coordinate(geometry.location.lat, geometry.location.lng)
+            };
 
             if (geometry.bounds == null)
             {
-                var south = geocodingInfo.Location.Latitude-0.02;
-                var north = geocodingInfo.Location.Latitude+0.02;
-                var west = geocodingInfo.Location.Longitude-0.02;
-                var east = geocodingInfo.Location.Longitude+0.02;
+                var south = geocodingInfo.Location.Latitude - 0.02;
+                var north = geocodingInfo.Location.Latitude + 0.02;
+                var west = geocodingInfo.Location.Longitude - 0.02;
+                var east = geocodingInfo.Location.Longitude + 0.02;
                 var southwest = new Coordinate(south, west);
                 var northeast = new Coordinate(north, east);
-                
+
                 geocodingInfo.Bounds = new CoordinateRange
                 {
                     SouthWest = southwest,
@@ -82,7 +90,7 @@ namespace Airelax.Infrastructure.Map
                 };
                 return geocodingInfo;
             }
-            
+
             return new GeocodingInfo
             {
                 Bounds = new CoordinateRange

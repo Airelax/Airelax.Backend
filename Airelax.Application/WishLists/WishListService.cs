@@ -32,7 +32,7 @@ namespace Airelax.Application.WishLists
             _accountService = accountService;
         }
 
-        public void CreateWishList(CreateWishListInput input)
+        public int CreateWishList(CreateWishListInput input)
         {
             var member = _accountService.GetMember().Result;
             CheckMember(member, member.Id);
@@ -40,26 +40,29 @@ namespace Airelax.Application.WishLists
             var house = _houseRepository.GetAsync(x => x.Id == input.HouseId).Result;
             CheckHouse(house);
 
-            if (CheckWishHouses(member, input))
+            if (IsHouseInWishList(member, input))
             {
-                var wishListId = member.WishLists.FirstOrDefault(x => x.Id == (member.WishLists.FirstOrDefault(x => x.Houses.Contains(input.HouseId)).Id));
-                wishListId.Name = input.WishName;
+                var wishList = member.WishLists.FirstOrDefault(x => x.Houses.Contains(input.HouseId));
+                wishList.Name = input.WishName;
 
                 _memberRepository.UpdateAsync(member).Wait();
                 _memberRepository.SaveChangesAsync().Wait();
+
+                return wishList.Id;
             }
             else
             {
                 var wishList = new WishList(member.Id)
                 {
                     Name = input.WishName,
-                    Houses = new List<string> { house.Id },
+                    Houses = new List<string> {house.Id},
                     Cover = house.Photos?.Select(x => x.Image).FirstOrDefault()
                 };
                 member.WishLists.Add(wishList);
 
                 _memberRepository.UpdateAsync(member).Wait();
                 _memberRepository.SaveChangesAsync().Wait();
+                return wishList.Id;
             }
         }
 
@@ -69,26 +72,25 @@ namespace Airelax.Application.WishLists
             CheckMember(member, member.Id);
             CheckWishListName(member, input.WishName);
             var wishList = member.WishLists.FirstOrDefault(x => x.Id == input.WishId);
-            CheckWishListId(wishList);
+            CheckWishList(wishList);
             wishList.Name = input.WishName;
 
             _memberRepository.UpdateAsync(member).Wait();
             _memberRepository.SaveChangesAsync().Wait();
         }
 
-        public void ReviseHouse(UpdateWishListInput input)
+        public bool ReviseHouse(UpdateWishListInput input)
         {
             var member = _accountService.GetMember().Result;
             CheckMember(member, member.Id);
             var house = _houseRepository.GetAsync(x => x.Id == input.HouseId).Result;
             CheckHouse(house);
             var wishList = member.WishLists.FirstOrDefault(x => x.Id == input.WishId);
-            CheckWishListId(wishList);
+            CheckWishList(wishList);
 
-            if (CheckWishHouses(member, input))
-                input.IsAdd = !input.IsAdd;
+            var isAdd = !IsHouseInWishList(member, input);
 
-            if (input.IsAdd)
+            if (isAdd)
             {
                 wishList.Houses.Add(house.Id);
                 wishList.Houses = wishList.Houses.Distinct().ToList();
@@ -98,6 +100,7 @@ namespace Airelax.Application.WishLists
 
             _memberRepository.UpdateAsync(member).Wait();
             _memberRepository.SaveChangesAsync().Wait();
+            return isAdd;
         }
 
         public void DeleteWishList(int wishId)
@@ -105,7 +108,7 @@ namespace Airelax.Application.WishLists
             var member = _accountService.GetMember().Result;
             CheckMember(member, member.Id);
             var wishList = member.WishLists.FirstOrDefault(x => x.Id == wishId);
-            CheckWishListId(wishList);
+            CheckWishList(wishList);
             member.WishLists.Remove(wishList);
 
             _memberRepository.UpdateAsync(member).Wait();
@@ -134,7 +137,7 @@ namespace Airelax.Application.WishLists
             CheckMember(member, member.Id);
 
             var wishList = member.WishLists.FirstOrDefault(m => m.Id == wishId);
-            CheckWishListId(wishList);
+            CheckWishList(wishList);
 
             var houses = await _houseRepository.GetAll().Where(x => wishList.Houses.Contains(x.Id)).ToListAsync();
 
@@ -149,7 +152,7 @@ namespace Airelax.Application.WishLists
                     HouseCategory = x.HouseCategory?.Category.ToString() ?? string.Empty,
                     Location = x.HouseLocation?.Town ?? string.Empty,
                     PricePerNight = x.HousePrice?.PerNight,
-                    Comment = new SimpleCommentDto() { TotalComments = x.Comments?.Count },
+                    Comment = new SimpleCommentDto() {TotalComments = x.Comments?.Count},
                     Photo = x.Photos.Select(x => x.Image).FirstOrDefault()
                 };
                 return wishListHousesViewModel;
@@ -158,6 +161,7 @@ namespace Airelax.Application.WishLists
         }
 
         #region Check區塊
+
         /// <summary>
         /// 判斷沒有會員
         /// </summary>
@@ -194,7 +198,7 @@ namespace Airelax.Application.WishLists
         /// 判斷沒有心願單
         /// </summary>
         /// <param name="wishList"></param>
-        private static void CheckWishListId(WishList wishList)
+        private static void CheckWishList(WishList wishList)
         {
             if (wishList == null)
                 throw ExceptionBuilder.Build(HttpStatusCode.BadRequest, "doesnt match WishListId ");
@@ -204,12 +208,11 @@ namespace Airelax.Application.WishLists
         /// 判斷心願單沒有房源
         /// </summary>
         /// <returns></returns>
-        private static bool CheckWishHouses(Member member, CreateWishListInput input)
+        private static bool IsHouseInWishList(Member member, CreateWishListInput input)
         {
-            if (member.WishLists.Any(x => x.Houses.Contains(input.HouseId)))
-                return true;
-            return false;
+            return member.WishLists.Any(x => x.Houses.Contains(input.HouseId));
         }
+
         #endregion
     }
 }

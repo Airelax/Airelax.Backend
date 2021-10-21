@@ -1,5 +1,4 @@
-
-﻿using System;
+using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Airelax.Domain.Orders;
@@ -13,6 +12,6 @@ namespace Airelax.Domain.RepositoryInterface
         void SaveChanges();
         Task<Order> GetOrderAsync(Expression<Func<Order, bool>> expression);
         void Update(Order order);
-        Task<IEnumerable<Order>> GetTrips(string memberId);
+        Task<IEnumerable<Order>> GetTrips(Expression<Func<Order, bool>> exp);
     }
 }

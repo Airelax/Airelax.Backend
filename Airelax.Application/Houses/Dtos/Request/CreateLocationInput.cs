@@ -7,5 +7,6 @@
         public string Town { get; set; }
         public string ZipCode { get; set; }
         public string AddressDetail { get; set; }
+        public string FullAddress { get; set; }
     }
 }

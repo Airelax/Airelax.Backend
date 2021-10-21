@@ -46,6 +46,7 @@ namespace Airelax
             // else
             {
                 connectString = Define.Database.DB_CONNECT_STRING;
+                services.AddCors(opt => { opt.AddPolicy("dev", builder => builder.WithOrigins("http://airelax.azurewebsites.net").AllowAnyMethod().AllowAnyHeader().AllowCredentials()); });
                 //todo remove product
                 //connectString = Define.Database.LOCAL_CONNECT_STRING;
             }
@@ -96,6 +97,10 @@ namespace Airelax
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // SignalR
             services.AddSignalR();
+            //    .AddAzureSignalR(options =>
+            //{
+            //    options.ConnectionString = "Endpoint=https://airelax-signalr.service.signalr.net;AccessKey=i/uHEFtaqirRH/V0zreuc1mWHK15ASvCipxod6M63zg=;Version=1.0;";
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -116,13 +121,14 @@ namespace Airelax
             app.UseStaticFiles();
 
             app.UseRouting();
+            //app.UseFileServer();
             if (env.IsDevelopment())
             {
                 app.UseCors("dev");
             }
-
+            
             app.UseMiddleware<RequestHeaderMiddleware>();
-
+            app.UseWebSockets();
 
             app.UseAuthentication();
             app.UseAuthorization();

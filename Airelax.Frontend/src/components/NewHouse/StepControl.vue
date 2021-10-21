@@ -1,6 +1,6 @@
 <template>
   <div class="controls">
-    <button class="back">返回</button>
+    <button class="back" @click="back">返回</button>
     <button
         :disabled="!isSelected"
         :class="{ active: isSelected }"
@@ -78,6 +78,9 @@ export default {
             });
           })
           .catch(err => console.log(err));
+    },
+    back(){
+      this.$router.back();
     }
   },
   computed: {

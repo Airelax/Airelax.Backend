@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Airelax.Application.Houses;
 using Airelax.Application.Houses.Dtos.Request;
+using Airelax.Application.ManageHouses.Request;
+using Airelax.Application.ManageHouses.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +14,12 @@ namespace Airelax.Controllers
     public class NewHouseController : Controller
     {
         private readonly INewHouseService _houseAppService;
+        private readonly IManageHouseService _manageHouseService;
 
-        public NewHouseController(INewHouseService houseAppService)
+        public NewHouseController(INewHouseService houseAppService, IManageHouseService manageHouseService)
         {
             _houseAppService = houseAppService;
+            _manageHouseService = manageHouseService;
         }
 
         [HttpPost]
@@ -73,11 +77,18 @@ namespace Airelax.Controllers
             return await _houseAppService.UpdateHousePriceInput(id, input);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("{id}/location")]
         public async Task<bool> SetHouseLocation(string id, CreateLocationInput input)
         {
-            return false;
+            return await _houseAppService.UpdateLocation(id, input);
+        }
+
+        [HttpPut]
+        [Route("{id}/pictures")]
+        public async Task<UploadHouseImagesViewModel> UploadHouseImages(string id, [FromBody] UploadHouseImagesInput input)
+        {
+            return await _manageHouseService.UploadHouseImages(id, input);
         }
 
         [HttpDelete]

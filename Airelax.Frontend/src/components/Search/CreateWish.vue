@@ -1,27 +1,27 @@
 <template>
   <!-- 手機板 768px以下 不含768px-->
   <div
-    class="offcanvas offcanvas-bottom d-md-none"
-    tabindex="-1"
-    id="createWish"
-    aria-labelledby="wishTitle"
+      class="offcanvas offcanvas-bottom d-md-none"
+      tabindex="-1"
+      id="createWish"
+      aria-labelledby="wishTitle"
   >
     <div class="offcanvas-header">
       <button
-        type="button"
-        class="btn-close text-reset"
-        data-bs-dismiss="offcanvas"
-        aria-label="Close"
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
       ></button>
       <p class="offcanvas-title" id="wishTitle">為你的心願單取名</p>
     </div>
     <div class="offcanvas-body small">
       <form class="form-floating">
         <input
-          type="email"
-          class="form-control"
-          id="floatingInputValue"
-          v-model="title"
+            type="text"
+            class="form-control"
+            id="floatingInputValue"
+            v-model="title"
         />
         <label for="floatingInputValue">心願單名稱</label>
       </form>
@@ -36,34 +36,34 @@
   <!-- 768px以上 含768px -->
   <!-- Modal -->
   <div
-    class="modal fade"
-    id="mdCreateWish"
-    tabindex="-1"
-    aria-labelledby="mdCreateWishLabel"
-    aria-hidden="true"
+      class="modal fade"
+      id="mdCreateWish"
+      tabindex="-1"
+      aria-labelledby="mdCreateWishLabel"
+      aria-hidden="true"
   >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
           ></button>
           <p class="modal-title" id="mdCreateWishLabel">為你的心願單取名</p>
         </div>
         <div class="modal-body">
           <form class="form-floating">
             <input
-              type="email"
-              class="form-control"
-              id="floatingInputValue"
-              v-model="title"
+                type="text"
+                class="form-control"
+                id="floatingInputValue"
+                v-model="title"
             />
             <label for="floatingInputValue">心願單名稱</label>
           </form>
-          <div class="maxLength"><label for="">最多50字元</label></div>
+          <div class="maxLength"><label for="floatingInputValue">最多50字元</label></div>
         </div>
         <div class="footer">
           <div @click="createWishList" data-bs-dismiss="modal" class="btn">
@@ -99,14 +99,16 @@ export default {
           houseId: this.$store.state.selectedWishHouseId,
         },
       })
-        .then(function () { //Todo 缺畫面同步,現有代碼不會動
-          vm.$emit(
-            "onCreateWishList",
-            vm.title,
-            vm.$store.state.selectedWishHouseId
-          );
-        })
-        .catch((err) => console.log(err));
+          .then(function (res) {
+            vm.$emit(
+                "onCreateWishList",
+                vm.title,
+                vm.$store.state.selectedWishHouseId,
+                res.data
+            )
+            ;
+          })
+          .catch((err) => console.log(err));
     },
   },
 };
