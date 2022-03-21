@@ -3,6 +3,7 @@ name: default ci cd
 on:
   push:
     branches:
+      - workflow_dispatch
       - master
       - Develop
 
