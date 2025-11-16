@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.SignalR.Transports;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
@@ -10,11 +9,13 @@ namespace Airelax.Hubs
 {
     public class ChatHub : Hub
     {
+        private static readonly List<string> ConnectedIds = new();
+
         public async Task AddGroup(string groupName)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             if (GetCount(groupName) == 2) return;
-            UserHandler.ConnectedIds.Add(groupName);
+            ConnectedIds.Add(groupName);
         }
 
         public async Task AddAllGroup(string groupName)
@@ -31,7 +32,7 @@ namespace Airelax.Hubs
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
             if (GetCount(groupName) == 0) return;
-            UserHandler.ConnectedIds.Remove(groupName);
+            ConnectedIds.Remove(groupName);
         }
 
         public async Task RemoveAllGroup(string groupName)
@@ -39,14 +40,9 @@ namespace Airelax.Hubs
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
         }
 
-        public static class UserHandler
+        private static int GetCount(string groupName)
         {
-            public static List<string> ConnectedIds = new List<string>();
-        }
-
-        public int GetCount(string groupName)
-        {
-            return UserHandler.ConnectedIds.Where(x => x == groupName).ToList().Count;
+            return ConnectedIds.Where(x => x == groupName).ToList().Count;
         }
 
         public async Task OnlineStatus(string groupName, string obj)

@@ -50,7 +50,7 @@ namespace Airelax.Application.Account
         public string GetAuthMemberId()
         {
             var memberId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (memberId.IsNullOrEmpty()) throw ExceptionBuilder.Build(HttpStatusCode.Forbidden, "not log in");
+            if (string.IsNullOrEmpty(memberId)) throw ExceptionBuilder.Build(HttpStatusCode.Forbidden, "not log in");
             return memberId;
         }
 

@@ -9,7 +9,9 @@ using Airelax.Infrastructure.ThirdPartyPayment.ECPay;
 using Airelax.Middlewares;
 using Lazcat.Infrastructure.ExceptionHandlers;
 using Lazcat.Infrastructure.Extensions;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -69,14 +71,13 @@ namespace Airelax
             services.AddGoogleGeoService(Configuration);
             services.AddECPayService(Configuration);
             services.Configure<PhotoUploadSetting>(Configuration.GetSection(nameof(PhotoUploadSetting)));
-
-            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //     .AddCookie(options =>
-            //     {
-            //         options.LoginPath = "/Account/Login";
-            //         options.LogoutPath = "/";
-            //     })
-            //    
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                    options.LogoutPath = "/";
+                });
+            
 
             services.AddAuthentication(opt => { opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; }).AddCookie(opt =>
             {

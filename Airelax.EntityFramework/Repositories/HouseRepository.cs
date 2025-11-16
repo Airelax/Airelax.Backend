@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Airelax.Domain.DomainObject;
 using Airelax.Domain.Houses;
+using Airelax.Domain.Houses.Defines;
 using Airelax.Domain.RepositoryInterface;
 using Lazcat.Infrastructure.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,7 @@ namespace Airelax.EntityFramework.Repositories
         }
 
         public IQueryable<House> GetAll()
-        {
+        { 
             return GetHouseIncludeAll().Where(x => x.IsDeleted == false);
         }
 

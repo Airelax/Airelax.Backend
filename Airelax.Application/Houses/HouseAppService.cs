@@ -78,6 +78,7 @@ namespace Airelax.Application.Houses
                 }
             };
 
+            
             var specification = GetSpecification(input, geocodingInfo);
 
             var sNow = DateTime.Now;

@@ -110,7 +110,6 @@ namespace Airelax.Application.Messages
         }
 
         public bool UpdateOnTime(string id, UpdateStatusInput input)
-        
         {
             var message = _messageRepository.UpdateMessage(input.MemberId, input.OtherId);
             if (message.MemberOneId == input.MemberId) message.MemberTwoStatus += 1;

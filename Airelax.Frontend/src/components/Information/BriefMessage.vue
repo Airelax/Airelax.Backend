@@ -114,7 +114,7 @@ import settingJson from "@/components/Settings/setting";
 let hubUrl = "/chathub";
 const connection = new signalR.HubConnectionBuilder().withUrl(hubUrl, {
   skipNegotiation: false,
-  transport: signalR.HttpTransportType.LongPolling
+  transport: signalR.HttpTransportType.WebSockets
 }).build();
 
 export default {
